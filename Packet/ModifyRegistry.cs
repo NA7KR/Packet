@@ -3,7 +3,7 @@ using System;
 using Microsoft.Win32;      
 // and for the MessageBox function:
 using System.Windows.Forms;
-// http://www.codeproject.com/Articles/3389/Read-write-and-delete-from-registry-with-C
+
 namespace Utility.ModifyRegistry
 {
 	/// <summary>

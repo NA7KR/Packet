@@ -1,6 +1,6 @@
 ﻿namespace Packet
 {
-    partial class Form2
+    partial class IP_Form2
     {
         /// <summary>
         /// Required designer variable.

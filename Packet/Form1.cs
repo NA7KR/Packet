@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyRegistry;
+using Utility.ModifyFiles;
 
 namespace Packet
 {
@@ -16,6 +17,7 @@ namespace Packet
     {
         private TelnetConnection tc;
         ModifyRegistry myRegistry = new ModifyRegistry();
+        ModifyFiles myFiles = new ModifyFiles();
     
         string prompt = "";
         public Form1()
@@ -119,7 +121,7 @@ namespace Packet
 
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form2 box = new Form2();
+            IP_Form2 box = new IP_Form2();
             box.ShowDialog();
         }
 
@@ -135,6 +137,11 @@ namespace Packet
             this.richTextBox2.Left = 20;
             this.richTextBox1.Width = (this.Width - 60);
             this.richTextBox2.Width = (this.Width - 60);
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
         }
 
 

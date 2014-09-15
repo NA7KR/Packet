@@ -10,9 +10,9 @@ using System.Windows.Forms;
 using Utility.ModifyRegistry;
 namespace Packet
 {
-    public partial class Form2 : Form
+    public partial class IP_Form2 : Form
     {
-        public Form2()
+        public IP_Form2()
         {
             InitializeComponent();
         }
