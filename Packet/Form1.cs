@@ -137,7 +137,6 @@ namespace Packet
             this.richTextBox2.Width = (this.Width - 60);
         }
 
-       
 
     }
 }
