@@ -29,6 +29,10 @@ namespace Packet
             this.toolStripComboBox1.Items.Add("Telnet");
             this.toolStripComboBox1.Items.Add("Com Port");
             this.richTextBox1.Left = 20;
+            this.richTextBox1.Top = 80;
+            this.richTextBox1.Height = ((this.Height - 160) / 2);
+            this.richTextBox2.Top = (this.richTextBox1.Top + this.richTextBox1.Size.Height + 20);
+            this.richTextBox2.Height = this.richTextBox1.Size.Height;
             this.richTextBox2.Left = 20;
             this.richTextBox1.Width = (this.Width - 60);
             this.richTextBox2.Width = (this.Width - 60);
@@ -112,13 +116,6 @@ namespace Packet
 
          }
 
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            this.richTextBox1.Left = 20;
-            this.richTextBox2.Left = 20;
-            this.richTextBox1.Width = (this.Width - 60);
-            this.richTextBox2.Width = (this.Width - 60);
-        }
 
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -126,10 +123,21 @@ namespace Packet
             box.ShowDialog();
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        private void Form1_Resize_1(object sender, EventArgs e)
         {
+       
 
+            this.richTextBox1.Left = 20;
+            this.richTextBox1.Top = 80;
+            this.richTextBox1.Height = ((this.Height - 160) / 2);
+            this.richTextBox2.Top = (this.richTextBox1.Top + this.richTextBox1.Size.Height + 20);
+            this.richTextBox2.Height = this.richTextBox1.Size.Height;
+            this.richTextBox2.Left = 20;
+            this.richTextBox1.Width = (this.Width - 60);
+            this.richTextBox2.Width = (this.Width - 60);
         }
+
+       
 
     }
 }

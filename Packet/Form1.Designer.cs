@@ -150,7 +150,6 @@
             this.richTextBox1.Size = new System.Drawing.Size(557, 224);
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
-            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // richTextBox2
             // 
@@ -182,7 +181,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Packet Radio";
-            this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.Resize += new System.EventHandler(this.Form1_Resize_1);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
