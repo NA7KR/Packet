@@ -141,7 +141,7 @@ namespace Packet
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-
+            myFiles.Write( "Com");
         }
 
 

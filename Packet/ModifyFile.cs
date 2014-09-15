@@ -7,7 +7,7 @@ namespace Utility.ModifyFiles
 {
     public class ModifyFiles
     {
-        public string Write(string KeyName)
+        public bool Write(string KeyName)
         {
             try
             {
@@ -16,16 +16,17 @@ namespace Utility.ModifyFiles
                 {
                     using (StreamWriter sw = File.CreateText(path))
                     {
-                        sw.WriteLine("Hello");
-                        return KeyName = "Hello";
+                        sw.WriteLine(KeyName);
+                        return true;
                     }
                 }
             }
             catch (Exception e)
             {
-                return e.Message ;
+                MessageBox.Show  (e.Message) ;
+                return false;
             }
-            return KeyName = "Hello";
+            return true;
         }
     }
 
