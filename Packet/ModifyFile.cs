@@ -19,10 +19,18 @@ namespace Utility.ModifyFiles
                     //Console.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime(path));
                 }
                 
-                    path = path + @"\myText.txt";
+                    path = path + @"\myMailList.txt";
                     if (!File.Exists(path))
                     {
                         using (StreamWriter sw = File.CreateText(path))
+                        {
+                            sw.WriteLine(KeyName);
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = File.AppendText(path))
                         {
                             sw.WriteLine(KeyName);
                             return true;

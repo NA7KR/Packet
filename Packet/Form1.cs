@@ -18,7 +18,7 @@ namespace Packet
         private TelnetConnection tc;
         ModifyRegistry myRegistry = new ModifyRegistry();
         ModifyFiles myFiles = new ModifyFiles();
-    
+        bool forward = false;
         string prompt = "";
         public Form1()
         {
@@ -64,19 +64,26 @@ namespace Packet
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = "Hello"; }));
+            string rd2;
             int i = 1;
             // while connected
             while (tc.IsConnected && prompt.Trim() != "exit")
             {
-                // display server output
-                //richTextBox1.Text += tc.Read();
-                // display server output
-                this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += tc.Read(); }));
+             string rd = tc.Read();
+                if (rd != "")
+                { 
+                 if (forward == true)
+                 {
+                     rd2 = rd.Replace("\u0007", "");
+                     rd2 = rd2.TrimEnd('\r', '\n'); 
+                    myFiles.Write( rd2);
+                 }
+                this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd ; }));
                 i = i + 1;
                 string mystring = i.ToString();
                 this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
-                System.Threading.Thread.Sleep(3000);
+            }
+                System.Threading.Thread.Sleep(300);
 
             }
         }
@@ -127,8 +134,6 @@ namespace Packet
 
         private void Form1_Resize_1(object sender, EventArgs e)
         {
-       
-
             this.richTextBox1.Left = 20;
             this.richTextBox1.Top = 80;
             this.richTextBox1.Height = ((this.Height - 160) / 2);
@@ -141,7 +146,13 @@ namespace Packet
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            myFiles.Write( "Com");
+            forward = true;
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            richTextBox1.SelectionStart = richTextBox1.Text.Length; 
+            richTextBox1.ScrollToCaret(); 
         }
 
 
