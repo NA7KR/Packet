@@ -11,15 +11,26 @@ namespace Utility.ModifyFiles
         {
             try
             {
-                string path = @"C:\temp\myTest.txt";
-                if (!File.Exists(path))
+                string path = System.IO.Directory.GetCurrentDirectory() + @"\Data";
+                if (!Directory.Exists(path))
                 {
-                    using (StreamWriter sw = File.CreateText(path))
-                    {
-                        sw.WriteLine(KeyName);
-                        return true;
-                    }
+                    // Try to create the directory.
+                    DirectoryInfo di = Directory.CreateDirectory(path);
+                    //Console.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime(path));
                 }
+                
+                    path = path + @"\myText.txt";
+                    if (!File.Exists(path))
+                    {
+                        using (StreamWriter sw = File.CreateText(path))
+                        {
+                            sw.WriteLine(KeyName);
+                            return true;
+                        }
+                    }
+                
+           
+
             }
             catch (Exception e)
             {
