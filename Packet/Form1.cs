@@ -20,6 +20,7 @@ namespace Packet
         ModifyFiles myFiles = new ModifyFiles();
         bool forward = false;
         string prompt = "";
+        
         public Form1()
         {
             InitializeComponent();
@@ -27,6 +28,8 @@ namespace Packet
             myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             myRegistry.ShowError = true;
             myRegistry.Write("Packet", Application.ProductVersion);
+            this.connect_button1.Enabled = true;
+            this.forward_button.Enabled = false;
             this.toolStripComboBox1.Items.Clear();
             this.toolStripComboBox1.Items.Add("Telnet");
             this.toolStripComboBox1.Items.Add("Com Port");
@@ -59,29 +62,34 @@ namespace Packet
         {
             tc = new TelnetConnection("209.237.87.235", 6300);
             backgroundWorker1.RunWorkerAsync();
-            
+            connect_button1.Enabled = false;
+            this.forward_button.Enabled = true;
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             string rd2;
             int i = 1;
+            
             // while connected
-            while (tc.IsConnected && prompt.Trim() != "exit")
+            while (tc.IsConnected && prompt.Trim() != "Timeout !!")
             {
              string rd = tc.Read();
-                if (rd != "")
+                if (rd != "") // stop text on screen jump
                 { 
                  if (forward == true)
                  {
                      rd2 = rd.Replace("\u0007", "");
-                     rd2 = rd2.TrimEnd('\r', '\n'); 
-                    myFiles.Write( rd2);
+                     rd2 = rd2.TrimEnd('\r', '\n');
+                     rd2 = rd2.TrimStart('\r', '\n');
+                     
+                        myFiles.Write( rd2);
+               
                  }
                 this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd ; }));
                 i = i + 1;
                 string mystring = i.ToString();
-                this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
+                //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
             }
                 System.Threading.Thread.Sleep(300);
 
