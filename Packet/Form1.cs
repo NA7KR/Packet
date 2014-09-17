@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyRegistry;
-using Utility.ModifyFiles;
+using Utility.ModifyFile;
 
 namespace Packet
 {
@@ -17,7 +17,7 @@ namespace Packet
     {
         private TelnetConnection tc;
         ModifyRegistry myRegistry = new ModifyRegistry();
-        ModifyFiles myFiles = new ModifyFiles();
+        ModifyFile myFiles = new ModifyFile();
         bool forward = false;
         string prompt = "";
         
@@ -83,7 +83,9 @@ namespace Packet
                      rd2 = rd2.TrimEnd('\r', '\n');
                      rd2 = rd2.TrimStart('\r', '\n');
                      
-                        myFiles.Write( rd2);
+                     
+                         myFiles.Write(rd2);
+                     
                
                  }
                 this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd ; }));
@@ -163,6 +165,7 @@ namespace Packet
             richTextBox1.ScrollToCaret(); 
         }
 
+      
 
     }
 }
