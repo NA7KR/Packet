@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyRegistry;
 using Utility.ModifyFile;
-using Utility.StringExtension;
+using System.Text.RegularExpressions;
 
 namespace Packet
 {
@@ -85,11 +85,14 @@ namespace Packet
                      rd2 = rd.Replace("\u0007", "");
                      rd2 = rd2.TrimEnd('\r', '\n');
                      rd2 = rd2.TrimStart('\r', '\n');
-                     //if (rd2.IsNumber() == false)
-                     //    Console.WriteLine("123".IsNumber());
-                     
-                         myFiles.Write(rd2);
-                     
+                     string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                     string str_build = "";
+                     foreach (string s in result)
+                         if (Regex.IsMatch(s, @"^\d"))
+                         {
+                            str_build = str_build + s + System.Environment.NewLine; 
+                         }
+                     myFiles.Write(str_build);
                
                  }
                 this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd ; }));

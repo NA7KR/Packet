@@ -40,8 +40,10 @@ namespace Utility.ModifyFile
                         {
                             writer.WriteLine(textVale);
                             int totalRead;
-                            while ((totalRead = reader.Read(buffer, 0, buffer.Length)) > 0) ; 
-                            writer.Write(buffer, 0, totalRead);
+                            while ((totalRead = reader.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                writer.Write(buffer, 0, totalRead);
+                            }
                             writer.Close();
                             reader.Close();
                         }
