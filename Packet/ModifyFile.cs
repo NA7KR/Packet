@@ -46,12 +46,7 @@ namespace Utility.ModifyFile
             }
             //return true;
         } //end write
-        
-        private bool IsNumber(string str)
-        {
-            return str.All(Char.IsNumber);
-        }
-         
+
     }
     
 
