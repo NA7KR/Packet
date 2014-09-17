@@ -32,10 +32,33 @@ namespace Packet
             ModifyRegistry myRegistry = new ModifyRegistry();
             myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             myRegistry.ShowError = true;
-            myRegistry.Write("IP", IP_textBox.Text);
-            myRegistry.Write("Port", Port_textBox.Text);
-            myRegistry.Write("CallSign", CallSign_textBox.Text);
+            myRegistry.Write("IP", ip_textBox.Text);
+            myRegistry.Write("Port", port_textBox.Text);
+            myRegistry.Write("CallSign", callSign_textBox.Text);
+            myRegistry.Write("BBS", bbs_textBox.Text);
+            myRegistry.Write("Start Number", start_textBox.Text);
+            myRegistry.Write("Password", password_textBox.Text);
             this.Close();
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }
