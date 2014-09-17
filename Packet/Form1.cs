@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Utility.ModifyRegistry;
 using Utility.ModifyFile;
 using System.Text.RegularExpressions;
+using System.Net;
 
 namespace Packet
 {
@@ -22,11 +23,10 @@ namespace Packet
  
         bool forward = false;
         string prompt = "";
-        
+        string strDnsAddress;
         public Form1()
         {
             InitializeComponent();
-            tc = new TelnetConnection("209.237.87.235", 6300);
             myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             myRegistry.ShowError = true;
             myRegistry.Write("Packet", Application.ProductVersion);
@@ -53,15 +53,19 @@ namespace Packet
             }
             string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
             string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
-            string strDnsAddress = myRegistry.Read("IP");
+            strDnsAddress = myRegistry.Read("IP");
+           
             if(Regex.IsMatch(strDnsAddress, ValidIpAddressRegex )) 
             {
                 this.textBox1.Text = "IP = " + strDnsAddress;
+                
             }
             else if(Regex.IsMatch(strDnsAddress,ValidHostnameRegex ))
             {
-                this.textBox1.Text = "Host = " + strDnsAddress;
- 
+                
+                IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
+                strDnsAddress =  strAddress.AddressList[0].ToString();
+                this.textBox1.Text = strDnsAddress;
             }
         }
 
@@ -74,7 +78,7 @@ namespace Packet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            tc = new TelnetConnection("209.237.87.235", 6300);
+            tc = new TelnetConnection(strDnsAddress, 6300);
             backgroundWorker1.RunWorkerAsync();
             connect_button1.Enabled = false;
             this.forward_button.Enabled = true;
