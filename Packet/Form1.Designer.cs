@@ -149,6 +149,7 @@
             this.richTextBox1.ForeColor = System.Drawing.Color.Yellow;
             this.richTextBox1.Location = new System.Drawing.Point(55, 87);
             this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
             this.richTextBox1.ShortcutsEnabled = false;
             this.richTextBox1.Size = new System.Drawing.Size(557, 224);
             this.richTextBox1.TabIndex = 2;

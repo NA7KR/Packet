@@ -19,7 +19,7 @@ namespace Packet
         private TelnetConnection tc;
         ModifyRegistry myRegistry = new ModifyRegistry();
         ModifyFile myFiles = new ModifyFile();
-        StringExtension myString = new StringExtension();
+ 
         bool forward = false;
         string prompt = "";
         
@@ -66,6 +66,7 @@ namespace Packet
             backgroundWorker1.RunWorkerAsync();
             connect_button1.Enabled = false;
             this.forward_button.Enabled = true;
+         
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -84,11 +85,11 @@ namespace Packet
                      rd2 = rd.Replace("\u0007", "");
                      rd2 = rd2.TrimEnd('\r', '\n');
                      rd2 = rd2.TrimStart('\r', '\n');
-                    // if (rd2.IsNumber() == false)
-                         Console.WriteLine("123".IsNumber());
-                     {
+                     //if (rd2.IsNumber() == false)
+                     //    Console.WriteLine("123".IsNumber());
+                     
                          myFiles.Write(rd2);
-                     }
+                     
                
                  }
                 this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd ; }));
