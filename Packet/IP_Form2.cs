@@ -54,8 +54,11 @@ namespace Packet
                start_textBox.Width = 140;
                Done_button.Top = 200;
                Cancel_button.Top = 200;
-               Done_button.Top = 170;
-               //IP_Form2.Size.Height = 190;
+               Done_button.Width = 75;
+               Done_button.Left = 60;
+               Cancel_button.Width = 75;
+               Cancel_button.Left = 195;
+               this.Height = 280;
             }
            
             else
@@ -63,8 +66,12 @@ namespace Packet
                 start_textBox.Visible = false;
                 start_label.Visible = false;
                 Done_button.Top = 170;
+                Done_button.Width = 75;
+                Done_button.Left = 60;
+                Cancel_button.Width = 75;
+                Cancel_button.Left = 195;
                 Cancel_button.Top = 170;
-
+                this.Height = 250;
             }
             
             bbs_textBox.Text = myRegistry.Read(Var1 + "-BBS");

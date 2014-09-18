@@ -62,7 +62,7 @@
             // 
             // Done_button
             // 
-            this.Done_button.Location = new System.Drawing.Point(43, 255);
+            this.Done_button.Location = new System.Drawing.Point(22, 224);
             this.Done_button.Name = "Done_button";
             this.Done_button.Size = new System.Drawing.Size(75, 23);
             this.Done_button.TabIndex = 10;
@@ -73,7 +73,7 @@
             // Cancel_button
             // 
             this.Cancel_button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_button.Location = new System.Drawing.Point(149, 255);
+            this.Cancel_button.Location = new System.Drawing.Point(145, 224);
             this.Cancel_button.Name = "Cancel_button";
             this.Cancel_button.Size = new System.Drawing.Size(75, 23);
             this.Cancel_button.TabIndex = 11;
@@ -118,7 +118,6 @@
             this.start_textBox.Name = "start_textBox";
             this.start_textBox.Size = new System.Drawing.Size(109, 20);
             this.start_textBox.TabIndex = 15;
-            
             // 
             // bbs_textBox
             // 
@@ -167,7 +166,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_button;
-            this.ClientSize = new System.Drawing.Size(315, 314);
+            this.ClientSize = new System.Drawing.Size(314, 314);
             this.Controls.Add(this.password_textBox);
             this.Controls.Add(this.password_label);
             this.Controls.Add(this.start_textBox);
