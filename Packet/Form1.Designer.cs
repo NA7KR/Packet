@@ -44,6 +44,12 @@
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.forward_button = new System.Windows.Forms.Button();
+            this.clusterTelnetComToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clusterIPConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nodeTelnetComToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nodeIPConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cluster_button = new System.Windows.Forms.Button();
+            this.node_button = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,11 +59,12 @@
             // 
             // connect_button1
             // 
-            this.connect_button1.Location = new System.Drawing.Point(191, 41);
+            this.connect_button1.Location = new System.Drawing.Point(55, 40);
             this.connect_button1.Name = "connect_button1";
-            this.connect_button1.Size = new System.Drawing.Size(75, 23);
+            this.connect_button1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.connect_button1.Size = new System.Drawing.Size(92, 23);
             this.connect_button1.TabIndex = 0;
-            this.connect_button1.Text = "Connect";
+            this.connect_button1.Text = "Connect BBS";
             this.connect_button1.UseVisualStyleBackColor = true;
             this.connect_button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -92,7 +99,11 @@
             // 
             this.setupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.telnetComToolStripMenuItem,
-            this.iPConfigToolStripMenuItem});
+            this.iPConfigToolStripMenuItem,
+            this.clusterTelnetComToolStripMenuItem,
+            this.clusterIPConfigToolStripMenuItem,
+            this.nodeTelnetComToolStripMenuItem,
+            this.nodeIPConfigToolStripMenuItem});
             this.setupToolStripMenuItem.Name = "setupToolStripMenuItem";
             this.setupToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.setupToolStripMenuItem.Text = "Setup";
@@ -102,8 +113,8 @@
             this.telnetComToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox1});
             this.telnetComToolStripMenuItem.Name = "telnetComToolStripMenuItem";
-            this.telnetComToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.telnetComToolStripMenuItem.Text = "Telnet/Com";
+            this.telnetComToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.telnetComToolStripMenuItem.Text = "BBS Telnet/Com";
             // 
             // toolStripComboBox1
             // 
@@ -117,8 +128,8 @@
             // iPConfigToolStripMenuItem
             // 
             this.iPConfigToolStripMenuItem.Name = "iPConfigToolStripMenuItem";
-            this.iPConfigToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.iPConfigToolStripMenuItem.Text = "IP Config";
+            this.iPConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.iPConfigToolStripMenuItem.Text = "BBS IP Config";
             this.iPConfigToolStripMenuItem.Click += new System.EventHandler(this.iPConfigToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
@@ -170,26 +181,74 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(419, 43);
+            this.textBox1.Location = new System.Drawing.Point(512, 44);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 4;
             // 
             // forward_button
             // 
-            this.forward_button.Location = new System.Drawing.Point(290, 43);
+            this.forward_button.Location = new System.Drawing.Point(149, 41);
             this.forward_button.Name = "forward_button";
-            this.forward_button.Size = new System.Drawing.Size(75, 23);
+            this.forward_button.Size = new System.Drawing.Size(93, 23);
             this.forward_button.TabIndex = 5;
             this.forward_button.Text = "Forward";
             this.forward_button.UseVisualStyleBackColor = true;
             this.forward_button.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // clusterTelnetComToolStripMenuItem
+            // 
+            this.clusterTelnetComToolStripMenuItem.Name = "clusterTelnetComToolStripMenuItem";
+            this.clusterTelnetComToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.clusterTelnetComToolStripMenuItem.Text = "Cluster Telnet/Com";
+            // 
+            // clusterIPConfigToolStripMenuItem
+            // 
+            this.clusterIPConfigToolStripMenuItem.Name = "clusterIPConfigToolStripMenuItem";
+            this.clusterIPConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.clusterIPConfigToolStripMenuItem.Text = "Cluster IP Config";
+            this.clusterIPConfigToolStripMenuItem.Click += new System.EventHandler(this.clusterIPConfigToolStripMenuItem_Click);
+            // 
+            // nodeTelnetComToolStripMenuItem
+            // 
+            this.nodeTelnetComToolStripMenuItem.Name = "nodeTelnetComToolStripMenuItem";
+            this.nodeTelnetComToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.nodeTelnetComToolStripMenuItem.Text = "Node Telnet/Com";
+            // 
+            // nodeIPConfigToolStripMenuItem
+            // 
+            this.nodeIPConfigToolStripMenuItem.Name = "nodeIPConfigToolStripMenuItem";
+            this.nodeIPConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.nodeIPConfigToolStripMenuItem.Text = "Node IP Config";
+            this.nodeIPConfigToolStripMenuItem.Click += new System.EventHandler(this.nodeIPConfigToolStripMenuItem_Click);
+            // 
+            // cluster_button
+            // 
+            this.cluster_button.Location = new System.Drawing.Point(231, 40);
+            this.cluster_button.Name = "cluster_button";
+            this.cluster_button.Size = new System.Drawing.Size(94, 23);
+            this.cluster_button.TabIndex = 6;
+            this.cluster_button.Text = "Connect Cluster";
+            this.cluster_button.UseVisualStyleBackColor = true;
+            this.cluster_button.Click += new System.EventHandler(this.button1_Click_2);
+            // 
+            // node_button
+            // 
+            this.node_button.Location = new System.Drawing.Point(331, 40);
+            this.node_button.Name = "node_button";
+            this.node_button.Size = new System.Drawing.Size(94, 23);
+            this.node_button.TabIndex = 7;
+            this.node_button.Text = "Connect Node";
+            this.node_button.UseVisualStyleBackColor = true;
+            this.node_button.Click += new System.EventHandler(this.node_button_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1207, 599);
+            this.Controls.Add(this.node_button);
+            this.Controls.Add(this.cluster_button);
             this.Controls.Add(this.forward_button);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.richTextBox2);
@@ -226,6 +285,12 @@
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.ToolStripMenuItem iPConfigToolStripMenuItem;
         private System.Windows.Forms.Button forward_button;
+        private System.Windows.Forms.ToolStripMenuItem clusterTelnetComToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clusterIPConfigToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nodeTelnetComToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nodeIPConfigToolStripMenuItem;
+        private System.Windows.Forms.Button cluster_button;
+        private System.Windows.Forms.Button node_button;
     }
 }
 

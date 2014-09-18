@@ -28,31 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.IP_label = new System.Windows.Forms.Label();
             this.ip_textBox = new System.Windows.Forms.TextBox();
             this.Done_button = new System.Windows.Forms.Button();
             this.Cancel_button = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.port_label = new System.Windows.Forms.Label();
+            this.mycall_label = new System.Windows.Forms.Label();
             this.port_textBox = new System.Windows.Forms.TextBox();
             this.callSign_textBox = new System.Windows.Forms.TextBox();
             this.start_textBox = new System.Windows.Forms.TextBox();
             this.bbs_textBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.start_label = new System.Windows.Forms.Label();
+            this.bbs_label = new System.Windows.Forms.Label();
             this.password_textBox = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.password_label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // IP_label
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "IP or HostName";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.IP_label.AutoSize = true;
+            this.IP_label.Location = new System.Drawing.Point(36, 31);
+            this.IP_label.Name = "IP_label";
+            this.IP_label.Size = new System.Drawing.Size(106, 13);
+            this.IP_label.TabIndex = 0;
+            this.IP_label.Text = "BBS IP or HostName";
             // 
             // ip_textBox
             // 
@@ -81,24 +80,23 @@
             this.Cancel_button.Text = "Cancel";
             this.Cancel_button.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // port_label
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(37, 57);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(26, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Port";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.port_label.AutoSize = true;
+            this.port_label.Location = new System.Drawing.Point(37, 57);
+            this.port_label.Name = "port_label";
+            this.port_label.Size = new System.Drawing.Size(50, 13);
+            this.port_label.TabIndex = 1;
+            this.port_label.Text = "BBS Port";
             // 
-            // label4
+            // mycall_label
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(36, 85);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(62, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "My CallSign";
+            this.mycall_label.AutoSize = true;
+            this.mycall_label.Location = new System.Drawing.Point(35, 140);
+            this.mycall_label.Name = "mycall_label";
+            this.mycall_label.Size = new System.Drawing.Size(62, 13);
+            this.mycall_label.TabIndex = 3;
+            this.mycall_label.Text = "My CallSign";
             // 
             // port_textBox
             // 
@@ -109,62 +107,59 @@
             // 
             // callSign_textBox
             // 
-            this.callSign_textBox.Location = new System.Drawing.Point(145, 85);
+            this.callSign_textBox.Location = new System.Drawing.Point(143, 144);
             this.callSign_textBox.Name = "callSign_textBox";
             this.callSign_textBox.Size = new System.Drawing.Size(109, 20);
             this.callSign_textBox.TabIndex = 9;
             // 
             // start_textBox
             // 
-            this.start_textBox.Location = new System.Drawing.Point(145, 141);
+            this.start_textBox.Location = new System.Drawing.Point(144, 115);
             this.start_textBox.Name = "start_textBox";
             this.start_textBox.Size = new System.Drawing.Size(109, 20);
             this.start_textBox.TabIndex = 15;
-            this.start_textBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            
             // 
             // bbs_textBox
             // 
-            this.bbs_textBox.Location = new System.Drawing.Point(145, 113);
+            this.bbs_textBox.Location = new System.Drawing.Point(144, 87);
             this.bbs_textBox.Name = "bbs_textBox";
             this.bbs_textBox.Size = new System.Drawing.Size(109, 20);
             this.bbs_textBox.TabIndex = 14;
-            this.bbs_textBox.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
-            // label3
+            // start_label
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(36, 141);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 13);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "Start Number";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            this.start_label.AutoSize = true;
+            this.start_label.Location = new System.Drawing.Point(35, 115);
+            this.start_label.Name = "start_label";
+            this.start_label.Size = new System.Drawing.Size(93, 13);
+            this.start_label.TabIndex = 13;
+            this.start_label.Text = "BBS Start Number";
             // 
-            // label5
+            // bbs_label
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(37, 113);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(28, 13);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "BBS";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
+            this.bbs_label.AutoSize = true;
+            this.bbs_label.Location = new System.Drawing.Point(36, 87);
+            this.bbs_label.Name = "bbs_label";
+            this.bbs_label.Size = new System.Drawing.Size(67, 13);
+            this.bbs_label.TabIndex = 12;
+            this.bbs_label.Text = "BBS Callsign";
             // 
             // password_textBox
             // 
-            this.password_textBox.Location = new System.Drawing.Point(145, 168);
+            this.password_textBox.Location = new System.Drawing.Point(143, 170);
             this.password_textBox.Name = "password_textBox";
             this.password_textBox.Size = new System.Drawing.Size(109, 20);
             this.password_textBox.TabIndex = 18;
             // 
-            // label7
+            // password_label
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(37, 168);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 13);
-            this.label7.TabIndex = 16;
-            this.label7.Text = "Password";
+            this.password_label.AutoSize = true;
+            this.password_label.Location = new System.Drawing.Point(34, 164);
+            this.password_label.Name = "password_label";
+            this.password_label.Size = new System.Drawing.Size(77, 13);
+            this.password_label.TabIndex = 16;
+            this.password_label.Text = "BBS Password";
             // 
             // IP_Form2
             // 
@@ -174,19 +169,19 @@
             this.CancelButton = this.Cancel_button;
             this.ClientSize = new System.Drawing.Size(315, 314);
             this.Controls.Add(this.password_textBox);
-            this.Controls.Add(this.label7);
+            this.Controls.Add(this.password_label);
             this.Controls.Add(this.start_textBox);
             this.Controls.Add(this.bbs_textBox);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.start_label);
+            this.Controls.Add(this.bbs_label);
             this.Controls.Add(this.Cancel_button);
             this.Controls.Add(this.Done_button);
             this.Controls.Add(this.callSign_textBox);
             this.Controls.Add(this.port_textBox);
             this.Controls.Add(this.ip_textBox);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.mycall_label);
+            this.Controls.Add(this.port_label);
+            this.Controls.Add(this.IP_label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
             this.MaximizeBox = false;
@@ -201,19 +196,19 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label IP_label;
         private System.Windows.Forms.TextBox ip_textBox;
         private System.Windows.Forms.Button Done_button;
         private System.Windows.Forms.Button Cancel_button;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label port_label;
+        private System.Windows.Forms.Label mycall_label;
         private System.Windows.Forms.TextBox port_textBox;
         private System.Windows.Forms.TextBox callSign_textBox;
         private System.Windows.Forms.TextBox start_textBox;
         private System.Windows.Forms.TextBox bbs_textBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label start_label;
+        private System.Windows.Forms.Label bbs_label;
         private System.Windows.Forms.TextBox password_textBox;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label password_label;
     }
 }

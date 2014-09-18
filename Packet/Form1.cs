@@ -44,6 +44,16 @@ namespace Packet
             this.richTextBox2.Left = 20;
             this.richTextBox1.Width = (this.Width - 60);
             this.richTextBox2.Width = (this.Width - 60);
+            this.connect_button1.Width = 90;
+            this.cluster_button.Width = 90;
+            this.forward_button.Width = 90;
+            this.node_button.Width = 90;
+            this.connect_button1.Left = 20;
+            this.forward_button.Left = 130;
+            this.cluster_button.Left = 250; 
+            this.node_button.Left = 360;
+            
+
             if (myRegistry.Read("Mode") == "Telnet")
             {
                 this.toolStripComboBox1.SelectedIndex = 0;
@@ -54,7 +64,7 @@ namespace Packet
             }
             string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
             string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
-            strDnsAddress = myRegistry.Read("IP");
+            strDnsAddress = myRegistry.Read("BBS-IP");
            
             if(Regex.IsMatch(strDnsAddress, ValidIpAddressRegex )) 
             {
@@ -66,7 +76,7 @@ namespace Packet
                 strDnsAddress =  strAddress.AddressList[0].ToString();
                 this.textBox1.Text = strDnsAddress;
             }
-            port = myRegistry.Read("Port");  
+            port = myRegistry.Read("BBS-Port");  
         }
 
 
@@ -162,7 +172,7 @@ namespace Packet
 
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form2 box = new IP_Form2();
+            IP_Form2 box = new IP_Form2("BBS");
             box.ShowDialog();
         }
 
@@ -192,6 +202,28 @@ namespace Packet
         private void Form1_Load(object sender, EventArgs e)
         {
         
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
+        }
+
+        private void node_button_Click(object sender, EventArgs e)
+        {
+            tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
+        }
+
+        private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IP_Form2 box = new IP_Form2("Cluster");
+            box.ShowDialog();
+        }
+
+        private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IP_Form2 box = new IP_Form2("Node");
+            box.ShowDialog();
         }
 
       
