@@ -4,13 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Utility.ModifyRegistry;
 using Utility.ModifyFile;
-using System.Text.RegularExpressions;
-using System.Net;
+using Utility.ModifyRegistry;
 
 namespace Packet
 {
@@ -24,6 +24,7 @@ namespace Packet
         bool forward = false;
         string prompt = "";
         string strDnsAddress;
+        string port;
         public Form1()
         {
             InitializeComponent();
@@ -65,6 +66,7 @@ namespace Packet
                 strDnsAddress =  strAddress.AddressList[0].ToString();
                 this.textBox1.Text = strDnsAddress;
             }
+            port = myRegistry.Read("Port");  
         }
 
 
@@ -76,7 +78,7 @@ namespace Packet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            tc = new TelnetConnection(strDnsAddress, 6300);
+            tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
             backgroundWorker1.RunWorkerAsync();
             connect_button1.Enabled = false;
             this.forward_button.Enabled = true;
