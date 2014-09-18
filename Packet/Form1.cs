@@ -20,23 +20,101 @@ namespace Packet
         private TelnetConnection tc;
         ModifyRegistry myRegistry = new ModifyRegistry();
         ModifyFile myFiles = new ModifyFile();
- 
         bool forward = false;
         string prompt = "";
-        
         string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
+
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
+        public  void connect(string _var1)
+        {
+            string Var1 = _var1;
+            string strDnsAddress;
+            string port;
+
+            if (myRegistry.Read(Var1+"-Mode") == "Telnet")
+            {
+                this.toolStripComboBox1.SelectedIndex = 0;
+                strDnsAddress = myRegistry.Read(Var1 + "-IP");
+                if (strDnsAddress.Length <= 3)
+                {
+                    IP_Form2 box = new IP_Form2(Var1);
+                    box.ShowDialog();
+                    bbs_button.Enabled = true;
+                    cluster_button.Enabled = true;
+                    node_button.Enabled = true;
+                }
+                else
+                {
+                    if (Regex.IsMatch(strDnsAddress, ValidIpAddressRegex))
+                    {
+                        this.textBox1.Text = "IP = " + strDnsAddress;
+                    }
+                    else if (Regex.IsMatch(strDnsAddress, ValidHostnameRegex))
+                    {
+                        IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
+                        strDnsAddress = strAddress.AddressList[0].ToString();
+                        this.textBox1.Text = strDnsAddress;
+                    }
+                    else
+                    {
+                        IP_Form2 box = new IP_Form2(Var1);
+                        box.ShowDialog();
+                        bbs_button.Enabled = true;
+                        cluster_button.Enabled = true;
+                        node_button.Enabled = true;
+                    }
+                    port = myRegistry.Read(Var1 + "-Port");
+                    if (port.Length <= 1)
+                    {
+                        IP_Form2 box = new IP_Form2(Var1);
+                        box.ShowDialog();
+                        bbs_button.Enabled = true;
+                        cluster_button.Enabled = true;
+                        node_button.Enabled = true;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
+                            backgroundWorker1.RunWorkerAsync();
+                        }
+                        catch
+                        {
+                            this.textBox1.Text = "Connection Errot to IP = " + strDnsAddress;
+                        }
+                    }
+                }
+            }
+            if (myRegistry.Read(Var1 + "-Mode") == "Com")
+            {
+                this.toolStripComboBox1.SelectedIndex = 1;
+            }
+        }
+
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         public Form1()
         {
             InitializeComponent();
             myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             myRegistry.ShowError = true;
             myRegistry.Write("Packet", Application.ProductVersion);
-            this.connect_button1.Enabled = true;
+            this.bbs_button.Enabled = true;
             this.forward_button.Enabled = false;
             this.toolStripComboBox1.Items.Clear();
             this.toolStripComboBox1.Items.Add("Telnet");
             this.toolStripComboBox1.Items.Add("Com Port");
+            this.toolStripComboBox2.Items.Clear();
+            this.toolStripComboBox2.Items.Add("Telnet");
+            this.toolStripComboBox2.Items.Add("Com Port");
+            this.toolStripComboBox3.Items.Clear();
+            this.toolStripComboBox3.Items.Add("Telnet");
+            this.toolStripComboBox3.Items.Add("Com Port");
             this.richTextBox1.Left = 20;
             this.richTextBox1.Top = 80;
             this.richTextBox1.Height = ((this.Height - 160) / 2);
@@ -45,33 +123,49 @@ namespace Packet
             this.richTextBox2.Left = 20;
             this.richTextBox1.Width = (this.Width - 60);
             this.richTextBox2.Width = (this.Width - 60);
-            this.connect_button1.Width = 90;
-            this.cluster_button.Width = 90;
-            this.forward_button.Width = 90;
-            this.node_button.Width = 90;
-            this.connect_button1.Left = 20;
-            this.forward_button.Left = 130;
-            this.cluster_button.Left = 250; 
-            this.node_button.Left = 360;
             
+            this.bbs_button.Width = 90;
+            this.bbs_button.Left = 20;
+            this.bbs_button.Top = 40;
 
+            this.forward_button.Width = 90;
+            this.forward_button.Left = 130;
+            this.forward_button.Top = 40;
             
+            this.cluster_button.Width = 90;
+            this.cluster_button.Left = 250; 
+            this.cluster_button.Top = 40;
+
+            this.node_button.Width = 90;
+            this.node_button.Left = 360;
+            this.node_button.Top = 40;
+
+            this.disconnect_button.Width = 90;
+            this.disconnect_button.Left = 470;
+            this.disconnect_button.Top = 40;
+
+            this.ssh_button.Width = 90;
+            this.ssh_button.Left = 580;
+            this.ssh_button.Top = 40;
             
         }
 
-
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox1 box = new AboutBox1();
             box.ShowDialog();
         }
 
-   
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             string rd2;
             int i = 1;
-            
             // while connected
             while (tc.IsConnected && prompt.Trim() != "Timeout !!")
             {
@@ -91,7 +185,6 @@ namespace Packet
                             str_build = str_build + s + System.Environment.NewLine; 
                          }
                      myFiles.Write(str_build);
-               
                  }
                 this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd ; }));
                 i = i + 1;
@@ -99,7 +192,6 @@ namespace Packet
                 //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
             }
                 System.Threading.Thread.Sleep(300);
-
             }
         }
 
@@ -115,38 +207,82 @@ namespace Packet
                 tc.WriteLine(prompt);
                 this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = "Enter Pressed"; }));
                 richTextBox2.Text = "";
-
             }
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Close();
             Application.Exit();
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if  (toolStripComboBox1.SelectedIndex == 0)
             {
-            textBox1.Text = "Telnet";
-            myRegistry.Write("Mode", "Telnet");
+                myRegistry.Write("BBS-Mode", "Telnet");
+                iPConfigToolStripMenuItem.Visible = true;
             }
-             if  (toolStripComboBox1.SelectedIndex == 1)
+            if  (toolStripComboBox1.SelectedIndex == 1)
             {
-            textBox1.Text = "Com Port";
-            myRegistry.Write("Mode", "Com");
+                myRegistry.Write("BBS-Mode", "Com");
+                iPConfigToolStripMenuItem.Visible = false;
             }
-
          }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
+        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (toolStripComboBox2.SelectedIndex == 0)
+            {
+                myRegistry.Write("Cluster-Mode", "Telnet");
+                clusterIPConfigToolStripMenuItem.Visible = true;
+            }
+            if (toolStripComboBox2.SelectedIndex == 1)
+            {
+                myRegistry.Write("Cluster-Mode", "Com");
+                clusterIPConfigToolStripMenuItem.Visible = false;
+            }
+        }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
+        private void toolStripComboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (toolStripComboBox3.SelectedIndex == 0)
+            {
+                myRegistry.Write("Node-Mode", "Telnet");
+                nodeIPConfigToolStripMenuItem.Visible = true;
+
+            }
+            if (toolStripComboBox3.SelectedIndex == 1)
+            {
+                myRegistry.Write("Node-Mode", "Com");
+                nodeIPConfigToolStripMenuItem.Visible = false;
+            }
+        }
+
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IP_Form2 box = new IP_Form2("BBS");
             box.ShowDialog();
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void Form1_Resize_1(object sender, EventArgs e)
         {
             this.richTextBox1.Left = 20;
@@ -159,90 +295,118 @@ namespace Packet
             this.richTextBox2.Width = (this.Width - 60);
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void button1_Click_1(object sender, EventArgs e)
         {
             forward = true;
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             richTextBox1.SelectionStart = richTextBox1.Text.Length; 
             richTextBox1.ScrollToCaret(); 
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
-        
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string strDnsAddress;
-            string port;
-
             if (myRegistry.Read("BBS-Mode") == "Telnet")
             {
                 this.toolStripComboBox1.SelectedIndex = 0;
+                iPConfigToolStripMenuItem.Visible = true;
             }
             if (myRegistry.Read("BBS-Mode") == "Com")
             {
                 this.toolStripComboBox1.SelectedIndex = 1;
+                iPConfigToolStripMenuItem.Visible = false;
             }
-
-            strDnsAddress = myRegistry.Read("BBS-IP");
-            if (strDnsAddress == null)
+            if (myRegistry.Read("Cluster-Mode") == "Telnet")
             {
-                IP_Form2 box = new IP_Form2("BBS");
-                box.ShowDialog();
+                this.toolStripComboBox2.SelectedIndex = 0;
+                clusterIPConfigToolStripMenuItem.Visible = true;
             }
-
-            if (Regex.IsMatch(strDnsAddress, ValidIpAddressRegex))
+            if (myRegistry.Read("Cluster-Mode") == "Com")
             {
-                this.textBox1.Text = "IP = " + strDnsAddress;
+                this.toolStripComboBox2.SelectedIndex = 1;
+                clusterIPConfigToolStripMenuItem.Visible =false;
             }
-            else if (Regex.IsMatch(strDnsAddress, ValidHostnameRegex))
+            if (myRegistry.Read("Node-Mode") == "Telnet")
             {
-                IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
-                strDnsAddress = strAddress.AddressList[0].ToString();
-                this.textBox1.Text = strDnsAddress;
+                this.toolStripComboBox3.SelectedIndex = 0;
+                nodeIPConfigToolStripMenuItem.Visible = true;
             }
-            port = myRegistry.Read("BBS-Port");
+            if (myRegistry.Read("Node-Mode") == "Com")
+            {
+                this.toolStripComboBox3.SelectedIndex = 1;
+                nodeIPConfigToolStripMenuItem.Visible =false;
+            }
+        }
 
-            tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
-            backgroundWorker1.RunWorkerAsync();
-            connect_button1.Enabled = false;
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
+        private void button1_Click(object sender, EventArgs e)
+        {
+            bbs_button.Enabled = false;
+            cluster_button.Enabled = false;
+            node_button.Enabled = false;
+            connect("BBS");
             this.forward_button.Enabled = true;
             this.richTextBox2.Focus();
-
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void button1_Click_2(object sender, EventArgs e)
         {
-            string strDnsAddress;
-            string port;
-            //tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
+            bbs_button.Enabled = false;
+            cluster_button.Enabled = false;
+            node_button.Enabled = false;
+            connect("Cluster");
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void node_button_Click(object sender, EventArgs e)
         {
-            string strDnsAddress;
-            string port;
-            //tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
+            bbs_button.Enabled = false;
+            cluster_button.Enabled = false;
+            node_button.Enabled = false;
+            connect("Node");
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IP_Form2 box = new IP_Form2("Cluster");
             box.ShowDialog();
         }
 
+        //---------------------------------------------------------------------------------------------------------
+        //
+        //---------------------------------------------------------------------------------------------------------
         private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IP_Form2 box = new IP_Form2("Node");
             box.ShowDialog();
         }
 
-      
-
+        private void disconnect_button_Click(object sender, EventArgs e)
+        {
+            bbs_button.Enabled = true;
+            cluster_button.Enabled = true;
+            node_button.Enabled = true;
+        }
     }
 }
