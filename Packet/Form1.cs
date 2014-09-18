@@ -57,12 +57,10 @@ namespace Packet
            
             if(Regex.IsMatch(strDnsAddress, ValidIpAddressRegex )) 
             {
-                this.textBox1.Text = "IP = " + strDnsAddress;
-                
+                this.textBox1.Text = "IP = " + strDnsAddress;   
             }
             else if(Regex.IsMatch(strDnsAddress,ValidHostnameRegex ))
             {
-                
                 IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
                 strDnsAddress =  strAddress.AddressList[0].ToString();
                 this.textBox1.Text = strDnsAddress;
@@ -82,6 +80,7 @@ namespace Packet
             backgroundWorker1.RunWorkerAsync();
             connect_button1.Enabled = false;
             this.forward_button.Enabled = true;
+            this.richTextBox2.Focus();
          
         }
 

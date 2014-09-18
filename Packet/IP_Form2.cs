@@ -12,9 +12,15 @@ namespace Packet
 {
     public partial class IP_Form2 : Form
     {
+         ModifyRegistry myRegistry = new ModifyRegistry();
+           
+
         public IP_Form2()
         {
             InitializeComponent();
+            this.myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
+            myRegistry.ShowError = true;
+           
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -29,9 +35,7 @@ namespace Packet
 
         private void Done_button_Click(object sender, EventArgs e)
         {
-            ModifyRegistry myRegistry = new ModifyRegistry();
-            myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
-            myRegistry.ShowError = true;
+            
             myRegistry.Write("IP", ip_textBox.Text);
             myRegistry.Write("Port", port_textBox.Text);
             myRegistry.Write("CallSign", callSign_textBox.Text);
@@ -60,6 +64,16 @@ namespace Packet
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void IP_Form2_Load(object sender, EventArgs e)
+        {
+           ip_textBox.Text = myRegistry.Read("IP");
+           port_textBox.Text = myRegistry.Read("Port");
+           callSign_textBox.Text = myRegistry.Read("CallSign");
+           bbs_textBox.Text = myRegistry.Read("BBS");
+           start_textBox.Text = myRegistry.Read("Start Number");
+           password_textBox.Text = myRegistry.Read("Password");
         }
     }
 }

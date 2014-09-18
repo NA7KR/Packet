@@ -193,6 +193,7 @@
             this.MinimizeBox = false;
             this.Name = "IP_Form2";
             this.Text = "IP Config";
+            this.Load += new System.EventHandler(this.IP_Form2_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
