@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyFile;
 using Utility.ModifyRegistry;
+using Utility.AnsiColor;
 #endregion
 namespace Packet
 {
@@ -24,6 +25,7 @@ namespace Packet
         #region private TelnetConnection
         private TelnetConnection tc;
         ModifyRegistry myRegistry = new ModifyRegistry();
+        AnsiColor myAnsiProject = new AnsiColor();
         ModifyFile myFiles = new ModifyFile();
         bool forward = false;
         string prompt = "";
@@ -184,12 +186,14 @@ namespace Packet
             {
              string rd = tc.Read();
                 if (rd != "") // stop text on screen jump
-                { 
+                {
+                 rd = myAnsiProject.Colorize(rd);
                  if (forward == true)
                  {
                      rd2 = rd.Replace("\u0007", "");
                      rd2 = rd2.TrimEnd('\r', '\n');
                      rd2 = rd2.TrimStart('\r', '\n');
+                     //rd2 = myAnsiProject.Colorize(rd2);
                      string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                      string str_build = "";
                      foreach (string s in result)

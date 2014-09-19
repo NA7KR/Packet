@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 #endregion
-//SendString ( AnsiColor.CustomDemo ( ), networkStream );
-namespace AnsiProject
+
+namespace Utility.AnsiColor
+
 {
-    class AnsiColor
+    public class AnsiColor
     {
         //---------------------------------------------------------------------------------------------------------
         //  Create our color table
@@ -49,7 +50,7 @@ namespace AnsiProject
             colorTable.Add ( new ColorData ( "{red}",       "\x1B[31m", "Foreground red" ) );
             colorTable.Add ( new ColorData ( "{green}",     "\x1B[32m", "Foreground green" ) );
             colorTable.Add ( new ColorData ( "{yellow}",    "\x1B[33m", "Foreground yellow" ) );
-            colorTable.Add ( new ColorData ( "{blue}",      "\x1B[34m", "Foreground blue" ) );
+            colorTable.Add ( new ColorData ( "{blue}",      "[01[34m", "Foreground blue" ) );
             colorTable.Add ( new ColorData ( "{magenta}",   "\x1B[35m", "Foreground magenta" ) );
             colorTable.Add ( new ColorData ( "{cyan}",      "\x1B[36m", "Foreground cyan" ) );
             colorTable.Add ( new ColorData ( "{white}",     "\x1B[37m", "Foreground white" ) );
@@ -73,7 +74,7 @@ namespace AnsiProject
         // then replace all of the metadata with the actual color identifiers.
         //---------------------------------------------------------------------------------------------------------
         #region static string Colorize
-        public static string Colorize ( string stringToColor )
+        public  string Colorize ( string stringToColor )
         {
             // Loop through our table
             foreach ( ColorData colorData in colorTable )
@@ -85,23 +86,7 @@ namespace AnsiProject
 
         #endregion
 
-        //---------------------------------------------------------------------------------------------------------
-        //  public static string ansiColor
-        //---------------------------------------------------------------------------------------------------------
-        #region public static string ansiColor
-        public static string ansiColor ( )
-        {
-            StringBuilder output = new StringBuilder ( );
-
-            // Loop through all of our colors
-            foreach ( ColorData colorData in colorTable )
-                // Append our test string
-                output.AppendFormat ( "Displaying {0,-20} {1}TEST{{reset}}\r\n", colorData.Definition, colorData.Identifier );
-
-            // Return our output
-            return ( Colorize ( output.ToString ( ) + "\r\n\r\n" ) );
-        } // End of ansiColor
-        #endregion
+        
     }
 
     struct ColorData
