@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 #endregion
 //SendString ( AnsiColor.CustomDemo ( ), networkStream );
-namespace DemoProject
+namespace AnsiProject
 {
     class AnsiColor
     {
@@ -86,10 +86,10 @@ namespace DemoProject
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //  public static string ColorDemo
+        //  public static string ansiColor
         //---------------------------------------------------------------------------------------------------------
-        #region public static string ColorDemo
-        public static string ColorDemo ( )
+        #region public static string ansiColor
+        public static string ansiColor ( )
         {
             StringBuilder output = new StringBuilder ( );
 
@@ -100,55 +100,7 @@ namespace DemoProject
 
             // Return our output
             return ( Colorize ( output.ToString ( ) + "\r\n\r\n" ) );
-        } // End of ColorDemo
-        #endregion
-
-        //---------------------------------------------------------------------------------------------------------
-        //  public static string CustomDemo
-        //---------------------------------------------------------------------------------------------------------
-        #region public static string CustomDemo
-        public static string CustomDemo ( )
-        {
-            return ( Colorize (
-                "{bold}{red}Bold Red\r\n{blue}Bold Blue\r\n{!red}With red background{reset}\r\n" ) );
-        } // End of CustomDemo
-        #endregion
-
-        //---------------------------------------------------------------------------------------------------------
-        //  public static string ProgressBarDemo
-        //---------------------------------------------------------------------------------------------------------
-        #region public static string ProgressBarDemo
-        public static string ProgressBarDemo ( int percent, int width, string colorCode )
-        {
-            // Our max size
-            int MaxSize = 10;
-
-            // Make sure our percent is valid. If it is not force it to zero
-            if ( percent < 0 || percent > 100 ) percent = 0;
-
-            // Calculate how many colored blocks we should have
-            int blocks = ( int ) ( ( percent / 100f ) * width );
-
-            // Default our progress bar to start with a red background
-            string progressBar = "{" + colorCode;
-            // Add our blocks
-            for ( int i = 0; i < blocks; i++ )
-                // Append our space
-                progressBar += ' ';
-
-            // Back to normal
-            progressBar += "{reset}";
-
-            // Add our blocks
-            for ( int i = 0; i < width - blocks; i++ )
-                // Append our space
-                progressBar += ' ';
-            // Append our final char
-            progressBar += '}';
-
-            // Return our progress bar
-            return ( "Progress Bar: " + Colorize ( progressBar ) + "\r\n" );
-        } // End of ProgressBarDemo
+        } // End of ansiColor
         #endregion
     }
 
