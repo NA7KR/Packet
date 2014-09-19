@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region Using Directive
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,12 +12,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyFile;
 using Utility.ModifyRegistry;
-
+#endregion
 namespace Packet
 {
     
     public partial class Form1 : Form
     {
+        //---------------------------------------------------------------------------------------------------------
+        //  private TelnetConnection
+        //---------------------------------------------------------------------------------------------------------
+        #region private TelnetConnection
         private TelnetConnection tc;
         ModifyRegistry myRegistry = new ModifyRegistry();
         ModifyFile myFiles = new ModifyFile();
@@ -24,10 +29,12 @@ namespace Packet
         string prompt = "";
         string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        //  public  void
         //---------------------------------------------------------------------------------------------------------
+        #region public  void connect
         public  void connect(string _var1)
         {
             string Var1 = _var1;
@@ -94,10 +101,12 @@ namespace Packet
                 this.toolStripComboBox1.SelectedIndex = 1;
             }
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // Form1
         //---------------------------------------------------------------------------------------------------------
+        #region Form1
         public Form1()
         {
             InitializeComponent();
@@ -149,19 +158,23 @@ namespace Packet
             this.ssh_button.Top = 40;
             
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void aboutToolStripMenuItem_Click
         //---------------------------------------------------------------------------------------------------------
+        #region private void aboutToolStripMenuItem_Click
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox1 box = new AboutBox1();
             box.ShowDialog();
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void backgroundWorker1_DoWork
         //---------------------------------------------------------------------------------------------------------
+        #region private void backgroundWorker1_DoWork
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             string rd2;
@@ -194,10 +207,13 @@ namespace Packet
                 System.Threading.Thread.Sleep(300);
             }
         }
+        #endregion
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------
+        // private void richTextBox2_KeyDown_1
         // ritch Text to send
         //-----------------------------------------------------------------------------------------------------------------------------------------------   
+        #region private void richTextBox2_KeyDown_1
         private void richTextBox2_KeyDown_1(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Return)
@@ -209,19 +225,24 @@ namespace Packet
                 richTextBox2.Text = "";
             }
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void exitToolStripMenuItem1_Click
+        // Progran Close
         //---------------------------------------------------------------------------------------------------------
+        #region private void exitToolStripMenuItem1_Click
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Close();
             Application.Exit();
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void toolStripComboBox1_SelectedIndexChanged
         //---------------------------------------------------------------------------------------------------------
+        #region
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if  (toolStripComboBox1.SelectedIndex == 0)
@@ -235,10 +256,12 @@ namespace Packet
                 iPConfigToolStripMenuItem.Visible = false;
             }
          }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void toolStripComboBox2_SelectedIndexChanged
         //---------------------------------------------------------------------------------------------------------
+        #region private void toolStripComboBox2_SelectedIndexChanged
         private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (toolStripComboBox2.SelectedIndex == 0)
@@ -252,10 +275,12 @@ namespace Packet
                 clusterIPConfigToolStripMenuItem.Visible = false;
             }
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void toolStripComboBox3_SelectedIndexChanged
         //---------------------------------------------------------------------------------------------------------
+        #region private void toolStripComboBox3_SelectedIndexChanged
         private void toolStripComboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (toolStripComboBox3.SelectedIndex == 0)
@@ -270,19 +295,23 @@ namespace Packet
                 nodeIPConfigToolStripMenuItem.Visible = false;
             }
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void iPConfigToolStripMenuItem_Click
         //---------------------------------------------------------------------------------------------------------
+        #region private void iPConfigToolStripMenuItem_Click
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IP_Form2 box = new IP_Form2("BBS");
             box.ShowDialog();
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void Form1_Resize_1
         //---------------------------------------------------------------------------------------------------------
+        #region private void Form1_Resize_1
         private void Form1_Resize_1(object sender, EventArgs e)
         {
             this.richTextBox1.Left = 20;
@@ -294,27 +323,32 @@ namespace Packet
             this.richTextBox1.Width = (this.Width - 60);
             this.richTextBox2.Width = (this.Width - 60);
         }
-
+        #endregion
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void button1_Click_1
         //---------------------------------------------------------------------------------------------------------
+        #region private void button1_Click_1
         private void button1_Click_1(object sender, EventArgs e)
         {
             forward = true;
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void richTextBox1_TextChanged
         //---------------------------------------------------------------------------------------------------------
+        #region private void richTextBox1_TextChanged
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             richTextBox1.SelectionStart = richTextBox1.Text.Length; 
             richTextBox1.ScrollToCaret(); 
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void Form1_Load
         //---------------------------------------------------------------------------------------------------------
+        #region
         private void Form1_Load(object sender, EventArgs e)
         {
             if (myRegistry.Read("BBS-Mode") == "Telnet")
@@ -348,10 +382,12 @@ namespace Packet
                 nodeIPConfigToolStripMenuItem.Visible =false;
             }
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void button1_Click
         //---------------------------------------------------------------------------------------------------------
+        #region private void button1_Click
         private void button1_Click(object sender, EventArgs e)
         {
             bbs_button.Enabled = false;
@@ -361,10 +397,12 @@ namespace Packet
             this.forward_button.Enabled = true;
             this.richTextBox2.Focus();
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void button1_Click_2
         //---------------------------------------------------------------------------------------------------------
+        #region private void button1_Click_2
         private void button1_Click_2(object sender, EventArgs e)
         {
             bbs_button.Enabled = false;
@@ -372,10 +410,12 @@ namespace Packet
             node_button.Enabled = false;
             connect("Cluster");
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void node_button_Click
         //---------------------------------------------------------------------------------------------------------
+        #region private void node_button_Click
         private void node_button_Click(object sender, EventArgs e)
         {
             bbs_button.Enabled = false;
@@ -383,30 +423,40 @@ namespace Packet
             node_button.Enabled = false;
             connect("Node");
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void clusterIPConfigToolStripMenuItem_Click
         //---------------------------------------------------------------------------------------------------------
+        #region private void clusterIPConfigToolStripMenuItem_Click
         private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IP_Form2 box = new IP_Form2("Cluster");
             box.ShowDialog();
         }
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //
+        // private void nodeIPConfigToolStripMenuItem_Click
         //---------------------------------------------------------------------------------------------------------
+        #region private void nodeIPConfigToolStripMenuItem_Click
         private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IP_Form2 box = new IP_Form2("Node");
             box.ShowDialog();
         }
+        #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // private void disconnect_button_Click
+        //---------------------------------------------------------------------------------------------------------
+        #region private void disconnect_button_Click
         private void disconnect_button_Click(object sender, EventArgs e)
         {
             bbs_button.Enabled = true;
             cluster_button.Enabled = true;
             node_button.Enabled = true;
         }
+        #endregion
     }
 }
