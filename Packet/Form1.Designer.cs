@@ -280,6 +280,7 @@
             this.ssh_button.TabIndex = 9;
             this.ssh_button.Text = "SSH";
             this.ssh_button.UseVisualStyleBackColor = true;
+            this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
             // 
             // Form1
             // 

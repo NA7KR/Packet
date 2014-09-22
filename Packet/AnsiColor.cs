@@ -26,7 +26,7 @@ namespace Utility.AnsiColor
         static AnsiColor ( )
         {
             // Our reset values turns everything to the default mode
-            colorTable.Add ( new ColorData ( "{reset}",    "\x1B[0m", "Reset" ) );
+            colorTable.Add(new ColorData("{reset}", "\x1B[0m", "Reset"));
 
             // Style Modifiers (on)
             colorTable.Add ( new ColorData ( "{bold}",      "\x1B[1m", "Bold" ) );
@@ -46,14 +46,14 @@ namespace Utility.AnsiColor
             colorTable.Add ( new ColorData ( "{!strike}",   "\x1B[29m", "Strikethrough Off" ) );
             
             // Foreground Color
-            colorTable.Add ( new ColorData ( "{black}",     "\x1B[30m", "Foreground black" ) );
-            colorTable.Add ( new ColorData ( "{red}",       "[01;31m", "Foreground red" ) );
-            colorTable.Add ( new ColorData ( "{green}",     "\x1B[32m", "Foreground green" ) );
-            colorTable.Add ( new ColorData ( "{yellow}",    "\x1B[33m", "Foreground yellow" ) );
-            colorTable.Add ( new ColorData ( "{blue}",      "\x1B[34m", "Foreground blue" ) );
-            colorTable.Add ( new ColorData ( "{magenta}",   "\x1B[35m", "Foreground magenta" ) );
-            colorTable.Add ( new ColorData ( "{cyan}",      "\x1B[36m", "Foreground cyan" ) );
-            colorTable.Add ( new ColorData ( "{white}",     "\x1B[37m", "Foreground white" ) );
+            colorTable.Add ( new ColorData ( "{black}",     "\x1B[01;30m", "Foreground black" ) );
+            colorTable.Add ( new ColorData ( "{red}",       "\x1B[01;31m", "Foreground red" ) );
+            colorTable.Add ( new ColorData ( "{green}",     "\x1B[01;32m", "Foreground green" ) );
+            colorTable.Add ( new ColorData ( "{yellow}",    "\x1B[01;33m", "Foreground yellow" ) );
+            colorTable.Add ( new ColorData ( "{blue}",      "\x1B[01;34m", "Foreground blue" ) );
+            colorTable.Add ( new ColorData ( "{magenta}",   "\x1B[01;35m", "Foreground magenta" ) );
+            colorTable.Add ( new ColorData ( "{cyan}",      "\x1B[01;36m", "Foreground cyan" ) );
+            colorTable.Add ( new ColorData ( "{white}",     "\x1B;01;37m", "Foreground white" ) );
 
             // Background Color
             colorTable.Add ( new ColorData ( "{!black}",    "\x1B[40m", "Background black" ) );
@@ -79,7 +79,7 @@ namespace Utility.AnsiColor
             // Loop through our table
             foreach ( ColorData colorData in colorTable )
                 // Replace our identifier with our code
-                stringToColor = stringToColor.Replace ( colorData.Identifier, colorData.Code );
+                stringToColor = stringToColor.Replace ( colorData.Code, colorData.Identifier );
             // Return our colored string
             return ( stringToColor );
         } // End of Colorize Function
@@ -98,7 +98,7 @@ namespace Utility.AnsiColor
 
         #endregion
 
-        #region public string Cod
+        #region public string Code
         public string Code
         {
             get { return code; }
@@ -131,4 +131,5 @@ namespace Utility.AnsiColor
         } // End of ColorData Constructor
         #endregion
     } // End of ColorData structure
+      
 }

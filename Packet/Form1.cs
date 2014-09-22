@@ -16,7 +16,7 @@ using Utility.AnsiColor;
 #endregion
 namespace Packet
 {
-    
+
     public partial class Form1 : Form
     {
         //---------------------------------------------------------------------------------------------------------
@@ -37,13 +37,13 @@ namespace Packet
         //  public  void
         //---------------------------------------------------------------------------------------------------------
         #region public  void connect
-        public  void connect(string _var1)
+        public void connect(string _var1)
         {
             string Var1 = _var1;
             string strDnsAddress;
             string port;
 
-            if (myRegistry.Read(Var1+"-Mode") == "Telnet")
+            if (myRegistry.Read(Var1 + "-Mode") == "Telnet")
             {
                 this.toolStripComboBox1.SelectedIndex = 0;
                 strDnsAddress = myRegistry.Read(Var1 + "-IP");
@@ -134,7 +134,7 @@ namespace Packet
             this.richTextBox2.Left = 20;
             this.richTextBox1.Width = (this.Width - 60);
             this.richTextBox2.Width = (this.Width - 60);
-            
+
             this.bbs_button.Width = 90;
             this.bbs_button.Left = 20;
             this.bbs_button.Top = 40;
@@ -142,9 +142,9 @@ namespace Packet
             this.forward_button.Width = 90;
             this.forward_button.Left = 130;
             this.forward_button.Top = 40;
-            
+
             this.cluster_button.Width = 90;
-            this.cluster_button.Left = 250; 
+            this.cluster_button.Left = 250;
             this.cluster_button.Top = 40;
 
             this.node_button.Width = 90;
@@ -158,7 +158,7 @@ namespace Packet
             this.ssh_button.Width = 90;
             this.ssh_button.Left = 580;
             this.ssh_button.Top = 40;
-            
+
         }
         #endregion
 
@@ -184,30 +184,30 @@ namespace Packet
             // while connected
             while (tc.IsConnected && prompt.Trim() != "Timeout !!")
             {
-             string rd = tc.Read();
+                string rd = tc.Read();
                 if (rd != "") // stop text on screen jump
                 {
-                 rd = myAnsiProject.Colorize(rd);
-                 if (forward == true)
-                 {
-                     rd2 = rd.Replace("\u0007", "");
-                     rd2 = rd2.TrimEnd('\r', '\n');
-                     rd2 = rd2.TrimStart('\r', '\n');
-                     //rd2 = myAnsiProject.Colorize(rd2);
-                     string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                     string str_build = "";
-                     foreach (string s in result)
-                         if (Regex.IsMatch(s, @"^\d"))
-                         {
-                            str_build = str_build + s + System.Environment.NewLine; 
-                         }
-                     myFiles.Write(str_build);
-                 }
-                this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd ; }));
-                i = i + 1;
-                string mystring = i.ToString();
-                //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
-            }
+                    rd = myAnsiProject.Colorize(rd);
+                    if (forward == true)
+                    {
+                        rd2 = rd.Replace("\u0007", "");
+                        rd2 = rd2.TrimEnd('\r', '\n');
+                        rd2 = rd2.TrimStart('\r', '\n');
+                        //rd2 = myAnsiProject.Colorize(rd2);
+                        string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                        string str_build = "";
+                        foreach (string s in result)
+                            if (Regex.IsMatch(s, @"^\d"))
+                            {
+                                str_build = str_build + s + System.Environment.NewLine;
+                            }
+                        myFiles.Write(str_build);
+                    }
+                    this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd; }));
+                    i = i + 1;
+                    string mystring = i.ToString();
+                    //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
+                }
                 System.Threading.Thread.Sleep(300);
             }
         }
@@ -249,17 +249,17 @@ namespace Packet
         #region
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if  (toolStripComboBox1.SelectedIndex == 0)
+            if (toolStripComboBox1.SelectedIndex == 0)
             {
                 myRegistry.Write("BBS-Mode", "Telnet");
                 iPConfigToolStripMenuItem.Visible = true;
             }
-            if  (toolStripComboBox1.SelectedIndex == 1)
+            if (toolStripComboBox1.SelectedIndex == 1)
             {
                 myRegistry.Write("BBS-Mode", "Com");
                 iPConfigToolStripMenuItem.Visible = false;
             }
-         }
+        }
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
@@ -344,8 +344,8 @@ namespace Packet
         #region private void richTextBox1_TextChanged
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            richTextBox1.SelectionStart = richTextBox1.Text.Length; 
-            richTextBox1.ScrollToCaret(); 
+            richTextBox1.SelectionStart = richTextBox1.Text.Length;
+            richTextBox1.ScrollToCaret();
         }
         #endregion
 
@@ -373,7 +373,7 @@ namespace Packet
             if (myRegistry.Read("Cluster-Mode") == "Com")
             {
                 this.toolStripComboBox2.SelectedIndex = 1;
-                clusterIPConfigToolStripMenuItem.Visible =false;
+                clusterIPConfigToolStripMenuItem.Visible = false;
             }
             if (myRegistry.Read("Node-Mode") == "Telnet")
             {
@@ -383,7 +383,7 @@ namespace Packet
             if (myRegistry.Read("Node-Mode") == "Com")
             {
                 this.toolStripComboBox3.SelectedIndex = 1;
-                nodeIPConfigToolStripMenuItem.Visible =false;
+                nodeIPConfigToolStripMenuItem.Visible = false;
             }
         }
         #endregion
@@ -462,5 +462,28 @@ namespace Packet
             node_button.Enabled = true;
         }
         #endregion
+
+        private void ssh_button_Click(object sender, EventArgs e)
+        {
+      
+            this.richTextBox1.AppendText("Hello All", Color.Green);
+            this.richTextBox1.AppendText(Environment.NewLine);
+            this.richTextBox1.AppendText("....", Color.Red);
+            this.richTextBox1.AppendText(Environment.NewLine);
+            this.richTextBox1.AppendText("Bye", Color.Yellow);
+        
+        }
     }
+    public static class RichTextBoxExtensions
+    {
+        public static void AppendText(this RichTextBox box, string text, Color color)
+        {
+            box.SelectionStart = box.TextLength;
+            box.SelectionLength = 0;
+            box.SelectionColor = color;
+            box.AppendText(text);
+            box.SelectionColor = box.ForeColor;
+        }
+    }
+    
 }
