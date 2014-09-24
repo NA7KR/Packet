@@ -79,6 +79,29 @@ namespace Utility.AnsiColor
             foreach ( ColorData colorData in colorTable )
                 // Replace our identifier with our code
                 stringToColor = stringToColor.Replace ( colorData.Code, colorData.Identifier );
+
+            
+                string[] delimiters = { "{" };
+                string[] parts = stringToColor.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int index = 0; index < parts.Length; index++)
+                {
+                    string part = parts[index];
+                    string temp = stringToColor.Substring(stringToColor.IndexOf(part) + part.Length);
+
+                    foreach (string delimter in delimiters)
+                    {
+                        if (temp.IndexOf(delimter) == 0)
+                        {
+                            //parts[index] = delimter + parts[index];
+                            string[] words = parts[index].Split('}');
+                            richTextBox1.AppendText(parts[1], parts[0]);
+                            break;
+                        }
+                    }
+                }
+             
+            //string[] words = stringToColor.Split('}');
             // Return our colored string
             return ( stringToColor );
         } // End of Colorize Function
