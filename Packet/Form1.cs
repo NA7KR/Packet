@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using Utility.ModifyFile;
 using Utility.ModifyRegistry;
 using Utility.AnsiColor;
+using Packet.Extensions;
 #endregion
 namespace Packet
 {
@@ -185,9 +186,38 @@ namespace Packet
             while (tc.IsConnected && prompt.Trim() != "Timeout !!")
             {
                 string rd = tc.Read();
+
                 if (rd != "") // stop text on screen jump
                 {
+
                     rd = myAnsiProject.Colorize(rd);
+                    string[] delimiters = { "{" };
+                    string[] parts = rd.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+
+                    for (int index = 0; index < parts.Length; index++)
+                    {
+                        string part = parts[index];
+                        string temp = rd.Substring(rd.IndexOf(part) + part.Length);
+
+                        foreach (string delimter in delimiters)
+                        {
+                            if (temp.IndexOf(delimter) == 0)
+                            {
+                                //parts[index] = delimter + parts[index];
+                                string[] words = parts[index].Split('}');
+
+                                //richTextBox1.AppendText(words[1], Color.FromName(words[0]));
+                                
+                                richTextBox1.AppendText("Hello All", Color.Green);
+                                //richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText("Hello All", Color.Green); }));
+                                break;
+                            }
+                        }
+
+
+                    }
+
+                    
                     if (forward == true)
                     {
                         rd2 = rd.Replace("\u0007", "");
@@ -473,17 +503,12 @@ namespace Packet
             this.richTextBox1.AppendText("Bye", Color.Yellow);
         
         }
-    }
-    public static class RichTextBoxExtensions
-    {
-        public static void AppendText(this RichTextBox box, string text, Color color)
+
+        private void bindingSource1_CurrentChanged(object sender, EventArgs e)
         {
-            box.SelectionStart = box.TextLength;
-            box.SelectionLength = 0;
-            box.SelectionColor = color;
-            box.AppendText(text);
-            box.SelectionColor = box.ForeColor;
+
         }
     }
+  
     
 }
