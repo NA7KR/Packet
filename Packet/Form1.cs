@@ -15,6 +15,7 @@ using Utility.ModifyRegistry;
 using Utility.AnsiColor;
 using Packet.Extensions;
 #endregion
+
 namespace Packet
 {
 
@@ -44,40 +45,13 @@ namespace Packet
             string strDnsAddress;
             string port;
 
-            if (myRegistry.Read(Var1 + "-Mode") == "Telnet")
+            try
             {
-                this.toolStripComboBox1.SelectedIndex = 0;
-                strDnsAddress = myRegistry.Read(Var1 + "-IP");
-                if (strDnsAddress.Length <= 3)
+                if (myRegistry.Read(Var1 + "-Mode") == "Telnet")
                 {
-                    IP_Form2 box = new IP_Form2(Var1);
-                    box.ShowDialog();
-                    bbs_button.Enabled = true;
-                    cluster_button.Enabled = true;
-                    node_button.Enabled = true;
-                }
-                else
-                {
-                    if (Regex.IsMatch(strDnsAddress, ValidIpAddressRegex))
-                    {
-                        this.textBox1.Text = "IP = " + strDnsAddress;
-                    }
-                    else if (Regex.IsMatch(strDnsAddress, ValidHostnameRegex))
-                    {
-                        IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
-                        strDnsAddress = strAddress.AddressList[0].ToString();
-                        this.textBox1.Text = strDnsAddress;
-                    }
-                    else
-                    {
-                        IP_Form2 box = new IP_Form2(Var1);
-                        box.ShowDialog();
-                        bbs_button.Enabled = true;
-                        cluster_button.Enabled = true;
-                        node_button.Enabled = true;
-                    }
-                    port = myRegistry.Read(Var1 + "-Port");
-                    if (port.Length <= 1)
+                    this.toolStripComboBox1.SelectedIndex = 0;
+                    strDnsAddress = myRegistry.Read(Var1 + "-IP");
+                    if (strDnsAddress.Length <= 3)
                     {
                         IP_Form2 box = new IP_Form2(Var1);
                         box.ShowDialog();
@@ -87,22 +61,58 @@ namespace Packet
                     }
                     else
                     {
-                        try
+                        if (Regex.IsMatch(strDnsAddress, ValidIpAddressRegex))
                         {
-                            tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
-                            backgroundWorker1.RunWorkerAsync();
+                            this.textBox1.Text = "IP = " + strDnsAddress;
                         }
-                        catch
+                        else if (Regex.IsMatch(strDnsAddress, ValidHostnameRegex))
                         {
-                            this.textBox1.Text = "Connection Errot to IP = " + strDnsAddress;
+                            IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
+                            strDnsAddress = strAddress.AddressList[0].ToString();
+                            this.textBox1.Text = strDnsAddress;
+                        }
+                        else
+                        {
+                            IP_Form2 box = new IP_Form2(Var1);
+                            box.ShowDialog();
+                            bbs_button.Enabled = true;
+                            cluster_button.Enabled = true;
+                            node_button.Enabled = true;
+                        }
+                        port = myRegistry.Read(Var1 + "-Port");
+                        if (port.Length <= 1)
+                        {
+                            IP_Form2 box = new IP_Form2(Var1);
+                            box.ShowDialog();
+                            bbs_button.Enabled = true;
+                            cluster_button.Enabled = true;
+                            node_button.Enabled = true;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
+                                backgroundWorker1.RunWorkerAsync();
+                            }
+                            catch
+                            {
+                                this.textBox1.Text = "Connection Errot to IP = " + strDnsAddress;
+                            }
                         }
                     }
                 }
+                if (myRegistry.Read(Var1 + "-Mode") == "Com")
+                {
+                    this.toolStripComboBox1.SelectedIndex = 1;
+                }
             }
-            if (myRegistry.Read(Var1 + "-Mode") == "Com")
+            catch (Exception er)
             {
-                this.toolStripComboBox1.SelectedIndex = 1;
+                MessageBox.Show(er.Message.ToString());
             }
+
+            
         }
         #endregion
 
@@ -426,6 +436,7 @@ namespace Packet
         #region private void button1_Click
         private void button1_Click(object sender, EventArgs e)
         {
+            richTextBox1.AppendText(System.Environment.NewLine);
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -441,6 +452,7 @@ namespace Packet
         #region private void button1_Click_2
         private void button1_Click_2(object sender, EventArgs e)
         {
+            richTextBox1.AppendText(System.Environment.NewLine);
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -454,6 +466,7 @@ namespace Packet
         #region private void node_button_Click
         private void node_button_Click(object sender, EventArgs e)
         {
+            richTextBox1.AppendText(System.Environment.NewLine);
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -489,6 +502,17 @@ namespace Packet
         #region private void disconnect_button_Click
         private void disconnect_button_Click(object sender, EventArgs e)
         {
+
+            try
+            {
+                tc.Telnet_Close();
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            }
+
+            
             bbs_button.Enabled = true;
             cluster_button.Enabled = true;
             node_button.Enabled = true;
@@ -497,7 +521,7 @@ namespace Packet
 
         private void ssh_button_Click(object sender, EventArgs e)
         {
-      
+            richTextBox1.AppendText(System.Environment.NewLine);
             this.richTextBox1.AppendText("Hello All", Color.Green);
             this.richTextBox1.AppendText(Environment.NewLine);
             this.richTextBox1.AppendText("....", Color.Red);

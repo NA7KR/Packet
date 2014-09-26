@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 #endregion
 
 namespace Utility.AnsiColor
@@ -74,14 +75,24 @@ namespace Utility.AnsiColor
         //---------------------------------------------------------------------------------------------------------
         #region static string Colorize
         public string Colorize(string stringToColor)
-        {
-            // Loop through our table
-            foreach ( ColorData colorData in colorTable )
-                // Replace our identifier with our code
-                stringToColor = stringToColor.Replace ( colorData.Code, colorData.Identifier );       
-            //string[] words = stringToColor.Split('}');
-            // Return our colored string
-            return ( stringToColor );
+        { 
+            try
+            {
+                // Loop through our table
+                foreach (ColorData colorData in colorTable)
+                    // Replace our identifier with our code
+                    stringToColor = stringToColor.Replace(colorData.Code, colorData.Identifier);
+                //string[] words = stringToColor.Split('}');
+                // Return our colored string
+                return (stringToColor);
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            }
+           
+            return "" ;
+            
         } // End of Colorize Function
 
         #endregion

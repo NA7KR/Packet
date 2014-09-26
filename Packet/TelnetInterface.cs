@@ -1,8 +1,10 @@
-
+#region Using Directive
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Sockets;
+using System.Windows.Forms;
+#endregion
 
 namespace Packet
 {
@@ -25,60 +27,144 @@ namespace Packet
 
         int TimeOutMs = 100;
 
+        //---------------------------------------------------------------------------------------------------------
+        // TelnetConnection
+        //---------------------------------------------------------------------------------------------------------
+        #region TelnetConnection
         public TelnetConnection(string Hostname, int Port)
         {
             tcpSocket = new TcpClient(Hostname, Port);
 
         }
+        #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // Telnet_Close
+        //---------------------------------------------------------------------------------------------------------
+        #region Telnet_Close
+        public void Telnet_Close()
+        {
+            try
+            {
+                if (!tcpSocket.Connected) return;
+                tcpSocket.GetStream().Close();
+                tcpSocket.Close();
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            }
+        }
+        #endregion
+
+        //---------------------------------------------------------------------------------------------------------
+        //  Login
+        //---------------------------------------------------------------------------------------------------------
+        #region  Login
         public string Login(string Username,string Password,int LoginTimeOutMs)
         {
-            int oldTimeOutMs = TimeOutMs;
-            TimeOutMs = LoginTimeOutMs;
-            string s = Read();
-            //if (!s.TrimEnd().EndsWith(":"))
-            //   throw new Exception("Failed to connect : no login prompt");
-            //WriteLine(Username);
+            try
+            {
+                int oldTimeOutMs = TimeOutMs;
+                TimeOutMs = LoginTimeOutMs;
+                string s = Read();
+                //if (!s.TrimEnd().EndsWith(":"))
+                //   throw new Exception("Failed to connect : no login prompt");
+                //WriteLine(Username);
 
-            s += Read();
-            //if (!s.TrimEnd().EndsWith(":"))
-            //    throw new Exception("Failed to connect : no password prompt");
-            WriteLine(Password);
+                s += Read();
+                //if (!s.TrimEnd().EndsWith(":"))
+                //    throw new Exception("Failed to connect : no password prompt");
+                WriteLine(Password);
 
-            s += Read();
-            TimeOutMs = oldTimeOutMs;
-            return s;
+                s += Read();
+                TimeOutMs = oldTimeOutMs;
+                return s;
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            }
+            return "";
         }
+        #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // WriteLine
+        //---------------------------------------------------------------------------------------------------------
+        #region WriteLine
         public void WriteLine(string cmd)
         {
-            Write(cmd + "\n");
+            try
+            {
+                Write(cmd + "\n");
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            } 
+            
         }
+        #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // Write
+        //---------------------------------------------------------------------------------------------------------
+        #region Write
         public void Write(string cmd)
         {
-            if (!tcpSocket.Connected) return;
-            byte[] buf = System.Text.ASCIIEncoding.ASCII.GetBytes(cmd.Replace("\0xFF","\0xFF\0xFF"));
-            tcpSocket.GetStream().Write(buf, 0, buf.Length);
+            try
+            {
+                if (!tcpSocket.Connected) return;
+                byte[] buf = System.Text.ASCIIEncoding.ASCII.GetBytes(cmd.Replace("\0xFF", "\0xFF\0xFF"));
+                tcpSocket.GetStream().Write(buf, 0, buf.Length);
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            } 
         }
+        #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // Read
+        //---------------------------------------------------------------------------------------------------------
+        #region Read
         public string Read()
         {
-            if (!tcpSocket.Connected) return null;
-            StringBuilder sb=new StringBuilder();
-            do
+            try
             {
-                ParseTelnet(sb);
-                System.Threading.Thread.Sleep(TimeOutMs);
-            } while (tcpSocket.Available > 0);
-            return sb.ToString();
+                if (!tcpSocket.Connected) return null;
+                StringBuilder sb = new StringBuilder();
+                do
+                {
+                    ParseTelnet(sb);
+                    System.Threading.Thread.Sleep(TimeOutMs);
+                } while (tcpSocket.Available > 0);
+                return sb.ToString();
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            }
+            return "";
         }
+        #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // IsConnected
+        //---------------------------------------------------------------------------------------------------------
+        #region IsConnected
         public bool IsConnected
         {
             get { return tcpSocket.Connected; }
         }
+        #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // ParseTelnet
+        //---------------------------------------------------------------------------------------------------------
+        #region ParseTelnet
         void ParseTelnet(StringBuilder sb)
         {
             while (tcpSocket.Available > 0)
@@ -122,5 +208,6 @@ namespace Packet
                 }
             }
         }
+        #endregion
     }
 }
