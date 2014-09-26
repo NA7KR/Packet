@@ -17,6 +17,10 @@ namespace Packet.Extensions
 
     public static class RichTextBoxExtensions
     {
+        //---------------------------------------------------------------------------------------------------------
+        //  AppendText
+        //---------------------------------------------------------------------------------------------------------
+        #region AppendText
         public static void AppendText(this RichTextBox box, string text, Color color)
         {
             box.SelectionStart = box.TextLength;
@@ -25,5 +29,6 @@ namespace Packet.Extensions
             box.AppendText(text);
             box.SelectionColor = box.ForeColor;
         }
+        #endregion
     }
 }
