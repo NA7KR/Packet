@@ -18,7 +18,10 @@ using Packet.Extensions;
 
 namespace Packet
 {
-
+    //---------------------------------------------------------------------------------------------------------
+    //  partial class Form1
+    //---------------------------------------------------------------------------------------------------------
+    #region partial class Form1
     public partial class Form1 : Form
     {
         //---------------------------------------------------------------------------------------------------------
@@ -519,6 +522,10 @@ namespace Packet
         }
         #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // pssh_button_Click
+        //---------------------------------------------------------------------------------------------------------
+        #region ssh_button_Click
         private void ssh_button_Click(object sender, EventArgs e)
         {
             richTextBox1.AppendText(System.Environment.NewLine);
@@ -529,12 +536,7 @@ namespace Packet
             this.richTextBox1.AppendText("Bye", Color.Yellow);
         
         }
-
-        private void bindingSource1_CurrentChanged(object sender, EventArgs e)
-        {
-
-        }
+        #endregion
     }
-  
-    
+    #endregion
 }
