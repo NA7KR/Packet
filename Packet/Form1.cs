@@ -193,50 +193,52 @@ namespace Packet
                     rd = myAnsiProject.Colorize(rd);
                     string[] delimiters = { "{" };
                     string[] parts = rd.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-
-                    for (int index = 0; index < parts.Length; index++)
+                    if (parts.Length > 1)
                     {
-                        string part = parts[index];
-                        string temp = rd.Substring(rd.IndexOf(part) + part.Length);
-
-                        foreach (string delimter in delimiters)
+                        for (int index = 1; index < parts.Length; index++)
                         {
-                            if (temp.IndexOf(delimter) == 0)
-                            {
-                                //parts[index] = delimter + parts[index];
-                                string[] words = parts[index].Split('}');
+                            string part = parts[index];
+                            string temp = rd.Substring(rd.IndexOf(part) + part.Length);
 
-                                //richTextBox1.AppendText(words[1], Color.FromName(words[0]));
-                                
-                                richTextBox1.AppendText("Hello All", Color.Green);
-                                //richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText("Hello All", Color.Green); }));
-                                break;
+                            foreach (string delimter in delimiters)
+                            {
+                                if (temp.IndexOf(delimter) == 0)
+                                {
+                                    //parts[index] = delimter + parts[index];
+                                    string[] words = parts[index].Split('}');
+
+                                    //richTextBox1.AppendText(words[1], Color.FromName(words[0]));
+
+                                    //richTextBox1.AppendText("Hello All", Color.Green);
+                                    richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(words[1], Color.FromName(words[0])); }));
+                                    break;
+                                }
+
                             }
                         }
-
-
                     }
-
-                    
-                    if (forward == true)
+                    else
                     {
-                        rd2 = rd.Replace("\u0007", "");
-                        rd2 = rd2.TrimEnd('\r', '\n');
-                        rd2 = rd2.TrimStart('\r', '\n');
-                        //rd2 = myAnsiProject.Colorize(rd2);
-                        string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                        string str_build = "";
-                        foreach (string s in result)
-                            if (Regex.IsMatch(s, @"^\d"))
-                            {
-                                str_build = str_build + s + System.Environment.NewLine;
-                            }
-                        myFiles.Write(str_build);
+                        if (forward == true)
+                        {
+                            rd2 = rd.Replace("\u0007", "");
+                            rd2 = rd2.TrimEnd('\r', '\n');
+                            rd2 = rd2.TrimStart('\r', '\n');
+                            //rd2 = myAnsiProject.Colorize(rd2);
+                            string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                            string str_build = "";
+                            foreach (string s in result)
+                                if (Regex.IsMatch(s, @"^\d"))
+                                {
+                                    str_build = str_build + s + System.Environment.NewLine;
+                                }
+                            myFiles.Write(str_build);
+                        }
+                        this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.AppendText(rd); }));
+                        i = i + 1;
+                        string mystring = i.ToString();
+                        //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
                     }
-                    this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd; }));
-                    i = i + 1;
-                    string mystring = i.ToString();
-                    //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
                 }
                 System.Threading.Thread.Sleep(300);
             }

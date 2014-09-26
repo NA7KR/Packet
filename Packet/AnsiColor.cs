@@ -26,7 +26,7 @@ namespace Utility.AnsiColor
         static AnsiColor ( )
         {
             // Our reset values turns everything to the default mode
-            colorTable.Add(new ColorData("{reset}", "\x1B[0m")); // "Reset"
+            colorTable.Add(new ColorData("{yellow}", "\x1B[0m")); // "Reset"
 
             /*
             // Style Modifiers (on)
