@@ -48,14 +48,14 @@ namespace Utility.AnsiColor
             colorTable.Add(new ColorData("{!strike}", "\x1B[29m")); // "Strikethrough Off" 
             */
             // Foreground Color
-            colorTable.Add(new ColorData("{black}", "\x1B[01;30m")); // "Foreground black" 
-            colorTable.Add(new ColorData("{red}", "\x1B[01;31m")); // "Foreground red" 
-            colorTable.Add(new ColorData("{green}", "\x1B[01;32m")); // "Foreground green" 
-            colorTable.Add(new ColorData("{yellow}", "\x1B[01;33m")); // "Foreground yellow" 
-            colorTable.Add(new ColorData("{blue}", "\x1B[01;34m")); // "Foreground blue" 
+            colorTable.Add(new ColorData("{black}",   "\x1B[01;30m")); // "Foreground black" 
+            colorTable.Add(new ColorData("{red}",     "\x1B[01;31m")); // "Foreground red" 
+            colorTable.Add(new ColorData("{green}",   "\x1B[01;32m")); // "Foreground green" 
+            colorTable.Add(new ColorData("{yellow}",  "\x1B[01;33m")); // "Foreground yellow" 
+            colorTable.Add(new ColorData("{blue}",    "\x1B[01;34m")); // "Foreground blue" 
             colorTable.Add(new ColorData("{magenta}", "\x1B[01;35m")); // "Foreground magenta" 
-            colorTable.Add(new ColorData("{cyan}", "\x1B[01;36m")); // "Foreground cyan" 
-            colorTable.Add(new ColorData("{white}", "\x1B;01;37m")); // "Foreground white" 
+            colorTable.Add(new ColorData("{cyan}",    "\x1B[01;36m")); // "Foreground cyan" 
+            colorTable.Add(new ColorData("{white}",   "\x1B[01;37m")); // "Foreground white" 
 
             // Background Color
             colorTable.Add(new ColorData("{!black}", "\x1B[40m")); // "Background black" 
