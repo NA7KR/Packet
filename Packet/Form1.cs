@@ -15,9 +15,13 @@ using Utility.ModifyRegistry;
 using Utility.AnsiColor;
 using Packet.Extensions;
 #endregion
+
 namespace Packet
 {
-
+    //---------------------------------------------------------------------------------------------------------
+    //  partial class Form1
+    //---------------------------------------------------------------------------------------------------------
+    #region partial class Form1
     public partial class Form1 : Form
     {
         //---------------------------------------------------------------------------------------------------------
@@ -44,40 +48,13 @@ namespace Packet
             string strDnsAddress;
             string port;
 
-            if (myRegistry.Read(Var1 + "-Mode") == "Telnet")
+            try
             {
-                this.toolStripComboBox1.SelectedIndex = 0;
-                strDnsAddress = myRegistry.Read(Var1 + "-IP");
-                if (strDnsAddress.Length <= 3)
+                if (myRegistry.Read(Var1 + "-Mode") == "Telnet")
                 {
-                    IP_Form2 box = new IP_Form2(Var1);
-                    box.ShowDialog();
-                    bbs_button.Enabled = true;
-                    cluster_button.Enabled = true;
-                    node_button.Enabled = true;
-                }
-                else
-                {
-                    if (Regex.IsMatch(strDnsAddress, ValidIpAddressRegex))
-                    {
-                        this.textBox1.Text = "IP = " + strDnsAddress;
-                    }
-                    else if (Regex.IsMatch(strDnsAddress, ValidHostnameRegex))
-                    {
-                        IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
-                        strDnsAddress = strAddress.AddressList[0].ToString();
-                        this.textBox1.Text = strDnsAddress;
-                    }
-                    else
-                    {
-                        IP_Form2 box = new IP_Form2(Var1);
-                        box.ShowDialog();
-                        bbs_button.Enabled = true;
-                        cluster_button.Enabled = true;
-                        node_button.Enabled = true;
-                    }
-                    port = myRegistry.Read(Var1 + "-Port");
-                    if (port.Length <= 1)
+                    this.toolStripComboBox1.SelectedIndex = 0;
+                    strDnsAddress = myRegistry.Read(Var1 + "-IP");
+                    if (strDnsAddress.Length <= 3)
                     {
                         IP_Form2 box = new IP_Form2(Var1);
                         box.ShowDialog();
@@ -87,22 +64,58 @@ namespace Packet
                     }
                     else
                     {
-                        try
+                        if (Regex.IsMatch(strDnsAddress, ValidIpAddressRegex))
                         {
-                            tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
-                            backgroundWorker1.RunWorkerAsync();
+                            this.textBox1.Text = "IP = " + strDnsAddress;
                         }
-                        catch
+                        else if (Regex.IsMatch(strDnsAddress, ValidHostnameRegex))
                         {
-                            this.textBox1.Text = "Connection Errot to IP = " + strDnsAddress;
+                            IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
+                            strDnsAddress = strAddress.AddressList[0].ToString();
+                            this.textBox1.Text = strDnsAddress;
+                        }
+                        else
+                        {
+                            IP_Form2 box = new IP_Form2(Var1);
+                            box.ShowDialog();
+                            bbs_button.Enabled = true;
+                            cluster_button.Enabled = true;
+                            node_button.Enabled = true;
+                        }
+                        port = myRegistry.Read(Var1 + "-Port");
+                        if (port.Length <= 1)
+                        {
+                            IP_Form2 box = new IP_Form2(Var1);
+                            box.ShowDialog();
+                            bbs_button.Enabled = true;
+                            cluster_button.Enabled = true;
+                            node_button.Enabled = true;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
+                                backgroundWorker1.RunWorkerAsync();
+                            }
+                            catch
+                            {
+                                this.textBox1.Text = "Connection Errot to IP = " + strDnsAddress;
+                            }
                         }
                     }
                 }
+                if (myRegistry.Read(Var1 + "-Mode") == "Com")
+                {
+                    this.toolStripComboBox1.SelectedIndex = 1;
+                }
             }
-            if (myRegistry.Read(Var1 + "-Mode") == "Com")
+            catch (Exception er)
             {
-                this.toolStripComboBox1.SelectedIndex = 1;
+                MessageBox.Show(er.Message.ToString());
             }
+
+            
         }
         #endregion
 
@@ -193,50 +206,52 @@ namespace Packet
                     rd = myAnsiProject.Colorize(rd);
                     string[] delimiters = { "{" };
                     string[] parts = rd.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-
-                    for (int index = 0; index < parts.Length; index++)
+                    if (parts.Length > 1)
                     {
-                        string part = parts[index];
-                        string temp = rd.Substring(rd.IndexOf(part) + part.Length);
-
-                        foreach (string delimter in delimiters)
+                        for (int index = 1; index < parts.Length; index++)
                         {
-                            if (temp.IndexOf(delimter) == 0)
-                            {
-                                //parts[index] = delimter + parts[index];
-                                string[] words = parts[index].Split('}');
+                            string part = parts[index];
+                            string temp = rd.Substring(rd.IndexOf(part) + part.Length);
 
-                                //richTextBox1.AppendText(words[1], Color.FromName(words[0]));
-                                
-                                richTextBox1.AppendText("Hello All", Color.Green);
-                                //richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText("Hello All", Color.Green); }));
-                                break;
+                            foreach (string delimter in delimiters)
+                            {
+                                if (temp.IndexOf(delimter) == 0)
+                                {
+                                    //parts[index] = delimter + parts[index];
+                                    string[] words = parts[index].Split('}');
+
+                                    //richTextBox1.AppendText(words[1], Color.FromName(words[0]));
+
+                                    //richTextBox1.AppendText("Hello All", Color.Green);
+                                    richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(words[1], Color.FromName(words[0])); }));
+                                    break;
+                                }
+
                             }
                         }
-
-
                     }
-
-                    
-                    if (forward == true)
+                    else
                     {
-                        rd2 = rd.Replace("\u0007", "");
-                        rd2 = rd2.TrimEnd('\r', '\n');
-                        rd2 = rd2.TrimStart('\r', '\n');
-                        //rd2 = myAnsiProject.Colorize(rd2);
-                        string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                        string str_build = "";
-                        foreach (string s in result)
-                            if (Regex.IsMatch(s, @"^\d"))
-                            {
-                                str_build = str_build + s + System.Environment.NewLine;
-                            }
-                        myFiles.Write(str_build);
+                        if (forward == true)
+                        {
+                            rd2 = rd.Replace("\u0007", "");
+                            rd2 = rd2.TrimEnd('\r', '\n');
+                            rd2 = rd2.TrimStart('\r', '\n');
+                            //rd2 = myAnsiProject.Colorize(rd2);
+                            string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                            string str_build = "";
+                            foreach (string s in result)
+                                if (Regex.IsMatch(s, @"^\d"))
+                                {
+                                    str_build = str_build + s + System.Environment.NewLine;
+                                }
+                            myFiles.Write(str_build);
+                        }
+                        this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.AppendText(rd); }));
+                        i = i + 1;
+                        string mystring = i.ToString();
+                        //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
                     }
-                    this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.Text += rd; }));
-                    i = i + 1;
-                    string mystring = i.ToString();
-                    //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
                 }
                 System.Threading.Thread.Sleep(300);
             }
@@ -424,6 +439,7 @@ namespace Packet
         #region private void button1_Click
         private void button1_Click(object sender, EventArgs e)
         {
+            richTextBox1.AppendText(System.Environment.NewLine);
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -439,6 +455,7 @@ namespace Packet
         #region private void button1_Click_2
         private void button1_Click_2(object sender, EventArgs e)
         {
+            richTextBox1.AppendText(System.Environment.NewLine);
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -452,6 +469,7 @@ namespace Packet
         #region private void node_button_Click
         private void node_button_Click(object sender, EventArgs e)
         {
+            richTextBox1.AppendText(System.Environment.NewLine);
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -487,15 +505,30 @@ namespace Packet
         #region private void disconnect_button_Click
         private void disconnect_button_Click(object sender, EventArgs e)
         {
+
+            try
+            {
+                tc.Telnet_Close();
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message.ToString());
+            }
+
+            
             bbs_button.Enabled = true;
             cluster_button.Enabled = true;
             node_button.Enabled = true;
         }
         #endregion
 
+        //---------------------------------------------------------------------------------------------------------
+        // pssh_button_Click
+        //---------------------------------------------------------------------------------------------------------
+        #region ssh_button_Click
         private void ssh_button_Click(object sender, EventArgs e)
         {
-      
+            richTextBox1.AppendText(System.Environment.NewLine);
             this.richTextBox1.AppendText("Hello All", Color.Green);
             this.richTextBox1.AppendText(Environment.NewLine);
             this.richTextBox1.AppendText("....", Color.Red);
@@ -503,12 +536,7 @@ namespace Packet
             this.richTextBox1.AppendText("Bye", Color.Yellow);
         
         }
-
-        private void bindingSource1_CurrentChanged(object sender, EventArgs e)
-        {
-
-        }
+        #endregion
     }
-  
-    
+    #endregion
 }

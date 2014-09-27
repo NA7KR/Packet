@@ -1,13 +1,18 @@
-﻿using System;
+﻿#region Using Directive
+using System;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Forms;
 using System.Linq;
-
+#endregion
 namespace Utility.ModifyFile
 {
     public class ModifyFile
     {
+        //---------------------------------------------------------------------------------------------------------
+        // Write
+        //---------------------------------------------------------------------------------------------------------
+        #region Write
         public bool Write(string textVale)
         {
             try
@@ -60,6 +65,8 @@ namespace Utility.ModifyFile
                 return false;
             }
         } //end write
+        #endregion
+
 
     } //end public call
     
