@@ -576,6 +576,90 @@ namespace Packet
                 bBeep = false;
                 this.toolStripComboBoxBeep.SelectedIndex = 1;
             }
+            string myREG = myRegistry.Read("Color Text");
+            switch (myREG)
+            {
+                case "Black":
+                    this.toolStripComboBoxTXTC.SelectedIndex = 0; 
+                    textColor = Color.Black;
+                    break;
+                case "Red":
+                    this.toolStripComboBoxTXTC.SelectedIndex = 1; 
+                    textColor = Color.Red;
+                    break;
+                case "Green":
+                    this.toolStripComboBoxTXTC.SelectedIndex = 2; 
+                    textColor = Color.Green;
+                    break;
+                case "Yellow":
+                    this.toolStripComboBoxTXTC.SelectedIndex = 3; 
+                    textColor = Color.Yellow;
+                    break;
+                case "Blue":
+                    this.toolStripComboBoxTXTC.SelectedIndex = 4; 
+                    textColor = Color.Blue;
+                    break;
+                case "Magenta":
+                    this.toolStripComboBoxTXTC.SelectedIndex = 5; 
+                    textColor = Color.Magenta;
+                    break;
+                case "Cyan":
+                    this.toolStripComboBoxTXTC.SelectedIndex = 6; 
+                    textColor = Color.Cyan;
+                    break;
+                case "White":
+                    this.toolStripComboBoxTXTC.SelectedIndex = 7; 
+                    textColor = Color.White;
+                    break;
+                default:
+                    textColor = Color.White;
+                    break;
+            }
+            richTextBox1.ForeColor = textColor;
+            richTextBox2.ForeColor = textColor;
+
+            string myREG2 = myRegistry.Read("Color Background");
+            switch (myREG2)
+            {
+                case "Black":
+                    this.toolStripComboBoxBGC.SelectedIndex = 0;
+                    backgroundColor = Color.Black;
+                    break;
+                case "Red":
+                    this.toolStripComboBoxBGC.SelectedIndex = 1;
+                    backgroundColor = Color.Red;
+                    break;
+                case "Green":
+                    this.toolStripComboBoxBGC.SelectedIndex = 2;
+                    backgroundColor = Color.Green;
+                    break;
+                case "Yellow":
+                    this.toolStripComboBoxBGC.SelectedIndex = 3;
+                    backgroundColor = Color.Yellow;
+                    break;
+                case "Blue":
+                    this.toolStripComboBoxBGC.SelectedIndex = 4;
+                    backgroundColor = Color.Blue;
+                    break;
+                case "Magenta":
+                    this.toolStripComboBoxBGC.SelectedIndex = 5;
+                    backgroundColor = Color.Magenta;
+                    break;
+                case "Cyan":
+                    this.toolStripComboBoxBGC.SelectedIndex = 6;
+                    backgroundColor = Color.Cyan;
+                    break;
+                case "White":
+                    this.toolStripComboBoxBGC.SelectedIndex = 7;
+                    backgroundColor = Color.White;
+                    break;
+                default:
+                    backgroundColor = Color.Black;
+                    break;
+            }
+            richTextBox1.BackColor = backgroundColor;
+            richTextBox2.BackColor = backgroundColor;
+
         }
         #endregion
 
