@@ -303,7 +303,7 @@
             this.toolStripComboBoxBeep.Name = "toolStripComboBoxBeep";
             this.toolStripComboBoxBeep.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBoxBeep.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxBeep_SelectedIndexChanged);
-            this.toolStripComboBoxBeep.Click += new System.EventHandler(this.toolStripComboBox4_Click);
+            
             // 
             // Form1
             // 

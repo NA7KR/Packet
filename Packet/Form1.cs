@@ -110,14 +110,7 @@ namespace Packet
                 {
                     this.toolStripComboBox1.SelectedIndex = 1;
                 }
-                if (myRegistry.Read("Beep") == "Yes")
-                {
-                    bBeep = true;
-                }
-                if (myRegistry.Read("Beep") == "No")
-                {
-                    bBeep = false;
-                }
+              
 
             }
             catch (Exception er)
@@ -125,7 +118,7 @@ namespace Packet
                 MessageBox.Show(er.Message.ToString());
             }
 
-            
+
         }
         #endregion
 
@@ -184,6 +177,16 @@ namespace Packet
             this.ssh_button.Width = 90;
             this.ssh_button.Left = 580;
             this.ssh_button.Top = 40;
+            if (myRegistry.Read("Beep") == "Yes")
+            {
+                bBeep = true;
+                this.toolStripComboBoxBeep.SelectedIndex = 0;
+            }
+            if (myRegistry.Read("Beep") == "No")
+            {
+                bBeep = false;
+                this.toolStripComboBoxBeep.SelectedIndex = 1;
+            }
 
         }
         #endregion
@@ -237,8 +240,11 @@ namespace Packet
                     }
                     else
                     {
-                        if (rd.Contains("\a"))
-                        Console.Beep(3000, 1000);
+                        if (bBeep == true)
+                        {
+                            if (rd.Contains("\a"))
+                                Console.Beep(3000, 1000);
+                        }
                         if (forward == true)
                         {
                             rd2 = rd.Replace("\r", System.Environment.NewLine);
@@ -361,10 +367,12 @@ namespace Packet
             if (toolStripComboBoxBeep.SelectedIndex == 0)
             {
                 myRegistry.Write("Beep", "Yes");
+                bBeep = true;
             }
             if (toolStripComboBoxBeep.SelectedIndex == 1)
             {
                 myRegistry.Write("Beep", "No");
+                bBeep = false;
             }
         }
         #endregion
@@ -538,16 +546,11 @@ namespace Packet
                 MessageBox.Show(er.Message.ToString());
             }
 
-            
-            bbs_button.Enabled = true;
-            cluster_butt
 
- 
-    }
-    #endregion
-}
-on.Enabled = true;
+            bbs_button.Enabled = true;
+            cluster_button.Enabled = true;
             node_button.Enabled = true;
+
         }
         #endregion
 
@@ -558,13 +561,11 @@ on.Enabled = true;
         private void ssh_button_Click(object sender, EventArgs e)
         {
             richTextBox1.AppendText(System.Environment.NewLine);
-            this.richTextBox1.AppendText("Hello All", Color.Green);
-            this.richTextBox1.AppendText(Environment.NewLine);
-            this.richTextBox1.AppendText("....", Color.Red);
-            this.richTextBox1.AppendText(Environment.NewLine);
-            this.richTextBox1.AppendText("Bye", Color.Yellow);
-        
+            this.richTextBox1.AppendText("Need SSH libary still!!!", Color.Red);
         }
         #endregion
 
+    }
+    #endregion
+}
     
