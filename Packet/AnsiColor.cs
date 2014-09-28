@@ -53,19 +53,26 @@ namespace Utility.AnsiColor
             colorTable.Add(new ColorData("{green}",   "\x1B[01;32m")); // "Foreground green" 
             colorTable.Add(new ColorData("{yellow}",  "\x1B[01;33m")); // "Foreground yellow" 
             colorTable.Add(new ColorData("{blue}",    "\x1B[01;34m")); // "Foreground blue" 
+             
             colorTable.Add(new ColorData("{magenta}", "\x1B[01;35m")); // "Foreground magenta" 
             colorTable.Add(new ColorData("{cyan}",    "\x1B[01;36m")); // "Foreground cyan" 
+            colorTable.Add(new ColorData("{cyan}",    "\x1B[03;36m")); // "Foreground cyan" 
             colorTable.Add(new ColorData("{white}",   "\x1B[01;37m")); // "Foreground white" 
+            //URO
+            colorTable.Add(new ColorData("{red}",     "\x1B[05;31m")); // "Foreground red" 
+            colorTable.Add(new ColorData("{blue}",    "\x1B[01;34"));  // "Foreground blue"
+            colorTable.Add(new ColorData("{yellow}",   "\x1B[0;m"));   // "Reset"
+           
 
             // Background Color
-            colorTable.Add(new ColorData("{!black}", "\x1B[40m")); // "Background black" 
-            colorTable.Add(new ColorData("{!red}", "\x1B[41m")); // "Background red" 
-            colorTable.Add(new ColorData("{!green}", "\x1B[42m")); // "Background green" 
-            colorTable.Add(new ColorData("{!yellow}", "\x1B[43m")); // "Background yellow" 
-            colorTable.Add(new ColorData("{!blue}", "\x1B[44m")); // "Background blue" 
+            colorTable.Add(new ColorData("{!black}",   "\x1B[40m")); // "Background black" 
+            colorTable.Add(new ColorData("{!red}",     "\x1B[41m")); // "Background red" 
+            colorTable.Add(new ColorData("{!green}",   "\x1B[42m")); // "Background green" 
+            colorTable.Add(new ColorData("{!yellow}",  "\x1B[43m")); // "Background yellow" 
+            colorTable.Add(new ColorData("{!blue}",    "\x1B[44m")); // "Background blue" 
             colorTable.Add(new ColorData("{!magenta}", "\x1B[45m")); // "Background magenta" 
-            colorTable.Add(new ColorData("{!cyan}", "\x1B[46m")); // "Background cyan" 
-            colorTable.Add(new ColorData("{!white}", "\x1B[47m")); // "Background white" 
+            colorTable.Add(new ColorData("{!cyan}",    "\x1B[46m")); // "Background cyan" 
+            colorTable.Add(new ColorData("{!white}",   "\x1B[47m")); // "Background white" 
         } // End of AnsiColor
 
         #endregion

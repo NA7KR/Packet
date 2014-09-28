@@ -204,12 +204,14 @@ namespace Packet
                 {
 
                     rd = myAnsiProject.Colorize(rd);
+
                     string[] delimiters = { "{" };
                     string[] parts = rd.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                     if (parts.Length > 1)
                     {
                         for (int index = 1; index < parts.Length; index++)
                         {
+                            
                             string part = parts[index];
                             string temp = rd.Substring(rd.IndexOf(part) + part.Length);
 
@@ -217,11 +219,12 @@ namespace Packet
                             {
                                 if (temp.IndexOf(delimter) == 0)
                                 {
+                                    
                                     //parts[index] = delimter + parts[index];
                                     string[] words = parts[index].Split('}');
-
+                                    //richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(System.Environment.NewLine); }));
                                     //richTextBox1.AppendText(words[1], Color.FromName(words[0]));
-
+                                    words[1] = words[1].Replace("\r\r", System.Environment.NewLine);
                                     //richTextBox1.AppendText("Hello All", Color.Green);
                                     richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(words[1], Color.FromName(words[0])); }));
                                     break;
@@ -234,7 +237,7 @@ namespace Packet
                     {
                         if (forward == true)
                         {
-                            rd2 = rd.Replace("\u0007", "");
+                            rd2 = rd.Replace("\r", System.Environment.NewLine);
                             rd2 = rd2.TrimEnd('\r', '\n');
                             rd2 = rd2.TrimStart('\r', '\n');
                             //rd2 = myAnsiProject.Colorize(rd2);
@@ -271,7 +274,8 @@ namespace Packet
                 prompt = richTextBox2.Text + "\r\n";
                 tc.WriteLine(prompt);
                 this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = "Enter Pressed"; }));
-                richTextBox2.Text = "";
+                richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(System.Environment.NewLine); }));
+                richTextBox2.ResetText();
             }
         }
         #endregion
