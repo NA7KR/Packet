@@ -34,6 +34,8 @@ namespace Packet
         ModifyFile myFiles = new ModifyFile();
         bool forward = false;
         string prompt = "";
+        Color textColor  = Color.Yellow;
+        Color backgroundColor = Color.Black;
         Boolean bBeep = true;
         string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
@@ -145,6 +147,23 @@ namespace Packet
             this.toolStripComboBox3.Items.Add("Com Port");
             this.toolStripComboBoxBeep.Items.Add("Yes");
             this.toolStripComboBoxBeep.Items.Add("No");
+            this.toolStripComboBoxTXTC.Items.Add("Black");
+            this.toolStripComboBoxTXTC.Items.Add("Red");
+            this.toolStripComboBoxTXTC.Items.Add("Green");
+            this.toolStripComboBoxTXTC.Items.Add("Yellow");
+            this.toolStripComboBoxTXTC.Items.Add("Blue");
+            this.toolStripComboBoxTXTC.Items.Add("Magenta");
+            this.toolStripComboBoxTXTC.Items.Add("Cyan");
+            this.toolStripComboBoxTXTC.Items.Add("White");
+
+            this.toolStripComboBoxBGC.Items.Add("Black");
+            this.toolStripComboBoxBGC.Items.Add("Red");
+            this.toolStripComboBoxBGC.Items.Add("Green");
+            this.toolStripComboBoxBGC.Items.Add("Yellow");
+            this.toolStripComboBoxBGC.Items.Add("Blue");
+            this.toolStripComboBoxBGC.Items.Add("Magenta");
+            this.toolStripComboBoxBGC.Items.Add("Cyan");
+            this.toolStripComboBoxBGC.Items.Add("White");
             this.richTextBox1.Left = 20;
             this.richTextBox1.Top = 80;
             this.richTextBox1.Height = ((this.Height - 160) / 2);
@@ -177,17 +196,6 @@ namespace Packet
             this.ssh_button.Width = 90;
             this.ssh_button.Left = 580;
             this.ssh_button.Top = 40;
-            if (myRegistry.Read("Beep") == "Yes")
-            {
-                bBeep = true;
-                this.toolStripComboBoxBeep.SelectedIndex = 0;
-            }
-            if (myRegistry.Read("Beep") == "No")
-            {
-                bBeep = false;
-                this.toolStripComboBoxBeep.SelectedIndex = 1;
-            }
-
         }
         #endregion
 
@@ -243,7 +251,7 @@ namespace Packet
                         if (bBeep == true)
                         {
                             if (rd.Contains("\a"))
-                                Console.Beep(3000, 1000);
+                                Console.Beep(900, 1000);
                         }
                         if (forward == true)
                         {
@@ -306,15 +314,16 @@ namespace Packet
         #region
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (toolStripComboBox1.SelectedIndex == 0)
+            switch (toolStripComboBox1.SelectedIndex)
             {
-                myRegistry.Write("BBS-Mode", "Telnet");
-                iPConfigToolStripMenuItem.Visible = true;
-            }
-            if (toolStripComboBox1.SelectedIndex == 1)
-            {
-                myRegistry.Write("BBS-Mode", "Com");
-                iPConfigToolStripMenuItem.Visible = false;
+                case 0:
+                    myRegistry.Write("BBS-Mode", "Telnet");
+                    iPConfigToolStripMenuItem.Visible = true;
+                    break;
+                case 1:
+                    myRegistry.Write("BBS-Mode", "Com");
+                    iPConfigToolStripMenuItem.Visible = false;
+                    break;
             }
         }
         #endregion
@@ -325,15 +334,16 @@ namespace Packet
         #region private void toolStripComboBox2_SelectedIndexChanged
         private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (toolStripComboBox2.SelectedIndex == 0)
+            switch (toolStripComboBox2.SelectedIndex)
             {
-                myRegistry.Write("Cluster-Mode", "Telnet");
-                clusterIPConfigToolStripMenuItem.Visible = true;
-            }
-            if (toolStripComboBox2.SelectedIndex == 1)
-            {
-                myRegistry.Write("Cluster-Mode", "Com");
-                clusterIPConfigToolStripMenuItem.Visible = false;
+                case 0:
+                    myRegistry.Write("Cluster-Mode", "Telnet");
+                    clusterIPConfigToolStripMenuItem.Visible = true;
+                    break;
+                case 1:
+                    myRegistry.Write("Cluster-Mode", "Com");
+                    clusterIPConfigToolStripMenuItem.Visible = false;
+                    break;
             }
         }
         #endregion
@@ -344,16 +354,17 @@ namespace Packet
         #region private void toolStripComboBox3_SelectedIndexChanged
         private void toolStripComboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (toolStripComboBox3.SelectedIndex == 0)
+            switch (toolStripComboBox3.SelectedIndex)
             {
-                myRegistry.Write("Node-Mode", "Telnet");
-                nodeIPConfigToolStripMenuItem.Visible = true;
+                case 0:
+                    myRegistry.Write("Node-Mode", "Telnet");
+                    nodeIPConfigToolStripMenuItem.Visible = true;
+                    break;
 
-            }
-            if (toolStripComboBox3.SelectedIndex == 1)
-            {
-                myRegistry.Write("Node-Mode", "Com");
-                nodeIPConfigToolStripMenuItem.Visible = false;
+                case 1:
+                    myRegistry.Write("Node-Mode", "Com");
+                    nodeIPConfigToolStripMenuItem.Visible = false;
+                    break;
             }
         }
         #endregion
@@ -364,16 +375,110 @@ namespace Packet
         #region private void toolStripComboBoxBeep_SelectedIndexChanged
         private void toolStripComboBoxBeep_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (toolStripComboBoxBeep.SelectedIndex == 0)
+            switch (toolStripComboBoxBeep.SelectedIndex)
             {
-                myRegistry.Write("Beep", "Yes");
-                bBeep = true;
+                case 0:
+                    myRegistry.Write("Beep", "Yes");
+                    bBeep = true;
+                    break;
+                case 1:
+                    myRegistry.Write("Beep", "No");
+                    bBeep = false;
+                    break;
             }
-            if (toolStripComboBoxBeep.SelectedIndex == 1)
+        }
+        #endregion
+
+        //---------------------------------------------------------------------------------------------------------
+        // toolStripComboBoxTXTC_SelectedIndexChanged
+        //---------------------------------------------------------------------------------------------------------
+        #region toolStripComboBoxTXTC_SelectedIndexChanged
+        private void toolStripComboBoxTXTC_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (toolStripComboBoxTXTC.SelectedIndex)
             {
-                myRegistry.Write("Beep", "No");
-                bBeep = false;
+                case 0:
+                    myRegistry.Write("Color Text", "Black");
+                    textColor = Color.Black;
+                    break;
+                case 1:
+                    myRegistry.Write("Color Text", "Red");
+                    textColor = Color.Red;
+                    break;
+                case 2:
+                    myRegistry.Write("Color Text", "Green");
+                    textColor = Color.Green;
+                    break;
+                case 3:
+                    myRegistry.Write("Color Text", "Yellow");
+                    textColor = Color.Yellow;
+                    break;
+                case 4:
+                    myRegistry.Write("Color Text", "Blue");
+                    textColor = Color.Blue;
+                    break;
+                case 5:
+                    myRegistry.Write("Color Text", "Magenta");
+                    textColor = Color.Magenta;
+                    break;
+                case 6:
+                    myRegistry.Write("Color Text", "Cyan");
+                    textColor = Color.Cyan;
+                    break;
+                case 7:
+                    myRegistry.Write("Color Text", "White");
+                    textColor = Color.White;
+                    break;
             }
+            richTextBox1.ForeColor = textColor;
+            richTextBox2.ForeColor = textColor;
+
+        }
+        #endregion
+
+        //---------------------------------------------------------------------------------------------------------
+        // toolStripComboBoxBGC
+        //---------------------------------------------------------------------------------------------------------
+        #region toolStripComboBoxBGC
+        private void toolStripComboBoxBGC_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (toolStripComboBoxBGC.SelectedIndex)
+            {
+                case 0:
+                    myRegistry.Write("Color Background", "Black");
+                    backgroundColor = Color.Black;
+                    break;
+                case 1:
+                    myRegistry.Write("Color Background", "Red");
+                    backgroundColor = Color.Red;
+                    break;
+                case 2:
+                    myRegistry.Write("Color Background", "Green");
+                    backgroundColor = Color.Green;
+                    break;
+                case 3:
+                    myRegistry.Write("Color Background", "Yellow");
+                    backgroundColor = Color.Yellow;
+                    break;
+                case 4:
+                    myRegistry.Write("Color Background", "Blue");
+                    backgroundColor = Color.Blue;
+                    break;
+                case 5:
+                    myRegistry.Write("Color Background", "Magenta");
+                    backgroundColor = Color.Magenta;
+                    break;
+                case 6:
+                    myRegistry.Write("Color Background", "Cyan");
+                    backgroundColor = Color.Cyan;
+                    break;
+                case 7:
+                    myRegistry.Write("Color Background", "White");
+                    backgroundColor = Color.White;
+                    break;
+            }
+            richTextBox1.BackColor = backgroundColor;
+            richTextBox2.BackColor = backgroundColor;
         }
         #endregion
 
@@ -460,6 +565,16 @@ namespace Packet
             {
                 this.toolStripComboBox3.SelectedIndex = 1;
                 nodeIPConfigToolStripMenuItem.Visible = false;
+            }
+            if (myRegistry.Read("Beep") == "Yes")
+            {
+                bBeep = true;
+                this.toolStripComboBoxBeep.SelectedIndex = 0;
+            }
+            if (myRegistry.Read("Beep") == "No")
+            {
+                bBeep = false;
+                this.toolStripComboBoxBeep.SelectedIndex = 1;
             }
         }
         #endregion
@@ -564,6 +679,8 @@ namespace Packet
             this.richTextBox1.AppendText("Need SSH libary still!!!", Color.Red);
         }
         #endregion
+
+     
 
     }
     #endregion

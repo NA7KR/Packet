@@ -1,21 +1,16 @@
 using System;
-// it's required for reading/writing into the registry:
 using Microsoft.Win32;      
-// and for the MessageBox function:
 using System.Windows.Forms;
 
 namespace Utility.ModifyRegistry
 {
-	/// <summary>
-	/// An useful class to read/write/delete/count registry keys
-	/// </summary>
+	// An useful class to read/write/delete registry keys
+	
 	public class ModifyRegistry
 	{
 		private bool showError = false;
-		/// <summary>
 		/// A property to show or hide error messages 
 		/// (default = false)
-		/// </summary>
 		public bool ShowError
 		{
 			get { return showError; }
@@ -23,10 +18,8 @@ namespace Utility.ModifyRegistry
 		}
 
 		private string subKey = "SOFTWARE\\" + Application.ProductName;
-		/// <summary>
 		/// A property to set the SubKey value
 		/// (default = "SOFTWARE\\" + Application.ProductName.ToUpper())
-		/// </summary>
 		public string SubKey
 		{
 			get { return subKey; }
@@ -34,10 +27,8 @@ namespace Utility.ModifyRegistry
 		}
 
 		private RegistryKey baseRegistryKey = Registry.LocalMachine;
-		/// <summary>
 		/// A property to set the BaseRegistryKey value.
 		/// (default = Registry.LocalMachine)
-		/// </summary>
 		public RegistryKey BaseRegistryKey
 		{
 			get { return baseRegistryKey; }
@@ -47,11 +38,9 @@ namespace Utility.ModifyRegistry
 		/* **************************************************************************
 		 * **************************************************************************/
 
-		/// <summary>
 		/// To read a registry key.
 		/// input: KeyName (string)
 		/// output: value (string) 
-		/// </summary>
 		public string Read(string KeyName)
 		{
 			// Opening the registry key
@@ -73,7 +62,6 @@ namespace Utility.ModifyRegistry
 				}
 				catch (Exception e)
 				{
-					// AAAAAAAAAAARGH, an error!
 					ShowErrorMessage(e, "Reading registry " + KeyName);
 					return null;
 				}
@@ -83,11 +71,9 @@ namespace Utility.ModifyRegistry
 		/* **************************************************************************
 		 * **************************************************************************/
 
-		/// <summary>
 		/// To write into a registry key.
 		/// input: KeyName (string) , Value (object)
 		/// output: true or false 
-		/// </summary>
 		public bool Write(string KeyName, object Value)
 		{
 			try
@@ -105,7 +91,6 @@ namespace Utility.ModifyRegistry
 			}
 			catch (Exception e)
 			{
-				// AAAAAAAAAAARGH, an error!
 				ShowErrorMessage(e, "Writing registry " + KeyName);
 				return false;
 			}
@@ -114,11 +99,11 @@ namespace Utility.ModifyRegistry
 		/* **************************************************************************
 		 * **************************************************************************/
 
-		/// <summary>
-		/// To delete a registry key.
-		/// input: KeyName (string)
-		/// output: true or false 
-		/// </summary>
+		// <summary>
+		// To delete a registry key.
+		// input: KeyName (string)
+		// output: true or false 
+		// </summary>
 		public bool DeleteKey(string KeyName)
 		{
 			try
@@ -136,98 +121,11 @@ namespace Utility.ModifyRegistry
 			}
 			catch (Exception e)
 			{
-				// AAAAAAAAAAARGH, an error!
 				ShowErrorMessage(e, "Deleting SubKey " + subKey);
 				return false;
 			}
 		}
 
-		/* **************************************************************************
-		 * **************************************************************************/
-
-		/// <summary>
-		/// To delete a sub key and any child.
-		/// input: void
-		/// output: true or false 
-		/// </summary>
-		public bool DeleteSubKeyTree()
-		{
-			try
-			{
-				// Setting
-				RegistryKey rk = baseRegistryKey ;
-				RegistryKey sk1 = rk.OpenSubKey(subKey);
-				// If the RegistryKey exists, I delete it
-				if ( sk1 != null )
-					rk.DeleteSubKeyTree(subKey);
-
-				return true;
-			}
-			catch (Exception e)
-			{
-				// AAAAAAAAAAARGH, an error!
-				ShowErrorMessage(e, "Deleting SubKey " + subKey);
-				return false;
-			}
-		}
-
-		/* **************************************************************************
-		 * **************************************************************************/
-
-		/// <summary>
-		/// Retrive the count of subkeys at the current key.
-		/// input: void
-		/// output: number of subkeys
-		/// </summary>
-		public int SubKeyCount()
-		{
-			try
-			{
-				// Setting
-				RegistryKey rk = baseRegistryKey ;
-				RegistryKey sk1 = rk.OpenSubKey(subKey);
-				// If the RegistryKey exists...
-				if ( sk1 != null )
-					return sk1.SubKeyCount;
-				else
-					return 0; 
-			}
-			catch (Exception e)
-			{
-				// AAAAAAAAAAARGH, an error!
-				ShowErrorMessage(e, "Retriving subkeys of " + subKey);
-				return 0;
-			}
-		}
-
-		/* **************************************************************************
-		 * **************************************************************************/
-
-		/// <summary>
-		/// Retrive the count of values in the key.
-		/// input: void
-		/// output: number of keys
-		/// </summary>
-		public int ValueCount()
-		{
-			try
-			{
-				// Setting
-				RegistryKey rk = baseRegistryKey ;
-				RegistryKey sk1 = rk.OpenSubKey(subKey);
-				// If the RegistryKey exists...
-				if ( sk1 != null )
-					return sk1.ValueCount;
-				else
-					return 0; 
-			}
-			catch (Exception e)
-			{
-				// AAAAAAAAAAARGH, an error!
-				ShowErrorMessage(e, "Retriving keys of " + subKey);
-				return 0;
-			}
-		}
 
 		/* **************************************************************************
 		 * **************************************************************************/
@@ -235,10 +133,7 @@ namespace Utility.ModifyRegistry
 		private void ShowErrorMessage(Exception e, string Title)
 		{
 			if (showError == true)
-				MessageBox.Show(e.Message,
-								Title
-								,MessageBoxButtons.OK
-								,MessageBoxIcon.Error);
+				MessageBox.Show(e.Message,Title ,MessageBoxButtons.OK ,MessageBoxIcon.Error);
 		}
 	}
 }

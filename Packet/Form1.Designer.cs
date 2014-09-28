@@ -44,6 +44,8 @@
             this.nodeTelnetComToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox3 = new System.Windows.Forms.ToolStripComboBox();
             this.nodeIPConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxBeep = new System.Windows.Forms.ToolStripComboBox();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,8 +59,11 @@
             this.ssh_button = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.beepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripComboBoxBeep = new System.Windows.Forms.ToolStripComboBox();
+            this.colourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backgroundColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxBGC = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripComboBoxTXTC = new System.Windows.Forms.ToolStripComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -115,7 +120,8 @@
             this.clusterIPConfigToolStripMenuItem,
             this.nodeTelnetComToolStripMenuItem,
             this.nodeIPConfigToolStripMenuItem,
-            this.beepToolStripMenuItem});
+            this.beepToolStripMenuItem,
+            this.colourToolStripMenuItem});
             this.setupToolStripMenuItem.Name = "setupToolStripMenuItem";
             this.setupToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.setupToolStripMenuItem.Text = "Setup";
@@ -186,6 +192,20 @@
             this.nodeIPConfigToolStripMenuItem.Text = "Node IP Config";
             this.nodeIPConfigToolStripMenuItem.Click += new System.EventHandler(this.nodeIPConfigToolStripMenuItem_Click);
             // 
+            // beepToolStripMenuItem
+            // 
+            this.beepToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBoxBeep});
+            this.beepToolStripMenuItem.Name = "beepToolStripMenuItem";
+            this.beepToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.beepToolStripMenuItem.Text = "Beep";
+            // 
+            // toolStripComboBoxBeep
+            // 
+            this.toolStripComboBoxBeep.Name = "toolStripComboBoxBeep";
+            this.toolStripComboBoxBeep.Size = new System.Drawing.Size(121, 23);
+            this.toolStripComboBoxBeep.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxBeep_SelectedIndexChanged);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -211,7 +231,7 @@
             // 
             this.richTextBox1.BackColor = System.Drawing.SystemColors.WindowText;
             this.richTextBox1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.ForeColor = System.Drawing.Color.Yellow;
+            //this.richTextBox1.ForeColor = System.Drawing.Color.Yellow;
             this.richTextBox1.Location = new System.Drawing.Point(55, 87);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
@@ -225,7 +245,7 @@
             // 
             this.richTextBox2.BackColor = System.Drawing.SystemColors.WindowText;
             this.richTextBox2.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox2.ForeColor = System.Drawing.Color.Yellow;
+            //this.richTextBox2.ForeColor = System.Drawing.Color.Yellow;
             this.richTextBox2.Location = new System.Drawing.Point(31, 339);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.Size = new System.Drawing.Size(581, 214);
@@ -290,20 +310,42 @@
             this.ssh_button.UseVisualStyleBackColor = true;
             this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
             // 
-            // beepToolStripMenuItem
+            // colourToolStripMenuItem
             // 
-            this.beepToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBoxBeep});
-            this.beepToolStripMenuItem.Name = "beepToolStripMenuItem";
-            this.beepToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.beepToolStripMenuItem.Text = "Beep";
+            this.colourToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.backgroundColourToolStripMenuItem,
+            this.textColorToolStripMenuItem});
+            this.colourToolStripMenuItem.Name = "colourToolStripMenuItem";
+            this.colourToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.colourToolStripMenuItem.Text = "Color";
             // 
-            // toolStripComboBoxBeep
+            // backgroundColourToolStripMenuItem
             // 
-            this.toolStripComboBoxBeep.Name = "toolStripComboBoxBeep";
-            this.toolStripComboBoxBeep.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBoxBeep.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxBeep_SelectedIndexChanged);
-            
+            this.backgroundColourToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBoxBGC});
+            this.backgroundColourToolStripMenuItem.Name = "backgroundColourToolStripMenuItem";
+            this.backgroundColourToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.backgroundColourToolStripMenuItem.Text = "Background Color";
+            // 
+            // textColorToolStripMenuItem
+            // 
+            this.textColorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBoxTXTC});
+            this.textColorToolStripMenuItem.Name = "textColorToolStripMenuItem";
+            this.textColorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.textColorToolStripMenuItem.Text = "Text Color";
+            // 
+            // toolStripComboBoxBGC
+            // 
+            this.toolStripComboBoxBGC.Name = "toolStripComboBoxBGC";
+            this.toolStripComboBoxBGC.Size = new System.Drawing.Size(121, 23);
+            this.toolStripComboBoxBGC.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxBGC_SelectedIndexChanged);
+            // 
+            // toolStripComboBoxTXTC
+            // 
+            this.toolStripComboBoxTXTC.Name = "toolStripComboBoxTXTC";
+            this.toolStripComboBoxTXTC.Size = new System.Drawing.Size(121, 23);
+            this.toolStripComboBoxTXTC.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxTXTC_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -366,6 +408,11 @@
         private System.Windows.Forms.BindingSource bindingSource2;
         private System.Windows.Forms.ToolStripMenuItem beepToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBeep;
+        private System.Windows.Forms.ToolStripMenuItem colourToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem backgroundColourToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBGC;
+        private System.Windows.Forms.ToolStripMenuItem textColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxTXTC;
     }
 }
 

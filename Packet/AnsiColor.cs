@@ -55,7 +55,6 @@ namespace Utility.AnsiColor
             colorTable.Add(new ColorData("{blue}",    "\x1B[01;34m")); // "Foreground blue"   
             colorTable.Add(new ColorData("{magenta}", "\x1B[01;35m")); // "Foreground magenta" 
             colorTable.Add(new ColorData("{cyan}",    "\x1B[01;36m")); // "Foreground cyan" 
-            colorTable.Add(new ColorData("{cyan}",    "\x1B[03;36m")); // "Foreground cyan" 
             colorTable.Add(new ColorData("{white}",   "\x1B[01;37m")); // "Foreground white" 
             //URO
             colorTable.Add(new ColorData("{red}",     "\x1B[05;31m")); // "Foreground red" 
