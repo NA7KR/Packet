@@ -57,6 +57,8 @@
             this.ssh_button = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.beepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxBeep = new System.Windows.Forms.ToolStripComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -112,7 +114,8 @@
             this.clusterTelnetComToolStripMenuItem,
             this.clusterIPConfigToolStripMenuItem,
             this.nodeTelnetComToolStripMenuItem,
-            this.nodeIPConfigToolStripMenuItem});
+            this.nodeIPConfigToolStripMenuItem,
+            this.beepToolStripMenuItem});
             this.setupToolStripMenuItem.Name = "setupToolStripMenuItem";
             this.setupToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.setupToolStripMenuItem.Text = "Setup";
@@ -287,7 +290,20 @@
             this.ssh_button.UseVisualStyleBackColor = true;
             this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
             // 
-            
+            // beepToolStripMenuItem
+            // 
+            this.beepToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBoxBeep});
+            this.beepToolStripMenuItem.Name = "beepToolStripMenuItem";
+            this.beepToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.beepToolStripMenuItem.Text = "Beep";
+            // 
+            // toolStripComboBoxBeep
+            // 
+            this.toolStripComboBoxBeep.Name = "toolStripComboBoxBeep";
+            this.toolStripComboBoxBeep.Size = new System.Drawing.Size(121, 23);
+            this.toolStripComboBoxBeep.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxBeep_SelectedIndexChanged);
+            this.toolStripComboBoxBeep.Click += new System.EventHandler(this.toolStripComboBox4_Click);
             // 
             // Form1
             // 
@@ -348,6 +364,8 @@
         private System.Windows.Forms.Button ssh_button;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.BindingSource bindingSource2;
+        private System.Windows.Forms.ToolStripMenuItem beepToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBeep;
     }
 }
 

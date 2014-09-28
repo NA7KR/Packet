@@ -34,6 +34,7 @@ namespace Packet
         ModifyFile myFiles = new ModifyFile();
         bool forward = false;
         string prompt = "";
+        Boolean bBeep = true;
         string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
         #endregion
@@ -109,6 +110,15 @@ namespace Packet
                 {
                     this.toolStripComboBox1.SelectedIndex = 1;
                 }
+                if (myRegistry.Read("Beep") == "Yes")
+                {
+                    bBeep = true;
+                }
+                if (myRegistry.Read("Beep") == "No")
+                {
+                    bBeep = false;
+                }
+
             }
             catch (Exception er)
             {
@@ -140,6 +150,8 @@ namespace Packet
             this.toolStripComboBox3.Items.Clear();
             this.toolStripComboBox3.Items.Add("Telnet");
             this.toolStripComboBox3.Items.Add("Com Port");
+            this.toolStripComboBoxBeep.Items.Add("Yes");
+            this.toolStripComboBoxBeep.Items.Add("No");
             this.richTextBox1.Left = 20;
             this.richTextBox1.Top = 80;
             this.richTextBox1.Height = ((this.Height - 160) / 2);
@@ -202,45 +214,36 @@ namespace Packet
 
                 if (rd != "") // stop text on screen jump
                 {
-
                     rd = myAnsiProject.Colorize(rd);
-
                     string[] delimiters = { "{" };
                     string[] parts = rd.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                     if (parts.Length > 1)
                     {
                         for (int index = 1; index < parts.Length; index++)
                         {
-                            
                             string part = parts[index];
                             string temp = rd.Substring(rd.IndexOf(part) + part.Length);
-
                             foreach (string delimter in delimiters)
                             {
                                 if (temp.IndexOf(delimter) == 0)
                                 {
-                                    
-                                    //parts[index] = delimter + parts[index];
                                     string[] words = parts[index].Split('}');
-                                    //richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(System.Environment.NewLine); }));
-                                    //richTextBox1.AppendText(words[1], Color.FromName(words[0]));
                                     words[1] = words[1].Replace("\r\r", System.Environment.NewLine);
-                                    //richTextBox1.AppendText("Hello All", Color.Green);
                                     richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(words[1], Color.FromName(words[0])); }));
                                     break;
                                 }
-
                             }
                         }
                     }
                     else
                     {
+                        if (rd.Contains("\a"))
+                        Console.Beep(3000, 1000);
                         if (forward == true)
                         {
                             rd2 = rd.Replace("\r", System.Environment.NewLine);
                             rd2 = rd2.TrimEnd('\r', '\n');
                             rd2 = rd2.TrimStart('\r', '\n');
-                            //rd2 = myAnsiProject.Colorize(rd2);
                             string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                             string str_build = "";
                             foreach (string s in result)
@@ -253,7 +256,6 @@ namespace Packet
                         this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.AppendText(rd); }));
                         i = i + 1;
                         string mystring = i.ToString();
-                        //this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = mystring; })); ;
                     }
                 }
                 System.Threading.Thread.Sleep(300);
@@ -346,6 +348,23 @@ namespace Packet
             {
                 myRegistry.Write("Node-Mode", "Com");
                 nodeIPConfigToolStripMenuItem.Visible = false;
+            }
+        }
+        #endregion
+
+        //---------------------------------------------------------------------------------------------------------
+        // private void toolStripComboBoxBeep_SelectedIndexChanged
+        //---------------------------------------------------------------------------------------------------------
+        #region private void toolStripComboBoxBeep_SelectedIndexChanged
+        private void toolStripComboBoxBeep_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (toolStripComboBoxBeep.SelectedIndex == 0)
+            {
+                myRegistry.Write("Beep", "Yes");
+            }
+            if (toolStripComboBoxBeep.SelectedIndex == 1)
+            {
+                myRegistry.Write("Beep", "No");
             }
         }
         #endregion
@@ -521,7 +540,13 @@ namespace Packet
 
             
             bbs_button.Enabled = true;
-            cluster_button.Enabled = true;
+            cluster_butt
+
+ 
+    }
+    #endregion
+}
+on.Enabled = true;
             node_button.Enabled = true;
         }
         #endregion
@@ -541,6 +566,5 @@ namespace Packet
         
         }
         #endregion
-    }
-    #endregion
-}
+
+    
