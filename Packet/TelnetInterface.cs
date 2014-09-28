@@ -97,7 +97,7 @@ namespace Packet
         {
             try
             {
-                Write(cmd + "\n");
+                Write(cmd ); 
             }
             catch (Exception er)
             {
