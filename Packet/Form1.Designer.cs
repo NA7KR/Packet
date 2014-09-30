@@ -6,7 +6,7 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
+        private PacketSoftware.TerminalEmulator terminalEmulator1;
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -46,6 +46,11 @@
             this.nodeIPConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBoxBeep = new System.Windows.Forms.ToolStripComboBox();
+            this.colourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backgroundColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxBGC = new System.Windows.Forms.ToolStripComboBox();
+            this.textColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxTXTC = new System.Windows.Forms.ToolStripComboBox();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,11 +64,9 @@
             this.ssh_button = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.colourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.backgroundColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripComboBoxBGC = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripComboBoxTXTC = new System.Windows.Forms.ToolStripComboBox();
+            this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
+            this.terminalEmulator2 = new PacketSoftware.TerminalEmulator();
+            this.terminalEmulator3 = new PacketSoftware.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -206,6 +209,43 @@
             this.toolStripComboBoxBeep.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBoxBeep.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxBeep_SelectedIndexChanged);
             // 
+            // colourToolStripMenuItem
+            // 
+            this.colourToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.backgroundColourToolStripMenuItem,
+            this.textColorToolStripMenuItem});
+            this.colourToolStripMenuItem.Name = "colourToolStripMenuItem";
+            this.colourToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.colourToolStripMenuItem.Text = "Color";
+            // 
+            // backgroundColourToolStripMenuItem
+            // 
+            this.backgroundColourToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBoxBGC});
+            this.backgroundColourToolStripMenuItem.Name = "backgroundColourToolStripMenuItem";
+            this.backgroundColourToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.backgroundColourToolStripMenuItem.Text = "Background Color";
+            // 
+            // toolStripComboBoxBGC
+            // 
+            this.toolStripComboBoxBGC.Name = "toolStripComboBoxBGC";
+            this.toolStripComboBoxBGC.Size = new System.Drawing.Size(121, 23);
+            this.toolStripComboBoxBGC.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxBGC_SelectedIndexChanged);
+            // 
+            // textColorToolStripMenuItem
+            // 
+            this.textColorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBoxTXTC});
+            this.textColorToolStripMenuItem.Name = "textColorToolStripMenuItem";
+            this.textColorToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.textColorToolStripMenuItem.Text = "Text Color";
+            // 
+            // toolStripComboBoxTXTC
+            // 
+            this.toolStripComboBoxTXTC.Name = "toolStripComboBoxTXTC";
+            this.toolStripComboBoxTXTC.Size = new System.Drawing.Size(121, 23);
+            this.toolStripComboBoxTXTC.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxTXTC_SelectedIndexChanged);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -231,7 +271,6 @@
             // 
             this.richTextBox1.BackColor = System.Drawing.SystemColors.WindowText;
             this.richTextBox1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            //this.richTextBox1.ForeColor = System.Drawing.Color.Yellow;
             this.richTextBox1.Location = new System.Drawing.Point(55, 87);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
@@ -245,7 +284,6 @@
             // 
             this.richTextBox2.BackColor = System.Drawing.SystemColors.WindowText;
             this.richTextBox2.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            //this.richTextBox2.ForeColor = System.Drawing.Color.Yellow;
             this.richTextBox2.Location = new System.Drawing.Point(31, 339);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.Size = new System.Drawing.Size(581, 214);
@@ -310,48 +348,59 @@
             this.ssh_button.UseVisualStyleBackColor = true;
             this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
             // 
-            // colourToolStripMenuItem
+            // terminalEmulator1
             // 
-            this.colourToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.backgroundColourToolStripMenuItem,
-            this.textColorToolStripMenuItem});
-            this.colourToolStripMenuItem.Name = "colourToolStripMenuItem";
-            this.colourToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.colourToolStripMenuItem.Text = "Color";
+            this.terminalEmulator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(160)))));
+            this.terminalEmulator1.Columns = 80;
+            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
+            this.terminalEmulator1.Hostname = null;
+            this.terminalEmulator1.Location = new System.Drawing.Point(0, 0);
+            this.terminalEmulator1.Name = "terminalEmulator1";
+            this.terminalEmulator1.Password = null;
+            this.terminalEmulator1.Rows = 24;
+            this.terminalEmulator1.Size = new System.Drawing.Size(0, 0);
+            this.terminalEmulator1.TabIndex = 0;
+            this.terminalEmulator1.Username = null;
             // 
-            // backgroundColourToolStripMenuItem
+            // terminalEmulator2
             // 
-            this.backgroundColourToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBoxBGC});
-            this.backgroundColourToolStripMenuItem.Name = "backgroundColourToolStripMenuItem";
-            this.backgroundColourToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.backgroundColourToolStripMenuItem.Text = "Background Color";
+            this.terminalEmulator2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(160)))));
+            this.terminalEmulator2.Columns = 80;
+            this.terminalEmulator2.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator2.Font = new System.Drawing.Font("Courier New", 8F);
+            this.terminalEmulator2.Hostname = null;
+            this.terminalEmulator2.Location = new System.Drawing.Point(0, 0);
+            this.terminalEmulator2.Name = "terminalEmulator2";
+            this.terminalEmulator2.Password = null;
+            this.terminalEmulator2.Rows = 24;
+            this.terminalEmulator2.Size = new System.Drawing.Size(0, 0);
+            this.terminalEmulator2.TabIndex = 0;
+            this.terminalEmulator2.Username = null;
             // 
-            // textColorToolStripMenuItem
+            // terminalEmulator3
             // 
-            this.textColorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBoxTXTC});
-            this.textColorToolStripMenuItem.Name = "textColorToolStripMenuItem";
-            this.textColorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.textColorToolStripMenuItem.Text = "Text Color";
-            // 
-            // toolStripComboBoxBGC
-            // 
-            this.toolStripComboBoxBGC.Name = "toolStripComboBoxBGC";
-            this.toolStripComboBoxBGC.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBoxBGC.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxBGC_SelectedIndexChanged);
-            // 
-            // toolStripComboBoxTXTC
-            // 
-            this.toolStripComboBoxTXTC.Name = "toolStripComboBoxTXTC";
-            this.toolStripComboBoxTXTC.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBoxTXTC.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxTXTC_SelectedIndexChanged);
+            this.terminalEmulator3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(160)))));
+            this.terminalEmulator3.Columns = 52;
+            this.terminalEmulator3.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator3.Font = new System.Drawing.Font("Courier New", 8F);
+            this.terminalEmulator3.Hostname = null;
+            this.terminalEmulator3.Location = new System.Drawing.Point(465, 180);
+            this.terminalEmulator3.Name = "terminalEmulator3";
+            this.terminalEmulator3.Password = null;
+            this.terminalEmulator3.Rows = 11;
+            this.terminalEmulator3.Size = new System.Drawing.Size(373, 153);
+            this.terminalEmulator3.TabIndex = 10;
+            this.terminalEmulator3.Text = "terminalEmulator3";
+            this.terminalEmulator3.Username = null;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1207, 599);
+            this.Controls.Add(this.terminalEmulator3);
+            this.Controls.Add(this.terminalEmulator2);
             this.Controls.Add(this.ssh_button);
             this.Controls.Add(this.disconnect_button);
             this.Controls.Add(this.node_button);
@@ -413,6 +462,8 @@
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBGC;
         private System.Windows.Forms.ToolStripMenuItem textColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxTXTC;
+        private PacketSoftware.TerminalEmulator terminalEmulator2;
+        private PacketSoftware.TerminalEmulator terminalEmulator3;
     }
 }
 
