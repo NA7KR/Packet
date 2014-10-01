@@ -343,16 +343,18 @@
             // 
             // terminalEmulator1
             // 
-            this.terminalEmulator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(160)))));
-            this.terminalEmulator1.Columns = 73;
+            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
+            this.terminalEmulator1.Columns = 55;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator1.Hostname = "cluster.na7kr.us";
-            this.terminalEmulator1.Location = new System.Drawing.Point(254, 107);
+            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.terminalEmulator1.ForeColor = System.Drawing.Color.Yellow;
+            this.terminalEmulator1.Hostname = null;
+            this.terminalEmulator1.Location = new System.Drawing.Point(546, 105);
             this.terminalEmulator1.Name = "terminalEmulator1";
             this.terminalEmulator1.Password = null;
-            this.terminalEmulator1.Rows = 18;
-            this.terminalEmulator1.Size = new System.Drawing.Size(522, 246);
+            this.terminalEmulator1.Port = 9000;
+            this.terminalEmulator1.Rows = 15;
+            this.terminalEmulator1.Size = new System.Drawing.Size(394, 200);
             this.terminalEmulator1.TabIndex = 10;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;
@@ -421,6 +423,7 @@
         private System.Windows.Forms.ToolStripMenuItem textColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxTXTC;
         private PacketSoftware.TerminalEmulator terminalEmulator1;
+
       
     }
 }

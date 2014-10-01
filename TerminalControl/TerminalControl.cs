@@ -54,7 +54,7 @@ namespace PacketSoftware
 				this._hostname = value;
 			}
 		}
-        public string Port
+        public System.Int32 Port
         {
             get
             {
@@ -112,7 +112,7 @@ namespace PacketSoftware
 			{
 				case ConnectionTypes.Telnet:
 				{
-					this.ConnectTelnet(this.Hostname);
+					this.ConnectTelnet(this.Hostname, this.Port);
 					break;
 				}
 				case ConnectionTypes.SSH1:
@@ -121,7 +121,7 @@ namespace PacketSoftware
 				}
 				case ConnectionTypes.SSH2:
 				{
-					this.ConnectSSH2(this.Hostname, this.Username, this.Password);
+					this.ConnectSSH2(this.Hostname, this.Username, this.Password, this.Port);
 					break;
 				}
 				default:
@@ -144,6 +144,7 @@ namespace PacketSoftware
 		private string						_hostname;       // used for connecting to SSH
 		private string						_username;       // maybe
 		private string						_password;
+        private System.Int32                _port;
 		private ContextMenu					contextMenu1;    // rightclick menu
 		private MenuItem					mnuCopy;
 		private MenuItem					mnuPaste;
@@ -591,11 +592,11 @@ namespace PacketSoftware
 		}
 		#endregion
 		#region Private Methods
-		private void ConnectTelnet(string HostName)
+		private void ConnectTelnet(string HostName, System.Int32 Port)
 		{
 			this.Focus();
 
-			System.Int32           port    = 23;
+			//System.Int32           port    = 23;
 			//System.Net.IPHostEntry IPHost  = System.Net.Dns.GetHostEntry(HostName); 
 			System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
 			System.Net.IPAddress[] addr    = IPHost.AddressList; 
@@ -608,7 +609,7 @@ namespace PacketSoftware
 					System.Net.Sockets.ProtocolType.Tcp);
 
 				// Create New EndPoint
-				System.Net.IPEndPoint iep  = new System.Net.IPEndPoint(addr[0],port);  
+				System.Net.IPEndPoint iep  = new System.Net.IPEndPoint(addr[0],Port);  
 
 				// This is a non blocking IO
 				this.CurSocket.Blocking        = false ;    
@@ -622,7 +623,7 @@ namespace PacketSoftware
 				MessageBox.Show(CurException.Message);
 			}
 		}
-		private void ConnectSSH2(string hostname, string username, string password)
+		private void ConnectSSH2(string hostname, string username, string password, System.Int32 Port)
 		{
 			// connect ssh
 			this.Focus();
@@ -649,7 +650,7 @@ namespace PacketSoftware
 			}
 
 			//s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
-			s.Connect(new IPEndPoint(ip, 22));
+			s.Connect(new IPEndPoint(ip, Port));
 			_conn = Routrek.SSHC.SSHConnection.Connect(f, reader, s);
 			reader._conn = _conn;
 			Routrek.SSHC.SSHChannel ch = _conn.OpenShell(reader);
