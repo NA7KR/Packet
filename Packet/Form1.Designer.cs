@@ -6,7 +6,7 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-        private PacketSoftware.TerminalEmulator terminalEmulator1;
+        
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.bbs_button = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -62,14 +61,8 @@
             this.node_button = new System.Windows.Forms.Button();
             this.disconnect_button = new System.Windows.Forms.Button();
             this.ssh_button = new System.Windows.Forms.Button();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
-            this.terminalEmulator2 = new PacketSoftware.TerminalEmulator();
-            this.terminalEmulator3 = new PacketSoftware.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
             // backgroundWorker1
@@ -351,56 +344,25 @@
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(160)))));
-            this.terminalEmulator1.Columns = 80;
+            this.terminalEmulator1.Columns = 73;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator1.Hostname = null;
-            this.terminalEmulator1.Location = new System.Drawing.Point(0, 0);
+            this.terminalEmulator1.Hostname = "cluster.na7kr.us";
+            this.terminalEmulator1.Location = new System.Drawing.Point(254, 107);
             this.terminalEmulator1.Name = "terminalEmulator1";
             this.terminalEmulator1.Password = null;
-            this.terminalEmulator1.Rows = 24;
-            this.terminalEmulator1.Size = new System.Drawing.Size(0, 0);
-            this.terminalEmulator1.TabIndex = 0;
+            this.terminalEmulator1.Rows = 18;
+            this.terminalEmulator1.Size = new System.Drawing.Size(522, 246);
+            this.terminalEmulator1.TabIndex = 10;
+            this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;
-            // 
-            // terminalEmulator2
-            // 
-            this.terminalEmulator2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(160)))));
-            this.terminalEmulator2.Columns = 80;
-            this.terminalEmulator2.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator2.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator2.Hostname = null;
-            this.terminalEmulator2.Location = new System.Drawing.Point(0, 0);
-            this.terminalEmulator2.Name = "terminalEmulator2";
-            this.terminalEmulator2.Password = null;
-            this.terminalEmulator2.Rows = 24;
-            this.terminalEmulator2.Size = new System.Drawing.Size(0, 0);
-            this.terminalEmulator2.TabIndex = 0;
-            this.terminalEmulator2.Username = null;
-            // 
-            // terminalEmulator3
-            // 
-            this.terminalEmulator3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(160)))));
-            this.terminalEmulator3.Columns = 52;
-            this.terminalEmulator3.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator3.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator3.Hostname = null;
-            this.terminalEmulator3.Location = new System.Drawing.Point(465, 180);
-            this.terminalEmulator3.Name = "terminalEmulator3";
-            this.terminalEmulator3.Password = null;
-            this.terminalEmulator3.Rows = 11;
-            this.terminalEmulator3.Size = new System.Drawing.Size(373, 153);
-            this.terminalEmulator3.TabIndex = 10;
-            this.terminalEmulator3.Text = "terminalEmulator3";
-            this.terminalEmulator3.Username = null;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1207, 599);
-            this.Controls.Add(this.terminalEmulator3);
-            this.Controls.Add(this.terminalEmulator2);
+            this.Controls.Add(this.terminalEmulator1);
             this.Controls.Add(this.ssh_button);
             this.Controls.Add(this.disconnect_button);
             this.Controls.Add(this.node_button);
@@ -418,8 +380,6 @@
             this.Resize += new System.EventHandler(this.Form1_Resize_1);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -433,7 +393,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        public System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.RichTextBox richTextBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem1;
@@ -453,8 +413,6 @@
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox3;
         private System.Windows.Forms.Button disconnect_button;
         private System.Windows.Forms.Button ssh_button;
-        private System.Windows.Forms.BindingSource bindingSource1;
-        private System.Windows.Forms.BindingSource bindingSource2;
         private System.Windows.Forms.ToolStripMenuItem beepToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBeep;
         private System.Windows.Forms.ToolStripMenuItem colourToolStripMenuItem;
@@ -462,8 +420,8 @@
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBGC;
         private System.Windows.Forms.ToolStripMenuItem textColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxTXTC;
-        private PacketSoftware.TerminalEmulator terminalEmulator2;
-        private PacketSoftware.TerminalEmulator terminalEmulator3;
+        private PacketSoftware.TerminalEmulator terminalEmulator1;
+      
     }
 }
 

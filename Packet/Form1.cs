@@ -700,11 +700,13 @@ namespace Packet
         #region private void node_button_Click
         private void node_button_Click(object sender, EventArgs e)
         {
+
             richTextBox1.AppendText(System.Environment.NewLine);
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
             connect("Node");
+
         }
         #endregion
 
@@ -760,15 +762,13 @@ namespace Packet
         #region ssh_button_Click
         private void ssh_button_Click(object sender, EventArgs e)
         {
-            richTextBox1.AppendText(System.Environment.NewLine);
-            this.richTextBox1.AppendText("Need SSH libary still!!!", Color.Red);
+            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
+            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.Connect();
         }
         #endregion
 
-        private void terminalEmulator2_Click(object sender, EventArgs e)
-        {
-
-        }
+   
 
      
 

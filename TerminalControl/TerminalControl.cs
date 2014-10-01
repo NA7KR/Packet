@@ -54,6 +54,18 @@ namespace PacketSoftware
 				this._hostname = value;
 			}
 		}
+        public string Port
+        {
+            get
+            {
+                return this._port;
+            }
+            set
+            {
+                this._port = value;
+            }
+        }
+
 		public string Username
 		{
 			get

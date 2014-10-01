@@ -47,9 +47,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PacketComs">
-      <HintPath>..\..\SSH\TerminalControl\bin\Debug\PacketComs.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -124,6 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="terminal3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TerminalControl\PacketComs.csproj">
+      <Project>{3545E021-A75E-4558-8EA3-234DF99FB49A}</Project>
+      <Name>PacketComs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
