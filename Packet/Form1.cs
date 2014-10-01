@@ -1,4 +1,5 @@
 ﻿#region Using Directive
+using Packet.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,10 +11,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Utility.AnsiColor;
 using Utility.ModifyFile;
 using Utility.ModifyRegistry;
-using Utility.AnsiColor;
-using Packet.Extensions;
 #endregion
 
 namespace Packet
@@ -24,6 +24,7 @@ namespace Packet
     #region partial class Form1
     public partial class Form1 : Form
     {
+        
         //---------------------------------------------------------------------------------------------------------
         //  private TelnetConnection
         //---------------------------------------------------------------------------------------------------------
@@ -40,7 +41,7 @@ namespace Packet
         string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
         #endregion
-
+        
         //---------------------------------------------------------------------------------------------------------
         //  public  void
         //---------------------------------------------------------------------------------------------------------
@@ -699,11 +700,13 @@ namespace Packet
         #region private void node_button_Click
         private void node_button_Click(object sender, EventArgs e)
         {
+
             richTextBox1.AppendText(System.Environment.NewLine);
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
             connect("Node");
+
         }
         #endregion
 
@@ -759,10 +762,13 @@ namespace Packet
         #region ssh_button_Click
         private void ssh_button_Click(object sender, EventArgs e)
         {
-            richTextBox1.AppendText(System.Environment.NewLine);
-            this.richTextBox1.AppendText("Need SSH libary still!!!", Color.Red);
+            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
+            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.Connect();
         }
         #endregion
+
+   
 
      
 
