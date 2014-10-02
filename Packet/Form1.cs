@@ -39,9 +39,7 @@ namespace Packet
         Boolean bBeep = true;
         string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
-        #endregion
-        
-        
+        #endregion 
 
         //---------------------------------------------------------------------------------------------------------
         // Form1
@@ -84,7 +82,6 @@ namespace Packet
             this.toolStripComboBoxBGC.Items.Add("Cyan");
             this.toolStripComboBoxBGC.Items.Add("White");
            
-
             this.bbs_button.Width = 90;
             this.bbs_button.Left = 20;
             this.bbs_button.Top = 40;
@@ -120,11 +117,7 @@ namespace Packet
             AboutBox1 box = new AboutBox1();
             box.ShowDialog();
         }
-        #endregion
-
-       
-
-  
+        #endregion  
 
         //---------------------------------------------------------------------------------------------------------
         // private void exitToolStripMenuItem1_Click
@@ -261,8 +254,7 @@ namespace Packet
                     break;
             }
             terminalEmulator1.ForeColor  = textColor;
-         
-
+    
         }
         #endregion
 
@@ -343,9 +335,7 @@ namespace Packet
         {
             forward = true;
         }
-        #endregion
-
-        
+        #endregion    
 
         //---------------------------------------------------------------------------------------------------------
         // private void Form1_Load
@@ -485,7 +475,6 @@ namespace Packet
         #region private void button1_Click
         private void button1_Click(object sender, EventArgs e)
         {
-            
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -494,9 +483,7 @@ namespace Packet
             this.terminalEmulator1.Port = 6300;
             this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.Connect();
-            
-            
+            this.terminalEmulator1.Connect();  
         }
         #endregion
 
@@ -506,7 +493,6 @@ namespace Packet
         #region private void button1_Click_2
         private void button1_Click_2(object sender, EventArgs e)
         {
-            
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -514,8 +500,7 @@ namespace Packet
             this.terminalEmulator1.Port = 9000;
             this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.Connect();
-            
+            this.terminalEmulator1.Connect();  
         }
         #endregion
 
@@ -525,17 +510,14 @@ namespace Packet
         #region private void node_button_Click
         private void node_button_Click(object sender, EventArgs e)
         {
+            bbs_button.Enabled = false;
+            cluster_button.Enabled = false;
+            node_button.Enabled = false;
+
             this.terminalEmulator1.Port = 23;
             this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();
-            
-            
-            bbs_button.Enabled = false;
-            cluster_button.Enabled = false;
-            node_button.Enabled = false;
-            
-
         }
         #endregion
 
@@ -567,21 +549,9 @@ namespace Packet
         #region private void disconnect_button_Click
         private void disconnect_button_Click(object sender, EventArgs e)
         {
-
-            try
-            {
-                ;
-            }
-            catch (Exception er)
-            {
-                MessageBox.Show(er.Message.ToString());
-            }
-
-
             bbs_button.Enabled = true;
             cluster_button.Enabled = true;
             node_button.Enabled = true;
-
         }
         #endregion
 
@@ -598,10 +568,6 @@ namespace Packet
             
         }
         #endregion
-
-   
-
-     
 
     }
     #endregion
