@@ -1,5 +1,5 @@
 ﻿#region Using Directive
-using Packet.Extensions;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Utility.AnsiColor;
 using Utility.ModifyFile;
 using Utility.ModifyRegistry;
 #endregion
@@ -29,11 +28,12 @@ namespace Packet
         //  private TelnetConnection
         //---------------------------------------------------------------------------------------------------------
         #region private TelnetConnection
-        private TelnetConnection tc;
+        
         ModifyRegistry myRegistry = new ModifyRegistry();
-        AnsiColor myAnsiProject = new AnsiColor();
+        
         ModifyFile myFiles = new ModifyFile();
         bool forward = false;
+        
         Color textColor  = Color.Yellow;
         Color backgroundColor = Color.Black;
         Boolean bBeep = true;
@@ -41,88 +41,7 @@ namespace Packet
         string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
         #endregion
         
-        //---------------------------------------------------------------------------------------------------------
-        //  public  void
-        //---------------------------------------------------------------------------------------------------------
-        #region public  void connect
-        public void connect(string _var1)
-        {
-            string Var1 = _var1;
-            string strDnsAddress;
-            string port;
-
-            try
-            {
-                if (myRegistry.Read(Var1 + "-Mode") == "Telnet")
-                {
-                    this.toolStripComboBox1.SelectedIndex = 0;
-                    strDnsAddress = myRegistry.Read(Var1 + "-IP");
-                    if (strDnsAddress.Length <= 3)
-                    {
-                        IP_Form2 box = new IP_Form2(Var1);
-                        box.ShowDialog();
-                        bbs_button.Enabled = true;
-                        cluster_button.Enabled = true;
-                        node_button.Enabled = true;
-                    }
-                    else
-                    {
-                        if (Regex.IsMatch(strDnsAddress, ValidIpAddressRegex))
-                        {
-                            this.textBox1.Text = "IP = " + strDnsAddress;
-                        }
-                        else if (Regex.IsMatch(strDnsAddress, ValidHostnameRegex))
-                        {
-                            IPHostEntry strAddress = Dns.GetHostEntry(strDnsAddress);
-                            strDnsAddress = strAddress.AddressList[0].ToString();
-                            this.textBox1.Text = strDnsAddress;
-                        }
-                        else
-                        {
-                            IP_Form2 box = new IP_Form2(Var1);
-                            box.ShowDialog();
-                            bbs_button.Enabled = true;
-                            cluster_button.Enabled = true;
-                            node_button.Enabled = true;
-                        }
-                        port = myRegistry.Read(Var1 + "-Port");
-                        if (port.Length <= 1)
-                        {
-                            IP_Form2 box = new IP_Form2(Var1);
-                            box.ShowDialog();
-                            bbs_button.Enabled = true;
-                            cluster_button.Enabled = true;
-                            node_button.Enabled = true;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                tc = new TelnetConnection(strDnsAddress, Convert.ToInt32(port));
-                                backgroundWorker1.RunWorkerAsync();
-                            }
-                            catch
-                            {
-                                this.textBox1.Text = "Connection Errot to IP = " + strDnsAddress;
-                            }
-                        }
-                    }
-                }
-                if (myRegistry.Read(Var1 + "-Mode") == "Com")
-                {
-                    this.toolStripComboBox1.SelectedIndex = 1;
-                }
-              
-
-            }
-            catch (Exception er)
-            {
-                MessageBox.Show(er.Message.ToString());
-            }
-
-
-        }
-        #endregion
+        
 
         //---------------------------------------------------------------------------------------------------------
         // Form1
@@ -570,7 +489,7 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
-            connect("BBS");
+            
             this.forward_button.Enabled = true;
             this.terminalEmulator1.Port = 6300;
             this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
@@ -591,7 +510,7 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
-            connect("Cluster");
+            
             this.terminalEmulator1.Port = 9000;
             this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
@@ -615,7 +534,7 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
-            connect("Node");
+            
 
         }
         #endregion
@@ -651,7 +570,7 @@ namespace Packet
 
             try
             {
-                tc.Telnet_Close();
+                ;
             }
             catch (Exception er)
             {
