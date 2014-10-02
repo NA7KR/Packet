@@ -34,7 +34,6 @@ namespace Packet
         AnsiColor myAnsiProject = new AnsiColor();
         ModifyFile myFiles = new ModifyFile();
         bool forward = false;
-        string prompt = "";
         Color textColor  = Color.Yellow;
         Color backgroundColor = Color.Black;
         Boolean bBeep = true;
@@ -165,14 +164,7 @@ namespace Packet
             this.toolStripComboBoxBGC.Items.Add("Magenta");
             this.toolStripComboBoxBGC.Items.Add("Cyan");
             this.toolStripComboBoxBGC.Items.Add("White");
-            this.richTextBox1.Left = 20;
-            this.richTextBox1.Top = 80;
-            this.richTextBox1.Height = ((this.Height - 160) / 2);
-            this.richTextBox2.Top = (this.richTextBox1.Top + this.richTextBox1.Size.Height + 20);
-            this.richTextBox2.Height = this.richTextBox1.Size.Height;
-            this.richTextBox2.Left = 20;
-            this.richTextBox1.Width = (this.Width - 60);
-            this.richTextBox2.Width = (this.Width - 60);
+           
 
             this.bbs_button.Width = 90;
             this.bbs_button.Left = 20;
@@ -211,91 +203,9 @@ namespace Packet
         }
         #endregion
 
-        //---------------------------------------------------------------------------------------------------------
-        // private void backgroundWorker1_DoWork
-        //---------------------------------------------------------------------------------------------------------
-        #region private void backgroundWorker1_DoWork
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            string rd2;
-            int i = 1;
-            // while connected
-            while (tc.IsConnected && prompt.Trim() != "Timeout !!")
-            {
-                string rd = tc.Read();
+       
 
-                if (rd != "") // stop text on screen jump
-                {
-                    rd = myAnsiProject.Colorize(rd);
-                    string[] delimiters = { "{" };
-                    string[] parts = rd.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-                    if (parts.Length > 1)
-                    {
-                        for (int index = 1; index < parts.Length; index++)
-                        {
-                            string part = parts[index];
-                            string temp = rd.Substring(rd.IndexOf(part) + part.Length);
-                            foreach (string delimter in delimiters)
-                            {
-                                if (temp.IndexOf(delimter) == 0)
-                                {
-                                    string[] words = parts[index].Split('}');
-                                    words[1] = words[1].Replace("\r\r", System.Environment.NewLine);
-                                    richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(words[1], Color.FromName(words[0])); }));
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (bBeep == true)
-                        {
-                            if (rd.Contains("\a"))
-                                Console.Beep(900, 1000);
-                        }
-                        if (forward == true)
-                        {
-                            rd2 = rd.Replace("\r", System.Environment.NewLine);
-                            rd2 = rd2.TrimEnd('\r', '\n');
-                            rd2 = rd2.TrimStart('\r', '\n');
-                            string[] result = rd2.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                            string str_build = "";
-                            foreach (string s in result)
-                                if (Regex.IsMatch(s, @"^\d"))
-                                {
-                                    str_build = str_build + s + System.Environment.NewLine;
-                                }
-                            myFiles.Write(str_build);
-                        }
-                        this.richTextBox1.Invoke(new MethodInvoker(delegate() { this.richTextBox1.AppendText(rd); }));
-                        i = i + 1;
-                        string mystring = i.ToString();
-                    }
-                }
-                System.Threading.Thread.Sleep(300);
-            }
-        }
-        #endregion
-
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-        // private void richTextBox2_KeyDown_1
-        // ritch Text to send
-        //-----------------------------------------------------------------------------------------------------------------------------------------------   
-        #region private void richTextBox2_KeyDown_1
-        private void richTextBox2_KeyDown_1(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-            {
-                // send client input to server
-                prompt = richTextBox2.Text + "\r\n";
-                tc.WriteLine(prompt);
-                this.textBox1.Invoke(new MethodInvoker(delegate() { this.textBox1.Text = "Enter Pressed"; }));
-                richTextBox1.Invoke(new MethodInvoker(delegate() { richTextBox1.AppendText(System.Environment.NewLine); }));
-                richTextBox2.ResetText();
-            }
-        }
-        #endregion
+  
 
         //---------------------------------------------------------------------------------------------------------
         // private void exitToolStripMenuItem1_Click
@@ -431,8 +341,8 @@ namespace Packet
                     textColor = Color.White;
                     break;
             }
-            richTextBox1.ForeColor = textColor;
-            richTextBox2.ForeColor = textColor;
+            terminalEmulator1.ForeColor  = textColor;
+         
 
         }
         #endregion
@@ -478,8 +388,7 @@ namespace Packet
                     backgroundColor = Color.White;
                     break;
             }
-            richTextBox1.BackColor = backgroundColor;
-            richTextBox2.BackColor = backgroundColor;
+            terminalEmulator1.BackColor = backgroundColor;
         }
         #endregion
 
@@ -500,14 +409,11 @@ namespace Packet
         #region private void Form1_Resize_1
         private void Form1_Resize_1(object sender, EventArgs e)
         {
-            this.richTextBox1.Left = 20;
-            this.richTextBox1.Top = 80;
-            this.richTextBox1.Height = ((this.Height - 160) / 2);
-            this.richTextBox2.Top = (this.richTextBox1.Top + this.richTextBox1.Size.Height + 20);
-            this.richTextBox2.Height = this.richTextBox1.Size.Height;
-            this.richTextBox2.Left = 20;
-            this.richTextBox1.Width = (this.Width - 60);
-            this.richTextBox2.Width = (this.Width - 60);
+            this.terminalEmulator1.Left = 20;
+            this.terminalEmulator1.Top = 80;
+            this.terminalEmulator1.Height = (this.Height - 20);
+            this.terminalEmulator1.Width = (this.Width - 60);
+            
         }
         #endregion
         //---------------------------------------------------------------------------------------------------------
@@ -520,16 +426,7 @@ namespace Packet
         }
         #endregion
 
-        //---------------------------------------------------------------------------------------------------------
-        // private void richTextBox1_TextChanged
-        //---------------------------------------------------------------------------------------------------------
-        #region private void richTextBox1_TextChanged
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-            richTextBox1.SelectionStart = richTextBox1.Text.Length;
-            richTextBox1.ScrollToCaret();
-        }
-        #endregion
+        
 
         //---------------------------------------------------------------------------------------------------------
         // private void Form1_Load
@@ -616,8 +513,8 @@ namespace Packet
                     textColor = Color.White;
                     break;
             }
-            richTextBox1.ForeColor = textColor;
-            richTextBox2.ForeColor = textColor;
+            terminalEmulator1.ForeColor = textColor;
+           
 
             string myREG2 = myRegistry.Read("Color Background");
             switch (myREG2)
@@ -658,8 +555,7 @@ namespace Packet
                     backgroundColor = Color.Black;
                     break;
             }
-            richTextBox1.BackColor = backgroundColor;
-            richTextBox2.BackColor = backgroundColor;
+            terminalEmulator1.BackColor = backgroundColor;
 
         }
         #endregion
@@ -670,13 +566,18 @@ namespace Packet
         #region private void button1_Click
         private void button1_Click(object sender, EventArgs e)
         {
-            richTextBox1.AppendText(System.Environment.NewLine);
+            
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
             connect("BBS");
             this.forward_button.Enabled = true;
-            this.richTextBox2.Focus();
+            this.terminalEmulator1.Port = 6300;
+            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
+            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.Connect();
+            
+            
         }
         #endregion
 
@@ -686,11 +587,16 @@ namespace Packet
         #region private void button1_Click_2
         private void button1_Click_2(object sender, EventArgs e)
         {
-            richTextBox1.AppendText(System.Environment.NewLine);
+            
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
             connect("Cluster");
+            this.terminalEmulator1.Port = 9000;
+            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
+            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.Connect();
+            
         }
         #endregion
 
@@ -700,8 +606,12 @@ namespace Packet
         #region private void node_button_Click
         private void node_button_Click(object sender, EventArgs e)
         {
-
-            richTextBox1.AppendText(System.Environment.NewLine);
+            this.terminalEmulator1.Port = 23;
+            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
+            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.Connect();
+            
+            
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
@@ -762,9 +672,11 @@ namespace Packet
         #region ssh_button_Click
         private void ssh_button_Click(object sender, EventArgs e)
         {
+            this.terminalEmulator1.Port = 22;
             this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();
+            
         }
         #endregion
 

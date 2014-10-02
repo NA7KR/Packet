@@ -53,8 +53,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.forward_button = new System.Windows.Forms.Button();
             this.cluster_button = new System.Windows.Forms.Button();
@@ -65,9 +63,8 @@
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            
+            
             // 
             // bbs_button
             // 
@@ -260,30 +257,6 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.WindowText;
-            this.richTextBox1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(55, 87);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.ShortcutsEnabled = false;
-            this.richTextBox1.Size = new System.Drawing.Size(557, 224);
-            this.richTextBox1.TabIndex = 2;
-            this.richTextBox1.Text = "";
-            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
-            // 
-            // richTextBox2
-            // 
-            this.richTextBox2.BackColor = System.Drawing.SystemColors.WindowText;
-            this.richTextBox2.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox2.Location = new System.Drawing.Point(31, 339);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(581, 214);
-            this.richTextBox2.TabIndex = 3;
-            this.richTextBox2.Text = "";
-            this.richTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.richTextBox2_KeyDown_1);
-            // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(690, 41);
@@ -344,17 +317,17 @@
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            this.terminalEmulator1.Columns = 55;
+            this.terminalEmulator1.Columns = 162;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
             this.terminalEmulator1.ForeColor = System.Drawing.Color.Yellow;
             this.terminalEmulator1.Hostname = null;
-            this.terminalEmulator1.Location = new System.Drawing.Point(546, 105);
+            this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";
             this.terminalEmulator1.Password = null;
             this.terminalEmulator1.Port = 9000;
-            this.terminalEmulator1.Rows = 15;
-            this.terminalEmulator1.Size = new System.Drawing.Size(394, 200);
+            this.terminalEmulator1.Rows = 35;
+            this.terminalEmulator1.Size = new System.Drawing.Size(1144, 457);
             this.terminalEmulator1.TabIndex = 10;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;
@@ -371,8 +344,6 @@
             this.Controls.Add(this.cluster_button);
             this.Controls.Add(this.forward_button);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.richTextBox2);
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.bbs_button);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -395,8 +366,6 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.RichTextBox richTextBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
