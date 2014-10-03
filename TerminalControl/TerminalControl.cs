@@ -3476,7 +3476,7 @@ namespace PacketSoftware
                     
 						//Parent.NvtParser.ParseString (OutString); 
 						//this.Parent.Invalidate ();
-                    
+                        OutString = System.Environment.NewLine; 
 
 						KeyboardEvent (this, OutString); 
 					} 

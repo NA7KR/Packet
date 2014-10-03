@@ -478,10 +478,11 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
-            
-            this.forward_button.Enabled = true;
-            this.terminalEmulator1.Port = 6300;
-            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
+
+            this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("BBS-Port"));
+            this.terminalEmulator1.Hostname = myRegistry.Read("BBS-IP");
+            this.terminalEmulator1.Username = myRegistry.Read("BBS-CallSign");
+            this.terminalEmulator1.Password = myRegistry.Read("BBS-Password");
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();  
         }
@@ -496,9 +497,11 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
-            
-            this.terminalEmulator1.Port = 9000;
-            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
+
+            this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Cluster-Port"));
+            this.terminalEmulator1.Hostname = myRegistry.Read("Cluster-IP");
+            this.terminalEmulator1.Username = myRegistry.Read("Cluster-CallSign");
+            this.terminalEmulator1.Password = myRegistry.Read("Cluster-Password");
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();  
         }
@@ -514,8 +517,10 @@ namespace Packet
             cluster_button.Enabled = false;
             node_button.Enabled = false;
 
-            this.terminalEmulator1.Port = 23;
-            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
+            this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Node-Port"));
+            this.terminalEmulator1.Hostname = myRegistry.Read("Node-IP");
+            this.terminalEmulator1.Username = myRegistry.Read("Node-CallSign");
+            this.terminalEmulator1.Password = myRegistry.Read("Node-Password");
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();
         }
@@ -556,19 +561,16 @@ namespace Packet
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        // pssh_button_Click
+        // ssh_button_Click
         //---------------------------------------------------------------------------------------------------------
         #region ssh_button_Click
         private void ssh_button_Click(object sender, EventArgs e)
         {
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.SSH2;
-
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("SSH-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("SSH-IP");
             this.terminalEmulator1.Username = myRegistry.Read("SSH-CallSign");
             this.terminalEmulator1.Password = myRegistry.Read("SSH-Password");
-
-            
             this.terminalEmulator1.Connect();  
         }
         #endregion
