@@ -60,6 +60,7 @@
             this.disconnect_button = new System.Windows.Forms.Button();
             this.ssh_button = new System.Windows.Forms.Button();
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
+            this.SSHConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,6 +111,7 @@
             this.clusterIPConfigToolStripMenuItem,
             this.nodeTelnetComToolStripMenuItem,
             this.nodeIPConfigToolStripMenuItem,
+            this.SSHConfigToolStripMenuItem,
             this.beepToolStripMenuItem,
             this.colourToolStripMenuItem});
             this.setupToolStripMenuItem.Name = "setupToolStripMenuItem";
@@ -317,7 +319,6 @@
             this.terminalEmulator1.Columns = 162;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.terminalEmulator1.Hostname = null;
             this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";
@@ -328,6 +329,13 @@
             this.terminalEmulator1.TabIndex = 10;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;
+            // 
+            // SSHConfigToolStripMenuItem
+            // 
+            this.SSHConfigToolStripMenuItem.Name = "SSHConfigToolStripMenuItem";
+            this.SSHConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.SSHConfigToolStripMenuItem.Text = "SSH Config";
+            this.SSHConfigToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // Form1
             // 
@@ -389,6 +397,7 @@
         private System.Windows.Forms.ToolStripMenuItem textColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxTXTC;
         private PacketSoftware.TerminalEmulator terminalEmulator1;
+        private System.Windows.Forms.ToolStripMenuItem SSHConfigToolStripMenuItem;
 
       
     }

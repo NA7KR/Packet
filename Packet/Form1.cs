@@ -569,6 +569,12 @@ namespace Packet
         }
         #endregion
 
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            IP_Form2 box = new IP_Form2("SSH");
+            box.ShowDialog();
+        }
+
     }
     #endregion
 }
