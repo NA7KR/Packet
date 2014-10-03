@@ -317,7 +317,7 @@
             this.terminalEmulator1.Columns = 162;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator1.ForeColor = System.Drawing.Color.White;
+            this.terminalEmulator1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.terminalEmulator1.Hostname = null;
             this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";

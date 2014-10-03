@@ -584,6 +584,8 @@ namespace PacketSoftware
 			base.OnMouseDown (CurArgs);
 		}
 
+      
+     
 		protected override void OnFontChanged (EventArgs e)
 		{
 			//MessageBox.Show(this.Font.Name + " " + Convert.ToString(this.Font.Size));
