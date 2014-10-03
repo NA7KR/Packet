@@ -235,7 +235,7 @@ namespace PacketSoftware
 			//this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
 
 			//this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
-			this.FGColor      = System.Drawing.Color.GreenYellow;
+            this.FGColor      = System.Drawing.Color.FromArgb(0, 0, 0);
 			this.BackColor    = System.Drawing.Color.FromArgb (0, 0, 160);
 			this.BoldColor    = System.Drawing.Color.FromArgb (255, 255, 255);
 			this.BlinkColor   = System.Drawing.Color.Red;
@@ -1122,7 +1122,7 @@ namespace PacketSoftware
 		private void AssignColors (CharAttribStruct CurAttribs, ref System.Drawing.Color CurFGColor, ref System.Drawing.Color CurBGColor)
 		{
 
-			CurFGColor = this.FGColor; 
+			CurFGColor = this.ForeColor; 
 			CurBGColor = this.BackColor;
 
 			if (CurAttribs.IsBlinking == true)
