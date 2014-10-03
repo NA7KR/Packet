@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.IP_label = new System.Windows.Forms.Label();
             this.ip_textBox = new System.Windows.Forms.TextBox();
             this.Done_button = new System.Windows.Forms.Button();
@@ -42,6 +43,8 @@
             this.bbs_label = new System.Windows.Forms.Label();
             this.password_textBox = new System.Windows.Forms.TextBox();
             this.password_label = new System.Windows.Forms.Label();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // IP_label
@@ -148,6 +151,7 @@
             // 
             this.password_textBox.Location = new System.Drawing.Point(143, 170);
             this.password_textBox.Name = "password_textBox";
+            this.password_textBox.PasswordChar = '#';
             this.password_textBox.Size = new System.Drawing.Size(109, 20);
             this.password_textBox.TabIndex = 18;
             // 
@@ -188,6 +192,7 @@
             this.Name = "IP_Form2";
             this.Text = "IP Config";
             this.Load += new System.EventHandler(this.IP_Form2_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -209,5 +214,6 @@
         private System.Windows.Forms.Label bbs_label;
         private System.Windows.Forms.TextBox password_textBox;
         private System.Windows.Forms.Label password_label;
+        private System.Windows.Forms.BindingSource bindingSource1;
     }
 }

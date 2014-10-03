@@ -118,7 +118,8 @@ namespace Packet
                 port_textBox.Text = myRegistry.Read(Var1 + "-Port");
                 callSign_textBox.Text = myRegistry.Read(Var1 + "-CallSign");
                 password_textBox.Text = myRegistry.Read(Var1 + "-Password");
-
+                password_textBox.Top = 80;
+                password_label.Top = 80;
                 ip_textBox.TabIndex = 1;
                 port_textBox.TabIndex = 2;
                 bbs_textBox.TabIndex = 3;
@@ -128,7 +129,15 @@ namespace Packet
                 port_label.Text = Var1 + " Port";
                 mycall_label.Text = Var1 + " User Name";
                 password_label.Text = Var1 + " Password";
-
+                bbs_label.Visible = false;
+                mycall_label.Visible = false;
+                start_label.Visible = false;
+                bbs_textBox.Visible = false;
+                callSign_textBox.Visible = false;
+                start_textBox.Visible = false;
+                Done_button.Top = 110;
+                Cancel_button.Top = 110;
+                this.Height = 200;
                 
             }
             else
