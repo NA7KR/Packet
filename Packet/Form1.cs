@@ -497,7 +497,8 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
-
+           
+            this.terminalEmulator1.Beep = bBeep;
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Cluster-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("Cluster-IP");
             this.terminalEmulator1.Username = myRegistry.Read("Cluster-CallSign");

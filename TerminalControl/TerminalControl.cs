@@ -66,6 +66,18 @@ namespace PacketSoftware
             }
         }
 
+        public System.Boolean Beep
+        {
+            get
+            {
+                return this._beep;
+            }
+            set
+            {
+                this._beep = value;
+            }
+        }
+
 		public string Username
 		{
 			get
@@ -145,6 +157,7 @@ namespace PacketSoftware
 		private string						_username;       // maybe
 		private string						_password;
         private System.Int32                _port;
+        private System.Boolean              _beep;
 		private ContextMenu					contextMenu1;    // rightclick menu
 		private MenuItem					mnuCopy;
 		private MenuItem					mnuPaste;
@@ -174,6 +187,7 @@ namespace PacketSoftware
 		private System.Int32                 _rows;
 		private System.Int32                 TopMargin;
 		private System.Int32                 BottomMargin;
+        private System.Int16                 count;
 		private System.String                TypeFace      = FontFamily.GenericMonospace.GetName(0);
 		private System.Drawing.FontStyle     TypeStyle     = System.Drawing.FontStyle.Regular;
 		private System.Int32                 TypeSize      = 8;
@@ -2774,6 +2788,20 @@ namespace PacketSoftware
 
 				case '\x07': // BEL ring my bell
 					// this.BELL;
+                        if (this._beep == true)
+                        {
+                            if (count == 0)
+                            {
+                                // Beep at 5000 Hz for 1 second
+                                Console.Beep(2000, 500);
+                                count = 1;
+                            }
+                            else
+                            {
+                                count = 0;
+                            }
+                            
+                        }
 					break;
 
 				case '\x08': // BS back space
