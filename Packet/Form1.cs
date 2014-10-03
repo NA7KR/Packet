@@ -561,11 +561,15 @@ namespace Packet
         #region ssh_button_Click
         private void ssh_button_Click(object sender, EventArgs e)
         {
-            this.terminalEmulator1.Port = 22;
-            this.terminalEmulator1.Hostname = "dxcluster.na7kr.us";
-            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.Connect();
+            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.SSH2;
+
+            this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("SSH-Port"));
+            this.terminalEmulator1.Hostname = myRegistry.Read("SSH-IP");
+            this.terminalEmulator1.Username = myRegistry.Read("SSH-CallSign");
+            this.terminalEmulator1.Password = myRegistry.Read("SSH-Password");
+
             
+            this.terminalEmulator1.Connect();  
         }
         #endregion
 
