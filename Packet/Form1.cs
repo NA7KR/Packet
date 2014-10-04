@@ -340,7 +340,7 @@ namespace Packet
         //---------------------------------------------------------------------------------------------------------
         // private void Form1_Load
         //---------------------------------------------------------------------------------------------------------
-        #region
+        #region load
         private void Form1_Load(object sender, EventArgs e)
         {
             if (myRegistry.Read("BBS-Mode") == "Telnet")
