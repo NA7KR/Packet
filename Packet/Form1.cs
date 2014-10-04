@@ -37,8 +37,8 @@ namespace Packet
         Color textColor  = Color.Yellow;
         Color backgroundColor = Color.Black;
         Boolean bBeep = true;
-        string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
-        string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
+        //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
+        //string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
         #endregion 
 
         //---------------------------------------------------------------------------------------------------------
@@ -334,6 +334,8 @@ namespace Packet
         private void button1_Click_1(object sender, EventArgs e)
         {
             forward = true;
+           
+
         }
         #endregion    
 
@@ -478,6 +480,7 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
+            forward_button.Enabled = true;
 
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("BBS-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("BBS-IP");
@@ -497,7 +500,14 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
-           
+            if (myRegistry.Read("Cluster-Echo") == "Yes")
+            {
+                this.terminalEmulator1.Echo = true;
+            }
+            else
+            {
+                this.terminalEmulator1.Echo = false;
+            }
             this.terminalEmulator1.Beep = bBeep;
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Cluster-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("Cluster-IP");

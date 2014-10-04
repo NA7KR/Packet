@@ -78,6 +78,18 @@ namespace PacketSoftware
             }
         }
 
+        public System.Boolean Echo
+        {
+            get
+            {
+                return this._echo;
+            }
+            set
+            {
+                this._echo = value;
+            }
+        }
+
 		public string Username
 		{
 			get
@@ -158,6 +170,7 @@ namespace PacketSoftware
 		private string						_password;
         private System.Int32                _port;
         private System.Boolean              _beep;
+        private System.Boolean              _echo;
 		private ContextMenu					contextMenu1;    // rightclick menu
 		private MenuItem					mnuCopy;
 		private MenuItem					mnuPaste;
@@ -613,8 +626,8 @@ namespace PacketSoftware
 			this.Focus();
 
 			//System.Int32           port    = 23;
-			//System.Net.IPHostEntry IPHost  = System.Net.Dns.GetHostEntry(HostName); 
-			System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
+			System.Net.IPHostEntry IPHost  = System.Net.Dns.GetHostEntry(HostName); 
+			//System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
 			System.Net.IPAddress[] addr    = IPHost.AddressList; 
         
 			try
@@ -657,7 +670,10 @@ namespace PacketSoftware
 			IPAddress ip;
 			try
 			{
-				ip = Dns.GetHostByName(hostname).AddressList[0];
+                System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostEntry(hostname);
+                //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
+                System.Net.IPAddress[] addr = IPHost.AddressList; 
+				ip = addr[0];
 			}
 			catch
 			{
@@ -2064,6 +2080,7 @@ namespace PacketSoftware
 			switch (e.CurSequence)
 			{
 				case "":
+                  ;
 					break;
 
 				case "\x1b" + "7": //DECSC Save Cursor position and attributes
@@ -3537,6 +3554,9 @@ namespace PacketSoftware
     
 						default:
                             //KRR
+                            {
+                                //
+                            }
 							break;
 					}
 				}

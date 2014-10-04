@@ -110,6 +110,10 @@ namespace Packet
             mycall_textBox.Width = 140;
             password_textBox.Width = 140;
             echo_comboBox.Width=140;
+            Done_button.Width = 75;
+            Done_button.Left = 60;
+            Cancel_button.Width = 75;
+            Cancel_button.Left = 195;
             if (Var1 == "BBS")
             {
                start_textBox.Text = myRegistry.Read(Var1 + "-Start Number");
@@ -122,10 +126,7 @@ namespace Packet
                start_textBox.Width = 140;
                Done_button.Top = 230;
                Cancel_button.Top = 230;
-               Done_button.Width = 75;
-               Done_button.Left = 60;
-               Cancel_button.Width = 75;
-               Cancel_button.Left = 195;
+             
                this.Height = 310;
             }  
             else if (Var1 == "SSH")
@@ -163,10 +164,6 @@ namespace Packet
                 start_textBox.Visible = false;
                 start_label.Visible = false;
                 Done_button.Top = 200;
-                Done_button.Width = 75;
-                Done_button.Left = 60;
-                Cancel_button.Width = 75;
-                Cancel_button.Left = 195;
                 Cancel_button.Top = 200;
                 this.Height = 280;
             }     
