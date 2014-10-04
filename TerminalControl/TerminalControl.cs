@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace PacketSoftware
 {
@@ -78,15 +79,15 @@ namespace PacketSoftware
             }
         }
 
-        public System.Boolean Echo
+        public System.Boolean LocalEcho
         {
             get
             {
-                return this._echo;
+                return this._localecho;
             }
             set
             {
-                this._echo = value;
+                this._localecho = value;
             }
         }
 
@@ -170,7 +171,7 @@ namespace PacketSoftware
 		private string						_password;
         private System.Int32                _port;
         private System.Boolean              _beep;
-        private System.Boolean              _echo;
+        private System.Boolean              _localecho;
 		private ContextMenu					contextMenu1;    // rightclick menu
 		private MenuItem					mnuCopy;
 		private MenuItem					mnuPaste;
@@ -218,6 +219,9 @@ namespace PacketSoftware
 		private uc_Chars                     G3;
 		private  uc_Mode                      Modes;
 		private uc_VertScrollBar             VertScrollBar;
+        string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
+        string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
+
 		#endregion
 		#region Delegates
 		private delegate void NvtParserEventHandler (object Sender, NvtParserEventArgs e);
@@ -624,7 +628,21 @@ namespace PacketSoftware
 		private void ConnectTelnet(string HostName, System.Int32 Port)
 		{
 			this.Focus();
+            //
+  
+            
+            if (Regex.IsMatch(HostName, ValidHostnameRegex))
+            {
 
+                IPHostEntry strAddress = Dns.GetHostEntry(HostName);
+
+             //   strDnsAddress = strAddress.AddressList[0].ToString();
+//KRR
+              
+            } 
+            
+
+            //
 			//System.Int32           port    = 23;
 			System.Net.IPHostEntry IPHost  = System.Net.Dns.GetHostEntry(HostName); 
 			//System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);

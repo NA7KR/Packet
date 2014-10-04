@@ -502,11 +502,11 @@ namespace Packet
             node_button.Enabled = false;
             if (myRegistry.Read("Cluster-Echo") == "Yes")
             {
-                this.terminalEmulator1.Echo = true;
+                this.terminalEmulator1.LocalEcho = true;
             }
             else
             {
-                this.terminalEmulator1.Echo = false;
+                this.terminalEmulator1.LocalEcho = false;
             }
             this.terminalEmulator1.Beep = bBeep;
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Cluster-Port"));
