@@ -650,6 +650,15 @@ namespace PacketSoftware
 		}
 		#endregion
 		#region Private Methods
+
+        private void Disconnect(System.IAsyncResult ar)
+		{
+			// Get The connection socket from the callback
+			uc_CommsStateObject StateObject = (uc_CommsStateObject) ar.AsyncState;
+            StateObject.Socket.Shutdown (System.Net.Sockets.SocketShutdown.Both);
+			StateObject.Socket.Close ();
+         }
+
 		private void ConnectTelnet(string HostName, System.Int32 Port)
 		{
 			this.Focus();

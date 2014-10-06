@@ -568,6 +568,8 @@ namespace Packet
             bbs_button.Enabled = true;
             cluster_button.Enabled = true;
             node_button.Enabled = true;
+            this.terminalEmulator1.Close = true;
+                //ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
         }
         #endregion
 
