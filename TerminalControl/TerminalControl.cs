@@ -112,6 +112,7 @@ namespace PacketSoftware
             set
             {
                 this._close = value;
+                
             }
         }
 
@@ -3457,7 +3458,7 @@ namespace PacketSoftware
 
 			public uc_Mode ()
 			{
-				this.Flags = 0;
+                this.Flags = 0;
 			} 
 		}
 
@@ -3496,6 +3497,16 @@ namespace PacketSoftware
 				RepeatCount = System.BitConverter.ToUInt16 (lBytes, 0);
 				ScanCode    = lBytes[2];
 				Flags       = lBytes[3];
+                KeyValue = System.BitConverter.ToUInt16(wBytes, 0);
+                //KRR
+                {
+                    if (Parent.LocalEcho)
+                    {
+
+                        Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(KeyValue)));
+                        Parent.Refresh();
+                    }
+                }
     
 				// key down messages send the scan code in wParam whereas
 				// key press messages send the char and unicode values in this word
@@ -3590,10 +3601,7 @@ namespace PacketSoftware
 							break;
     
 						default:
-                            //KRR
-                            {
-                                //
-                            }
+                          
 							break;
 					}
 				}

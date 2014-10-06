@@ -481,7 +481,14 @@ namespace Packet
             cluster_button.Enabled = false;
             node_button.Enabled = false;
             forward_button.Enabled = true;
-
+            if (myRegistry.Read("BBS-Echo") == "Yes")
+            {
+                this.terminalEmulator1.LocalEcho = true;
+            }
+            else
+            {
+                this.terminalEmulator1.LocalEcho = false;
+            }
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("BBS-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("BBS-IP");
             this.terminalEmulator1.Username = myRegistry.Read("BBS-CallSign");
@@ -570,6 +577,7 @@ namespace Packet
             node_button.Enabled = true;
             this.terminalEmulator1.Close = true;
                 //ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+           
         }
         #endregion
 
