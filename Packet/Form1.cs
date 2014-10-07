@@ -534,7 +534,14 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
-
+            if (myRegistry.Read("Node-Echo") == "Yes")
+            {
+                this.terminalEmulator1.LocalEcho = true;
+            }
+            else
+            {
+                this.terminalEmulator1.LocalEcho = false;
+            }
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Node-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("Node-IP");
             this.terminalEmulator1.Username = myRegistry.Read("Node-CallSign");
