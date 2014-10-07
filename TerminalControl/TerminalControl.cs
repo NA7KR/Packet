@@ -3498,15 +3498,7 @@ namespace PacketSoftware
 				ScanCode    = lBytes[2];
 				Flags       = lBytes[3];
                 KeyValue = System.BitConverter.ToUInt16(wBytes, 0);
-                //KRR
-                {
-                    if (Parent.LocalEcho)
-                    {
-
-                        Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(KeyValue)));
-                        Parent.Refresh();
-                    }
-                }
+               
     
 				// key down messages send the scan code in wParam whereas
 				// key press messages send the char and unicode values in this word
@@ -3601,7 +3593,15 @@ namespace PacketSoftware
 							break;
     
 						default:
-                          
+                            //KRR
+                            {
+                                if (Parent.LocalEcho && KeyValue == 13)
+                                {
+                                //  Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(KeyValue)));
+                                    Parent.RxdTextEvent("\n\r");
+                                    Parent.Refresh();
+                                }
+                            }
 							break;
 					}
 				}
@@ -3621,7 +3621,16 @@ namespace PacketSoftware
 					if (this.LastKeyDownSent == false)
 					{
 						// send the character straight to the host if we haven't already handled the actual key press
-						KeyboardEvent (this, System.Convert.ToChar (AnsiChar).ToString ()); 
+						KeyboardEvent (this, System.Convert.ToChar (AnsiChar).ToString ());
+
+                        //KRR
+                        {
+                            if (Parent.LocalEcho)
+                            {
+                                Parent.RxdTextEvent(Convert.ToString(System.Convert.ToChar(AnsiChar).ToString()));
+                                Parent.Refresh();
+                            }
+                        }
 					}
 				}
     
