@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyRegistry;
+using Utility.Encrypting;
 #endregion
 
 namespace Packet
@@ -16,6 +17,7 @@ namespace Packet
     public partial class IP_Form2 : Form
     {
          ModifyRegistry myRegistry = new ModifyRegistry();
+         Encrypting myEncrypt = new Encrypting();
          string Var1;
 
         //---------------------------------------------------------------------------------------------------------
@@ -42,10 +44,10 @@ namespace Packet
             myRegistry.Write(Var1 + "-CallSign", mycall_textBox.Text);
             myRegistry.Write(Var1 + "-BBS", bbs_textBox.Text);
             myRegistry.Write(Var1 + "-Start Number", start_textBox.Text);
-            myRegistry.Write(Var1 + "-Password", password_textBox.Text);
+            myRegistry.Write(Var1 + "-Password", myEncrypt.Encrypt(password_textBox.Text));
             myRegistry.Write(Var1 + "-Echo", echo_comboBox.Text);
             this.Close();
-
+            
         }
         #endregion
 

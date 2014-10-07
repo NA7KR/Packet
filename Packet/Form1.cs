@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyFile;
 using Utility.ModifyRegistry;
+using Utility.Encrypting;
 #endregion
 
 namespace Packet
@@ -30,7 +31,8 @@ namespace Packet
         #region private TelnetConnection
         
         ModifyRegistry myRegistry = new ModifyRegistry();
-        
+        Encrypting myEncrypt = new Encrypting();
+
         ModifyFile myFiles = new ModifyFile();
         bool forward = false;
         
@@ -498,7 +500,7 @@ namespace Packet
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("BBS-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("BBS-IP");
             this.terminalEmulator1.Username = myRegistry.Read("BBS-CallSign");
-            this.terminalEmulator1.Password = myRegistry.Read("BBS-Password");
+            this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("BBS-Password"));
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();  
         }
@@ -525,7 +527,7 @@ namespace Packet
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Cluster-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("Cluster-IP");
             this.terminalEmulator1.Username = myRegistry.Read("Cluster-CallSign");
-            this.terminalEmulator1.Password = myRegistry.Read("Cluster-Password");
+            this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("Cluster-Password"));
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();  
         }
@@ -551,7 +553,7 @@ namespace Packet
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Node-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("Node-IP");
             this.terminalEmulator1.Username = myRegistry.Read("Node-CallSign");
-            this.terminalEmulator1.Password = myRegistry.Read("Node-Password");
+            this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("Node-Password"));
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();
         }
@@ -604,7 +606,7 @@ namespace Packet
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("SSH-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("SSH-IP");
             this.terminalEmulator1.Username = myRegistry.Read("SSH-CallSign");
-            this.terminalEmulator1.Password = myRegistry.Read("SSH-Password");
+            this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("SSH-Password"));
             this.terminalEmulator1.Connect();  
         }
         #endregion
