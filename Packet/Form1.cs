@@ -467,6 +467,12 @@ namespace Packet
                     break;
             }
             terminalEmulator1.BackColor = backgroundColor;
+            if (myRegistry.Read("SSH-Echo") == "No")
+            {
+                ssh_button.Visible = false;
+            }
+            else
+                ssh_button.Visible = true;
 
         }
         #endregion
@@ -607,6 +613,12 @@ namespace Packet
         {
             IP_Form2 box = new IP_Form2("SSH");
             box.ShowDialog();
+            if (myRegistry.Read( "SSH-Echo") == "No")
+            {
+                ssh_button.Visible = false;
+            }
+            else
+                ssh_button.Visible = true;
         }
 
     }

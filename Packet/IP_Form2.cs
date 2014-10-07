@@ -148,15 +148,17 @@ namespace Packet
                 port_label.Text = Var1 + " Port";
                 mycall_label.Text = Var1 + " User Name";
                 password_label.Text = Var1 + " Password";
+                echo_label.Text = Var1 + " Enable";
+
                 bbs_label.Visible = false;
                 start_label.Visible = false;
                 bbs_textBox.Visible = false;
                 start_textBox.Visible = false;
-                Done_button.Top = 140;
-                Cancel_button.Top = 140;
-                this.Height = 230;
-                echo_comboBox.Visible = false;
-                echo_label.Visible = false;
+                Done_button.Top = 170;
+                Cancel_button.Top = 170;
+                this.Height = 260;
+                echo_comboBox.Top = 140;
+                echo_label.Top = 140;
                 
             }
             else
