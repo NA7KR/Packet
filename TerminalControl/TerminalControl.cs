@@ -1,3 +1,4 @@
+#region Using Directive
 using System;
 using System.Collections.Specialized;
 using System.Windows.Forms;
@@ -7,10 +8,11 @@ using System.Net.Sockets;
 using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
-
+#endregion
 namespace PacketSoftware
 {
-	public class TerminalEmulator : Control
+    #region public class TerminalEmulator : Control
+    public class TerminalEmulator : Control
 	{
 		#region Public Properties
 		public int Rows
@@ -111,8 +113,7 @@ namespace PacketSoftware
             }
             set
             {
-                this._close = value;
-                
+                this._close = value;    
             }
         }
 
@@ -139,15 +140,27 @@ namespace PacketSoftware
 			}
 		}
 		#endregion
+
 		#region Public Methods
-		public StringCollection ScreenScrape(int StartRow, int StartColumn, int EndRow, int EndColumn)
+
+        public void closeconnection()
+        {
+
+            Close = true;
+            Disconnect(lastAR);
+        }
+        #region StringCollection
+        public StringCollection ScreenScrape(int StartRow, int StartColumn, int EndRow, int EndColumn)
 		{
 			StringCollection ScrapedText = new StringCollection();
 
 
 			return ScrapedText;
 		}
-		public void Write (byte[] data, int offset, int length)
+        #endregion
+
+        #region Write
+        public void Write (byte[] data, int offset, int length)
 		{
 			string sReceived = Encoding.ASCII.GetString(data, offset, length);
 			
@@ -156,7 +169,10 @@ namespace PacketSoftware
 			this.Invoke(this.RxdTextEvent, new System.String[] {System.String.Copy (sReceived)});
 			this.Invoke(this.RefreshEvent);
 		}
-		public void Connect ()
+        #endregion
+
+        #region Connect
+        public void Connect ()
 		{
 			switch (this.ConnectionType)
 			{
@@ -180,9 +196,11 @@ namespace PacketSoftware
 				}
 			}
 		}
-		#endregion
-		#region public enums
-		public enum ConnectionTypes
+        #endregion
+
+        #endregion
+        #region public enums
+        public enum ConnectionTypes
 		{
 			Telnet,
 			SSH1,
@@ -194,8 +212,7 @@ namespace PacketSoftware
 		private string						_hostname;       // used for connecting to SSH
 		private string						_username;       // maybe
 		private string						_password;
-        private string                      _filename;
-        
+        private string                      _filename; 
         private System.Int32                _port;
         private System.Boolean              _beep;
         private System.Boolean              _localecho;
@@ -247,7 +264,7 @@ namespace PacketSoftware
 		private uc_Chars                     G3;
 		private  uc_Mode                      Modes;
 		private uc_VertScrollBar             VertScrollBar;
-       
+        private IAsyncResult                lastAR;
 		#endregion
 		#region Delegates
 		private delegate void NvtParserEventHandler (object Sender, NvtParserEventArgs e);
@@ -1059,6 +1076,7 @@ namespace PacketSoftware
 							System.Net.Sockets.SocketFlags.None, 
 							callbackEndDispatch, 
 							this.CurSocket);
+                        lastAR = ar;
 					}
 					catch
 					{
@@ -4651,8 +4669,9 @@ namespace PacketSoftware
 
 		#endregion
 	}
-	#region Routrek SSH Reader Class
-	class Reader : Routrek.SSHC.ISSHConnectionEventReceiver, Routrek.SSHC.ISSHChannelEventReceiver 
+    #endregion
+    #region Routrek SSH Reader Class
+    class Reader : Routrek.SSHC.ISSHConnectionEventReceiver, Routrek.SSHC.ISSHChannelEventReceiver 
 	{
 		private TerminalEmulator Terminal;
 		public Reader (object obj)

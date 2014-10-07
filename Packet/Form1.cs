@@ -32,10 +32,7 @@ namespace Packet
         
         ModifyRegistry myRegistry = new ModifyRegistry();
         Encrypting myEncrypt = new Encrypting();
-
         ModifyFile myFiles = new ModifyFile();
-        bool forward = false;
-        
         Color textColor  = Color.Yellow;
         Color backgroundColor = Color.Black;
         Boolean bBeep = true;
@@ -335,7 +332,7 @@ namespace Packet
         #region private void button1_Click_1
         private void button1_Click_1(object sender, EventArgs e)
         {
-            forward = true;
+           
            
 
         }
@@ -590,8 +587,9 @@ namespace Packet
             bbs_button.Enabled = true;
             cluster_button.Enabled = true;
             node_button.Enabled = true;
-            this.terminalEmulator1.Close = true;
-                //ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            //this.terminalEmulator1.Close = true;
+            // PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+            terminalEmulator1.closeconnection();
            
         }
         #endregion
