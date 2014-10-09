@@ -1,17 +1,21 @@
-﻿using System;
+﻿#region Using Directive
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.IO;
+#endregion
+
 namespace Utility.Encrypting
 {
     public class Encrypting
     {
+        #region Encrypt
         public string Encrypt(string clearText)
         {
-            string EncryptionKey = "MAKV2SPBNI99212";
+            string EncryptionKey = "sZv4xkEdJa0T3H";
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
             {
@@ -30,10 +34,12 @@ namespace Utility.Encrypting
             }
             return clearText;
         }
-
+        #endregion
+        
+        #region Decrypt
         public string Decrypt(string cipherText)
         {
-            string EncryptionKey = "MAKV2SPBNI99212";
+            string EncryptionKey = "sZv4xkEdJa0T3H";
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())
             {
@@ -52,8 +58,6 @@ namespace Utility.Encrypting
             }
             return cipherText;
         }
-
-
-
+        #endregion
     }
 }
