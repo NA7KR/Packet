@@ -132,7 +132,7 @@ namespace Packet
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        // private void toolStripComboBox1_SelectedIndexChanged
+        // toolStripComboBox1 BBS
         //---------------------------------------------------------------------------------------------------------
         #region
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -142,17 +142,19 @@ namespace Packet
                 case 0:
                     myRegistry.Write("BBS-Mode", "Telnet");
                     iPConfigToolStripMenuItem.Visible = true;
+                    bbs_button.Enabled = true;
                     break;
                 case 1:
                     myRegistry.Write("BBS-Mode", "Com");
                     iPConfigToolStripMenuItem.Visible = false;
+                    bbs_button.Enabled = true;
                     break;
             }
         }
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        // private void toolStripComboBox2_SelectedIndexChanged
+        // toolStripComboBox2 Cluster
         //---------------------------------------------------------------------------------------------------------
         #region private void toolStripComboBox2_SelectedIndexChanged
         private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -162,17 +164,19 @@ namespace Packet
                 case 0:
                     myRegistry.Write("Cluster-Mode", "Telnet");
                     clusterIPConfigToolStripMenuItem.Visible = true;
+                    cluster_button.Enabled = true;
                     break;
                 case 1:
                     myRegistry.Write("Cluster-Mode", "Com");
                     clusterIPConfigToolStripMenuItem.Visible = false;
+                    cluster_button.Enabled = true;
                     break;
             }
         }
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        // private void toolStripComboBox3_SelectedIndexChanged
+        // toolStripComboBox3 Node
         //---------------------------------------------------------------------------------------------------------
         #region private void toolStripComboBox3_SelectedIndexChanged
         private void toolStripComboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -182,11 +186,13 @@ namespace Packet
                 case 0:
                     myRegistry.Write("Node-Mode", "Telnet");
                     nodeIPConfigToolStripMenuItem.Visible = true;
+                    node_button.Enabled = true;
                     break;
 
                 case 1:
                     myRegistry.Write("Node-Mode", "Com");
                     nodeIPConfigToolStripMenuItem.Visible = false;
+                    node_button.Enabled = true;
                     break;
             }
         }
@@ -350,9 +356,14 @@ namespace Packet
                 this.toolStripComboBox1.SelectedIndex = 0;
                 iPConfigToolStripMenuItem.Visible = true;
             }
-            if (myRegistry.Read("BBS-Mode") == "Com")
+            else if (myRegistry.Read("BBS-Mode") == "Com")
             {
                 this.toolStripComboBox1.SelectedIndex = 1;
+                iPConfigToolStripMenuItem.Visible = false;
+            }
+            else
+            {
+                bbs_button.Enabled = false;
                 iPConfigToolStripMenuItem.Visible = false;
             }
             if (myRegistry.Read("Cluster-Mode") == "Telnet")
@@ -360,20 +371,31 @@ namespace Packet
                 this.toolStripComboBox2.SelectedIndex = 0;
                 clusterIPConfigToolStripMenuItem.Visible = true;
             }
-            if (myRegistry.Read("Cluster-Mode") == "Com")
+            else if (myRegistry.Read("Cluster-Mode") == "Com")
             {
                 this.toolStripComboBox2.SelectedIndex = 1;
                 clusterIPConfigToolStripMenuItem.Visible = false;
             }
+            else
+            {
+                cluster_button.Enabled = false;
+                clusterIPConfigToolStripMenuItem.Visible = false;
+            }
+
             if (myRegistry.Read("Node-Mode") == "Telnet")
             {
                 this.toolStripComboBox3.SelectedIndex = 0;
-                nodeIPConfigToolStripMenuItem.Visible = true;
+                
             }
-            if (myRegistry.Read("Node-Mode") == "Com")
+            else if (myRegistry.Read("Node-Mode") == "Com")
             {
                 this.toolStripComboBox3.SelectedIndex = 1;
                 nodeIPConfigToolStripMenuItem.Visible = false;
+            }
+            else
+            {
+                node_button.Enabled = false;
+                nodeIPConfigToolStripMenuItem.Visible = false;    
             }
             if (myRegistry.Read("Beep") == "Yes")
             {
@@ -467,12 +489,12 @@ namespace Packet
                     break;
             }
             terminalEmulator1.BackColor = backgroundColor;
-            if (myRegistry.Read("SSH-Echo") == "No")
+            if (myRegistry.Read("SSH-Echo") == "Yes")
             {
-                ssh_button.Visible = false;
+                ssh_button.Visible = true;
             }
             else
-                ssh_button.Visible = true;
+                ssh_button.Visible = false;
 
         }
         #endregion
