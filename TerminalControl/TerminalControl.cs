@@ -8,13 +8,16 @@ using System.Net.Sockets;
 using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
+ 
 #endregion
 namespace PacketSoftware
 {
     #region public class TerminalEmulator : Control
     public class TerminalEmulator : Control
 	{
+       
 		#region Public Properties
+       
 		public int Rows
 		{
 			get
@@ -147,7 +150,7 @@ namespace PacketSoftware
         {
 
             Close = true;
-            Disconnect(lastAR);
+            Disconnect();
         }
         #region StringCollection
         public StringCollection ScreenScrape(int StartRow, int StartColumn, int EndRow, int EndColumn)
@@ -433,7 +436,6 @@ namespace PacketSoftware
 			for (int i = this.ScrollbackBuffer.Count - 1; i >= 0; i--)
 			{
 				
-				
 				visiblebuffer.Insert(0, this.ScrollbackBuffer[i]);
 
 				// don't parse more strings than our display can show
@@ -663,19 +665,22 @@ namespace PacketSoftware
 		protected override void OnFontChanged (EventArgs e)
 		{
 			//MessageBox.Show(this.Font.Name + " " + Convert.ToString(this.Font.Size));
-
-
 		}
 		#endregion
 		#region Private Methods
 
-        private void Disconnect(System.IAsyncResult ar)
+        private void Disconnect()
 		{
-			// Get The connection socket from the callback
-			uc_CommsStateObject StateObject = (uc_CommsStateObject) ar.AsyncState;
-            StateObject.Socket.Shutdown (System.Net.Sockets.SocketShutdown.Both);
-			StateObject.Socket.Close ();
+            try
+            {
+                CurSocket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
+                CurSocket.Close();
+            }
+            catch
+            { }
          }
+
+        
 
 		private void ConnectTelnet(string HostName, System.Int32 Port)
 		{
@@ -988,37 +993,46 @@ namespace PacketSoftware
 
 		private void OnReceivedData (System.IAsyncResult ar)
 		{
-			// Get The connection socket from the callback
-			uc_CommsStateObject StateObject = (uc_CommsStateObject) ar.AsyncState;
+            try
+            {
+                // Get The connection socket from the callback
+                uc_CommsStateObject StateObject = (uc_CommsStateObject)ar.AsyncState;
 
-			// Get The data , if any
-			int nBytesRec = StateObject.Socket.EndReceive (ar);        
+                // Get The data , if any
+                int nBytesRec = StateObject.Socket.EndReceive(ar);
 
-			if ( nBytesRec > 0 )
-			{
-				string sReceived = "";
+                if (nBytesRec > 0)
+                {
+                    string sReceived = "";
 
-				for (int i = 0; i < nBytesRec; i++)
-				{
-					sReceived += System.Convert.ToChar (StateObject.Buffer[i]).ToString ();
-				}
+                    for (int i = 0; i < nBytesRec; i++)
+                    {
+                        sReceived += System.Convert.ToChar(StateObject.Buffer[i]).ToString();
+                    }
 
-				this.Invoke (this.RxdTextEvent, new System.String[] {System.String.Copy (sReceived)});
-				this.Invoke (this.RefreshEvent);
+                    this.Invoke(this.RxdTextEvent, new System.String[] { System.String.Copy(sReceived) });
+                    this.Invoke(this.RefreshEvent);
 
-				// Re-Establish the next asyncronous receveived data callback as
-				StateObject.Socket.BeginReceive (StateObject.Buffer, 0, StateObject.Buffer.Length, 
-					System.Net.Sockets.SocketFlags.None, new System.AsyncCallback (OnReceivedData) , StateObject);
-			}
-			else
-			{
-				// If no data was recieved then the connection is probably dead
-				//System.Console.WriteLine ("Disconnected", StateObject.Socket.RemoteEndPoint);
+                    // Re-Establish the next asyncronous receveived data callback as
+                    StateObject.Socket.BeginReceive(StateObject.Buffer, 0, StateObject.Buffer.Length,
+                        System.Net.Sockets.SocketFlags.None, new System.AsyncCallback(OnReceivedData), StateObject);
+                }
+                else
+                {
+                    // If no data was recieved then the connection is probably dead
+                    //System.Console.WriteLine ("Disconnected", StateObject.Socket.RemoteEndPoint);
 
-				StateObject.Socket.Shutdown (System.Net.Sockets.SocketShutdown.Both);
+                    StateObject.Socket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
 
-				StateObject.Socket.Close ();
-			}
+                    StateObject.Socket.Close();
+                    
+                    
+                }
+            }
+            catch (System.Exception CurException)
+                {
+
+                }
 		}
 		
 		private void DispatchMessage (System.Object sender, string strText)
@@ -3613,11 +3627,14 @@ namespace PacketSoftware
 						default:
                             //KRR
                             {
+                               
                                 if (Parent.LocalEcho && KeyValue == 13)
                                 {
                                 //  Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(KeyValue)));
-                                    Parent.RxdTextEvent("\n\r");
+                                    Parent.RxdTextEvent(Environment.NewLine);
+                                    //Parent.RxdTextEvent("\n\r");
                                     Parent.Refresh();
+                                    
                                 }
                             }
 							break;
