@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 #endregion
 namespace PacketSoftware
 {
-    #region public class TerminalEmulator : Control
+    #region  class TerminalEmulator : Control
     public class TerminalEmulator : Control
 	{
        
@@ -284,7 +284,9 @@ namespace PacketSoftware
 		private event CaretOffEventHandler CaretOffEvent;
 		private event CaretOnEventHandler CaretOnEvent;
 		#endregion
+
 		#region Constructors
+        public event EventHandler Disconnected;
 
 		public TerminalEmulator ()
 		{ 
@@ -680,8 +682,14 @@ namespace PacketSoftware
             { }
          }
 
-        
+        private void Disconnectby()
+        {
+            if (Disconnected != null)
+            {
+                Disconnected(this, new EventArgs());
+            }
 
+        }
 		private void ConnectTelnet(string HostName, System.Int32 Port)
 		{
 			this.Focus();
@@ -1025,6 +1033,7 @@ namespace PacketSoftware
                     StateObject.Socket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
 
                     StateObject.Socket.Close();
+                    Disconnectby();
                     
                     
                 }

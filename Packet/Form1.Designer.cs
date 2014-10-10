@@ -73,7 +73,7 @@
             this.bbs_button.TabIndex = 0;
             this.bbs_button.Text = "Connect BBS";
             this.bbs_button.UseVisualStyleBackColor = true;
-            this.bbs_button.Click += new System.EventHandler(this.button1_Click);
+            this.bbs_button.Click += new System.EventHandler(this.bbs_button_Click);
             // 
             // menuStrip1
             // 
@@ -278,7 +278,7 @@
             this.forward_button.TabIndex = 5;
             this.forward_button.Text = "Forward";
             this.forward_button.UseVisualStyleBackColor = true;
-            this.forward_button.Click += new System.EventHandler(this.button1_Click_1);
+            this.forward_button.Click += new System.EventHandler(this.forward_button_Click);
             // 
             // cluster_button
             // 
@@ -288,7 +288,7 @@
             this.cluster_button.TabIndex = 6;
             this.cluster_button.Text = "Connect Cluster";
             this.cluster_button.UseVisualStyleBackColor = true;
-            this.cluster_button.Click += new System.EventHandler(this.button1_Click_2);
+            this.cluster_button.Click += new System.EventHandler(this.cluster_button_Click);
             // 
             // node_button
             // 
@@ -341,7 +341,7 @@
             this.terminalEmulator1.TabIndex = 10;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;
-            
+            this.terminalEmulator1.Disconnected += new System.EventHandler(this.disconnected);
             // 
             // Form1
             // 

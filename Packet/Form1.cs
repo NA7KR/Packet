@@ -334,10 +334,10 @@ namespace Packet
         }
         #endregion
         //---------------------------------------------------------------------------------------------------------
-        // private void button1_Click_1
+        // forward_button_Click
         //---------------------------------------------------------------------------------------------------------
-        #region private void button1_Click_1
-        private void button1_Click_1(object sender, EventArgs e)
+        #region forward_button_Click
+        private void forward_button_Click(object sender, EventArgs e)
         {
            
            
@@ -500,10 +500,10 @@ namespace Packet
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        // private void button1_Click
+        // connect bbs
         //---------------------------------------------------------------------------------------------------------
-        #region private void button1_Click
-        private void button1_Click(object sender, EventArgs e)
+        #region connect bbs
+        private void bbs_button_Click(object sender, EventArgs e)
         {
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
@@ -527,10 +527,10 @@ namespace Packet
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        // private void button1_Click_2
+        // cluster_button_Click
         //---------------------------------------------------------------------------------------------------------
-        #region private void button1_Click_2
-        private void button1_Click_2(object sender, EventArgs e)
+        #region connect_cluster
+        private void cluster_button_Click(object sender, EventArgs e)
         {
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
@@ -554,7 +554,7 @@ namespace Packet
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        // private void node_button_Click
+        // node_button_Click
         //---------------------------------------------------------------------------------------------------------
         #region private void node_button_Click
         private void node_button_Click(object sender, EventArgs e)
@@ -632,6 +632,7 @@ namespace Packet
         }
         #endregion
 
+        #region toolStripMenuItem1_Click SSH
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             IP_Form2 box = new IP_Form2("SSH");
@@ -643,9 +644,17 @@ namespace Packet
             else
                 ssh_button.Visible = true;
         }
+        #endregion
 
-       
-
+        #region disconnect
+        private void disconnected(object sender, EventArgs e)
+        {
+            base.Invoke((Action)delegate { bbs_button.Enabled = true; });
+            base.Invoke((Action)delegate { cluster_button.Enabled = true; });
+            base.Invoke((Action)delegate { node_button.Enabled = true; });
+            base.Invoke((Action)delegate { disconnect_button.Enabled = false; });
+        }
+        #endregion
     }
     #endregion
 }
