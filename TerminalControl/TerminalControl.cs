@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 #endregion
 namespace PacketSoftware
 {
-    #region  class TerminalEmulator : Control
+   #region  class TerminalEmulator : Control
     public class TerminalEmulator : Control
 	{
        
@@ -184,6 +184,10 @@ namespace PacketSoftware
 					this.ConnectTelnet(this.Hostname, this.Port);
 					break;
 				}
+                case ConnectionTypes.COM:
+                {
+                    break;
+                }
 				case ConnectionTypes.SSH1:
 				{
 					break;
@@ -206,6 +210,7 @@ namespace PacketSoftware
         public enum ConnectionTypes
 		{
 			Telnet,
+            COM,
 			SSH1,
 			SSH2,
 		}
@@ -4695,7 +4700,7 @@ namespace PacketSoftware
 
 		#endregion
 	}
-    #endregion
+    #endregion 
     #region Routrek SSH Reader Class
     class Reader : Routrek.SSHC.ISSHConnectionEventReceiver, Routrek.SSHC.ISSHChannelEventReceiver 
 	{

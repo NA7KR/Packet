@@ -101,8 +101,9 @@ namespace Packet
             this.disconnect_button.Width = 90;
             this.disconnect_button.Left = 470;
             this.disconnect_button.Top = 40;
-
+            this.disconnect_button.Enabled = false;
             this.ssh_button.Width = 90;
+
             this.ssh_button.Left = 580;
             this.ssh_button.Top = 40;
         }
@@ -522,7 +523,8 @@ namespace Packet
             this.terminalEmulator1.Username = myRegistry.Read("BBS-CallSign");
             this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("BBS-Password"));
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.Connect();  
+            this.terminalEmulator1.Connect();
+            this.disconnect_button.Enabled = true;
         }
         #endregion
 
@@ -549,7 +551,8 @@ namespace Packet
             this.terminalEmulator1.Username = myRegistry.Read("Cluster-CallSign");
             this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("Cluster-Password"));
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.Connect();  
+            this.terminalEmulator1.Connect();
+            this.disconnect_button.Enabled = true;
         }
         #endregion
 
@@ -576,6 +579,7 @@ namespace Packet
             this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("Node-Password"));
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.Connect();
+            this.disconnect_button.Enabled = true;
         }
         #endregion
 
