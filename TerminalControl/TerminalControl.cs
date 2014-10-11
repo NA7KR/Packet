@@ -186,6 +186,7 @@ namespace PacketSoftware
 				}
                 case ConnectionTypes.COM:
                 {
+                    this.ConnectCom();
                     break;
                 }
 				case ConnectionTypes.SSH1:
@@ -695,6 +696,12 @@ namespace PacketSoftware
             }
 
         }
+
+        private void ConnectCom()
+        {
+
+        }
+
 		private void ConnectTelnet(string HostName, System.Int32 Port)
 		{
 			this.Focus();
