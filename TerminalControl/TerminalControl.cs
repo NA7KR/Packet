@@ -142,6 +142,45 @@ namespace PacketSoftware
 				this._password = value;
 			}
 		}
+        public System.Int32 SerialPort
+        {
+            get
+            {
+                return this._serialport;
+            }
+            set
+            {
+                this._serialport = value;
+            }
+        }
+        public System.Int32 BaudRate
+        {
+            get
+            {
+                return this._baudrate;
+            }
+            set
+            {
+                this._baudrate = value;
+            }
+        }
+        public System.Int32 DataBits
+        {
+            get
+            {
+                return this._databits;
+            }
+            set
+            {
+                this._databits = value;
+            }
+        }
+/*
+        mySerialPort.Parity = Parity.None;
+        mySerialPort.StopBits = StopBits.One;
+        
+        mySerialPort.Handshake = Handshake.None;
+         */ 
 		#endregion
 
 		#region Public Methods
@@ -221,7 +260,10 @@ namespace PacketSoftware
 		private string						_hostname;       // used for connecting to SSH
 		private string						_username;       // maybe
 		private string						_password;
-        private string                      _filename; 
+        private string                      _filename;
+        private System.Int32                _serialport;
+        private System.Int32                _baudrate;
+        private System.Int32                _databits;
         private System.Int32                _port;
         private System.Boolean              _beep;
         private System.Boolean              _localecho;
