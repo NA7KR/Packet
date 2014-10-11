@@ -153,17 +153,7 @@ namespace PacketSoftware
                 this._serialport = value;
             }
         }
-        public System.Int32 BaudRate
-        {
-            get
-            {
-                return this._baudrate;
-            }
-            set
-            {
-                this._baudrate = value;
-            }
-        }
+     
         public BaudRateTypes BaudRateType
         {
             get
@@ -304,14 +294,15 @@ namespace PacketSoftware
            9600,
            19200,
            38400,
-           57,600, 
-           115,200, 
+           57600, 
+           11200, 
            230400,
         }
+
 		#endregion
 		#region Fields
 		private ConnectionTypes             _ConnectionType;
-        private BaudRateTypes _BaudRateType;
+        private BaudRateTypes               _BaudRateType;
 		private string						_hostname;       // used for connecting to SSH
 		private string						_username;       // maybe
 		private string						_password;
@@ -320,9 +311,6 @@ namespace PacketSoftware
         private string _handshake;
         private string _parity;
         private string _stopbits;
-
-
-
 
         private System.Int32                _serialport;
         private System.Int32                _baudrate;
