@@ -164,6 +164,17 @@ namespace PacketSoftware
                 this._baudrate = value;
             }
         }
+        public BaudRateTypes BaudRateType
+        {
+            get
+            {
+                return this._BaudRateType;
+            }
+            set
+            {
+                this._BaudRateType = value;
+            }
+        }
         public System.Int32 DataBits
         {
             get
@@ -175,12 +186,44 @@ namespace PacketSoftware
                 this._databits = value;
             }
         }
-/*
-        mySerialPort.Parity = Parity.None;
-        mySerialPort.StopBits = StopBits.One;
+      
+
+         public string StopBits
+        {
+            get
+            {
+                return this._stopbits;
+            }
+            set
+            {
+                this._stopbits = value;
+            }
+        }
+         public string Parity
+        {
+            get
+            {
+                return this._parity;
+            }
+            set
+            {
+                this._parity = value;
+            }
+        }
+            public string Handshake
+        {
+            get
+            {
+                return this._handshake;
+            }
+            set
+            {
+                this._handshake = value;
+            }
+        }
         
-        mySerialPort.Handshake = Handshake.None;
-         */ 
+       
+        
 		#endregion
 
 		#region Public Methods
@@ -254,13 +297,33 @@ namespace PacketSoftware
 			SSH1,
 			SSH2,
 		}
+
+        public enum BaudRateTypes
+        {
+           4800,
+           9600,
+           19200,
+           38400,
+           57,600, 
+           115,200, 
+           230400,
+        }
 		#endregion
 		#region Fields
 		private ConnectionTypes             _ConnectionType;
+        private BaudRateTypes _BaudRateType;
 		private string						_hostname;       // used for connecting to SSH
 		private string						_username;       // maybe
 		private string						_password;
         private string                      _filename;
+
+        private string _handshake;
+        private string _parity;
+        private string _stopbits;
+
+
+
+
         private System.Int32                _serialport;
         private System.Int32                _baudrate;
         private System.Int32                _databits;
