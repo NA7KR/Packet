@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.ip_label = new System.Windows.Forms.Label();
             this.ip_textBox = new System.Windows.Forms.TextBox();
             this.Done_button = new System.Windows.Forms.Button();
@@ -43,10 +42,8 @@
             this.bbs_label = new System.Windows.Forms.Label();
             this.password_textBox = new System.Windows.Forms.TextBox();
             this.password_label = new System.Windows.Forms.Label();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.echo_label = new System.Windows.Forms.Label();
             this.echo_comboBox = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // ip_label
@@ -187,9 +184,8 @@
             this.echo_comboBox.Size = new System.Drawing.Size(111, 21);
             this.echo_comboBox.TabIndex = 21;
             this.echo_comboBox.ValueMember = "1";
-            this.echo_comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // IP_Form2
+            // IP_Form
             // 
             this.AcceptButton = this.Done_button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -216,10 +212,9 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "IP_Form2";
+            this.Name = "IP_Form";
             this.Text = "IP Config";
             this.Load += new System.EventHandler(this.IP_Form2_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,7 +236,6 @@
         private System.Windows.Forms.Label bbs_label;
         private System.Windows.Forms.TextBox password_textBox;
         private System.Windows.Forms.Label password_label;
-        private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Label echo_label;
         private System.Windows.Forms.ComboBox echo_comboBox;
     }
