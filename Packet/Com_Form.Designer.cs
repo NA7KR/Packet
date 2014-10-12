@@ -60,8 +60,8 @@
             this.radioButton_Flow_None = new System.Windows.Forms.RadioButton();
             this.radioButton_Flow_Hardware = new System.Windows.Forms.RadioButton();
             this.radioButton_Flow_Xon_Xoff = new System.Windows.Forms.RadioButton();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxPort = new System.Windows.Forms.ComboBox();
+            this.Port_label = new System.Windows.Forms.Label();
             this.groupBoxBaudRate.SuspendLayout();
             this.groupBoxDataBits.SuspendLayout();
             this.groupBoxParity.SuspendLayout();
@@ -446,22 +446,22 @@
             this.radioButton_Flow_Xon_Xoff.Text = "Xon /  Xoff";
             this.radioButton_Flow_Xon_Xoff.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // comboBoxPort
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(300, 302);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 7;
+            this.comboBoxPort.FormattingEnabled = true;
+            this.comboBoxPort.Location = new System.Drawing.Point(300, 302);
+            this.comboBoxPort.Name = "comboBoxPort";
+            this.comboBoxPort.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxPort.TabIndex = 7;
             // 
-            // label1
+            // Port_label
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(315, 277);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Ports";
+            this.Port_label.AutoSize = true;
+            this.Port_label.Location = new System.Drawing.Point(315, 277);
+            this.Port_label.Name = "Port_label";
+            this.Port_label.Size = new System.Drawing.Size(31, 13);
+            this.Port_label.TabIndex = 8;
+            this.Port_label.Text = "Ports";
             // 
             // Com_Form
             // 
@@ -469,8 +469,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancel_button;
             this.ClientSize = new System.Drawing.Size(520, 455);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.Port_label);
+            this.Controls.Add(this.comboBoxPort);
             this.Controls.Add(this.groupBoxFlow);
             this.Controls.Add(this.groupBoxStopBits);
             this.Controls.Add(this.cancel_button);
@@ -528,8 +528,8 @@
         private System.Windows.Forms.RadioButton radioButton_Flow_None;
         private System.Windows.Forms.RadioButton radioButton_Flow_Hardware;
         private System.Windows.Forms.RadioButton radioButton_Flow_Xon_Xoff;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBoxPort;
+        private System.Windows.Forms.Label Port_label;
         private System.Windows.Forms.RadioButton radioButton57600;
         private System.Windows.Forms.RadioButton radioButton38400;
         private System.Windows.Forms.RadioButton radioButton2400;
