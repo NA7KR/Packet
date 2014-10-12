@@ -659,6 +659,12 @@ namespace Packet
             base.Invoke((Action)delegate { disconnect_button.Enabled = false; });
         }
         #endregion
+
+        private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
+        {
+            Com_Form box = new Com_Form();
+            box.ShowDialog();
+        }
     }
     #endregion
 }

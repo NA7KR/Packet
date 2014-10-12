@@ -60,6 +60,7 @@
             this.node_button = new System.Windows.Forms.Button();
             this.disconnect_button = new System.Windows.Forms.Button();
             this.ssh_button = new System.Windows.Forms.Button();
+            this.toolStripMenuItemCom = new System.Windows.Forms.ToolStripMenuItem();
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -111,6 +112,7 @@
             this.clusterIPConfigToolStripMenuItem,
             this.nodeTelnetComToolStripMenuItem,
             this.nodeIPConfigToolStripMenuItem,
+            this.toolStripMenuItemCom,
             this.SSHConfigToolStripMenuItem,
             this.beepToolStripMenuItem,
             this.colourToolStripMenuItem});
@@ -320,6 +322,13 @@
             this.ssh_button.UseVisualStyleBackColor = true;
             this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
             // 
+            // toolStripMenuItemCom
+            // 
+            this.toolStripMenuItemCom.Name = "toolStripMenuItemCom";
+            this.toolStripMenuItemCom.Size = new System.Drawing.Size(178, 22);
+            this.toolStripMenuItemCom.Text = "Com Port Config";
+            this.toolStripMenuItemCom.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
+            // 
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
@@ -410,6 +419,7 @@
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxTXTC;
         private PacketSoftware.TerminalEmulator terminalEmulator1;
         private System.Windows.Forms.ToolStripMenuItem SSHConfigToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCom;
 
       
     }
