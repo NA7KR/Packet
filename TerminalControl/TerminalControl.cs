@@ -401,6 +401,8 @@ namespace PacketSoftware
 		private uc_Chars                     G3;
 		private  uc_Mode                      Modes;
 		private uc_VertScrollBar             VertScrollBar;
+        private System.IO.Ports.SerialPort serialPort1;
+        private System.ComponentModel.IContainer components;
         private IAsyncResult                lastAR;
 		#endregion
 		#region Delegates
@@ -4835,6 +4837,15 @@ namespace PacketSoftware
 		}
 
 		#endregion
+
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.SuspendLayout();
+            this.ResumeLayout(false);
+
+        }
 	}
     #endregion 
     #region Routrek SSH Reader Class
