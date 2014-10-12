@@ -151,7 +151,7 @@
             // radioButton600
             // 
             this.radioButton600.AutoSize = true;
-            this.radioButton600.Location = new System.Drawing.Point(152, 41);
+            this.radioButton600.Location = new System.Drawing.Point(144, 41);
             this.radioButton600.Name = "radioButton600";
             this.radioButton600.Size = new System.Drawing.Size(43, 17);
             this.radioButton600.TabIndex = 4;
@@ -233,6 +233,7 @@
             this.radioButton_Data_8.TabStop = true;
             this.radioButton_Data_8.Text = "8";
             this.radioButton_Data_8.UseVisualStyleBackColor = true;
+            this.radioButton_Data_8.CheckedChanged += new System.EventHandler(this.radioButton_Data_8_CheckedChanged);
             // 
             // radioButton_Data_7
             // 
@@ -244,6 +245,7 @@
             this.radioButton_Data_7.TabStop = true;
             this.radioButton_Data_7.Text = "7";
             this.radioButton_Data_7.UseVisualStyleBackColor = true;
+            this.radioButton_Data_7.CheckedChanged += new System.EventHandler(this.radioButton_Data_7_CheckedChanged);
             // 
             // radioButton_Data_6
             // 
@@ -255,6 +257,7 @@
             this.radioButton_Data_6.TabStop = true;
             this.radioButton_Data_6.Text = "6";
             this.radioButton_Data_6.UseVisualStyleBackColor = true;
+            this.radioButton_Data_6.CheckedChanged += new System.EventHandler(this.radioButton_Data_6_CheckedChanged);
             // 
             // radioButton_Data_5
             // 
@@ -266,6 +269,7 @@
             this.radioButton_Data_5.TabStop = true;
             this.radioButton_Data_5.Text = "5";
             this.radioButton_Data_5.UseVisualStyleBackColor = true;
+            this.radioButton_Data_5.CheckedChanged += new System.EventHandler(this.radioButton_Data_5_CheckedChanged);
             // 
             // groupBoxParity
             // 
@@ -291,6 +295,7 @@
             this.radioButton_Parity_Space.TabStop = true;
             this.radioButton_Parity_Space.Text = "Space";
             this.radioButton_Parity_Space.UseVisualStyleBackColor = true;
+            this.radioButton_Parity_Space.CheckedChanged += new System.EventHandler(this.radioButton_Parity_Space_CheckedChanged);
             // 
             // radioButton_Parity_Mark
             // 
@@ -302,6 +307,7 @@
             this.radioButton_Parity_Mark.TabStop = true;
             this.radioButton_Parity_Mark.Text = "Mark";
             this.radioButton_Parity_Mark.UseVisualStyleBackColor = true;
+            this.radioButton_Parity_Mark.CheckedChanged += new System.EventHandler(this.radioButton_Parity_Mark_CheckedChanged);
             // 
             // radioButton_Parity_Even
             // 
@@ -313,6 +319,7 @@
             this.radioButton_Parity_Even.TabStop = true;
             this.radioButton_Parity_Even.Text = "Even";
             this.radioButton_Parity_Even.UseVisualStyleBackColor = true;
+            this.radioButton_Parity_Even.CheckedChanged += new System.EventHandler(this.radioButton_Parity_Even_CheckedChanged);
             // 
             // radioButton_Parity_Odd
             // 
@@ -324,6 +331,7 @@
             this.radioButton_Parity_Odd.TabStop = true;
             this.radioButton_Parity_Odd.Text = "Odd";
             this.radioButton_Parity_Odd.UseVisualStyleBackColor = true;
+            this.radioButton_Parity_Odd.CheckedChanged += new System.EventHandler(this.radioButton_Parity_Odd_CheckedChanged);
             // 
             // radioButton_Parity_None
             // 
@@ -335,6 +343,7 @@
             this.radioButton_Parity_None.TabStop = true;
             this.radioButton_Parity_None.Text = "None";
             this.radioButton_Parity_None.UseVisualStyleBackColor = true;
+            this.radioButton_Parity_None.CheckedChanged += new System.EventHandler(this.radioButton_Parity_None_CheckedChanged);
             // 
             // ok_button
             // 
@@ -342,7 +351,7 @@
             this.ok_button.Name = "ok_button";
             this.ok_button.Size = new System.Drawing.Size(75, 23);
             this.ok_button.TabIndex = 3;
-            this.ok_button.Text = "OK";
+            this.ok_button.Text = "Done";
             this.ok_button.UseVisualStyleBackColor = true;
             this.ok_button.Click += new System.EventHandler(this.ok_button_Click);
             // 
@@ -378,6 +387,7 @@
             this.radioButton_Stop_2.TabStop = true;
             this.radioButton_Stop_2.Text = "2";
             this.radioButton_Stop_2.UseVisualStyleBackColor = true;
+            this.radioButton_Stop_2.CheckedChanged += new System.EventHandler(this.radioButton_Stop_2_CheckedChanged);
             // 
             // radioButton_Stop_1_5
             // 
@@ -389,6 +399,7 @@
             this.radioButton_Stop_1_5.TabStop = true;
             this.radioButton_Stop_1_5.Text = "1.5";
             this.radioButton_Stop_1_5.UseVisualStyleBackColor = true;
+            this.radioButton_Stop_1_5.CheckedChanged += new System.EventHandler(this.radioButton_Stop_1_5_CheckedChanged);
             // 
             // radioButton_Stop_1
             // 
@@ -400,6 +411,7 @@
             this.radioButton_Stop_1.TabStop = true;
             this.radioButton_Stop_1.Text = "1";
             this.radioButton_Stop_1.UseVisualStyleBackColor = true;
+            this.radioButton_Stop_1.CheckedChanged += new System.EventHandler(this.radioButton_Stop_1_CheckedChanged);
             // 
             // groupBoxFlow
             // 
@@ -423,6 +435,7 @@
             this.radioButton_Flow_None.TabStop = true;
             this.radioButton_Flow_None.Text = "None";
             this.radioButton_Flow_None.UseVisualStyleBackColor = true;
+            this.radioButton_Flow_None.CheckedChanged += new System.EventHandler(this.radioButton_Flow_None_CheckedChanged);
             // 
             // radioButton_Flow_Hardware
             // 
@@ -434,6 +447,7 @@
             this.radioButton_Flow_Hardware.TabStop = true;
             this.radioButton_Flow_Hardware.Text = "Hardware";
             this.radioButton_Flow_Hardware.UseVisualStyleBackColor = true;
+            this.radioButton_Flow_Hardware.CheckedChanged += new System.EventHandler(this.radioButton_Flow_Hardware_CheckedChanged);
             // 
             // radioButton_Flow_Xon_Xoff
             // 
@@ -445,6 +459,7 @@
             this.radioButton_Flow_Xon_Xoff.TabStop = true;
             this.radioButton_Flow_Xon_Xoff.Text = "Xon /  Xoff";
             this.radioButton_Flow_Xon_Xoff.UseVisualStyleBackColor = true;
+            this.radioButton_Flow_Xon_Xoff.CheckedChanged += new System.EventHandler(this.radioButton_Flow_Xon_Xoff_CheckedChanged);
             // 
             // comboBoxPort
             // 
@@ -457,7 +472,7 @@
             // Port_label
             // 
             this.Port_label.AutoSize = true;
-            this.Port_label.Location = new System.Drawing.Point(315, 277);
+            this.Port_label.Location = new System.Drawing.Point(297, 277);
             this.Port_label.Name = "Port_label";
             this.Port_label.Size = new System.Drawing.Size(31, 13);
             this.Port_label.TabIndex = 8;

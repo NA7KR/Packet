@@ -18,6 +18,10 @@ namespace Packet
         ModifyRegistry myRegistry = new ModifyRegistry();
         Encrypting myEncrypt = new Encrypting();
         public System.Int32  Speed;
+        public System.Int32 DataBits;
+        public System.Double StopBits;
+        public string Parity;
+        public string Flow;
         public System.Int32 top = 30;
 
         public Com_Form()
@@ -87,7 +91,11 @@ namespace Packet
         private void ok_button_Click(object sender, EventArgs e)
         {
             myRegistry.Write( "Baud", Convert.ToString(Speed));
-            myRegistry.Write( "Stop", "2");
+            myRegistry.Write("Data Bits", Convert.ToString(DataBits));
+            myRegistry.Write("Stop Bits", Convert.ToString(StopBits));
+            myRegistry.Write("Parity", Parity);
+            myRegistry.Write("Flow", Flow);
+            this.Close();
         }
 
        
@@ -139,6 +147,84 @@ namespace Packet
         private void radioButton57600_CheckedChanged(object sender, EventArgs e)
         {
             Speed = 57600;
+        }
+
+        private void radioButton_Data_5_CheckedChanged(object sender, EventArgs e)
+        {
+            DataBits = 5;
+        }
+
+        private void radioButton_Data_6_CheckedChanged(object sender, EventArgs e)
+        {
+            DataBits = 6;
+        }
+
+      
+
+        private void radioButton_Data_7_CheckedChanged(object sender, EventArgs e)
+        {
+            DataBits = 7;
+        }
+
+        private void radioButton_Data_8_CheckedChanged(object sender, EventArgs e)
+        {
+            DataBits = 8; 
+        }
+
+        private void radioButton_Stop_1_CheckedChanged(object sender, EventArgs e)
+        {
+            StopBits = 1;
+        }
+
+        private void radioButton_Stop_1_5_CheckedChanged(object sender, EventArgs e)
+        {
+            StopBits = 1.5;
+        }
+
+        private void radioButton_Stop_2_CheckedChanged(object sender, EventArgs e)
+        {
+            StopBits = 2;
+
+        }
+
+        private void radioButton_Parity_None_CheckedChanged(object sender, EventArgs e)
+        {
+            Parity = "None";
+        }
+
+        private void radioButton_Parity_Odd_CheckedChanged(object sender, EventArgs e)
+        {
+            Parity = "Old";
+        }
+
+        private void radioButton_Parity_Even_CheckedChanged(object sender, EventArgs e)
+        {
+            Parity = "Even";
+        }
+
+        private void radioButton_Parity_Mark_CheckedChanged(object sender, EventArgs e)
+        {
+            Parity = "Mark";
+        }
+
+        private void radioButton_Parity_Space_CheckedChanged(object sender, EventArgs e)
+        {
+            Parity = "Space";
+        }
+
+        private void radioButton_Flow_Xon_Xoff_CheckedChanged(object sender, EventArgs e)
+        {
+            Flow = "Xon Xoff";
+        }
+
+        private void radioButton_Flow_Hardware_CheckedChanged(object sender, EventArgs e)
+        {
+            Flow = "Hardware";
+        }
+
+        private void radioButton_Flow_None_CheckedChanged(object sender, EventArgs e)
+        {
+            Flow = "None";
         }
 
       
