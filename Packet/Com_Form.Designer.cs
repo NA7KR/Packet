@@ -497,6 +497,7 @@
             this.MinimizeBox = false;
             this.Name = "Com_Form";
             this.Text = "Com Port Config";
+            this.Load += new System.EventHandler(this.Com_Form_Load);
             this.groupBoxBaudRate.ResumeLayout(false);
             this.groupBoxBaudRate.PerformLayout();
             this.groupBoxDataBits.ResumeLayout(false);
