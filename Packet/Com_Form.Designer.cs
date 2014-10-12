@@ -468,6 +468,7 @@
             this.comboBoxPort.Name = "comboBoxPort";
             this.comboBoxPort.Size = new System.Drawing.Size(121, 21);
             this.comboBoxPort.TabIndex = 7;
+            this.comboBoxPort.SelectedIndexChanged += new System.EventHandler(this.comboBoxPort_SelectedIndexChanged);
             // 
             // Port_label
             // 

@@ -27,6 +27,7 @@ namespace Packet
         public string stop;
         public string parity;
         public string flow;
+        public string port;
         public System.Int32 top = 30;
 
         public Com_Form()
@@ -106,6 +107,7 @@ namespace Packet
                 myRegistry.Write("Stop Bits", Convert.ToString(StopBits));
                 myRegistry.Write("Parity", Parity);
                 myRegistry.Write("Flow", Flow);
+                myRegistry.Write("Port", port);
                 this.Close();
             }
             catch
@@ -416,6 +418,18 @@ namespace Packet
                     break;
             }
             #endregion
+            comboBoxPort.Items.Clear();
+            foreach (string item in System.IO.Ports.SerialPort.GetPortNames())
+            {
+                comboBoxPort.Items.Add(item);
+            }
+            comboBoxPort.SelectedItem = myRegistry.Read("Port");
+
+        }
+
+        private void comboBoxPort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            port = Convert.ToString(comboBoxPort.SelectedItem);
         }
     }
 }
