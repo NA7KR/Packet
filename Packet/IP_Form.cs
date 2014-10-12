@@ -14,7 +14,7 @@ using Utility.Encrypting;
 
 namespace Packet
 {
-    public partial class IP_Form2 : Form
+    public partial class IP_Form : Form
     {
          ModifyRegistry myRegistry = new ModifyRegistry();
          Encrypting myEncrypt = new Encrypting();
@@ -24,7 +24,7 @@ namespace Packet
         //  IP_Form2
         //---------------------------------------------------------------------------------------------------------
         #region IP_Form2
-        public IP_Form2(string _var1)
+        public IP_Form(string _var1)
             {
                 InitializeComponent();
                 this.myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";

@@ -316,7 +316,7 @@ namespace Packet
         #region private void iPConfigToolStripMenuItem_Click
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form2 box = new IP_Form2("BBS");
+            IP_Form box = new IP_Form("BBS");
             box.ShowDialog();
         }
         #endregion
@@ -589,7 +589,7 @@ namespace Packet
         #region private void clusterIPConfigToolStripMenuItem_Click
         private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form2 box = new IP_Form2("Cluster");
+            IP_Form box = new IP_Form("Cluster");
             box.ShowDialog();
         }
         #endregion
@@ -600,7 +600,7 @@ namespace Packet
         #region private void nodeIPConfigToolStripMenuItem_Click
         private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form2 box = new IP_Form2("Node");
+            IP_Form box = new IP_Form("Node");
             box.ShowDialog();
         }
         #endregion
@@ -639,7 +639,7 @@ namespace Packet
         #region toolStripMenuItem1_Click SSH
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            IP_Form2 box = new IP_Form2("SSH");
+            IP_Form box = new IP_Form("SSH");
             box.ShowDialog();
             if (myRegistry.Read( "SSH-Echo") == "No")
             {

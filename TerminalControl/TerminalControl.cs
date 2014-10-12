@@ -16,8 +16,7 @@ namespace PacketSoftware
     public class TerminalEmulator : Control
 	{
        
-		#region Public Properties
-       
+		#region Public Properties 
 		public int Rows
 		{
 			get
@@ -49,6 +48,68 @@ namespace PacketSoftware
 				this._ConnectionType = value;
 			}
 		}
+       
+        public DataBitsTypes DataRateType
+        {
+            get
+            {
+                return this._DataBitsType;
+            }
+            set
+            {
+                this._DataBitsType = value;
+            }
+        }
+
+        public StopBitsTypes StopRateType
+        {
+            get
+            {
+                return this._StopBitsType;
+            }
+            set
+            {
+                this._StopBitsType = value;
+            }
+        }
+
+        public ParityTypes ParityType
+        {
+            get
+            {
+                return this._ParityType;
+            }
+            set
+            {
+                this._ParityType = value;
+            }
+        }
+
+
+        public FlowTypes FlowType
+        {
+            get
+            {
+                return this._FlowType;
+            }
+            set
+            {
+                this._FlowType = value;
+            }
+        }
+
+        public BaudRateTypes BaudRateType
+        {
+            get
+            {
+                return this._BaudRateType;
+            }
+            set
+            {
+                this._BaudRateType = value;
+            }
+        }
+
 		public string Hostname
 		{
 			get
@@ -71,7 +132,6 @@ namespace PacketSoftware
                 this._port = value;
             }
         }
-
         public System.Boolean Beep
         {
             get
@@ -83,7 +143,6 @@ namespace PacketSoftware
                 this._beep = value;
             }
         }
-
         public System.Boolean LocalEcho
         {
             get
@@ -95,7 +154,6 @@ namespace PacketSoftware
                 this._localecho = value;
             }
         }
-
         public string FileName
         {
             get
@@ -107,7 +165,6 @@ namespace PacketSoftware
                 this._filename = value;
             }
         }
-
         public System.Boolean Close
         {
             get
@@ -119,7 +176,6 @@ namespace PacketSoftware
                 this._close = value;    
             }
         }
-
 		public string Username
 		{
 			get
@@ -153,70 +209,11 @@ namespace PacketSoftware
                 this._serialport = value;
             }
         }
-     
-        public BaudRateTypes BaudRateType
-        {
-            get
-            {
-                return this._BaudRateType;
-            }
-            set
-            {
-                this._BaudRateType = value;
-            }
-        }
-        public System.Int32 DataBits
-        {
-            get
-            {
-                return this._databits;
-            }
-            set
-            {
-                this._databits = value;
-            }
-        }
-      
-
-         public string StopBits
-        {
-            get
-            {
-                return this._stopbits;
-            }
-            set
-            {
-                this._stopbits = value;
-            }
-        }
-         public string Parity
-        {
-            get
-            {
-                return this._parity;
-            }
-            set
-            {
-                this._parity = value;
-            }
-        }
-            public string Handshake
-        {
-            get
-            {
-                return this._handshake;
-            }
-            set
-            {
-                this._handshake = value;
-            }
-        }
         
-       
-        
+         
 		#endregion
 
-		#region Public Methods
+		#region Close Connection
 
         public void closeconnection()
         {
@@ -224,6 +221,8 @@ namespace PacketSoftware
             Close = true;
             Disconnect();
         }
+        #endregion
+
         #region StringCollection
         public StringCollection ScreenScrape(int StartRow, int StartColumn, int EndRow, int EndColumn)
 		{
@@ -278,31 +277,68 @@ namespace PacketSoftware
 		}
         #endregion
 
-        #endregion
+        
+        
         #region public enums
         public enum ConnectionTypes
-		{
-			Telnet,
+        {
+            Telnet,
             COM,
-			SSH1,
-			SSH2,
-		}
-
+            SSH1,
+            SSH2,
+        }
         public enum BaudRateTypes
         {
-           4800,
-           9600,
-           19200,
-           38400,
-           57600, 
-           11200, 
-           230400,
+           Baud_110 = 110,
+           Baud_300 = 300,
+           Baud_600 = 600,
+           Baud_1200 = 1200,
+           Baud_2400 = 2400,
+           Baud_4800 = 4800,
+           Baud_9600 = 9600,
+           Baud_19200 = 19200,
+           Baud_38400 = 38400,
+           Baud_57600 = 57600,
+           //Baud_115200 = 115200,
+        }
+        public enum DataBitsTypes
+        {
+            Data_Bits_5 = 5,
+            Data_Bits_6 = 6,
+            Data_Bits_7 = 7,
+            Data_Bits_8 = 8,
+        }
+        public enum StopBitsTypes
+        {
+            Stop_Bits_1 = 1,
+            Stop_Bits_1_5 = 15,
+            Stop_Bits_2 = 2,
+        }
+        public enum ParityTypes
+        {
+            None,
+            Odd,
+            Even,
+            Mark,
+            Space,
+        }
+        public enum FlowTypes
+        {
+            XonXoff,
+            Hardware,
+            None,
         }
 
 		#endregion
+
 		#region Fields
 		private ConnectionTypes             _ConnectionType;
         private BaudRateTypes               _BaudRateType;
+        private DataBitsTypes               _DataBitsType;
+        private StopBitsTypes               _StopBitsType;
+        private ParityTypes                 _ParityType;
+        private FlowTypes                   _FlowType;
+
 		private string						_hostname;       // used for connecting to SSH
 		private string						_username;       // maybe
 		private string						_password;
@@ -313,8 +349,7 @@ namespace PacketSoftware
         private string _stopbits;
 
         private System.Int32                _serialport;
-        private System.Int32                _baudrate;
-        private System.Int32                _databits;
+      
         private System.Int32                _port;
         private System.Boolean              _beep;
         private System.Boolean              _localecho;
@@ -768,6 +803,7 @@ namespace PacketSoftware
 			//MessageBox.Show(this.Font.Name + " " + Convert.ToString(this.Font.Size));
 		}
 		#endregion
+
 		#region Private Methods
 
         private void Disconnect()

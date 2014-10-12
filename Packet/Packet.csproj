@@ -66,6 +66,12 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Encrypt.cs" />
+    <Compile Include="Com_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Com_Form.Designer.cs">
+      <DependentUpon>Com_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModifyFile.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -73,11 +79,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="IP_Form2.cs">
+    <Compile Include="IP_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IP_Form2.Designer.cs">
-      <DependentUpon>IP_Form2.cs</DependentUpon>
+    <Compile Include="IP_Form.Designer.cs">
+      <DependentUpon>IP_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="ModifyRegistry.cs" />
     <Compile Include="Program.cs" />
@@ -85,11 +91,14 @@
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Com_Form.resx">
+      <DependentUpon>Com_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="IP_Form2.resx">
-      <DependentUpon>IP_Form2.cs</DependentUpon>
+    <EmbeddedResource Include="IP_Form.resx">
+      <DependentUpon>IP_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
