@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxBaudRate = new System.Windows.Forms.GroupBox();
             this.radioButton57600 = new System.Windows.Forms.RadioButton();
             this.radioButton38400 = new System.Windows.Forms.RadioButton();
             this.radioButton19200 = new System.Windows.Forms.RadioButton();
@@ -39,12 +39,12 @@
             this.radioButton300 = new System.Windows.Forms.RadioButton();
             this.radioButton2400 = new System.Windows.Forms.RadioButton();
             this.radioButton110 = new System.Windows.Forms.RadioButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBoxDataBits = new System.Windows.Forms.GroupBox();
             this.radioButton_Data_8 = new System.Windows.Forms.RadioButton();
             this.radioButton_Data_7 = new System.Windows.Forms.RadioButton();
             this.radioButton_Data_6 = new System.Windows.Forms.RadioButton();
             this.radioButton_Data_5 = new System.Windows.Forms.RadioButton();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBoxParity = new System.Windows.Forms.GroupBox();
             this.radioButton_Parity_Space = new System.Windows.Forms.RadioButton();
             this.radioButton_Parity_Mark = new System.Windows.Forms.RadioButton();
             this.radioButton_Parity_Even = new System.Windows.Forms.RadioButton();
@@ -52,41 +52,41 @@
             this.radioButton_Parity_None = new System.Windows.Forms.RadioButton();
             this.ok_button = new System.Windows.Forms.Button();
             this.cancel_button = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBoxStopBits = new System.Windows.Forms.GroupBox();
             this.radioButton_Stop_2 = new System.Windows.Forms.RadioButton();
             this.radioButton_Stop_1_5 = new System.Windows.Forms.RadioButton();
             this.radioButton_Stop_1 = new System.Windows.Forms.RadioButton();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBoxFlow = new System.Windows.Forms.GroupBox();
             this.radioButton_Flow_None = new System.Windows.Forms.RadioButton();
             this.radioButton_Flow_Hardware = new System.Windows.Forms.RadioButton();
             this.radioButton_Flow_Xon_Xoff = new System.Windows.Forms.RadioButton();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.groupBoxBaudRate.SuspendLayout();
+            this.groupBoxDataBits.SuspendLayout();
+            this.groupBoxParity.SuspendLayout();
+            this.groupBoxStopBits.SuspendLayout();
+            this.groupBoxFlow.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // groupBoxBaudRate
             // 
-            this.groupBox1.Controls.Add(this.radioButton57600);
-            this.groupBox1.Controls.Add(this.radioButton38400);
-            this.groupBox1.Controls.Add(this.radioButton19200);
-            this.groupBox1.Controls.Add(this.radioButton1200);
-            this.groupBox1.Controls.Add(this.radioButton9600);
-            this.groupBox1.Controls.Add(this.radioButton600);
-            this.groupBox1.Controls.Add(this.radioButton4800);
-            this.groupBox1.Controls.Add(this.radioButton300);
-            this.groupBox1.Controls.Add(this.radioButton2400);
-            this.groupBox1.Controls.Add(this.radioButton110);
-            this.groupBox1.Location = new System.Drawing.Point(40, 44);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(343, 102);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Baud Rate";
+            this.groupBoxBaudRate.Controls.Add(this.radioButton57600);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton38400);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton19200);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton1200);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton9600);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton600);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton4800);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton300);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton2400);
+            this.groupBoxBaudRate.Controls.Add(this.radioButton110);
+            this.groupBoxBaudRate.Location = new System.Drawing.Point(40, 44);
+            this.groupBoxBaudRate.Name = "groupBoxBaudRate";
+            this.groupBoxBaudRate.Size = new System.Drawing.Size(343, 102);
+            this.groupBoxBaudRate.TabIndex = 0;
+            this.groupBoxBaudRate.TabStop = false;
+            this.groupBoxBaudRate.Text = "Baud Rate";
             // 
             // radioButton57600
             // 
@@ -209,18 +209,19 @@
             this.radioButton110.UseVisualStyleBackColor = true;
             this.radioButton110.CheckedChanged += new System.EventHandler(this.radioButton110_CheckedChanged);
             // 
-            // groupBox2
+            // groupBoxDataBits
             // 
-            this.groupBox2.Controls.Add(this.radioButton_Data_8);
-            this.groupBox2.Controls.Add(this.radioButton_Data_7);
-            this.groupBox2.Controls.Add(this.radioButton_Data_6);
-            this.groupBox2.Controls.Add(this.radioButton_Data_5);
-            this.groupBox2.Location = new System.Drawing.Point(40, 173);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(189, 83);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Data Bits";
+            this.groupBoxDataBits.Controls.Add(this.radioButton_Data_8);
+            this.groupBoxDataBits.Controls.Add(this.radioButton_Data_7);
+            this.groupBoxDataBits.Controls.Add(this.radioButton_Data_6);
+            this.groupBoxDataBits.Controls.Add(this.radioButton_Data_5);
+            this.groupBoxDataBits.Cursor = System.Windows.Forms.Cursors.Default;
+            this.groupBoxDataBits.Location = new System.Drawing.Point(40, 173);
+            this.groupBoxDataBits.Name = "groupBoxDataBits";
+            this.groupBoxDataBits.Size = new System.Drawing.Size(189, 83);
+            this.groupBoxDataBits.TabIndex = 1;
+            this.groupBoxDataBits.TabStop = false;
+            this.groupBoxDataBits.Text = "Data Bits";
             // 
             // radioButton_Data_8
             // 
@@ -266,19 +267,19 @@
             this.radioButton_Data_5.Text = "5";
             this.radioButton_Data_5.UseVisualStyleBackColor = true;
             // 
-            // groupBox3
+            // groupBoxParity
             // 
-            this.groupBox3.Controls.Add(this.radioButton_Parity_Space);
-            this.groupBox3.Controls.Add(this.radioButton_Parity_Mark);
-            this.groupBox3.Controls.Add(this.radioButton_Parity_Even);
-            this.groupBox3.Controls.Add(this.radioButton_Parity_Odd);
-            this.groupBox3.Controls.Add(this.radioButton_Parity_None);
-            this.groupBox3.Location = new System.Drawing.Point(40, 277);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(91, 152);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Parity";
+            this.groupBoxParity.Controls.Add(this.radioButton_Parity_Space);
+            this.groupBoxParity.Controls.Add(this.radioButton_Parity_Mark);
+            this.groupBoxParity.Controls.Add(this.radioButton_Parity_Even);
+            this.groupBoxParity.Controls.Add(this.radioButton_Parity_Odd);
+            this.groupBoxParity.Controls.Add(this.radioButton_Parity_None);
+            this.groupBoxParity.Location = new System.Drawing.Point(40, 277);
+            this.groupBoxParity.Name = "groupBoxParity";
+            this.groupBoxParity.Size = new System.Drawing.Size(91, 152);
+            this.groupBoxParity.TabIndex = 2;
+            this.groupBoxParity.TabStop = false;
+            this.groupBoxParity.Text = "Parity";
             // 
             // radioButton_Parity_Space
             // 
@@ -355,17 +356,17 @@
             this.cancel_button.Text = "Cancel";
             this.cancel_button.UseVisualStyleBackColor = true;
             // 
-            // groupBox4
+            // groupBoxStopBits
             // 
-            this.groupBox4.Controls.Add(this.radioButton_Stop_2);
-            this.groupBox4.Controls.Add(this.radioButton_Stop_1_5);
-            this.groupBox4.Controls.Add(this.radioButton_Stop_1);
-            this.groupBox4.Location = new System.Drawing.Point(249, 186);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(172, 70);
-            this.groupBox4.TabIndex = 5;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Stop Bits";
+            this.groupBoxStopBits.Controls.Add(this.radioButton_Stop_2);
+            this.groupBoxStopBits.Controls.Add(this.radioButton_Stop_1_5);
+            this.groupBoxStopBits.Controls.Add(this.radioButton_Stop_1);
+            this.groupBoxStopBits.Location = new System.Drawing.Point(249, 186);
+            this.groupBoxStopBits.Name = "groupBoxStopBits";
+            this.groupBoxStopBits.Size = new System.Drawing.Size(172, 70);
+            this.groupBoxStopBits.TabIndex = 5;
+            this.groupBoxStopBits.TabStop = false;
+            this.groupBoxStopBits.Text = "Stop Bits";
             // 
             // radioButton_Stop_2
             // 
@@ -400,17 +401,17 @@
             this.radioButton_Stop_1.Text = "1";
             this.radioButton_Stop_1.UseVisualStyleBackColor = true;
             // 
-            // groupBox5
+            // groupBoxFlow
             // 
-            this.groupBox5.Controls.Add(this.radioButton_Flow_None);
-            this.groupBox5.Controls.Add(this.radioButton_Flow_Hardware);
-            this.groupBox5.Controls.Add(this.radioButton_Flow_Xon_Xoff);
-            this.groupBox5.Location = new System.Drawing.Point(157, 277);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(110, 111);
-            this.groupBox5.TabIndex = 6;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Flow Control";
+            this.groupBoxFlow.Controls.Add(this.radioButton_Flow_None);
+            this.groupBoxFlow.Controls.Add(this.radioButton_Flow_Hardware);
+            this.groupBoxFlow.Controls.Add(this.radioButton_Flow_Xon_Xoff);
+            this.groupBoxFlow.Location = new System.Drawing.Point(157, 277);
+            this.groupBoxFlow.Name = "groupBoxFlow";
+            this.groupBoxFlow.Size = new System.Drawing.Size(110, 111);
+            this.groupBoxFlow.TabIndex = 6;
+            this.groupBoxFlow.TabStop = false;
+            this.groupBoxFlow.Text = "Flow Control";
             // 
             // radioButton_Flow_None
             // 
@@ -470,27 +471,27 @@
             this.ClientSize = new System.Drawing.Size(520, 455);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBoxFlow);
+            this.Controls.Add(this.groupBoxStopBits);
             this.Controls.Add(this.cancel_button);
             this.Controls.Add(this.ok_button);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxParity);
+            this.Controls.Add(this.groupBoxDataBits);
+            this.Controls.Add(this.groupBoxBaudRate);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Com_Form";
             this.Text = "Com Port Config";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
+            this.groupBoxBaudRate.ResumeLayout(false);
+            this.groupBoxBaudRate.PerformLayout();
+            this.groupBoxDataBits.ResumeLayout(false);
+            this.groupBoxDataBits.PerformLayout();
+            this.groupBoxParity.ResumeLayout(false);
+            this.groupBoxParity.PerformLayout();
+            this.groupBoxStopBits.ResumeLayout(false);
+            this.groupBoxStopBits.PerformLayout();
+            this.groupBoxFlow.ResumeLayout(false);
+            this.groupBoxFlow.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -498,7 +499,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxBaudRate;
         private System.Windows.Forms.RadioButton radioButton110;
         private System.Windows.Forms.RadioButton radioButton19200;
         private System.Windows.Forms.RadioButton radioButton1200;
@@ -506,12 +507,12 @@
         private System.Windows.Forms.RadioButton radioButton600;
         private System.Windows.Forms.RadioButton radioButton4800;
         private System.Windows.Forms.RadioButton radioButton300;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBoxDataBits;
         private System.Windows.Forms.RadioButton radioButton_Data_8;
         private System.Windows.Forms.RadioButton radioButton_Data_7;
         private System.Windows.Forms.RadioButton radioButton_Data_6;
         private System.Windows.Forms.RadioButton radioButton_Data_5;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBoxParity;
         private System.Windows.Forms.RadioButton radioButton_Parity_Space;
         private System.Windows.Forms.RadioButton radioButton_Parity_Mark;
         private System.Windows.Forms.RadioButton radioButton_Parity_Even;
@@ -519,11 +520,11 @@
         private System.Windows.Forms.RadioButton radioButton_Parity_None;
         private System.Windows.Forms.Button ok_button;
         private System.Windows.Forms.Button cancel_button;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBoxStopBits;
         private System.Windows.Forms.RadioButton radioButton_Stop_2;
         private System.Windows.Forms.RadioButton radioButton_Stop_1_5;
         private System.Windows.Forms.RadioButton radioButton_Stop_1;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBoxFlow;
         private System.Windows.Forms.RadioButton radioButton_Flow_None;
         private System.Windows.Forms.RadioButton radioButton_Flow_Hardware;
         private System.Windows.Forms.RadioButton radioButton_Flow_Xon_Xoff;
