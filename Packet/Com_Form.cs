@@ -424,6 +424,7 @@ namespace Packet
                 comboBoxPort.Items.Add(item);
             }
             comboBoxPort.SelectedItem = myRegistry.Read("Port");
+            // needs work
 
         }
 

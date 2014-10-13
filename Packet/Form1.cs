@@ -30,12 +30,21 @@ namespace Packet
         //  private TelnetConnection
         //---------------------------------------------------------------------------------------------------------
         #region private TelnetConnection
-        
+
         ModifyRegistry myRegistry = new ModifyRegistry();
+        ModifyRegistry myRegistryCom = new ModifyRegistry();
         Encrypting myEncrypt = new Encrypting();
         ModifyFile myFiles = new ModifyFile();
         Color textColor  = Color.Yellow;
         Color backgroundColor = Color.Black;
+        
+        private string  baud;
+         
+        private string    data ;
+        private string    stop ;
+        private string    parity;
+        private string    flow ;
+        private string port ;
         Boolean bBeep = true;
         //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         //string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
@@ -50,6 +59,8 @@ namespace Packet
             InitializeComponent();
             myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             myRegistry.ShowError = true;
+            myRegistryCom.SubKey = "SOFTWARE\\NA7KR\\Packet\\Port";
+            myRegistryCom.ShowError = true;
             myRegistry.Write("Packet", Application.ProductVersion);
             this.bbs_button.Enabled = true;
             this.forward_button.Enabled = false;
@@ -497,6 +508,13 @@ namespace Packet
             else
                 ssh_button.Visible = false;
 
+            baud = myRegistryCom.Read("Baud");
+            data = myRegistryCom.Read("Data Bits");
+            stop = myRegistryCom.Read("Stop Bits");
+            parity = myRegistryCom.Read("Parity");
+            flow = myRegistryCom.Read("Flow");
+            port = myRegistryCom.Read("Port");
+
         }
         #endregion
 
@@ -664,6 +682,13 @@ namespace Packet
         {
             Com_Form box = new Com_Form();
             box.ShowDialog();
+            baud = myRegistryCom.Read("Baud");
+            data = myRegistryCom.Read("Data Bits");
+            stop = myRegistryCom.Read("Stop Bits");
+            parity = myRegistryCom.Read("Parity");
+            flow = myRegistryCom.Read("Flow");
+            port = myRegistryCom.Read("Port");
+            
         }
     }
     #endregion
