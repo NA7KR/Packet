@@ -351,7 +351,7 @@
             this.terminalEmulator1.Rows = 35;
             this.terminalEmulator1.SerialPort = 0;
             this.terminalEmulator1.Size = new System.Drawing.Size(1144, 457);
-            this.terminalEmulator1.StopRateType = PacketSoftware.TerminalEmulator.StopBitsTypes.Stop_Bits_1;
+            this.terminalEmulator1.StopBitsType = PacketSoftware.TerminalEmulator.StopBitsTypes.Stop_Bits_1;
             this.terminalEmulator1.TabIndex = 10;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;

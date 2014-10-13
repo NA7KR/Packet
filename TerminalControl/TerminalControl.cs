@@ -61,7 +61,7 @@ namespace PacketSoftware
             }
         }
 
-        public StopBitsTypes StopRateType
+        public StopBitsTypes StopBitsType
         {
             get
             {

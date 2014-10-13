@@ -511,11 +511,7 @@ namespace Packet
         #region connect bbs
         private void bbs_button_Click(object sender, EventArgs e)
         {
-           
-            string stop ;
-            string parity;
-            string flow ;
-            string port ;
+           string port ;
             if (myRegistry.Read("BBS-Mode") == "Telnet")
             {
                
@@ -539,11 +535,10 @@ namespace Packet
             {
                 this.terminalEmulator1.BaudRateType = ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
                 this.terminalEmulator1.DataBitsType = ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" + myRegistryCom.Read("Data Bits"));
-                
-              ;
-                stop = myRegistryCom.Read("Stop Bits");
-                parity = myRegistryCom.Read("Parity");
-                flow = myRegistryCom.Read("Flow");
+                this.terminalEmulator1.StopBitsType = ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>("Stop_Bits_" + myRegistryCom.Read("Stop Bits"));
+                this.terminalEmulator1.ParityType = ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>( myRegistryCom.Read("Parity"));
+                this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
+
                 port = myRegistryCom.Read("Port");
             } 
             bbs_button.Enabled = false;
