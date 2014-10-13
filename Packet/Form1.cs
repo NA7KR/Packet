@@ -37,14 +37,6 @@ namespace Packet
         ModifyFile myFiles = new ModifyFile();
         Color textColor  = Color.Yellow;
         Color backgroundColor = Color.Black;
-        
-        private string  baud;
-         
-        private string    data ;
-        private string    stop ;
-        private string    parity;
-        private string    flow ;
-        private string port ;
         Boolean bBeep = true;
         //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         //string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
@@ -508,12 +500,7 @@ namespace Packet
             else
                 ssh_button.Visible = false;
 
-            baud = myRegistryCom.Read("Baud");
-            data = myRegistryCom.Read("Data Bits");
-            stop = myRegistryCom.Read("Stop Bits");
-            parity = myRegistryCom.Read("Parity");
-            flow = myRegistryCom.Read("Flow");
-            port = myRegistryCom.Read("Port");
+         
 
         }
         #endregion
@@ -524,25 +511,46 @@ namespace Packet
         #region connect bbs
         private void bbs_button_Click(object sender, EventArgs e)
         {
+           
+            string stop ;
+            string parity;
+            string flow ;
+            string port ;
+            if (myRegistry.Read("BBS-Mode") == "Telnet")
+            {
+               
+                if (myRegistry.Read("BBS-Echo") == "Yes")
+                {
+                    this.terminalEmulator1.LocalEcho = true;
+                }
+                else
+                {
+                    this.terminalEmulator1.LocalEcho = false;
+                }
+                this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("BBS-Port"));
+                this.terminalEmulator1.Hostname = myRegistry.Read("BBS-IP");
+                this.terminalEmulator1.Username = myRegistry.Read("BBS-CallSign");
+                this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("BBS-Password"));
+                this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
+                this.terminalEmulator1.Connect();
+                this.disconnect_button.Enabled = true;
+            }
+            else
+            {
+                this.terminalEmulator1.BaudRateType = ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
+                this.terminalEmulator1.DataBitsType = ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" + myRegistryCom.Read("Data Bits"));
+                
+              ;
+                stop = myRegistryCom.Read("Stop Bits");
+                parity = myRegistryCom.Read("Parity");
+                flow = myRegistryCom.Read("Flow");
+                port = myRegistryCom.Read("Port");
+            } 
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
             forward_button.Enabled = true;
-            if (myRegistry.Read("BBS-Echo") == "Yes")
-            {
-                this.terminalEmulator1.LocalEcho = true;
-            }
-            else
-            {
-                this.terminalEmulator1.LocalEcho = false;
-            }
-            this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("BBS-Port"));
-            this.terminalEmulator1.Hostname = myRegistry.Read("BBS-IP");
-            this.terminalEmulator1.Username = myRegistry.Read("BBS-CallSign");
-            this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("BBS-Password"));
-            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.Connect();
-            this.disconnect_button.Enabled = true;
+
         }
         #endregion
 
@@ -678,18 +686,20 @@ namespace Packet
         }
         #endregion
 
+        #region toolStripMenu click show Com port config
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
             Com_Form box = new Com_Form();
-            box.ShowDialog();
-            baud = myRegistryCom.Read("Baud");
-            data = myRegistryCom.Read("Data Bits");
-            stop = myRegistryCom.Read("Stop Bits");
-            parity = myRegistryCom.Read("Parity");
-            flow = myRegistryCom.Read("Flow");
-            port = myRegistryCom.Read("Port");
-            
+            box.ShowDialog();   
         }
+        #endregion
+
+        #region ParseEnum
+        public static T ParseEnum<T>( string value)
+        {
+           return (T)Enum.Parse(typeof(T), value, true);
+        }
+        #endregion
     }
     #endregion
 }

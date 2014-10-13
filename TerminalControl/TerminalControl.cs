@@ -48,8 +48,8 @@ namespace PacketSoftware
 				this._ConnectionType = value;
 			}
 		}
-       
-        public DataBitsTypes DataRateType
+
+        public DataBitsTypes DataBitsType
         {
             get
             {
@@ -344,9 +344,7 @@ namespace PacketSoftware
 		private string						_password;
         private string                      _filename;
 
-        private string _handshake;
-        private string _parity;
-        private string _stopbits;
+ 
 
         private System.Int32                _serialport;
       

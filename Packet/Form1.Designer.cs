@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.bbs_button = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,6 +42,7 @@
             this.nodeTelnetComToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox3 = new System.Windows.Forms.ToolStripComboBox();
             this.nodeIPConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCom = new System.Windows.Forms.ToolStripMenuItem();
             this.SSHConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBoxBeep = new System.Windows.Forms.ToolStripComboBox();
@@ -60,7 +60,6 @@
             this.node_button = new System.Windows.Forms.Button();
             this.disconnect_button = new System.Windows.Forms.Button();
             this.ssh_button = new System.Windows.Forms.Button();
-            this.toolStripMenuItemCom = new System.Windows.Forms.ToolStripMenuItem();
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -185,6 +184,13 @@
             this.nodeIPConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.nodeIPConfigToolStripMenuItem.Text = "Node IP Config";
             this.nodeIPConfigToolStripMenuItem.Click += new System.EventHandler(this.nodeIPConfigToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemCom
+            // 
+            this.toolStripMenuItemCom.Name = "toolStripMenuItemCom";
+            this.toolStripMenuItemCom.Size = new System.Drawing.Size(178, 22);
+            this.toolStripMenuItemCom.Text = "Com Port Config";
+            this.toolStripMenuItemCom.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
             // 
             // SSHConfigToolStripMenuItem
             // 
@@ -322,13 +328,6 @@
             this.ssh_button.UseVisualStyleBackColor = true;
             this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
             // 
-            // toolStripMenuItemCom
-            // 
-            this.toolStripMenuItemCom.Name = "toolStripMenuItemCom";
-            this.toolStripMenuItemCom.Size = new System.Drawing.Size(178, 22);
-            this.toolStripMenuItemCom.Text = "Com Port Config";
-            this.toolStripMenuItemCom.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
-            // 
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
@@ -337,7 +336,7 @@
             this.terminalEmulator1.Close = false;
             this.terminalEmulator1.Columns = 162;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.DataRateType = PacketSoftware.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.DataBitsType = PacketSoftware.TerminalEmulator.DataBitsTypes.Data_Bits_8;
             this.terminalEmulator1.FileName = null;
             this.terminalEmulator1.FlowType = PacketSoftware.TerminalEmulator.FlowTypes.XonXoff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
@@ -386,7 +385,6 @@
 
         #endregion
 
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Button bbs_button;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
