@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region Using Directive
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,12 +10,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyRegistry;
 using Utility.Encrypting;
+#endregion
 
 namespace Packet
 {
+    #region partial class Com_Form
     public partial class Com_Form : Form
     {
-
         ModifyRegistry myRegistry = new ModifyRegistry();
         Encrypting myEncrypt = new Encrypting();
         public System.Int32 Speed;
@@ -30,6 +32,7 @@ namespace Packet
         public string port;
         public System.Int32 top = 30;
 
+        #region Com_Form()
         public Com_Form()
         {
             InitializeComponent();
@@ -97,7 +100,9 @@ namespace Packet
 
 
         }
+        #endregion
 
+        #region button
         private void ok_button_Click(object sender, EventArgs e)
         {
             try
@@ -115,8 +120,9 @@ namespace Packet
                 this.Close();
             }
         }
+        #endregion
 
-
+        #region screen layout
         private void radioButton110_CheckedChanged(object sender, EventArgs e)
         {
             Speed = 110;
@@ -241,7 +247,9 @@ namespace Packet
         {
             Flow = "None";
         }
+        #endregion
 
+        #region load
         private void Com_Form_Load(object sender, EventArgs e)
         {
             #region  case switch baud
@@ -427,10 +435,14 @@ namespace Packet
             // needs work
 
         }
+        #endregion
 
+        #region combbox changed
         private void comboBoxPort_SelectedIndexChanged(object sender, EventArgs e)
         {
             port = Convert.ToString(comboBoxPort.SelectedItem);
         }
+        #endregion
     }
+    #endregion
 }
