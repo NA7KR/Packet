@@ -23,7 +23,7 @@ namespace Packet
         public System.Int32 speed;
         public System.Int32 data;
         public System.Int32 DataBits;
-        public System.Double StopBits;
+        public string StopBits;
         public string Parity;
         public string Flow;
         public string stop;
@@ -68,6 +68,7 @@ namespace Packet
             radioButton_Stop_1.Top = top;
             radioButton_Stop_1_5.Top = top;
             radioButton_Stop_2.Top = top;
+            radioButton_Stop_None.Top = top;
 
             groupBoxStopBits.Height = top * 2;
             groupBoxStopBits.Top = top * 5;
@@ -85,10 +86,11 @@ namespace Packet
             radioButton_Parity_None.Checked = true;
 
             radioButton_Flow_Xon_Xoff.Top = top;
-            radioButton_Flow_Hardware.Top = top * 2;
-            radioButton_Flow_None.Top = top * 3;
+            radioButton_Flow_RequestToSendXOnXOff.Top = top * 2;
+            radioButton_Flow_RequestToSend.Top = top * 3;
+            radioButton_Flow_None.Top = top * 4;
 
-            groupBoxFlow.Height = top * 4;
+            groupBoxFlow.Height = top * 5;
             groupBoxFlow.Top = top * 8;
             radioButton_Flow_None.Checked = true;
 
@@ -109,7 +111,7 @@ namespace Packet
             {
                 myRegistry.Write("Baud", Convert.ToString(Speed));
                 myRegistry.Write("Data Bits", Convert.ToString(DataBits));
-                myRegistry.Write("Stop Bits", Convert.ToString(StopBits));
+                myRegistry.Write("Stop Bits", StopBits);
                 myRegistry.Write("Parity", Parity);
                 myRegistry.Write("Flow", Flow);
                 myRegistry.Write("Port", port);
@@ -193,19 +195,23 @@ namespace Packet
             DataBits = 8;
         }
 
+        private void radioButton_Stop_None_CheckedChanged(object sender, EventArgs e)
+        {
+            StopBits = "None";
+        }
         private void radioButton_Stop_1_CheckedChanged(object sender, EventArgs e)
         {
-            StopBits = 1;
+            StopBits = "One";
         }
 
         private void radioButton_Stop_1_5_CheckedChanged(object sender, EventArgs e)
         {
-            StopBits = 1.5;
+            StopBits = "OnePointFive";
         }
 
         private void radioButton_Stop_2_CheckedChanged(object sender, EventArgs e)
         {
-            StopBits = 2;
+            StopBits = "Two";
         }
 
         private void radioButton_Parity_None_CheckedChanged(object sender, EventArgs e)
@@ -235,12 +241,12 @@ namespace Packet
 
         private void radioButton_Flow_Xon_Xoff_CheckedChanged(object sender, EventArgs e)
         {
-            Flow = "Xon Xoff";
+            Flow = "XOnXOff";
         }
 
         private void radioButton_Flow_Hardware_CheckedChanged(object sender, EventArgs e)
         {
-            Flow = "Hardware";
+            Flow = "RequestToSendXOnXOff";
         }
 
         private void radioButton_Flow_None_CheckedChanged(object sender, EventArgs e)
@@ -345,19 +351,24 @@ namespace Packet
             stop = myRegistry.Read("Stop Bits");
             switch (stop)
             {
-                case "1":
+                case "One":
                     {
                         radioButton_Stop_1.Checked = true;
                         break;
                     }
-                case "1.5":
+                case "OnePointFive":
                     {
                         radioButton_Stop_1_5.Checked = true;
                         break;
                     }
-                case "2":
+                case "Two":
                     {
                         radioButton_Stop_2.Checked = true;
+                        break;
+                    }
+                case "None":
+                    {
+                        radioButton_Stop_None.Checked = true;
                         break;
                     }
 
@@ -406,14 +417,14 @@ namespace Packet
             flow = myRegistry.Read("Flow");
             switch (flow)
             {
-                case "Xon Xoff":
+                case "XOnXOff":
                     {
                         radioButton_Flow_Xon_Xoff.Checked = true;
                         break;
                     }
-                case "Hardware":
+                case "RequestToSendXOnXOff":
                     {
-                        radioButton_Flow_Hardware.Checked = true;
+                        radioButton_Flow_RequestToSendXOnXOff.Checked = true;
                         break;
                     }
                 case "None":
@@ -443,6 +454,7 @@ namespace Packet
             port = Convert.ToString(comboBoxPort.SelectedItem);
         }
         #endregion
+
     }
     #endregion
 }

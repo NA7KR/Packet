@@ -308,9 +308,10 @@ namespace PacketSoftware
         }
         public enum StopBitsTypes
         {
-            Stop_Bits_1 = 1,
-            Stop_Bits_1_5 = 15,
-            Stop_Bits_2 = 2,
+            None,
+            One,
+            OnePointFive,
+            Two,
         }
         public enum ParityTypes
         {
@@ -322,9 +323,10 @@ namespace PacketSoftware
         }
         public enum FlowTypes
         {
-            XonXoff,
-            Hardware,
-            None,
+           XOnXOff,
+           RequestToSend,
+           RequestToSendXOnXOff,
+           None,
         }
 
 		#endregion
@@ -827,77 +829,208 @@ namespace PacketSoftware
 
         private void ConnectCom()
         {
-            int Baud = 9600;
             System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
             try
-            { 
-   
-            port.PortName = this.SerialPort;
-            switch (this.BaudRateType)
+            {
+
+                #region case baud
+                switch (this.BaudRateType)
                 {
                     case
                     BaudRateTypes.Baud_110:
                         {
-                            Baud = 110;
+                             port.BaudRate = 110;
                             break;
                         }
                     case
                     BaudRateTypes.Baud_300:
                         {
-                            Baud = 300;
+                             port.BaudRate = 300;
                             break;
                         }
                     case
                     BaudRateTypes.Baud_600:
                         {
-                            Baud = 600;
+                             port.BaudRate = 600;
                             break;
                         }
                     case
                      BaudRateTypes.Baud_1200:
                         {
-                            Baud = 1200;
+                             port.BaudRate = 1200;
                             break;
                         }
                     case
                     BaudRateTypes.Baud_2400:
                         {
-                            Baud = 2400;
+                             port.BaudRate = 2400;
                             break;
                         }
                     case
                       BaudRateTypes.Baud_4800:
                         {
-                            Baud = 4800;
+                             port.BaudRate = 4800;
                             break;
                         }
                     case
                       BaudRateTypes.Baud_9600:
                         {
-                            Baud = 9600;
+                             port.BaudRate = 9600;
                             break;
                         }
                     case
                        BaudRateTypes.Baud_19200:
                         {
-                            Baud = 19200;
+                            port.BaudRate = 19200;
                             break;
                         }
                     case
                          BaudRateTypes.Baud_38400:
                         {
-                            Baud = 38400;
+                            port.BaudRate = 38400;
                             break;
                         }
 
                     case
                          BaudRateTypes.Baud_57600:
                         {
-                            Baud = 57600;
+                            port.BaudRate = 57600;
                             break;
-                        }     
+                        }
                 }
-            port.BaudRate = Baud;
+                #endregion
+
+                #region case stop
+                switch (this.StopBitsType)
+                {
+                    case
+                    StopBitsTypes.None:
+                        {
+                            port.StopBits = System.IO.Ports.StopBits.None;
+                            break;
+                        }
+                    case
+                    StopBitsTypes.One:
+                        {
+                            port.StopBits = System.IO.Ports.StopBits.One;
+                            break;
+                        }
+                    case
+                    StopBitsTypes.OnePointFive:
+                        {
+                            port.StopBits = System.IO.Ports.StopBits.OnePointFive;
+                            break;
+                        }
+                    case
+                    StopBitsTypes.Two:
+                        {
+                            port.StopBits = System.IO.Ports.StopBits.Two;
+                            break;
+                        }
+                }
+                #endregion
+
+                #region case databits
+                switch (this.DataBitsType)
+                {
+                    case
+                    DataBitsTypes.Data_Bits_5:
+                        {
+                            port.DataBits = 5;
+                            break;
+                        }
+                     case
+                    DataBitsTypes.Data_Bits_6:
+                        {
+                            port.DataBits = 6;
+                            break;
+                        }
+                     case
+                    DataBitsTypes.Data_Bits_7:
+                        {
+                            port.DataBits = 7;
+                            break;
+                        }
+                     case
+                    DataBitsTypes.Data_Bits_8:
+                        {
+                            port.DataBits = 8;
+                            break;
+                        }
+                }
+                #endregion
+
+                #region  case flow
+                switch (this.FlowType)
+                {
+                    case
+                    FlowTypes.XOnXOff:
+                        {
+                            port.Handshake = System.IO.Ports.Handshake.XOnXOff;
+                            break;
+                        }
+                    case
+                    FlowTypes.RequestToSend:
+                        {
+                            port.Handshake = System.IO.Ports.Handshake.RequestToSend;
+                            break;
+                        }
+                    case
+                    FlowTypes.RequestToSendXOnXOff:
+                        {
+                            port.Handshake = System.IO.Ports.Handshake.RequestToSendXOnXOff;
+                            break;
+                        }
+                    case
+                    FlowTypes.None:
+                        {
+                            port.Handshake = System.IO.Ports.Handshake.None;
+                            break;
+                        }
+                 }
+                #endregion
+
+                #region case parity
+                switch (this.ParityType)
+                {
+                    case
+                    ParityTypes.None:
+                        {
+                            port.Parity = System.IO.Ports.Parity.None;
+                            break;
+                        }
+                    case
+                    ParityTypes.Odd:
+                        {
+                            port.Parity = System.IO.Ports.Parity.Odd;
+                            break;
+                        }
+                    case
+                    ParityTypes.Even:
+                        {
+                            port.Parity = System.IO.Ports.Parity.Even;
+                            break;
+                        }
+                    case
+                    ParityTypes.Mark:
+                        {
+                            port.Parity = System.IO.Ports.Parity.Mark;
+                            break;
+                        }
+                    case
+                    ParityTypes.Space:
+                        {
+                            port.Parity = System.IO.Ports.Parity.Space;
+                            break;
+                        }
+                }
+
+
+                #endregion
+
+                port.PortName = this.SerialPort;
+                
+                
             }
             catch (IOException e)
             {
@@ -4916,6 +5049,11 @@ namespace PacketSoftware
             this.components = new System.ComponentModel.Container();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.SuspendLayout();
+            // 
+            // serialPort1
+            // 
+            this.serialPort1.Handshake = System.IO.Ports.Handshake.RequestToSendXOnXOff;
+            this.serialPort1.StopBits = System.IO.Ports.StopBits.OnePointFive;
             this.ResumeLayout(false);
 
         }

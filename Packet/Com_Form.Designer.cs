@@ -53,15 +53,17 @@
             this.ok_button = new System.Windows.Forms.Button();
             this.cancel_button = new System.Windows.Forms.Button();
             this.groupBoxStopBits = new System.Windows.Forms.GroupBox();
+            this.radioButton_Stop_None = new System.Windows.Forms.RadioButton();
             this.radioButton_Stop_2 = new System.Windows.Forms.RadioButton();
             this.radioButton_Stop_1_5 = new System.Windows.Forms.RadioButton();
             this.radioButton_Stop_1 = new System.Windows.Forms.RadioButton();
             this.groupBoxFlow = new System.Windows.Forms.GroupBox();
             this.radioButton_Flow_None = new System.Windows.Forms.RadioButton();
-            this.radioButton_Flow_Hardware = new System.Windows.Forms.RadioButton();
+            this.radioButton_Flow_RequestToSendXOnXOff = new System.Windows.Forms.RadioButton();
             this.radioButton_Flow_Xon_Xoff = new System.Windows.Forms.RadioButton();
             this.comboBoxPort = new System.Windows.Forms.ComboBox();
             this.Port_label = new System.Windows.Forms.Label();
+            this.radioButton_Flow_RequestToSend = new System.Windows.Forms.RadioButton();
             this.groupBoxBaudRate.SuspendLayout();
             this.groupBoxDataBits.SuspendLayout();
             this.groupBoxParity.SuspendLayout();
@@ -218,7 +220,7 @@
             this.groupBoxDataBits.Cursor = System.Windows.Forms.Cursors.Default;
             this.groupBoxDataBits.Location = new System.Drawing.Point(40, 173);
             this.groupBoxDataBits.Name = "groupBoxDataBits";
-            this.groupBoxDataBits.Size = new System.Drawing.Size(189, 83);
+            this.groupBoxDataBits.Size = new System.Drawing.Size(187, 83);
             this.groupBoxDataBits.TabIndex = 1;
             this.groupBoxDataBits.TabStop = false;
             this.groupBoxDataBits.Text = "Data Bits";
@@ -367,20 +369,32 @@
             // 
             // groupBoxStopBits
             // 
+            this.groupBoxStopBits.Controls.Add(this.radioButton_Stop_None);
             this.groupBoxStopBits.Controls.Add(this.radioButton_Stop_2);
             this.groupBoxStopBits.Controls.Add(this.radioButton_Stop_1_5);
             this.groupBoxStopBits.Controls.Add(this.radioButton_Stop_1);
-            this.groupBoxStopBits.Location = new System.Drawing.Point(249, 186);
+            this.groupBoxStopBits.Location = new System.Drawing.Point(249, 173);
             this.groupBoxStopBits.Name = "groupBoxStopBits";
-            this.groupBoxStopBits.Size = new System.Drawing.Size(172, 70);
+            this.groupBoxStopBits.Size = new System.Drawing.Size(229, 83);
             this.groupBoxStopBits.TabIndex = 5;
             this.groupBoxStopBits.TabStop = false;
             this.groupBoxStopBits.Text = "Stop Bits";
             // 
+            // radioButton_Stop_None
+            // 
+            this.radioButton_Stop_None.AutoSize = true;
+            this.radioButton_Stop_None.Location = new System.Drawing.Point(172, 42);
+            this.radioButton_Stop_None.Name = "radioButton_Stop_None";
+            this.radioButton_Stop_None.Size = new System.Drawing.Size(51, 17);
+            this.radioButton_Stop_None.TabIndex = 7;
+            this.radioButton_Stop_None.TabStop = true;
+            this.radioButton_Stop_None.Text = "None";
+            this.radioButton_Stop_None.UseVisualStyleBackColor = true;
+            // 
             // radioButton_Stop_2
             // 
             this.radioButton_Stop_2.AutoSize = true;
-            this.radioButton_Stop_2.Location = new System.Drawing.Point(122, 30);
+            this.radioButton_Stop_2.Location = new System.Drawing.Point(122, 42);
             this.radioButton_Stop_2.Name = "radioButton_Stop_2";
             this.radioButton_Stop_2.Size = new System.Drawing.Size(31, 17);
             this.radioButton_Stop_2.TabIndex = 6;
@@ -392,7 +406,7 @@
             // radioButton_Stop_1_5
             // 
             this.radioButton_Stop_1_5.AutoSize = true;
-            this.radioButton_Stop_1_5.Location = new System.Drawing.Point(65, 30);
+            this.radioButton_Stop_1_5.Location = new System.Drawing.Point(65, 42);
             this.radioButton_Stop_1_5.Name = "radioButton_Stop_1_5";
             this.radioButton_Stop_1_5.Size = new System.Drawing.Size(40, 17);
             this.radioButton_Stop_1_5.TabIndex = 5;
@@ -404,7 +418,7 @@
             // radioButton_Stop_1
             // 
             this.radioButton_Stop_1.AutoSize = true;
-            this.radioButton_Stop_1.Location = new System.Drawing.Point(18, 30);
+            this.radioButton_Stop_1.Location = new System.Drawing.Point(18, 41);
             this.radioButton_Stop_1.Name = "radioButton_Stop_1";
             this.radioButton_Stop_1.Size = new System.Drawing.Size(31, 17);
             this.radioButton_Stop_1.TabIndex = 4;
@@ -415,12 +429,13 @@
             // 
             // groupBoxFlow
             // 
+            this.groupBoxFlow.Controls.Add(this.radioButton_Flow_RequestToSend);
             this.groupBoxFlow.Controls.Add(this.radioButton_Flow_None);
-            this.groupBoxFlow.Controls.Add(this.radioButton_Flow_Hardware);
+            this.groupBoxFlow.Controls.Add(this.radioButton_Flow_RequestToSendXOnXOff);
             this.groupBoxFlow.Controls.Add(this.radioButton_Flow_Xon_Xoff);
             this.groupBoxFlow.Location = new System.Drawing.Point(157, 277);
             this.groupBoxFlow.Name = "groupBoxFlow";
-            this.groupBoxFlow.Size = new System.Drawing.Size(110, 111);
+            this.groupBoxFlow.Size = new System.Drawing.Size(188, 138);
             this.groupBoxFlow.TabIndex = 6;
             this.groupBoxFlow.TabStop = false;
             this.groupBoxFlow.Text = "Flow Control";
@@ -428,7 +443,7 @@
             // radioButton_Flow_None
             // 
             this.radioButton_Flow_None.AutoSize = true;
-            this.radioButton_Flow_None.Location = new System.Drawing.Point(21, 75);
+            this.radioButton_Flow_None.Location = new System.Drawing.Point(21, 98);
             this.radioButton_Flow_None.Name = "radioButton_Flow_None";
             this.radioButton_Flow_None.Size = new System.Drawing.Size(51, 17);
             this.radioButton_Flow_None.TabIndex = 8;
@@ -437,17 +452,17 @@
             this.radioButton_Flow_None.UseVisualStyleBackColor = true;
             this.radioButton_Flow_None.CheckedChanged += new System.EventHandler(this.radioButton_Flow_None_CheckedChanged);
             // 
-            // radioButton_Flow_Hardware
+            // radioButton_Flow_RequestToSendXOnXOff
             // 
-            this.radioButton_Flow_Hardware.AutoSize = true;
-            this.radioButton_Flow_Hardware.Location = new System.Drawing.Point(21, 52);
-            this.radioButton_Flow_Hardware.Name = "radioButton_Flow_Hardware";
-            this.radioButton_Flow_Hardware.Size = new System.Drawing.Size(71, 17);
-            this.radioButton_Flow_Hardware.TabIndex = 7;
-            this.radioButton_Flow_Hardware.TabStop = true;
-            this.radioButton_Flow_Hardware.Text = "Hardware";
-            this.radioButton_Flow_Hardware.UseVisualStyleBackColor = true;
-            this.radioButton_Flow_Hardware.CheckedChanged += new System.EventHandler(this.radioButton_Flow_Hardware_CheckedChanged);
+            this.radioButton_Flow_RequestToSendXOnXOff.AutoSize = true;
+            this.radioButton_Flow_RequestToSendXOnXOff.Location = new System.Drawing.Point(21, 52);
+            this.radioButton_Flow_RequestToSendXOnXOff.Name = "radioButton_Flow_RequestToSendXOnXOff";
+            this.radioButton_Flow_RequestToSendXOnXOff.Size = new System.Drawing.Size(145, 17);
+            this.radioButton_Flow_RequestToSendXOnXOff.TabIndex = 7;
+            this.radioButton_Flow_RequestToSendXOnXOff.TabStop = true;
+            this.radioButton_Flow_RequestToSendXOnXOff.Text = "RequestToSendXOnXOff";
+            this.radioButton_Flow_RequestToSendXOnXOff.UseVisualStyleBackColor = true;
+            this.radioButton_Flow_RequestToSendXOnXOff.CheckedChanged += new System.EventHandler(this.radioButton_Flow_Hardware_CheckedChanged);
             // 
             // radioButton_Flow_Xon_Xoff
             // 
@@ -464,7 +479,7 @@
             // comboBoxPort
             // 
             this.comboBoxPort.FormattingEnabled = true;
-            this.comboBoxPort.Location = new System.Drawing.Point(300, 302);
+            this.comboBoxPort.Location = new System.Drawing.Point(351, 305);
             this.comboBoxPort.Name = "comboBoxPort";
             this.comboBoxPort.Size = new System.Drawing.Size(121, 21);
             this.comboBoxPort.TabIndex = 7;
@@ -473,11 +488,22 @@
             // Port_label
             // 
             this.Port_label.AutoSize = true;
-            this.Port_label.Location = new System.Drawing.Point(297, 277);
+            this.Port_label.Location = new System.Drawing.Point(352, 289);
             this.Port_label.Name = "Port_label";
             this.Port_label.Size = new System.Drawing.Size(31, 13);
             this.Port_label.TabIndex = 8;
             this.Port_label.Text = "Ports";
+            // 
+            // radioButton_Flow_RequestToSend
+            // 
+            this.radioButton_Flow_RequestToSend.AutoSize = true;
+            this.radioButton_Flow_RequestToSend.Location = new System.Drawing.Point(21, 75);
+            this.radioButton_Flow_RequestToSend.Name = "radioButton_Flow_RequestToSend";
+            this.radioButton_Flow_RequestToSend.Size = new System.Drawing.Size(103, 17);
+            this.radioButton_Flow_RequestToSend.TabIndex = 9;
+            this.radioButton_Flow_RequestToSend.TabStop = true;
+            this.radioButton_Flow_RequestToSend.Text = "RequestToSend";
+            this.radioButton_Flow_RequestToSend.UseVisualStyleBackColor = true;
             // 
             // Com_Form
             // 
@@ -538,17 +564,19 @@
         private System.Windows.Forms.Button ok_button;
         private System.Windows.Forms.Button cancel_button;
         private System.Windows.Forms.GroupBox groupBoxStopBits;
-        private System.Windows.Forms.RadioButton radioButton_Stop_2;
         private System.Windows.Forms.RadioButton radioButton_Stop_1_5;
         private System.Windows.Forms.RadioButton radioButton_Stop_1;
         private System.Windows.Forms.GroupBox groupBoxFlow;
         private System.Windows.Forms.RadioButton radioButton_Flow_None;
-        private System.Windows.Forms.RadioButton radioButton_Flow_Hardware;
+        private System.Windows.Forms.RadioButton radioButton_Flow_RequestToSendXOnXOff;
         private System.Windows.Forms.RadioButton radioButton_Flow_Xon_Xoff;
         private System.Windows.Forms.ComboBox comboBoxPort;
         private System.Windows.Forms.Label Port_label;
         private System.Windows.Forms.RadioButton radioButton57600;
         private System.Windows.Forms.RadioButton radioButton38400;
         private System.Windows.Forms.RadioButton radioButton2400;
+        private System.Windows.Forms.RadioButton radioButton_Stop_None;
+        private System.Windows.Forms.RadioButton radioButton_Stop_2;
+        private System.Windows.Forms.RadioButton radioButton_Flow_RequestToSend;
     }
 }

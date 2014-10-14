@@ -338,7 +338,7 @@
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.DataBitsType = PacketSoftware.TerminalEmulator.DataBitsTypes.Data_Bits_8;
             this.terminalEmulator1.FileName = null;
-            this.terminalEmulator1.FlowType = PacketSoftware.TerminalEmulator.FlowTypes.XonXoff;
+            this.terminalEmulator1.FlowType = PacketSoftware.TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
             this.terminalEmulator1.Hostname = null;
             this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -351,7 +351,7 @@
             this.terminalEmulator1.Rows = 35;
             this.terminalEmulator1.SerialPort = "";
             this.terminalEmulator1.Size = new System.Drawing.Size(1144, 457);
-            this.terminalEmulator1.StopBitsType = PacketSoftware.TerminalEmulator.StopBitsTypes.Stop_Bits_1;
+            this.terminalEmulator1.StopBitsType = PacketSoftware.TerminalEmulator.StopBitsTypes.One;
             this.terminalEmulator1.TabIndex = 10;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;
