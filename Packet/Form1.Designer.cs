@@ -349,7 +349,7 @@
             this.terminalEmulator1.Password = null;
             this.terminalEmulator1.Port = 9000;
             this.terminalEmulator1.Rows = 35;
-            this.terminalEmulator1.SerialPort = 0;
+            this.terminalEmulator1.SerialPort = "";
             this.terminalEmulator1.Size = new System.Drawing.Size(1144, 457);
             this.terminalEmulator1.StopBitsType = PacketSoftware.TerminalEmulator.StopBitsTypes.Stop_Bits_1;
             this.terminalEmulator1.TabIndex = 10;

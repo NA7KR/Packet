@@ -513,7 +513,7 @@ namespace Packet
         {
             try
             {
-                string port;
+               
                 if (myRegistry.Read("BBS-Mode") == "Telnet")
                 {
 
@@ -540,8 +540,9 @@ namespace Packet
                     this.terminalEmulator1.StopBitsType = ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>("Stop_Bits_" + myRegistryCom.Read("Stop Bits"));
                     this.terminalEmulator1.ParityType = ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
                     this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
-
-                    port = myRegistryCom.Read("Port");
+                    this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
+                    this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
+                    this.terminalEmulator1.Connect();
                 }
                 bbs_button.Enabled = false;
                 cluster_button.Enabled = false;

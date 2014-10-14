@@ -198,7 +198,7 @@ namespace PacketSoftware
 				this._password = value;
 			}
 		}
-        public System.Int32 SerialPort
+        public string SerialPort
         {
             get
             {
@@ -227,8 +227,6 @@ namespace PacketSoftware
         public StringCollection ScreenScrape(int StartRow, int StartColumn, int EndRow, int EndColumn)
 		{
 			StringCollection ScrapedText = new StringCollection();
-
-
 			return ScrapedText;
 		}
         #endregion
@@ -346,7 +344,7 @@ namespace PacketSoftware
 
  
 
-        private System.Int32                _serialport;
+        private string                _serialport;
       
         private System.Int32                _port;
         private System.Boolean              _beep;
@@ -427,6 +425,7 @@ namespace PacketSoftware
 		
 			this.ScrollbackBufferSize = 3000;
 			this.ScrollbackBuffer = new StringCollection();
+            
 
 			// set the display options
 			this.SetStyle (ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer, true);
@@ -828,7 +827,82 @@ namespace PacketSoftware
 
         private void ConnectCom()
         {
+            int Baud = 9600;
+            System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
+            try
+            { 
+   
+            port.PortName = this.SerialPort;
+            switch (this.BaudRateType)
+                {
+                    case
+                    BaudRateTypes.Baud_110:
+                        {
+                            Baud = 110;
+                            break;
+                        }
+                    case
+                    BaudRateTypes.Baud_300:
+                        {
+                            Baud = 300;
+                            break;
+                        }
+                    case
+                    BaudRateTypes.Baud_600:
+                        {
+                            Baud = 600;
+                            break;
+                        }
+                    case
+                     BaudRateTypes.Baud_1200:
+                        {
+                            Baud = 1200;
+                            break;
+                        }
+                    case
+                    BaudRateTypes.Baud_2400:
+                        {
+                            Baud = 2400;
+                            break;
+                        }
+                    case
+                      BaudRateTypes.Baud_4800:
+                        {
+                            Baud = 4800;
+                            break;
+                        }
+                    case
+                      BaudRateTypes.Baud_9600:
+                        {
+                            Baud = 9600;
+                            break;
+                        }
+                    case
+                       BaudRateTypes.Baud_19200:
+                        {
+                            Baud = 19200;
+                            break;
+                        }
+                    case
+                         BaudRateTypes.Baud_38400:
+                        {
+                            Baud = 38400;
+                            break;
+                        }
 
+                    case
+                         BaudRateTypes.Baud_57600:
+                        {
+                            Baud = 57600;
+                            break;
+                        }     
+                }
+            port.BaudRate = Baud;
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show(Convert.ToString(e));
+            }
         }
 
 		private void ConnectTelnet(string HostName, System.Int32 Port)
@@ -4836,6 +4910,7 @@ namespace PacketSoftware
 
 		#endregion
 
+        #region InitializeComponent
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
@@ -4844,7 +4919,8 @@ namespace PacketSoftware
             this.ResumeLayout(false);
 
         }
-	}
+        #endregion
+    }
     #endregion 
     #region Routrek SSH Reader Class
     class Reader : Routrek.SSHC.ISSHConnectionEventReceiver, Routrek.SSHC.ISSHChannelEventReceiver 
