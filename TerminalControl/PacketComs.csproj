@@ -102,6 +102,7 @@
     <Compile Include="CipherUtil.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Com.cs" />
     <Compile Include="ConnectionInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -141,6 +142,7 @@
     <Compile Include="Socket.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ssh.cs" />
     <Compile Include="SSH1Connection.cs">
       <SubType>Code</SubType>
     </Compile>

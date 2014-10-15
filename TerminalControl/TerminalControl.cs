@@ -7,16 +7,16 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Drawing;
-using System.Text.RegularExpressions;
- 
+using System.Text.RegularExpressions; 
 #endregion
+
 namespace PacketSoftware
 {
    #region  class TerminalEmulator : Control
     public class TerminalEmulator : Control
 	{
        
-		#region Public Properties 
+		#region Public Properties of Comonent
 		public int Rows
 		{
 			get
@@ -214,10 +214,8 @@ namespace PacketSoftware
 		#endregion
 
 		#region Close Connection
-
         public void closeconnection()
         {
-
             Close = true;
             Disconnect();
         }
@@ -234,10 +232,7 @@ namespace PacketSoftware
         #region Write
         public void Write (byte[] data, int offset, int length)
 		{
-			string sReceived = Encoding.ASCII.GetString(data, offset, length);
-			
-
-			
+			string sReceived = Encoding.ASCII.GetString(data, offset, length);	
 			this.Invoke(this.RxdTextEvent, new System.String[] {System.String.Copy (sReceived)});
 			this.Invoke(this.RefreshEvent);
 		}
@@ -274,9 +269,7 @@ namespace PacketSoftware
 			}
 		}
         #endregion
-
-        
-        
+   
         #region public enums
         public enum ConnectionTypes
         {
@@ -328,7 +321,6 @@ namespace PacketSoftware
            RequestToSendXOnXOff,
            None,
         }
-
 		#endregion
 
 		#region Fields
@@ -338,16 +330,11 @@ namespace PacketSoftware
         private StopBitsTypes               _StopBitsType;
         private ParityTypes                 _ParityType;
         private FlowTypes                   _FlowType;
-
 		private string						_hostname;       // used for connecting to SSH
 		private string						_username;       // maybe
 		private string						_password;
         private string                      _filename;
-
- 
-
-        private string                _serialport;
-      
+        private string                      _serialport; 
         private System.Int32                _port;
         private System.Boolean              _beep;
         private System.Boolean              _localecho;
@@ -403,7 +390,8 @@ namespace PacketSoftware
         private System.ComponentModel.IContainer components;
         private IAsyncResult                lastAR;
 		#endregion
-		#region Delegates
+		
+        #region Delegates
 		private delegate void NvtParserEventHandler (object Sender, NvtParserEventArgs e);
 		private delegate void KeyboardEventHandler (object Sender, System.String e);
 		private delegate void RefreshEventHandler ();
@@ -412,7 +400,8 @@ namespace PacketSoftware
 		private delegate void CaretOnEventHandler ();
 		private delegate void ParserEventHandler (object Sender, ParserEventArgs e);
 		#endregion
-		#region Events
+		
+        #region Events private
 		private event RefreshEventHandler RefreshEvent;
 		private event RxdTextEventHandler RxdTextEvent;
 		private event CaretOffEventHandler CaretOffEvent;
@@ -421,17 +410,16 @@ namespace PacketSoftware
 
 		#region Constructors
         public event EventHandler Disconnected;
+        #endregion
 
-		public TerminalEmulator ()
+        #region TerminalEmulator
+        public TerminalEmulator ()
 		{ 
-		
 			this.ScrollbackBufferSize = 3000;
 			this.ScrollbackBuffer = new StringCollection();
-            
-
+        
 			// set the display options
 			this.SetStyle (ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer, true);
-
 			this.Keyboard       = new uc_Keyboard (this);
 			this.Parser         = new uc_Parser   ();
 			this.NvtParser      = new uc_TelnetParser   ();
@@ -442,29 +430,23 @@ namespace PacketSoftware
 
 			//this.Name       = "ACK-TERM";
 			//this.Text       = "ACK-TERM";
-
 			this.Caret.Pos  = new System.Drawing.Point (0, 0); 
 			this.CharSize   = new System.Drawing.Size ();
 			this.Font       = new System.Drawing.Font (this.TypeFace, this.TypeSize, this.TypeStyle);
 			//this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
-
 			//this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
             this.FGColor      = System.Drawing.Color.FromArgb(0, 0, 0);
 			this.BackColor    = System.Drawing.Color.FromArgb (0, 0, 160);
 			this.BoldColor    = System.Drawing.Color.FromArgb (255, 255, 255);
 			this.BlinkColor   = System.Drawing.Color.Red;
-
 			this.G0 = new uc_Chars (uc_Chars.Sets.ASCII);
 			this.G1 = new uc_Chars (uc_Chars.Sets.ASCII);
 			this.G2 = new uc_Chars (uc_Chars.Sets.DECSG);
 			this.G3 = new uc_Chars (uc_Chars.Sets.DECSG);
-
 			this.CharAttribs.GL = G0;
 			this.CharAttribs.GR = G2;
 			this.CharAttribs.GS = null;
-
 			this.GetFontInfo ();
-
 			// Create and initialize contextmenu
 			this.contextMenu1 = new ContextMenu();
 			this.mnuCopy = new MenuItem("Copy");
@@ -481,7 +463,6 @@ namespace PacketSoftware
 			this.mnuCopy.Click += new System.EventHandler(this.mnuCopy_Click);
 			this.mnuPaste.Click += new System.EventHandler(this.mnuPaste_Click);
 			this.mnuCopyPaste.Click += new System.EventHandler(this.mnuCopyPaste_Click);
-
 
 			// Create and initialize a VScrollBar.
 			VertScrollBar = new uc_VertScrollBar();
@@ -511,30 +492,27 @@ namespace PacketSoftware
 			this.ConnectionType = ConnectionTypes.Telnet; // default
 			
 		}
-
 		#endregion
+
 		#region Overrides
-		protected override void OnResize (System.EventArgs e)
+
+        #region override OnResize
+        protected override void OnResize (System.EventArgs e)
 		{
 			this.Font       = new System.Drawing.Font (this.TypeFace, this.TypeSize, this.TypeStyle);
 			// reset scrollbar values
 			this.SetScrollBarValues();
-
 			// capture text at cursor b/c it's not in the scrollback buffer yet
 			string TextAtCursor = "";
 			for (int x = 0; x < this._cols; x++)
 			{
 				char CurChar = this.CharGrid[this.Caret.Pos.Y][x];
-
 				if (CurChar == '\0')
 				{
 					continue;
 				}
 				TextAtCursor = TextAtCursor + Convert.ToString(CurChar);
 			}
-
-			
-			
 			// calculate new rows and columns
 			int columns = this.ClientSize.Width / this.CharSize.Width - 1;
 			int rows = this.ClientSize.Height / this.CharSize.Height;
@@ -572,14 +550,11 @@ namespace PacketSoftware
 			StringCollection visiblebuffer = new StringCollection();
 			for (int i = this.ScrollbackBuffer.Count - 1; i >= 0; i--)
 			{
-				
 				visiblebuffer.Insert(0, this.ScrollbackBuffer[i]);
-
 				// don't parse more strings than our display can show
 				if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
 					break;
 			}
-
 			int lastline  = 0;
 			for (int i = 0; i < visiblebuffer.Count; i++)
 			{
@@ -590,7 +565,6 @@ namespace PacketSoftware
 					if (column > visiblebuffer[i].Length - 1)
 						continue;
 					this.CharGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
-
 				}
 				lastline = i;
 			
@@ -604,15 +578,14 @@ namespace PacketSoftware
 				this.CharGrid[lastline+1][column] = TextAtCursor.ToCharArray()[column];
 			
 			}
-
 			this.CaretToAbs(lastline+1, TextAtCursor.Length);
 			this.Refresh();
-			
 			base.OnResize(e);
-			
 		}
-			
-		protected override void OnPaint (System.Windows.Forms.PaintEventArgs e)
+        #endregion
+
+        #region override OnPaint
+        protected override void OnPaint (System.Windows.Forms.PaintEventArgs e)
 		{
 			e.Graphics.SmoothingMode     = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
 			e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
@@ -623,12 +596,16 @@ namespace PacketSoftware
 			this.Redraw     (e.Graphics);
 			this.ShowCaret  (e.Graphics);
 		}
+        #endregion
 
-		protected override void OnPaintBackground (System.Windows.Forms.PaintEventArgs e)
+        #region override OnPaintBackground
+        protected override void OnPaintBackground (System.Windows.Forms.PaintEventArgs e)
 		{
 		}
+        #endregion
 
-		protected override void WndProc (ref System.Windows.Forms.Message m)
+        #region override WndProc
+        protected override void WndProc (ref System.Windows.Forms.Message m)
 		{
 			// Listen for operating system messages and handle the key events.
 			switch (m.Msg)
@@ -649,8 +626,10 @@ namespace PacketSoftware
 					break;               
 			}
 		}
+        #endregion
 
-		protected override void OnMouseMove (MouseEventArgs CurArgs)
+        #region override OnMouseMove
+        protected override void OnMouseMove (MouseEventArgs CurArgs)
 		{
 			if (CurArgs.Button != MouseButtons.Left)
 				return;
@@ -742,8 +721,10 @@ namespace PacketSoftware
 			}
 			this.Refresh();
 		}
-		
-		protected override void OnMouseUp (MouseEventArgs CurArgs)
+        #endregion
+
+        #region override OnMouseUp
+        protected override void OnMouseUp (MouseEventArgs CurArgs)
 		{
 			if (CurArgs.Button == System.Windows.Forms.MouseButtons.Left)
 			{
@@ -758,55 +739,32 @@ namespace PacketSoftware
 			}
 		
 		}
+        #endregion
 
-		protected override void OnMouseDown (System.Windows.Forms.MouseEventArgs CurArgs)
+        #region override OnMouseDown
+        protected override void OnMouseDown (System.Windows.Forms.MouseEventArgs CurArgs)
 		{
 			this.Focus();
-			
-			//Font tmp      = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
-			//Graphics g = this.CreateGraphics();
-			//g.DrawString("the quick brown fox jumps over the lazy dog", this.Font,Brushes.GreenYellow, 0,0);
-			//g.DrawString("*******************************************", tmp,Brushes.GreenYellow, 0,0);
-			//g.DrawString("This system is private and may only be accessed if authorized.", this.Font,Brushes.GreenYellow, 0,0);
-			
-			//
-			//if (CurArgs.Button == System.Windows.Forms.MouseButtons.Right)
-			//{
-			//	// Get the clipboard text
-			//	System.Windows.Forms.IDataObject CurDataObject = System.Windows.Forms.Clipboard.GetDataObject ();
-			  
-			//	if(CurDataObject.GetDataPresent (System.Windows.Forms.DataFormats.Text)) 
-			//	{
-			//		if (CurDataObject.GetData (System.Windows.Forms.DataFormats.Text) != null)
-			//		{
-			//			this.DispatchMessage (
-			//				this, 
-			//				CurDataObject.GetData (System.Windows.Forms.DataFormats.Text).ToString ()); 
-			//		}
-			//	}
-			//}
- 
 			if (CurArgs.Button == System.Windows.Forms.MouseButtons.Left)
 			{
 				// begin select
 				this.BeginDrag.X = CurArgs.X;
 				this.BeginDrag.Y = CurArgs.Y;
 			}
-			
-			
 			base.OnMouseDown (CurArgs);
 		}
+        #endregion
 
-      
-     
-		protected override void OnFontChanged (EventArgs e)
+        #region
+        protected override void OnFontChanged (EventArgs e)
 		{
 			//MessageBox.Show(this.Font.Name + " " + Convert.ToString(this.Font.Size));
 		}
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #endregion
 
+        #region Disconnect
         private void Disconnect()
 		{
             try
@@ -817,7 +775,9 @@ namespace PacketSoftware
             catch
             { }
          }
+         #endregion
 
+        #region Disccocted by remote
         private void Disconnectby()
         {
             if (Disconnected != null)
@@ -826,7 +786,9 @@ namespace PacketSoftware
             }
 
         }
+        #endregion
 
+        #region Com Port
         private void ConnectCom()
         {
             System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
@@ -1024,21 +986,20 @@ namespace PacketSoftware
                             break;
                         }
                 }
-
-
                 #endregion
 
                 port.PortName = this.SerialPort;
-                
-                
+                this.Focus();  
             }
             catch (IOException e)
             {
                 MessageBox.Show(Convert.ToString(e));
             }
         }
+        #endregion
 
-		private void ConnectTelnet(string HostName, System.Int32 Port)
+        #region Connect Telnet
+        private void ConnectTelnet(string HostName, System.Int32 Port)
 		{
 			this.Focus();
      
@@ -1068,7 +1029,10 @@ namespace PacketSoftware
 				MessageBox.Show(CurException.Message);
 			}
 		}
-		private void ConnectSSH2(string hostname, string username, string password, System.Int32 Port)
+        #endregion
+
+        #region SSH Connect
+        private void ConnectSSH2(string hostname, string username, string password, System.Int32 Port)
 		{
 			// connect ssh
 			this.Focus();
@@ -3394,6 +3358,7 @@ namespace PacketSoftware
 		}
 
 		#endregion
+
 		#region Private Classes
 		private class uc_CommsStateObject
 		{
@@ -5060,87 +5025,5 @@ namespace PacketSoftware
         #endregion
     }
     #endregion 
-    #region Routrek SSH Reader Class
-    class Reader : Routrek.SSHC.ISSHConnectionEventReceiver, Routrek.SSHC.ISSHChannelEventReceiver 
-	{
-		private TerminalEmulator Terminal;
-		public Reader (object obj)
-		{
-			Terminal = (TerminalEmulator) obj;
-		}
-		public Routrek.SSHC.SSHConnection _conn;
-		public bool _ready;
-		public void OnData(byte[] data, int offset, int length) 
-		{
-			Terminal.Write(data, offset, length);
-			//rtb.AppendText(Encoding.ASCII.GetString(data, offset, length));
-			//System.Console.Write(Encoding.ASCII.GetString(data, offset, length));
-		}
-		public void OnDebugMessage(bool always_display, byte[] data) 
-		{
-			//Debug.WriteLine("DEBUG: "+ Encoding.ASCII.GetString(data));
-		}
-		public void OnIgnoreMessage(byte[] data) 
-		{
-			//Debug.WriteLine("Ignore: "+ Encoding.ASCII.GetString(data));
-		}
-		public void OnAuthenticationPrompt(string[] msg) 
-		{
-			//Debug.WriteLine("Auth Prompt "+msg[0]);
-		}
-
-		public void OnError(Exception error, string msg) 
-		{
-			//Debug.WriteLine("ERROR: "+ msg);
-		}
-		public void OnChannelClosed() 
-		{
-			//Debug.WriteLine("Channel closed");
-			_conn.Disconnect("");
-			//_conn.AsyncReceive(this);
-		}
-		public void OnChannelEOF() 
-		{
-			_pf.Close();
-			//Debug.WriteLine("Channel EOF");
-		}
-		public void OnExtendedData(int type, byte[] data) 
-		{
-			//Debug.WriteLine("EXTENDED DATA");
-		}
-		public void OnConnectionClosed() 
-		{
-			//Debug.WriteLine("Connection closed");
-		}
-		public void OnUnknownMessage(byte type, byte[] data) 
-		{
-			//Debug.WriteLine("Unknown Message " + type);
-		}
-		public void OnChannelReady() 
-		{
-			_ready = true;
-		}
-		public void OnChannelError(Exception error, string msg) 
-		{
-			//Debug.WriteLine("Channel ERROR: "+ msg);
-		}
-		public void OnMiscPacket(byte type, byte[] data, int offset, int length) 
-		{
-		}
-
-		public Routrek.SSHC.PortForwardingCheckResult CheckPortForwardingRequest(string host, int port, string originator_host, int originator_port) 
-		{
-			Routrek.SSHC.PortForwardingCheckResult r = new Routrek.SSHC.PortForwardingCheckResult();
-			r.allowed = true;
-			r.channel = this;
-			return r;
-		}
-		public void EstablishPortforwarding(Routrek.SSHC.ISSHChannelEventReceiver rec, Routrek.SSHC.SSHChannel channel) 
-		{
-			_pf = channel;
-		}
-
-		public Routrek.SSHC.SSHChannel _pf;
-	}
-	#endregion
+   
 }
