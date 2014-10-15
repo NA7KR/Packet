@@ -246,6 +246,7 @@ namespace PacketSoftware
 				case ConnectionTypes.Telnet:
 				{
 					this.ConnectTelnet(this.Hostname, this.Port);
+                    C_Type = "Telnet";
 					break;
 				}
                 case ConnectionTypes.COM:
@@ -334,7 +335,8 @@ namespace PacketSoftware
 		private string						_username;       // maybe
 		private string						_password;
         private string                      _filename;
-        private string                      _serialport; 
+        private string                      _serialport;
+        private string                      C_Type;
         private System.Int32                _port;
         private System.Boolean              _beep;
         private System.Boolean              _localecho;
@@ -769,6 +771,8 @@ namespace PacketSoftware
 		{
             try
             {
+                this.Invoke(this.RxdTextEvent, new System.String[] { "DISCONNECTED" });
+                this.Invoke(this.RefreshEvent);
                 CurSocket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
                 CurSocket.Close();
             }
@@ -780,6 +784,8 @@ namespace PacketSoftware
         #region Disccocted by remote
         private void Disconnectby()
         {
+            this.Invoke(this.RxdTextEvent, new System.String[] { "DISCONNECTED" });
+            this.Invoke(this.RefreshEvent);
             if (Disconnected != null)
             {
                 Disconnected(this, new EventArgs());
@@ -995,6 +1001,8 @@ namespace PacketSoftware
             {
                 MessageBox.Show(Convert.ToString(e));
             }
+            this.Invoke(this.RxdTextEvent, new System.String[] { "hello" });
+            this.Invoke(this.RefreshEvent);
         }
         #endregion
 
@@ -1329,7 +1337,7 @@ namespace PacketSoftware
                     {
                         sReceived += System.Convert.ToChar(StateObject.Buffer[i]).ToString();
                     }
-
+                    //krr
                     this.Invoke(this.RxdTextEvent, new System.String[] { System.String.Copy(sReceived) });
                     this.Invoke(this.RefreshEvent);
 
@@ -1389,7 +1397,8 @@ namespace PacketSoftware
 					callbackEndDispatch = new System.AsyncCallback (EndDispatchMessage);
 				}
 
-				if (this.CurSocket == null)
+				
+                if (this.CurSocket == null)
 				{
 					try
 					{
@@ -1404,6 +1413,12 @@ namespace PacketSoftware
 				{
 					try
 					{
+                        if (C_Type =="Com")
+                        {
+                            MessageBox.Show("Hello");
+                        }
+                        else
+                        {
 						System.IAsyncResult ar = this.CurSocket.BeginSend (
 							smk, 
 							0, 
@@ -1412,6 +1427,7 @@ namespace PacketSoftware
 							callbackEndDispatch, 
 							this.CurSocket);
                         lastAR = ar;
+                        }
 					}
 					catch
 					{
