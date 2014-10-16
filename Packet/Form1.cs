@@ -530,8 +530,6 @@ namespace Packet
                     this.terminalEmulator1.Username = myRegistry.Read("BBS-CallSign");
                     this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("BBS-Password"));
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                    this.terminalEmulator1.Connect();
-                    this.disconnect_button.Enabled = true;
                 }
                 else
                 {
@@ -542,8 +540,9 @@ namespace Packet
                     this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
                     this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
-                    this.terminalEmulator1.Connect();
                 }
+                this.terminalEmulator1.Connect();
+                this.disconnect_button.Enabled = true;
                 bbs_button.Enabled = false;
                 cluster_button.Enabled = false;
                 node_button.Enabled = false;

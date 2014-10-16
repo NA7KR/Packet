@@ -4862,6 +4862,7 @@ namespace PacketSoftware
 		}
 
 		#endregion
+
 		#region Private Structs
 		private struct ParserEventArgs 
 		{
@@ -4956,8 +4957,8 @@ namespace PacketSoftware
 				CurParams    = p4;
 			}
 		}
-
 		#endregion
+
 		#region Private Enums
 		private enum NvtCommand 
 		{
@@ -5030,9 +5031,6 @@ namespace PacketSoftware
             this.components = new System.ComponentModel.Container();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.SuspendLayout();
-            // 
-            // serialPort1
-            // 
             this.serialPort1.Handshake = System.IO.Ports.Handshake.RequestToSendXOnXOff;
             this.serialPort1.StopBits = System.IO.Ports.StopBits.OnePointFive;
             this.ResumeLayout(false);
