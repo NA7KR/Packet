@@ -771,7 +771,7 @@ namespace PacketSoftware
 		{
             try
             {
-                this.Invoke(this.RxdTextEvent, new System.String[] { "DISCONNECTED" });
+                this.Invoke(this.RxdTextEvent, new System.String[] { "\u001B[31m DISCONNECTED !!! \u001B[0m" });
                 this.Invoke(this.RefreshEvent);
                 CurSocket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
                 CurSocket.Close();
@@ -784,7 +784,7 @@ namespace PacketSoftware
         #region Disccocted by remote
         private void Disconnectby()
         {
-            this.Invoke(this.RxdTextEvent, new System.String[] { "DISCONNECTED" });
+            this.Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m ");
             this.Invoke(this.RefreshEvent);
             if (Disconnected != null)
             {
@@ -1349,13 +1349,9 @@ namespace PacketSoftware
                 {
                     // If no data was recieved then the connection is probably dead
                     //System.Console.WriteLine ("Disconnected", StateObject.Socket.RemoteEndPoint);
-
                     StateObject.Socket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
-
                     StateObject.Socket.Close();
-                    Disconnectby();
-                    
-                    
+                    Disconnectby();    
                 }
             }
             catch (System.Exception CurException)
@@ -2460,8 +2456,6 @@ namespace PacketSoftware
 
 		private void CommandRouter (object Sender, ParserEventArgs e)
 		{
-
-
 			switch (e.Action)
 			{
 				case Actions.Print:
@@ -3963,16 +3957,11 @@ namespace PacketSoftware
 							break;
     
 						default:
-                            //KRR
                             {
-                               
                                 if (Parent.LocalEcho && KeyValue == 13)
                                 {
-                                //  Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(KeyValue)));
                                     Parent.RxdTextEvent(Environment.NewLine);
-                                    //Parent.RxdTextEvent("\n\r");
-                                    Parent.Refresh();
-                                    
+                                    Parent.Refresh();  
                                 }
                             }
 							break;
@@ -3996,7 +3985,6 @@ namespace PacketSoftware
 						// send the character straight to the host if we haven't already handled the actual key press
 						KeyboardEvent (this, System.Convert.ToChar (AnsiChar).ToString ());
 
-                        //KRR
                         {
                             if (Parent.LocalEcho)
                             {
@@ -4604,7 +4592,7 @@ namespace PacketSoftware
 			{
 			}
 
-			public void ParseString (System.String InString)
+            public void ParseString(System.String InString)
 			{
 				States        NextState        = States.None;
 				NvtActions    NextAction       = NvtActions.None;
