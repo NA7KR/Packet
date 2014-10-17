@@ -774,8 +774,10 @@ namespace PacketSoftware
 		{
             try
             {
-                this.Invoke(this.RxdTextEvent, new System.String[] { "\u001B[31m DISCONNECTED !!! \u001B[0m" });
+                this.Parser.ParseString( "\u001B[31m DISCONNECTED !!! \u001B[0m" );
+                this.Parser.ParseString(System.Environment.NewLine);
                 this.Invoke(this.RefreshEvent);
+               
                 CurSocket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
                 CurSocket.Close();
             }
@@ -788,6 +790,7 @@ namespace PacketSoftware
         private void Disconnectby()
         {
             this.Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m ");
+            this.Parser.ParseString(System.Environment.NewLine);
             this.Invoke(this.RefreshEvent);
             if (Disconnected != null)
             {
