@@ -15,7 +15,7 @@ namespace PacketSoftware
    #region  class TerminalEmulator : Control
     public class TerminalEmulator : Control
 	{
-       
+        System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
 		#region Public Properties of Comonent
 		public int Rows
 		{
@@ -252,6 +252,7 @@ namespace PacketSoftware
                 case ConnectionTypes.COM:
                 {
                     this.ConnectCom();
+                    C_Type = "Com";
                     break;
                 }
 				case ConnectionTypes.SSH1:
@@ -401,6 +402,7 @@ namespace PacketSoftware
 		private delegate void CaretOffEventHandler ();
 		private delegate void CaretOnEventHandler ();
 		private delegate void ParserEventHandler (object Sender, ParserEventArgs e);
+        
 		#endregion
 		
         #region Events private
@@ -419,7 +421,7 @@ namespace PacketSoftware
 		{ 
 			this.ScrollbackBufferSize = 3000;
 			this.ScrollbackBuffer = new StringCollection();
-        
+            
 			// set the display options
 			this.SetStyle (ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer, true);
 			this.Keyboard       = new uc_Keyboard (this);
@@ -492,6 +494,7 @@ namespace PacketSoftware
 			this.EndDrag   = new System.Drawing.Point();
 			
 			this.ConnectionType = ConnectionTypes.Telnet; // default
+
 			
 		}
 		#endregion
@@ -797,7 +800,7 @@ namespace PacketSoftware
         #region Com Port
         private void ConnectCom()
         {
-            System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
+            
             try
             {
 
@@ -995,14 +998,26 @@ namespace PacketSoftware
                 #endregion
 
                 port.PortName = this.SerialPort;
-                this.Focus();  
+                port.Open();
+                port.DataReceived += port_DataReceived;
+                //this.Focus();  
             }
             catch (IOException e)
             {
                 MessageBox.Show(Convert.ToString(e));
             }
-            this.Invoke(this.RxdTextEvent, new System.String[] { "hello" });
-            this.Invoke(this.RefreshEvent);
+            //this.Invoke(this.RxdTextEvent, new System.String[] { "hello" });
+            //this.Invoke(this.RefreshEvent);
+        }
+
+        void port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            InputData = ComPort.ReadExisting();
+            if (InputData != String.Empty)
+            {
+                this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
+            }
+            //throw new NotImplementedException();
         }
         #endregion
 
@@ -1294,8 +1309,12 @@ namespace PacketSoftware
 		{
 			try
 			{
-				// Get The connection socket from the callback
-				System.Net.Sockets.Socket sock1 = (System.Net.Sockets.Socket) ar.AsyncState;
+                // Get The connection socket from the callback
+                System.Net.Sockets.Socket sock1 = (System.Net.Sockets.Socket)ar.AsyncState;
+                if (C_Type == "Com")
+                {
+
+                }
 
 				if (sock1.Connected) 
 				{
@@ -1338,6 +1357,7 @@ namespace PacketSoftware
                         sReceived += System.Convert.ToChar(StateObject.Buffer[i]).ToString();
                     }
                     //krr
+
                     this.Invoke(this.RxdTextEvent, new System.String[] { System.String.Copy(sReceived) });
                     this.Invoke(this.RefreshEvent);
 
@@ -1393,44 +1413,44 @@ namespace PacketSoftware
 					callbackEndDispatch = new System.AsyncCallback (EndDispatchMessage);
 				}
 
-				
-                if (this.CurSocket == null)
-				{
-					try
-					{
-						reader._pf.Transmit(smk);
-					}
-					catch
-					{
-						MessageBox.Show("error communicating with socket");
-					}				
-				}
-				else
-				{
-					try
-					{
-                        if (C_Type =="Com")
+                if (C_Type == "Com")
+                {
+                    port.Write(strText);
+                }
+                else
+                {
+                    if (this.CurSocket == null)
+                    {
+                        try
                         {
-                            MessageBox.Show("Hello");
+                            reader._pf.Transmit(smk);
                         }
-                        else
+                        catch
                         {
-						System.IAsyncResult ar = this.CurSocket.BeginSend (
-							smk, 
-							0, 
-							smk.Length, 
-							System.Net.Sockets.SocketFlags.None, 
-							callbackEndDispatch, 
-							this.CurSocket);
-                        lastAR = ar;
+                            MessageBox.Show("error communicating with socket");
                         }
-					}
-					catch
-					{
-						MessageBox.Show("error communicating with socket");
-					}
-				}
+                    }
+                    else
+                    {
+                        try
+                        {
 
+                            System.IAsyncResult ar = this.CurSocket.BeginSend(
+                                smk,
+                                0,
+                                smk.Length,
+                                System.Net.Sockets.SocketFlags.None,
+                                callbackEndDispatch,
+                                this.CurSocket);
+                            lastAR = ar;
+
+                        }
+                        catch
+                        {
+                            MessageBox.Show("error communicating with socket");
+                        }
+                    }
+                }
 			}
 			catch (System.Exception CurException)
 			{
