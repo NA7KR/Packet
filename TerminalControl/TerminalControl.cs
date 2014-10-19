@@ -2165,6 +2165,7 @@ namespace PacketSoftware
         }
         #endregion
 
+        #region ReverseLineFeed
         private void ReverseLineFeed()
         {
 
@@ -2191,7 +2192,9 @@ namespace PacketSoftware
 
             this.CaretUp();
         }
+        #endregion
 
+        #region Insertline
         private void InsertLine(uc_Params CurParams)
         {
 
@@ -2227,7 +2230,9 @@ namespace PacketSoftware
             }
 
         }
+        #endregion
 
+        #region DeleteLine
         private void DeleteLine(uc_Params CurParams)
         {
             // if we're not in the scroll region then bail
@@ -2260,7 +2265,9 @@ namespace PacketSoftware
                 NbrOff--;
             }
         }
+        #endregion
 
+        #region LineFeed
         private void LineFeed()
         {
             this.SetScrollBarValues();
@@ -2274,7 +2281,6 @@ namespace PacketSoftware
             {
                 this.ScrollbackBuffer.RemoveAt(0);
             }
-
 
             string s = "";
             for (int x = 0; x < this._cols; x++)
@@ -2290,8 +2296,6 @@ namespace PacketSoftware
             this.ScrollbackBuffer.Add(s);
             //System.Console.WriteLine("there are " + Convert.ToString(this.ScrollbackBuffer.Count) + " lines in the scrollback buffer");
             //System.Console.WriteLine(s);
-
-
 
             if (this.Caret.Pos.Y == this.BottomMargin || this.Caret.Pos.Y == this._rows - 1)
             {
@@ -2312,12 +2316,10 @@ namespace PacketSoftware
             }
 
             this.CaretDown();
-
-
-
-
         }
+        #endregion
 
+        #region Index
         private void Index(System.Int32 Param)
         {
             if (Param == 0) Param = 1;
@@ -2327,7 +2329,9 @@ namespace PacketSoftware
                 this.LineFeed();
             }
         }
+        #endregion
 
+        #region ReverseIndex
         private void ReverseIndex(System.Int32 Param)
         {
             if (Param == 0) Param = 1;
@@ -2337,7 +2341,9 @@ namespace PacketSoftware
                 this.ReverseLineFeed();
             }
         }
+        #endregion
 
+        #region CaretOff
         private void CaretOff()
         {
             if (this.Caret.IsOff == true)
@@ -2347,7 +2353,9 @@ namespace PacketSoftware
 
             this.Caret.IsOff = true;
         }
+        #endregion
 
+        #region CaretOn
         private void CaretOn()
         {
             if (this.Caret.IsOff == false)
@@ -2358,7 +2366,9 @@ namespace PacketSoftware
             this.Caret.IsOff = false;
 
         }
+        #endregion
 
+        #region ShowCaret
         private void ShowCaret(System.Drawing.Graphics CurGraphics)
         {
             System.Int32 X = this.Caret.Pos.X;
@@ -2409,7 +2419,9 @@ namespace PacketSoftware
                 Caret.Pos.X * this.CharSize.Width,
                 CurAttribs);
         }
+        #endregion
 
+        #region CaretUp
         private void CaretUp()
         {
             this.Caret.EOL = false;
@@ -2420,7 +2432,9 @@ namespace PacketSoftware
                 this.Caret.Pos.Y -= 1;
             }
         }
+        #endregion
 
+        #region CaretDown
         private void CaretDown()
         {
             this.Caret.EOL = false;
@@ -2431,6 +2445,7 @@ namespace PacketSoftware
                 this.Caret.Pos.Y += 1;
             }
         }
+        #endregion
 
         private void CaretLeft()
         {
@@ -4519,6 +4534,7 @@ namespace PacketSoftware
                 }
             }
 
+            #region uc_CharEvents
             private class uc_CharEvents
             {
                 public System.Boolean GetStateEventAction(
@@ -4555,13 +4571,14 @@ namespace PacketSoftware
 
                     return false;
                 }
-
-                public uc_CharEvents()
+                #endregion
+            public uc_CharEvents()
                 {
                 }
 
-                public static uc_CharEventInfo[] Elements = 
-			{
+            #region  uc_CharEventInfo
+            public static uc_CharEventInfo[] Elements = 
+			    {
 				new uc_CharEventInfo (States.Anywhere,      '\x1B', '\x1B', Actions.NewCollect, States.Escape),
 				new uc_CharEventInfo (States.Anywhere,      '\x18', '\x18', Actions.Execute,    States.Ground),
 				new uc_CharEventInfo (States.Anywhere,      '\x1A', '\x1A', Actions.Execute,    States.Ground),
@@ -4658,6 +4675,7 @@ namespace PacketSoftware
 			};
             }
         }
+        #endregion
 
         private class uc_TelnetParser
         {
