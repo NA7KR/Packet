@@ -4677,6 +4677,7 @@ namespace PacketSoftware
         }
         #endregion
 
+        #region Class uc_TelnetParser
         private class uc_TelnetParser
         {
             public event NvtParserEventHandler NvtParserEvent;
@@ -4693,6 +4694,7 @@ namespace PacketSoftware
             {
             }
 
+            #region ParseString
             public void ParseString(System.String InString)
             {
                 States NextState = States.None;
@@ -4736,7 +4738,9 @@ namespace PacketSoftware
                     }
                 }
             }
+            #endregion 
 
+            #region DoAction
             private void DoAction(NvtActions NextAction)
             {
                 // Manage the contents of the Sequence and Param Variables
@@ -4784,7 +4788,6 @@ namespace PacketSoftware
                         break;
                 }
 
-
                 switch (NextAction)
                 {
                     case NvtActions.Dispatch:
@@ -4796,6 +4799,7 @@ namespace PacketSoftware
                         break;
                 }
             }
+            #endregion
 
             private enum States
             {
@@ -4836,6 +4840,7 @@ namespace PacketSoftware
                     this.NextAction = p3;
                 }
             }
+            #endregion
 
             private class uc_StateChangeEvents
             {
@@ -4949,8 +4954,9 @@ namespace PacketSoftware
 				};
             }
         }
-
         #endregion
+
+       
 
         #region Private Structs
         private struct ParserEventArgs
@@ -5113,7 +5119,7 @@ namespace PacketSoftware
         }
 
         #endregion
-
+        
         #region InitializeComponent
         private void InitializeComponent()
         {
@@ -5152,5 +5158,5 @@ namespace PacketSoftware
         }
         #endregion
     }
-   #endregion
+   
 }
