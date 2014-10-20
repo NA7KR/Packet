@@ -2448,6 +2448,7 @@ namespace PacketSoftware
         }
         #endregion
 
+        #region CaretLeft
         private void CaretLeft()
         {
             this.Caret.EOL = false;
@@ -2457,7 +2458,9 @@ namespace PacketSoftware
                 this.Caret.Pos.X -= 1;
             }
         }
+        #endregion
 
+        #region CaretRight
         private void CaretRight()
         {
             if (this.Caret.Pos.X < this._cols - 1)
@@ -2470,7 +2473,9 @@ namespace PacketSoftware
                 this.Caret.EOL = true;
             }
         }
+        #endregion
 
+        #region CaretToRel
         private void CaretToRel(System.Int32 Y, System.Int32 X)
         {
 
@@ -2514,7 +2519,9 @@ namespace PacketSoftware
             this.Caret.Pos.Y = Y;
             this.Caret.Pos.X = X;
         }
+        #endregion 
 
+        #region CaretToAbs
         private void CaretToAbs(System.Int32 Y, System.Int32 X)
         {
             this.Caret.EOL = false;
@@ -2552,7 +2559,9 @@ namespace PacketSoftware
             this.Caret.Pos.Y = Y;
             this.Caret.Pos.X = X;
         }
+        #endregion
 
+        #region CommandRouter
         private void CommandRouter(object Sender, ParserEventArgs e)
         {
             switch (e.Action)
@@ -2854,7 +2863,9 @@ namespace PacketSoftware
                 this.SelectCharSet(ref this.G3.Set, e.CurSequence.Substring(2));
             }
         }
+        #endregion
 
+        #region SelectCharSet
         private void SelectCharSet(ref uc_Chars.Sets CurTarget, System.String CurString)
         {
             switch (CurString)
@@ -2942,7 +2953,9 @@ namespace PacketSoftware
                     break;
             }
         }
+        #endregion
 
+        #region SetqmhMode
         private void SetqmhMode(uc_Params CurParams) // set mode for ESC?h command
         {
             System.Int32 OptInt = 0;
@@ -3004,7 +3017,9 @@ namespace PacketSoftware
                 }
             }
         }
+        #endregion
 
+        #region SetqmlMode
         private void SetqmlMode(uc_Params CurParams) // set mode for ESC?l command
         {
             System.Int32 OptInt = 0;
@@ -3066,7 +3081,9 @@ namespace PacketSoftware
                 }
             }
         }
+        #endregion
 
+        #region SethMode
         private void SethMode(uc_Params CurParams) // set mode for ESC?h command
         {
             System.Int32 OptInt = 0;
@@ -3094,7 +3111,9 @@ namespace PacketSoftware
                 }
             }
         }
+        #endregion 
 
+        #region SetlMode
         private void SetlMode(uc_Params CurParams) // set mode for ESC?l command
         {
             System.Int32 OptInt = 0;
@@ -3122,7 +3141,9 @@ namespace PacketSoftware
                 }
             }
         }
+        #endregion
 
+        #region SetScrollRegion
         private void SetScrollRegion(uc_Params CurParams)
         {
             if (CurParams.Count() > 0)
@@ -3145,7 +3166,9 @@ namespace PacketSoftware
                 this.BottomMargin = 0;
             }
         }
+        #endregion
 
+        #region ClearCharAttribs
         private void ClearCharAttribs()
         {
             this.CharAttribs.IsBold = false;
@@ -3160,7 +3183,9 @@ namespace PacketSoftware
             this.CharAttribs.AltColor = System.Drawing.Color.White;
             this.CharAttribs.AltBGColor = System.Drawing.Color.Black;
         }
+        #endregion
 
+        #region SetCharAttribs
         private void SetCharAttribs(uc_Params CurParams)
         {
             if (CurParams.Count() < 1)
@@ -3294,7 +3319,9 @@ namespace PacketSoftware
                 }
             }
         }
+        #endregion
 
+        #region ExecuteChar
         private void ExecuteChar(System.Char CurChar)
         {
             switch (CurChar)
@@ -3382,7 +3409,9 @@ namespace PacketSoftware
                     break;
             }
         }
+        #endregion
 
+        #region SetSize
         private void SetSize(System.Int32 Rows, System.Int32 Columns)
         {
             this._rows = Rows;
@@ -3413,7 +3442,9 @@ namespace PacketSoftware
                 this.AttribGrid[i] = new CharAttribStruct[Columns];
             }
         }
+        #endregion
 
+        #region GetFontInfo
         private void GetFontInfo()
         {
             System.Drawing.Graphics tmpGraphics = this.CreateGraphics();
@@ -3441,10 +3472,10 @@ namespace PacketSoftware
             this.Caret.Buffer.Clear(System.Drawing.Color.FromArgb(255, 181, 106));
             this.EraseBitmap = new System.Drawing.Bitmap(this.CharSize.Width, this.CharSize.Height);
             this.EraseBuffer = System.Drawing.Graphics.FromImage(this.EraseBitmap);
-
-
         }
+        #endregion
 
+        #region OnClickFont
         private void OnClickFont(System.Object Sender, System.EventArgs e)
         {
             System.Windows.Forms.FontDialog fontDialog = new System.Windows.Forms.FontDialog();
@@ -3465,10 +3496,10 @@ namespace PacketSoftware
                     System.Convert.ToInt32(this.CharSize.Height * this._rows + 2));
             };
         }
+        #endregion 
+   #endregion
 
-        #endregion
-
-        #region Private Classes
+        #region class uc_CommsStateObject
         private class uc_CommsStateObject
         {
             public System.Net.Sockets.Socket Socket;
@@ -3479,7 +3510,9 @@ namespace PacketSoftware
                 this.Buffer = new System.Byte[8192];
             }
         }
+        #endregion
 
+        #region class uc_TabStops
         private class uc_TabStops
         {
             public System.Boolean[] Columns;
@@ -3506,6 +3539,9 @@ namespace PacketSoftware
                 Columns[128] = true;
             }
         }
+        #endregion
+
+        #region class uc_CaretAttribs
         private class uc_CaretAttribs
         {
             public System.Drawing.Point Pos;
@@ -3531,7 +3567,9 @@ namespace PacketSoftware
                 this.Attribs = p6;
             }
         }
+        #endregion
 
+        #region calss uc_Chars
         private class uc_Chars
         {
             public struct uc_CharSet
@@ -3865,7 +3903,9 @@ namespace PacketSoftware
                 NRCSwiss
             }
         }
+        #endregion
 
+        #region class uc_Caret
         private class uc_Caret
         {
             public System.Drawing.Point Pos;
@@ -3880,7 +3920,9 @@ namespace PacketSoftware
                 this.Pos = new System.Drawing.Point(0, 0);
             }
         }
+        #endregion
 
+        #region WMCodes
         private class WMCodes
         {
             public const int WM_KEYFIRST = 0x0100;
@@ -3894,7 +3936,9 @@ namespace PacketSoftware
             public const int WM_SYSDEADCHAR = 0x0107;
             public const int WM_KEYLAST = 0x0108;
         }
+        #endregion
 
+        #region class uc_Mode
         private class uc_Mode
         {
             public static System.UInt32 Locked = 1;           // Unlocked           = off 
@@ -3924,7 +3968,9 @@ namespace PacketSoftware
                 this.Flags = 0;
             }
         }
+        #endregion
 
+        #region class uc_Keyboard
         private class uc_Keyboard
         {
             public event KeyboardEventHandler KeyboardEvent;
@@ -4252,7 +4298,9 @@ namespace PacketSoftware
                 }
             }
         }
+        #endregion 
 
+        #region class uc_VertScrollBar
         private class uc_VertScrollBar : System.Windows.Forms.VScrollBar
         {
             public uc_VertScrollBar()
@@ -4262,7 +4310,9 @@ namespace PacketSoftware
 
             }
         }
+        #endregion
 
+        #region class uc_Params
         private class uc_Params
         {
             public System.Collections.ArrayList Elements = new System.Collections.ArrayList();
@@ -4299,12 +4349,9 @@ namespace PacketSoftware
                 }
             }
         }
-        /// <summary>
-        /// This class provides functionality to parse the VT control characters fed
-        /// to the terminal from the host machine and fire off the appropriate actions
-        /// It implements Paul William's excellent VT500-Series Parser Model. 
-        /// Paul's model can be found at vt100.net
-        /// </summary>
+        #endregion 
+     
+        #region class uc_Parser
         private class uc_Parser
         {
             public event ParserEventHandler ParserEvent;
@@ -4572,13 +4619,13 @@ namespace PacketSoftware
 
                     return false;
                 }
-                #endregion
-            public uc_CharEvents()
+            #endregion
+                public uc_CharEvents()
                 {
                 }
 
-            #region  uc_CharEventInfo
-            public static uc_CharEventInfo[] Elements = 
+                #region  uc_CharEventInfo
+                public static uc_CharEventInfo[] Elements = 
 			    {
 				new uc_CharEventInfo (States.Anywhere,      '\x1B', '\x1B', Actions.NewCollect, States.Escape),
 				new uc_CharEventInfo (States.Anywhere,      '\x18', '\x18', Actions.Execute,    States.Ground),
@@ -4677,6 +4724,7 @@ namespace PacketSoftware
             }
         }
         #endregion
+        #endregion
 
         #region Class uc_TelnetParser
         private class uc_TelnetParser
@@ -4695,7 +4743,7 @@ namespace PacketSoftware
             {
             }
 
-            #region ParseString
+            
             public void ParseString(System.String InString)
             {
                 States NextState = States.None;
@@ -4739,7 +4787,7 @@ namespace PacketSoftware
                     }
                 }
             }
-            #endregion 
+            
 
             #region DoAction
             private void DoAction(NvtActions NextAction)
@@ -4841,7 +4889,7 @@ namespace PacketSoftware
                     this.NextAction = p3;
                 }
             }
-            #endregion
+        
 
             private class uc_StateChangeEvents
             {
@@ -4957,9 +5005,8 @@ namespace PacketSoftware
         }
         #endregion
 
-       
-
         #region Private Structs
+        #region ParserEventArgs
         private struct ParserEventArgs
         {
             public Actions Action;
@@ -4979,7 +5026,9 @@ namespace PacketSoftware
                 CurParams = p4;
             }
         }
+        #endregion
 
+        #region CharAttribStruct
         private struct CharAttribStruct
         {
             public System.Boolean IsBold;
@@ -5033,7 +5082,9 @@ namespace PacketSoftware
             }
 
         }
+        #endregion
 
+        #region NvtParserEventArgs
         private struct NvtParserEventArgs
         {
             public NvtActions Action;
@@ -5053,6 +5104,7 @@ namespace PacketSoftware
                 CurParams = p4;
             }
         }
+        #endregion
         #endregion
 
         #region Private Enums
@@ -5120,7 +5172,7 @@ namespace PacketSoftware
         }
 
         #endregion
-        
+
         #region InitializeComponent
         private void InitializeComponent()
         {
@@ -5132,14 +5184,14 @@ namespace PacketSoftware
             this.ResumeLayout(false);
 
         }
-        #endregion   
+        #endregion
 
         #region Disconnect
         private void Disconnect()
         {
             try
             {
-                
+
                 if (C_Type == "Com")
                 {
                     this.port.Close();
@@ -5159,5 +5211,5 @@ namespace PacketSoftware
         }
         #endregion
     }
-   
+
 }
