@@ -1004,6 +1004,7 @@ namespace PacketSoftware
             {
                 this.Parser.ParseString(InputData);
                 //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
+                this.Invoke(this.RefreshEvent);
             }
             // throw new NotImplementedException();
         }
@@ -1323,7 +1324,7 @@ namespace PacketSoftware
                 System.Net.Sockets.Socket sock1 = (System.Net.Sockets.Socket)ar.AsyncState;
                 if (C_Type == "Com")
                 {
-
+                    this.Refresh();
                 }
 
                 if (sock1.Connected)

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.bbs_button = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +62,9 @@
             this.disconnect_button = new System.Windows.Forms.Button();
             this.ssh_button = new System.Windows.Forms.Button();
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // bbs_button
@@ -275,8 +278,10 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(690, 41);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(250, 20);
             this.textBox1.TabIndex = 4;
+            this.textBox1.TabStop = false;
             // 
             // forward_button
             // 
@@ -378,6 +383,7 @@
             this.Resize += new System.EventHandler(this.Form1_Resize_1);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -418,6 +424,7 @@
         private PacketSoftware.TerminalEmulator terminalEmulator1;
         private System.Windows.Forms.ToolStripMenuItem SSHConfigToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCom;
+        private System.Windows.Forms.BindingSource bindingSource1;
 
       
     }
