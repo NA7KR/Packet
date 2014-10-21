@@ -781,7 +781,6 @@ namespace PacketSoftware
             {
                 Disconnected(this, new EventArgs());
             }
-
         }
         #endregion
 
@@ -5191,7 +5190,6 @@ namespace PacketSoftware
         {
             try
             {
-
                 if (C_Type == "Com")
                 {
                     this.port.Close();
