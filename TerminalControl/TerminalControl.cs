@@ -772,7 +772,7 @@ namespace PacketSoftware
         #endregion
 
         #region Disccocted by remote
-        private void Disconnectby()
+        public void Disconnectby()
         {
             this.Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m ");
             this.Parser.ParseString(System.Environment.NewLine);
@@ -3498,8 +3498,7 @@ namespace PacketSoftware
             };
         }
         #endregion 
-   #endregion
-
+   
         #region class uc_CommsStateObject
         private class uc_CommsStateObject
         {
@@ -5199,7 +5198,7 @@ namespace PacketSoftware
                 }
                 else if (C_Type == "SSH")
                 {
-                    Routrek.SSHC.ISSHConnectionEventReceiver.OnChannelClosed();
+                    reader.OnChannelClosed();
                 }
                 else  
                 {
@@ -5216,4 +5215,5 @@ namespace PacketSoftware
         }
         #endregion
     }
+   #endregion
 }

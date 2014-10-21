@@ -50,6 +50,8 @@ namespace PacketSoftware
             //Debug.WriteLine("Channel closed");
             _conn.Disconnect("");
             //_conn.AsyncReceive(this);
+            Terminal.Disconnectby();
+
         }
         public void OnChannelEOF()
         {

@@ -546,6 +546,7 @@ namespace Packet
                 bbs_button.Enabled = false;
                 cluster_button.Enabled = false;
                 node_button.Enabled = false;
+                ssh_button.Enabled = false;
                 forward_button.Enabled = true;
 
             }
@@ -565,6 +566,7 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
+            ssh_button.Enabled = false;
             if (myRegistry.Read("Cluster-Echo") == "Yes")
             {
                 this.terminalEmulator1.LocalEcho = true;
@@ -593,6 +595,7 @@ namespace Packet
             bbs_button.Enabled = false;
             cluster_button.Enabled = false;
             node_button.Enabled = false;
+            ssh_button.Enabled = false;
             if (myRegistry.Read("Node-Echo") == "Yes")
             {
                 this.terminalEmulator1.LocalEcho = true;
@@ -643,7 +646,7 @@ namespace Packet
             cluster_button.Enabled = true;
             node_button.Enabled = true;
             disconnect_button.Enabled = false;
-            
+            ssh_button.Enabled = true;
             terminalEmulator1.closeconnection();
            
         }
@@ -655,6 +658,11 @@ namespace Packet
         #region ssh_button_Click
         private void ssh_button_Click(object sender, EventArgs e)
         {
+            ssh_button.Enabled = false;
+            bbs_button.Enabled = false;
+            cluster_button.Enabled = false;
+            node_button.Enabled = false;
+            disconnect_button.Enabled = true;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.SSH2;
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("SSH-Port"));
             this.terminalEmulator1.Hostname = myRegistry.Read("SSH-IP");
