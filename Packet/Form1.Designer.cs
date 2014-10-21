@@ -282,13 +282,14 @@
             this.textBox1.Size = new System.Drawing.Size(250, 20);
             this.textBox1.TabIndex = 4;
             this.textBox1.TabStop = false;
+            this.textBox1.Visible = false;
             // 
             // forward_button
             // 
             this.forward_button.Location = new System.Drawing.Point(149, 41);
             this.forward_button.Name = "forward_button";
             this.forward_button.Size = new System.Drawing.Size(93, 23);
-            this.forward_button.TabIndex = 5;
+            this.forward_button.TabIndex = 6;
             this.forward_button.Text = "Forward";
             this.forward_button.UseVisualStyleBackColor = true;
             this.forward_button.Click += new System.EventHandler(this.forward_button_Click);
@@ -298,7 +299,7 @@
             this.cluster_button.Location = new System.Drawing.Point(231, 40);
             this.cluster_button.Name = "cluster_button";
             this.cluster_button.Size = new System.Drawing.Size(94, 23);
-            this.cluster_button.TabIndex = 6;
+            this.cluster_button.TabIndex = 2;
             this.cluster_button.Text = "Connect Cluster";
             this.cluster_button.UseVisualStyleBackColor = true;
             this.cluster_button.Click += new System.EventHandler(this.cluster_button_Click);
@@ -308,7 +309,7 @@
             this.node_button.Location = new System.Drawing.Point(331, 40);
             this.node_button.Name = "node_button";
             this.node_button.Size = new System.Drawing.Size(94, 23);
-            this.node_button.TabIndex = 7;
+            this.node_button.TabIndex = 3;
             this.node_button.Text = "Connect Node";
             this.node_button.UseVisualStyleBackColor = true;
             this.node_button.Click += new System.EventHandler(this.node_button_Click);
@@ -318,7 +319,7 @@
             this.disconnect_button.Location = new System.Drawing.Point(449, 41);
             this.disconnect_button.Name = "disconnect_button";
             this.disconnect_button.Size = new System.Drawing.Size(94, 23);
-            this.disconnect_button.TabIndex = 8;
+            this.disconnect_button.TabIndex = 7;
             this.disconnect_button.Text = "Disconnect";
             this.disconnect_button.UseVisualStyleBackColor = true;
             this.disconnect_button.Click += new System.EventHandler(this.disconnect_button_Click);
@@ -328,7 +329,7 @@
             this.ssh_button.Location = new System.Drawing.Point(561, 40);
             this.ssh_button.Name = "ssh_button";
             this.ssh_button.Size = new System.Drawing.Size(94, 23);
-            this.ssh_button.TabIndex = 9;
+            this.ssh_button.TabIndex = 4;
             this.ssh_button.Text = "SSH";
             this.ssh_button.UseVisualStyleBackColor = true;
             this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
@@ -357,7 +358,7 @@
             this.terminalEmulator1.SerialPort = "";
             this.terminalEmulator1.Size = new System.Drawing.Size(1144, 457);
             this.terminalEmulator1.StopBitsType = PacketSoftware.TerminalEmulator.StopBitsTypes.One;
-            this.terminalEmulator1.TabIndex = 10;
+            this.terminalEmulator1.TabIndex = 5;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;
             this.terminalEmulator1.Disconnected += new System.EventHandler(this.disconnected);

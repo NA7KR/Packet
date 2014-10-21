@@ -245,14 +245,14 @@ namespace PacketSoftware
             {
                 case ConnectionTypes.Telnet:
                     {
-                        this.ConnectTelnet(this.Hostname, this.Port);
                         C_Type = "Telnet";
+                        this.ConnectTelnet(this.Hostname, this.Port);
                         break;
                     }
                 case ConnectionTypes.COM:
                     {
-                        this.ConnectCom();
                         C_Type = "Com";
+                        this.ConnectCom();
                         break;
                     }
                 case ConnectionTypes.SSH1:
@@ -261,6 +261,7 @@ namespace PacketSoftware
                     }
                 case ConnectionTypes.SSH2:
                     {
+                        C_Type = "SSH";
                         this.ConnectSSH2(this.Hostname, this.Username, this.Password, this.Port);
                         break;
                     }
@@ -5196,7 +5197,11 @@ namespace PacketSoftware
                 {
                     this.port.Close();
                 }
-                else
+                else if (C_Type == "SSH")
+                {
+                    Routrek.SSHC.ISSHConnectionEventReceiver.OnChannelClosed();
+                }
+                else  
                 {
                     this.Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
                     this.Parser.ParseString(System.Environment.NewLine);
@@ -5211,5 +5216,4 @@ namespace PacketSoftware
         }
         #endregion
     }
-
 }
