@@ -16,6 +16,7 @@ namespace PacketSoftware
     public class TerminalEmulator : Control
     {
         System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
+
         #region Public Properties of Comonent
         public int Rows
         {
