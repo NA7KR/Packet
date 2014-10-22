@@ -343,7 +343,6 @@
             this.terminalEmulator1.Columns = 162;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.DataBitsType = PacketSoftware.TerminalEmulator.DataBitsTypes.Data_Bits_8;
-            this.terminalEmulator1.FileName = null;
             this.terminalEmulator1.FlowType = PacketSoftware.TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
             this.terminalEmulator1.Hostname = null;

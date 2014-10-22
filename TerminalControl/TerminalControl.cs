@@ -155,15 +155,15 @@ namespace PacketSoftware
                 this._localecho = value;
             }
         }
-        public string FileName
+        public System.Boolean FileActive
         {
             get
             {
-                return this._filename;
+                return this._fileactive;
             }
             set
             {
-                this._filename = value;
+                this._fileactive = value;
             }
         }
         public System.Boolean Close
@@ -337,7 +337,7 @@ namespace PacketSoftware
         private string _hostname;       // used for connecting to SSH
         private string _username;       // maybe
         private string _password;
-        private string _filename;
+        private System.Boolean _fileactive;
         private string _serialport;
         private string C_Type;
         private System.Int32 _port;
