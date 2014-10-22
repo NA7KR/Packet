@@ -44,9 +44,9 @@
             this.label_password = new System.Windows.Forms.Label();
             this.label_echo = new System.Windows.Forms.Label();
             this.echo_comboBox = new System.Windows.Forms.ComboBox();
-            this.textBox_bbs_prompt = new System.Windows.Forms.TextBox();
-            this.label_bbs_prompt = new System.Windows.Forms.Label();
-            this.textBox_nusename_prompt = new System.Windows.Forms.TextBox();
+            this.textBox_prompt = new System.Windows.Forms.TextBox();
+            this.label_prompt = new System.Windows.Forms.Label();
+            this.textBox_username_prompt = new System.Windows.Forms.TextBox();
             this.label_username_prompt = new System.Windows.Forms.Label();
             this.textBox_password_prompt = new System.Windows.Forms.TextBox();
             this.label_password_prompt = new System.Windows.Forms.Label();
@@ -191,30 +191,30 @@
             this.echo_comboBox.TabIndex = 21;
             this.echo_comboBox.ValueMember = "1";
             // 
-            // textBox_bbs_prompt
+            // textBox_prompt
             // 
-            this.textBox_bbs_prompt.Location = new System.Drawing.Point(144, 227);
-            this.textBox_bbs_prompt.Name = "textBox_bbs_prompt";
-            this.textBox_bbs_prompt.PasswordChar = '#';
-            this.textBox_bbs_prompt.Size = new System.Drawing.Size(109, 20);
-            this.textBox_bbs_prompt.TabIndex = 23;
+            this.textBox_prompt.Location = new System.Drawing.Point(144, 227);
+            this.textBox_prompt.Name = "textBox_prompt";
+            this.textBox_prompt.PasswordChar = '#';
+            this.textBox_prompt.Size = new System.Drawing.Size(109, 20);
+            this.textBox_prompt.TabIndex = 23;
             // 
-            // label_bbs_prompt
+            // label_prompt
             // 
-            this.label_bbs_prompt.AutoSize = true;
-            this.label_bbs_prompt.Location = new System.Drawing.Point(36, 227);
-            this.label_bbs_prompt.Name = "label_bbs_prompt";
-            this.label_bbs_prompt.Size = new System.Drawing.Size(64, 13);
-            this.label_bbs_prompt.TabIndex = 22;
-            this.label_bbs_prompt.Text = "BBS Prompt";
+            this.label_prompt.AutoSize = true;
+            this.label_prompt.Location = new System.Drawing.Point(36, 227);
+            this.label_prompt.Name = "label_prompt";
+            this.label_prompt.Size = new System.Drawing.Size(64, 13);
+            this.label_prompt.TabIndex = 22;
+            this.label_prompt.Text = "BBS Prompt";
             // 
-            // textBox_nusename_prompt
+            // textBox_username_prompt
             // 
-            this.textBox_nusename_prompt.Location = new System.Drawing.Point(143, 253);
-            this.textBox_nusename_prompt.Name = "textBox_nusename_prompt";
-            this.textBox_nusename_prompt.PasswordChar = '#';
-            this.textBox_nusename_prompt.Size = new System.Drawing.Size(109, 20);
-            this.textBox_nusename_prompt.TabIndex = 25;
+            this.textBox_username_prompt.Location = new System.Drawing.Point(143, 253);
+            this.textBox_username_prompt.Name = "textBox_username_prompt";
+            this.textBox_username_prompt.PasswordChar = '#';
+            this.textBox_username_prompt.Size = new System.Drawing.Size(109, 20);
+            this.textBox_username_prompt.TabIndex = 25;
             // 
             // label_username_prompt
             // 
@@ -251,10 +251,10 @@
             this.ClientSize = new System.Drawing.Size(314, 356);
             this.Controls.Add(this.textBox_password_prompt);
             this.Controls.Add(this.label_password_prompt);
-            this.Controls.Add(this.textBox_nusename_prompt);
+            this.Controls.Add(this.textBox_username_prompt);
             this.Controls.Add(this.label_username_prompt);
-            this.Controls.Add(this.textBox_bbs_prompt);
-            this.Controls.Add(this.label_bbs_prompt);
+            this.Controls.Add(this.textBox_prompt);
+            this.Controls.Add(this.label_prompt);
             this.Controls.Add(this.echo_comboBox);
             this.Controls.Add(this.label_echo);
             this.Controls.Add(this.textBox_password);
@@ -301,9 +301,9 @@
         private System.Windows.Forms.Label label_password;
         private System.Windows.Forms.Label label_echo;
         private System.Windows.Forms.ComboBox echo_comboBox;
-        private System.Windows.Forms.TextBox textBox_bbs_prompt;
-        private System.Windows.Forms.Label label_bbs_prompt;
-        private System.Windows.Forms.TextBox textBox_nusename_prompt;
+        private System.Windows.Forms.TextBox textBox_prompt;
+        private System.Windows.Forms.Label label_prompt;
+        private System.Windows.Forms.TextBox textBox_username_prompt;
         private System.Windows.Forms.Label label_username_prompt;
         private System.Windows.Forms.TextBox textBox_password_prompt;
         private System.Windows.Forms.Label label_password_prompt;
