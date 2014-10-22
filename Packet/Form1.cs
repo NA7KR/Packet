@@ -21,11 +21,11 @@ namespace Packet
     //---------------------------------------------------------------------------------------------------------
     //  partial class Form1
     //---------------------------------------------------------------------------------------------------------
-    
+
     #region partial class Form1
     public partial class Form1 : Form
     {
-       
+
         //---------------------------------------------------------------------------------------------------------
         //  private TelnetConnection
         //---------------------------------------------------------------------------------------------------------
@@ -35,12 +35,12 @@ namespace Packet
         ModifyRegistry myRegistryCom = new ModifyRegistry();
         Encrypting myEncrypt = new Encrypting();
         //ModifyFile myFiles = new ModifyFile();
-        Color textColor  = Color.Yellow;
+        Color textColor = Color.Yellow;
         Color backgroundColor = Color.Black;
         Boolean bBeep = true;
         //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         //string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
-        #endregion 
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // Form1
@@ -84,7 +84,7 @@ namespace Packet
             this.toolStripComboBoxBGC.Items.Add("Magenta");
             this.toolStripComboBoxBGC.Items.Add("Cyan");
             this.toolStripComboBoxBGC.Items.Add("White");
-           
+
             this.bbs_button.Width = 90;
             this.bbs_button.Left = 20;
             this.bbs_button.Top = 40;
@@ -121,7 +121,7 @@ namespace Packet
             AboutBox1 box = new AboutBox1();
             box.ShowDialog();
         }
-        #endregion  
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void exitToolStripMenuItem1_Click
@@ -263,8 +263,8 @@ namespace Packet
                     textColor = Color.White;
                     break;
             }
-            terminalEmulator1.ForeColor  = textColor;
-    
+            terminalEmulator1.ForeColor = textColor;
+
         }
         #endregion
 
@@ -334,7 +334,7 @@ namespace Packet
             this.terminalEmulator1.Top = 80;
             this.terminalEmulator1.Height = (this.Height - 20);
             this.terminalEmulator1.Width = (this.Width - 60);
-            
+
         }
         #endregion
         //---------------------------------------------------------------------------------------------------------
@@ -347,7 +347,7 @@ namespace Packet
             forward_button.Enabled = false;
             forward_button.Text = "Forward active";
         }
-        #endregion    
+        #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void Form1_Load
@@ -389,7 +389,7 @@ namespace Packet
             if (myRegistry.Read("Node-Mode") == "Telnet")
             {
                 this.toolStripComboBox3.SelectedIndex = 0;
-                
+
             }
             else if (myRegistry.Read("Node-Mode") == "Com")
             {
@@ -399,7 +399,7 @@ namespace Packet
             else
             {
                 node_button.Enabled = false;
-                nodeIPConfigToolStripMenuItem.Visible = false;    
+                nodeIPConfigToolStripMenuItem.Visible = false;
             }
             if (myRegistry.Read("Beep") == "Yes")
             {
@@ -415,35 +415,35 @@ namespace Packet
             switch (myREG)
             {
                 case "Black":
-                    this.toolStripComboBoxTXTC.SelectedIndex = 0; 
+                    this.toolStripComboBoxTXTC.SelectedIndex = 0;
                     textColor = Color.Black;
                     break;
                 case "Red":
-                    this.toolStripComboBoxTXTC.SelectedIndex = 1; 
+                    this.toolStripComboBoxTXTC.SelectedIndex = 1;
                     textColor = Color.Red;
                     break;
                 case "Green":
-                    this.toolStripComboBoxTXTC.SelectedIndex = 2; 
+                    this.toolStripComboBoxTXTC.SelectedIndex = 2;
                     textColor = Color.Green;
                     break;
                 case "Yellow":
-                    this.toolStripComboBoxTXTC.SelectedIndex = 3; 
+                    this.toolStripComboBoxTXTC.SelectedIndex = 3;
                     textColor = Color.Yellow;
                     break;
                 case "Blue":
-                    this.toolStripComboBoxTXTC.SelectedIndex = 4; 
+                    this.toolStripComboBoxTXTC.SelectedIndex = 4;
                     textColor = Color.Blue;
                     break;
                 case "Magenta":
-                    this.toolStripComboBoxTXTC.SelectedIndex = 5; 
+                    this.toolStripComboBoxTXTC.SelectedIndex = 5;
                     textColor = Color.Magenta;
                     break;
                 case "Cyan":
-                    this.toolStripComboBoxTXTC.SelectedIndex = 6; 
+                    this.toolStripComboBoxTXTC.SelectedIndex = 6;
                     textColor = Color.Cyan;
                     break;
                 case "White":
-                    this.toolStripComboBoxTXTC.SelectedIndex = 7; 
+                    this.toolStripComboBoxTXTC.SelectedIndex = 7;
                     textColor = Color.White;
                     break;
                 default:
@@ -451,7 +451,7 @@ namespace Packet
                     break;
             }
             terminalEmulator1.ForeColor = textColor;
-           
+
 
             string myREG2 = myRegistry.Read("Color Background");
             switch (myREG2)
@@ -500,7 +500,7 @@ namespace Packet
             else
                 ssh_button.Visible = false;
 
-         
+
 
         }
         #endregion
@@ -513,7 +513,7 @@ namespace Packet
         {
             try
             {
-               
+
                 if (myRegistry.Read("BBS-Mode") == "Telnet")
                 {
 
@@ -535,13 +535,15 @@ namespace Packet
                 {
                     this.terminalEmulator1.BaudRateType = ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
                     this.terminalEmulator1.DataBitsType = ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" + myRegistryCom.Read("Data Bits"));
-                    this.terminalEmulator1.StopBitsType = ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>( myRegistryCom.Read("Stop Bits"));
+                    this.terminalEmulator1.StopBitsType = ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>(myRegistryCom.Read("Stop Bits"));
                     this.terminalEmulator1.ParityType = ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
                     this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
                     this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
                 }
                 this.terminalEmulator1.BBSPrompt = "NA7KR BBS>";
+                this.terminalEmulator1.UernamePrompt = "";
+                this.terminalEmulator1.passwordPrompt = "";
                 this.terminalEmulator1.Connect();
                 this.disconnect_button.Enabled = true;
                 bbs_button.Enabled = false;
@@ -553,7 +555,7 @@ namespace Packet
             }
             catch
             {
-                MessageBox.Show("Com Port or Telnet Error","Important Note",MessageBoxButtons.OK,MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Com Port or Telnet Error", "Important Note", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
             }
         }
         #endregion
@@ -671,7 +673,7 @@ namespace Packet
             this.terminalEmulator1.Hostname = myRegistry.Read("SSH-IP");
             this.terminalEmulator1.Username = myRegistry.Read("SSH-CallSign");
             this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("SSH-Password"));
-            this.terminalEmulator1.Connect();  
+            this.terminalEmulator1.Connect();
         }
         #endregion
 
@@ -680,7 +682,7 @@ namespace Packet
         {
             IP_Form box = new IP_Form("SSH");
             box.ShowDialog();
-            if (myRegistry.Read( "SSH-Echo") == "No")
+            if (myRegistry.Read("SSH-Echo") == "No")
             {
                 ssh_button.Visible = false;
             }
@@ -703,23 +705,22 @@ namespace Packet
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
             Com_Form box = new Com_Form();
-            box.ShowDialog();   
+            box.ShowDialog();
         }
         #endregion
 
         #region ParseEnum
-        public static T ParseEnum<T>( string value)
+        public static T ParseEnum<T>(string value)
         {
-           return (T)Enum.Parse(typeof(T), value, true);
+            return (T)Enum.Parse(typeof(T), value, true);
         }
         #endregion
 
         private void terminalEmulator1_ForwardDone(object sender, EventArgs e)
         {
             base.Invoke((Action)delegate { forward_button.Enabled = true; });
-            
+
         }
     }
     #endregion
 }
-    

@@ -28,43 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ip_label = new System.Windows.Forms.Label();
-            this.ip_textBox = new System.Windows.Forms.TextBox();
+            this.label_ip = new System.Windows.Forms.Label();
+            this.textBox_ip = new System.Windows.Forms.TextBox();
             this.Done_button = new System.Windows.Forms.Button();
             this.Cancel_button = new System.Windows.Forms.Button();
-            this.port_label = new System.Windows.Forms.Label();
-            this.mycall_label = new System.Windows.Forms.Label();
-            this.port_textBox = new System.Windows.Forms.TextBox();
-            this.mycall_textBox = new System.Windows.Forms.TextBox();
-            this.start_textBox = new System.Windows.Forms.TextBox();
-            this.bbs_textBox = new System.Windows.Forms.TextBox();
-            this.start_label = new System.Windows.Forms.Label();
-            this.bbs_label = new System.Windows.Forms.Label();
-            this.password_textBox = new System.Windows.Forms.TextBox();
-            this.password_label = new System.Windows.Forms.Label();
-            this.echo_label = new System.Windows.Forms.Label();
+            this.label_port = new System.Windows.Forms.Label();
+            this.label_mycall = new System.Windows.Forms.Label();
+            this.textBox_port = new System.Windows.Forms.TextBox();
+            this.textBox_mycall = new System.Windows.Forms.TextBox();
+            this.textBox_start = new System.Windows.Forms.TextBox();
+            this.textBox_bbs = new System.Windows.Forms.TextBox();
+            this.label_start = new System.Windows.Forms.Label();
+            this.label_bbs = new System.Windows.Forms.Label();
+            this.textBox_password = new System.Windows.Forms.TextBox();
+            this.label_password = new System.Windows.Forms.Label();
+            this.label_echo = new System.Windows.Forms.Label();
             this.echo_comboBox = new System.Windows.Forms.ComboBox();
+            this.textBox_bbs_prompt = new System.Windows.Forms.TextBox();
+            this.label_bbs_prompt = new System.Windows.Forms.Label();
+            this.textBox_nusename_prompt = new System.Windows.Forms.TextBox();
+            this.label_username_prompt = new System.Windows.Forms.Label();
+            this.textBox_password_prompt = new System.Windows.Forms.TextBox();
+            this.label_password_prompt = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // ip_label
+            // label_ip
             // 
-            this.ip_label.AutoSize = true;
-            this.ip_label.Location = new System.Drawing.Point(36, 31);
-            this.ip_label.Name = "ip_label";
-            this.ip_label.Size = new System.Drawing.Size(106, 13);
-            this.ip_label.TabIndex = 0;
-            this.ip_label.Text = "BBS IP or HostName";
+            this.label_ip.AutoSize = true;
+            this.label_ip.Location = new System.Drawing.Point(36, 31);
+            this.label_ip.Name = "label_ip";
+            this.label_ip.Size = new System.Drawing.Size(106, 13);
+            this.label_ip.TabIndex = 0;
+            this.label_ip.Text = "BBS IP or HostName";
             // 
-            // ip_textBox
+            // textBox_ip
             // 
-            this.ip_textBox.Location = new System.Drawing.Point(145, 31);
-            this.ip_textBox.Name = "ip_textBox";
-            this.ip_textBox.Size = new System.Drawing.Size(109, 20);
-            this.ip_textBox.TabIndex = 5;
+            this.textBox_ip.Location = new System.Drawing.Point(145, 31);
+            this.textBox_ip.Name = "textBox_ip";
+            this.textBox_ip.Size = new System.Drawing.Size(109, 20);
+            this.textBox_ip.TabIndex = 5;
             // 
             // Done_button
             // 
-            this.Done_button.Location = new System.Drawing.Point(22, 224);
+            this.Done_button.Location = new System.Drawing.Point(28, 321);
             this.Done_button.Name = "Done_button";
             this.Done_button.Size = new System.Drawing.Size(75, 23);
             this.Done_button.TabIndex = 10;
@@ -75,102 +81,102 @@
             // Cancel_button
             // 
             this.Cancel_button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_button.Location = new System.Drawing.Point(145, 224);
+            this.Cancel_button.Location = new System.Drawing.Point(154, 321);
             this.Cancel_button.Name = "Cancel_button";
             this.Cancel_button.Size = new System.Drawing.Size(75, 23);
             this.Cancel_button.TabIndex = 11;
             this.Cancel_button.Text = "Cancel";
             this.Cancel_button.UseVisualStyleBackColor = true;
             // 
-            // port_label
+            // label_port
             // 
-            this.port_label.AutoSize = true;
-            this.port_label.Location = new System.Drawing.Point(37, 57);
-            this.port_label.Name = "port_label";
-            this.port_label.Size = new System.Drawing.Size(50, 13);
-            this.port_label.TabIndex = 1;
-            this.port_label.Text = "BBS Port";
+            this.label_port.AutoSize = true;
+            this.label_port.Location = new System.Drawing.Point(37, 57);
+            this.label_port.Name = "label_port";
+            this.label_port.Size = new System.Drawing.Size(50, 13);
+            this.label_port.TabIndex = 1;
+            this.label_port.Text = "BBS Port";
             // 
-            // mycall_label
+            // label_mycall
             // 
-            this.mycall_label.AutoSize = true;
-            this.mycall_label.Location = new System.Drawing.Point(35, 140);
-            this.mycall_label.Name = "mycall_label";
-            this.mycall_label.Size = new System.Drawing.Size(62, 13);
-            this.mycall_label.TabIndex = 3;
-            this.mycall_label.Text = "My CallSign";
+            this.label_mycall.AutoSize = true;
+            this.label_mycall.Location = new System.Drawing.Point(35, 140);
+            this.label_mycall.Name = "label_mycall";
+            this.label_mycall.Size = new System.Drawing.Size(62, 13);
+            this.label_mycall.TabIndex = 3;
+            this.label_mycall.Text = "My CallSign";
             // 
-            // port_textBox
+            // textBox_port
             // 
-            this.port_textBox.Location = new System.Drawing.Point(145, 57);
-            this.port_textBox.Name = "port_textBox";
-            this.port_textBox.Size = new System.Drawing.Size(109, 20);
-            this.port_textBox.TabIndex = 6;
+            this.textBox_port.Location = new System.Drawing.Point(145, 57);
+            this.textBox_port.Name = "textBox_port";
+            this.textBox_port.Size = new System.Drawing.Size(109, 20);
+            this.textBox_port.TabIndex = 6;
             // 
-            // mycall_textBox
+            // textBox_mycall
             // 
-            this.mycall_textBox.Location = new System.Drawing.Point(143, 144);
-            this.mycall_textBox.Name = "mycall_textBox";
-            this.mycall_textBox.Size = new System.Drawing.Size(109, 20);
-            this.mycall_textBox.TabIndex = 9;
+            this.textBox_mycall.Location = new System.Drawing.Point(143, 144);
+            this.textBox_mycall.Name = "textBox_mycall";
+            this.textBox_mycall.Size = new System.Drawing.Size(109, 20);
+            this.textBox_mycall.TabIndex = 9;
             // 
-            // start_textBox
+            // textBox_start
             // 
-            this.start_textBox.Location = new System.Drawing.Point(144, 115);
-            this.start_textBox.Name = "start_textBox";
-            this.start_textBox.Size = new System.Drawing.Size(109, 20);
-            this.start_textBox.TabIndex = 15;
+            this.textBox_start.Location = new System.Drawing.Point(144, 115);
+            this.textBox_start.Name = "textBox_start";
+            this.textBox_start.Size = new System.Drawing.Size(109, 20);
+            this.textBox_start.TabIndex = 15;
             // 
-            // bbs_textBox
+            // textBox_bbs
             // 
-            this.bbs_textBox.Location = new System.Drawing.Point(144, 87);
-            this.bbs_textBox.Name = "bbs_textBox";
-            this.bbs_textBox.Size = new System.Drawing.Size(109, 20);
-            this.bbs_textBox.TabIndex = 14;
+            this.textBox_bbs.Location = new System.Drawing.Point(144, 87);
+            this.textBox_bbs.Name = "textBox_bbs";
+            this.textBox_bbs.Size = new System.Drawing.Size(109, 20);
+            this.textBox_bbs.TabIndex = 14;
             // 
-            // start_label
+            // label_start
             // 
-            this.start_label.AutoSize = true;
-            this.start_label.Location = new System.Drawing.Point(35, 115);
-            this.start_label.Name = "start_label";
-            this.start_label.Size = new System.Drawing.Size(93, 13);
-            this.start_label.TabIndex = 13;
-            this.start_label.Text = "BBS Start Number";
+            this.label_start.AutoSize = true;
+            this.label_start.Location = new System.Drawing.Point(35, 115);
+            this.label_start.Name = "label_start";
+            this.label_start.Size = new System.Drawing.Size(93, 13);
+            this.label_start.TabIndex = 13;
+            this.label_start.Text = "BBS Start Number";
             // 
-            // bbs_label
+            // label_bbs
             // 
-            this.bbs_label.AutoSize = true;
-            this.bbs_label.Location = new System.Drawing.Point(36, 87);
-            this.bbs_label.Name = "bbs_label";
-            this.bbs_label.Size = new System.Drawing.Size(67, 13);
-            this.bbs_label.TabIndex = 12;
-            this.bbs_label.Text = "BBS Callsign";
+            this.label_bbs.AutoSize = true;
+            this.label_bbs.Location = new System.Drawing.Point(36, 87);
+            this.label_bbs.Name = "label_bbs";
+            this.label_bbs.Size = new System.Drawing.Size(67, 13);
+            this.label_bbs.TabIndex = 12;
+            this.label_bbs.Text = "BBS Callsign";
             // 
-            // password_textBox
+            // textBox_password
             // 
-            this.password_textBox.Location = new System.Drawing.Point(143, 170);
-            this.password_textBox.Name = "password_textBox";
-            this.password_textBox.PasswordChar = '#';
-            this.password_textBox.Size = new System.Drawing.Size(109, 20);
-            this.password_textBox.TabIndex = 18;
+            this.textBox_password.Location = new System.Drawing.Point(143, 170);
+            this.textBox_password.Name = "textBox_password";
+            this.textBox_password.PasswordChar = '#';
+            this.textBox_password.Size = new System.Drawing.Size(109, 20);
+            this.textBox_password.TabIndex = 18;
             // 
-            // password_label
+            // label_password
             // 
-            this.password_label.AutoSize = true;
-            this.password_label.Location = new System.Drawing.Point(34, 164);
-            this.password_label.Name = "password_label";
-            this.password_label.Size = new System.Drawing.Size(77, 13);
-            this.password_label.TabIndex = 16;
-            this.password_label.Text = "BBS Password";
+            this.label_password.AutoSize = true;
+            this.label_password.Location = new System.Drawing.Point(35, 170);
+            this.label_password.Name = "label_password";
+            this.label_password.Size = new System.Drawing.Size(77, 13);
+            this.label_password.TabIndex = 16;
+            this.label_password.Text = "BBS Password";
             // 
-            // echo_label
+            // label_echo
             // 
-            this.echo_label.AutoSize = true;
-            this.echo_label.Location = new System.Drawing.Point(35, 198);
-            this.echo_label.Name = "echo_label";
-            this.echo_label.Size = new System.Drawing.Size(56, 13);
-            this.echo_label.TabIndex = 20;
-            this.echo_label.Text = "BBS Echo";
+            this.label_echo.AutoSize = true;
+            this.label_echo.Location = new System.Drawing.Point(35, 198);
+            this.label_echo.Name = "label_echo";
+            this.label_echo.Size = new System.Drawing.Size(56, 13);
+            this.label_echo.TabIndex = 20;
+            this.label_echo.Text = "BBS Echo";
             // 
             // echo_comboBox
             // 
@@ -185,29 +191,86 @@
             this.echo_comboBox.TabIndex = 21;
             this.echo_comboBox.ValueMember = "1";
             // 
+            // textBox_bbs_prompt
+            // 
+            this.textBox_bbs_prompt.Location = new System.Drawing.Point(144, 227);
+            this.textBox_bbs_prompt.Name = "textBox_bbs_prompt";
+            this.textBox_bbs_prompt.PasswordChar = '#';
+            this.textBox_bbs_prompt.Size = new System.Drawing.Size(109, 20);
+            this.textBox_bbs_prompt.TabIndex = 23;
+            // 
+            // label_bbs_prompt
+            // 
+            this.label_bbs_prompt.AutoSize = true;
+            this.label_bbs_prompt.Location = new System.Drawing.Point(36, 227);
+            this.label_bbs_prompt.Name = "label_bbs_prompt";
+            this.label_bbs_prompt.Size = new System.Drawing.Size(64, 13);
+            this.label_bbs_prompt.TabIndex = 22;
+            this.label_bbs_prompt.Text = "BBS Prompt";
+            // 
+            // textBox_nusename_prompt
+            // 
+            this.textBox_nusename_prompt.Location = new System.Drawing.Point(143, 253);
+            this.textBox_nusename_prompt.Name = "textBox_nusename_prompt";
+            this.textBox_nusename_prompt.PasswordChar = '#';
+            this.textBox_nusename_prompt.Size = new System.Drawing.Size(109, 20);
+            this.textBox_nusename_prompt.TabIndex = 25;
+            // 
+            // label_username_prompt
+            // 
+            this.label_username_prompt.AutoSize = true;
+            this.label_username_prompt.Location = new System.Drawing.Point(35, 253);
+            this.label_username_prompt.Name = "label_username_prompt";
+            this.label_username_prompt.Size = new System.Drawing.Size(117, 13);
+            this.label_username_prompt.TabIndex = 24;
+            this.label_username_prompt.Text = "BBS UserName Prompt";
+            // 
+            // textBox_password_prompt
+            // 
+            this.textBox_password_prompt.Location = new System.Drawing.Point(143, 286);
+            this.textBox_password_prompt.Name = "textBox_password_prompt";
+            this.textBox_password_prompt.PasswordChar = '#';
+            this.textBox_password_prompt.Size = new System.Drawing.Size(109, 20);
+            this.textBox_password_prompt.TabIndex = 27;
+            // 
+            // label_password_prompt
+            // 
+            this.label_password_prompt.AutoSize = true;
+            this.label_password_prompt.Location = new System.Drawing.Point(35, 286);
+            this.label_password_prompt.Name = "label_password_prompt";
+            this.label_password_prompt.Size = new System.Drawing.Size(135, 13);
+            this.label_password_prompt.TabIndex = 26;
+            this.label_password_prompt.Text = "BBS UserPassword Prompt";
+            // 
             // IP_Form
             // 
             this.AcceptButton = this.Done_button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_button;
-            this.ClientSize = new System.Drawing.Size(314, 314);
+            this.ClientSize = new System.Drawing.Size(314, 356);
+            this.Controls.Add(this.textBox_password_prompt);
+            this.Controls.Add(this.label_password_prompt);
+            this.Controls.Add(this.textBox_nusename_prompt);
+            this.Controls.Add(this.label_username_prompt);
+            this.Controls.Add(this.textBox_bbs_prompt);
+            this.Controls.Add(this.label_bbs_prompt);
             this.Controls.Add(this.echo_comboBox);
-            this.Controls.Add(this.echo_label);
-            this.Controls.Add(this.password_textBox);
-            this.Controls.Add(this.password_label);
-            this.Controls.Add(this.start_textBox);
-            this.Controls.Add(this.bbs_textBox);
-            this.Controls.Add(this.start_label);
-            this.Controls.Add(this.bbs_label);
+            this.Controls.Add(this.label_echo);
+            this.Controls.Add(this.textBox_password);
+            this.Controls.Add(this.label_password);
+            this.Controls.Add(this.textBox_start);
+            this.Controls.Add(this.textBox_bbs);
+            this.Controls.Add(this.label_start);
+            this.Controls.Add(this.label_bbs);
             this.Controls.Add(this.Cancel_button);
             this.Controls.Add(this.Done_button);
-            this.Controls.Add(this.mycall_textBox);
-            this.Controls.Add(this.port_textBox);
-            this.Controls.Add(this.ip_textBox);
-            this.Controls.Add(this.mycall_label);
-            this.Controls.Add(this.port_label);
-            this.Controls.Add(this.ip_label);
+            this.Controls.Add(this.textBox_mycall);
+            this.Controls.Add(this.textBox_port);
+            this.Controls.Add(this.textBox_ip);
+            this.Controls.Add(this.label_mycall);
+            this.Controls.Add(this.label_port);
+            this.Controls.Add(this.label_ip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
             this.MaximizeBox = false;
@@ -222,21 +285,27 @@
 
         #endregion
 
-        private System.Windows.Forms.Label ip_label;
-        private System.Windows.Forms.TextBox ip_textBox;
+        private System.Windows.Forms.Label label_ip;
+        private System.Windows.Forms.TextBox textBox_ip;
         private System.Windows.Forms.Button Done_button;
         private System.Windows.Forms.Button Cancel_button;
-        private System.Windows.Forms.Label port_label;
-        private System.Windows.Forms.Label mycall_label;
-        private System.Windows.Forms.TextBox port_textBox;
-        private System.Windows.Forms.TextBox mycall_textBox;
-        private System.Windows.Forms.TextBox start_textBox;
-        private System.Windows.Forms.TextBox bbs_textBox;
-        private System.Windows.Forms.Label start_label;
-        private System.Windows.Forms.Label bbs_label;
-        private System.Windows.Forms.TextBox password_textBox;
-        private System.Windows.Forms.Label password_label;
-        private System.Windows.Forms.Label echo_label;
+        private System.Windows.Forms.Label label_port;
+        private System.Windows.Forms.Label label_mycall;
+        private System.Windows.Forms.TextBox textBox_port;
+        private System.Windows.Forms.TextBox textBox_mycall;
+        private System.Windows.Forms.TextBox textBox_start;
+        private System.Windows.Forms.TextBox textBox_bbs;
+        private System.Windows.Forms.Label label_start;
+        private System.Windows.Forms.Label label_bbs;
+        private System.Windows.Forms.TextBox textBox_password;
+        private System.Windows.Forms.Label label_password;
+        private System.Windows.Forms.Label label_echo;
         private System.Windows.Forms.ComboBox echo_comboBox;
+        private System.Windows.Forms.TextBox textBox_bbs_prompt;
+        private System.Windows.Forms.Label label_bbs_prompt;
+        private System.Windows.Forms.TextBox textBox_nusename_prompt;
+        private System.Windows.Forms.Label label_username_prompt;
+        private System.Windows.Forms.TextBox textBox_password_prompt;
+        private System.Windows.Forms.Label label_password_prompt;
     }
 }

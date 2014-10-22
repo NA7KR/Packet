@@ -1,13 +1,15 @@
 #region Using Directive
 using System;
 using System.Collections.Specialized;
-using System.Windows.Forms;
-using System.Text;
+using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.IO;
-using System.Drawing;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using Utility.ModifyFile;
+
 #endregion
 
 namespace PacketSoftware
@@ -16,7 +18,7 @@ namespace PacketSoftware
     public class TerminalEmulator : Control
     {
         System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
-
+        ModifyFile myFiles = new ModifyFile();
         #region Public Properties of Comonent
         public int Rows
         {
@@ -210,7 +212,39 @@ namespace PacketSoftware
                 this._serialport = value;
             }
         }
-
+        public String BBSPrompt
+        {
+            get
+            {
+                return this._bbsprompt;
+            }
+            set
+            {
+                this._bbsprompt = value;
+            }
+        }
+        public String UernamePrompt
+        {
+            get
+            {
+                return this._usernameprompt;
+            }
+            set
+            {
+                this._usernameprompt = value;
+            }
+        }
+        public String passwordPrompt
+        {
+            get
+            {
+                return this._passwordprompt;
+            }
+            set
+            {
+                this._passwordprompt = value;
+            }
+        }
 
         #endregion
 
@@ -339,6 +373,9 @@ namespace PacketSoftware
         private string _password;
         private System.Boolean _fileactive;
         private string _serialport;
+        private string _bbsprompt;
+        private string _usernameprompt;
+        private string _passwordprompt;
         private string C_Type;
         private System.Int32 _port;
         private System.Boolean _beep;
@@ -395,6 +432,7 @@ namespace PacketSoftware
         private System.ComponentModel.IContainer components;
         private IAsyncResult lastAR;
         private string InputData = String.Empty;
+
         #endregion
 
         #region Delegates
@@ -411,12 +449,13 @@ namespace PacketSoftware
         #region Events private
         private event RefreshEventHandler RefreshEvent;
         private event RxdTextEventHandler RxdTextEvent;
-        private event CaretOffEventHandler CaretOffEvent;
-        private event CaretOnEventHandler CaretOnEvent;
+        //private event CaretOffEventHandler CaretOffEvent;
+        //private event CaretOnEventHandler CaretOnEvent;
         #endregion
 
         #region Constructors
         public event EventHandler Disconnected;
+        public event EventHandler ForwardDone;
         #endregion
 
         #region TerminalEmulator
@@ -489,8 +528,8 @@ namespace PacketSoftware
             this.Keyboard.KeyboardEvent += new KeyboardEventHandler(DispatchMessage);
             this.NvtParser.NvtParserEvent += new NvtParserEventHandler(TelnetInterpreter);
             this.RefreshEvent += new RefreshEventHandler(ShowBuffer);
-            this.CaretOffEvent += new CaretOffEventHandler(this.CaretOff);
-            this.CaretOnEvent += new CaretOnEventHandler(this.CaretOn);
+            //this.CaretOffEvent += new CaretOffEventHandler(this.CaretOff);
+            //this.CaretOnEvent += new CaretOnEventHandler(this.CaretOn);
             this.RxdTextEvent += new RxdTextEventHandler(this.NvtParser.ParseString);
 
             this.BeginDrag = new System.Drawing.Point();
@@ -781,6 +820,7 @@ namespace PacketSoftware
             if (Disconnected != null)
             {
                 Disconnected(this, new EventArgs());
+
             }
         }
         #endregion
@@ -1005,7 +1045,16 @@ namespace PacketSoftware
             {
                 this.Parser.ParseString(InputData);
                 //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
+                if (InputData == "/r")
+                {
+                    InputData = System.Environment.NewLine;
+                }
                 this.Invoke(this.RefreshEvent);
+                if (FileActive == true)
+                {
+                    //KRR
+                    myFiles.Write(InputData);
+                }
             }
             // throw new NotImplementedException();
         }
@@ -1371,10 +1420,23 @@ namespace PacketSoftware
                         sReceived += System.Convert.ToChar(StateObject.Buffer[i]).ToString();
                     }
                     //krr
+                    if (FileActive == true)
+                    {
+                        //KRR
 
+
+                        if (sReceived.Contains(BBSPrompt) == true)
+                        {
+                            ForwardDone(this, new EventArgs());
+                        }
+                        else
+                        {
+                            myFiles.Write(sReceived);
+                        }
+                    }
                     this.Invoke(this.RxdTextEvent, new System.String[] { System.String.Copy(sReceived) });
                     this.Invoke(this.RefreshEvent);
-
+                    sReceived = "";
                     // Re-Establish the next asyncronous receveived data callback as
                     StateObject.Socket.BeginReceive(StateObject.Buffer, 0, StateObject.Buffer.Length,
                         System.Net.Sockets.SocketFlags.None, new System.AsyncCallback(OnReceivedData), StateObject);
@@ -1388,7 +1450,7 @@ namespace PacketSoftware
                     Disconnectby();
                 }
             }
-            catch (System.Exception CurException)
+            catch (System.Exception)
             {
 
             }
@@ -5213,6 +5275,10 @@ namespace PacketSoftware
             { }
         }
         #endregion
+
+
+
+
     }
     #endregion
 }

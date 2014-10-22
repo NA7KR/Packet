@@ -61,8 +61,8 @@
             this.node_button = new System.Windows.Forms.Button();
             this.disconnect_button = new System.Windows.Forms.Button();
             this.ssh_button = new System.Windows.Forms.Button();
-            this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -320,6 +320,7 @@
             this.disconnect_button.Name = "disconnect_button";
             this.disconnect_button.Size = new System.Drawing.Size(94, 23);
             this.disconnect_button.TabIndex = 7;
+            this.disconnect_button.TabStop = false;
             this.disconnect_button.Text = "Disconnect";
             this.disconnect_button.UseVisualStyleBackColor = true;
             this.disconnect_button.Click += new System.EventHandler(this.disconnect_button_Click);
@@ -343,6 +344,7 @@
             this.terminalEmulator1.Columns = 162;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.DataBitsType = PacketSoftware.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.FileActive = false;
             this.terminalEmulator1.FlowType = PacketSoftware.TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
             this.terminalEmulator1.Hostname = null;
@@ -361,6 +363,7 @@
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.Username = null;
             this.terminalEmulator1.Disconnected += new System.EventHandler(this.disconnected);
+            this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             // 
             // Form1
             // 

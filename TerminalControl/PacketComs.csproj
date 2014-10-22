@@ -124,6 +124,7 @@
     <Compile Include="LibraryClient.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ModifyFile.cs" />
     <Compile Include="PKIBase.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -180,6 +181,9 @@
     <EmbeddedResource Include="TerminalControl.resx">
       <DependentUpon>TerminalControl.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
