@@ -154,7 +154,7 @@
             // 
             // textBox_password
             // 
-            this.textBox_password.Location = new System.Drawing.Point(143, 170);
+            this.textBox_password.Location = new System.Drawing.Point(160, 170);
             this.textBox_password.Name = "textBox_password";
             this.textBox_password.PasswordChar = '#';
             this.textBox_password.Size = new System.Drawing.Size(109, 20);
@@ -195,7 +195,6 @@
             // 
             this.textBox_prompt.Location = new System.Drawing.Point(144, 227);
             this.textBox_prompt.Name = "textBox_prompt";
-            this.textBox_prompt.PasswordChar = '#';
             this.textBox_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_prompt.TabIndex = 23;
             // 
@@ -210,9 +209,8 @@
             // 
             // textBox_username_prompt
             // 
-            this.textBox_username_prompt.Location = new System.Drawing.Point(143, 253);
+            this.textBox_username_prompt.Location = new System.Drawing.Point(158, 253);
             this.textBox_username_prompt.Name = "textBox_username_prompt";
-            this.textBox_username_prompt.PasswordChar = '#';
             this.textBox_username_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_username_prompt.TabIndex = 25;
             // 
@@ -227,9 +225,8 @@
             // 
             // textBox_password_prompt
             // 
-            this.textBox_password_prompt.Location = new System.Drawing.Point(143, 286);
+            this.textBox_password_prompt.Location = new System.Drawing.Point(176, 286);
             this.textBox_password_prompt.Name = "textBox_password_prompt";
-            this.textBox_password_prompt.PasswordChar = '#';
             this.textBox_password_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_password_prompt.TabIndex = 27;
             // 

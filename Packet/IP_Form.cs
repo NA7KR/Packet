@@ -46,9 +46,9 @@ namespace Packet
             myRegistry.Write(Var1 + "-Start Number", textBox_start.Text);
             myRegistry.Write(Var1 + "-Password", myEncrypt.Encrypt(textBox_password.Text));
             myRegistry.Write(Var1 + "-Echo", echo_comboBox.Text);
-            myRegistry.Write(Var1 + "-UserNamePrompt", textBox_username_prompt);
-            myRegistry.Write(Var1 + "-Prompt", textBox_prompt);
-            myRegistry.Write(Var1 + "-PasswordPrompt", textBox_password_prompt);
+            myRegistry.Write(Var1 + "-UserNamePrompt", textBox_username_prompt.Text);
+            myRegistry.Write(Var1 + "-Prompt", textBox_prompt.Text);
+            myRegistry.Write(Var1 + "-PasswordPrompt", textBox_password_prompt.Text);
             this.Close();
 
         }
@@ -106,6 +106,17 @@ namespace Packet
             label_username_prompt.Left = 20;
             label_password_prompt.Left = 20;
 
+
+            textBox_ip.Left = 160;
+            textBox_port.Left = 160;
+            textBox_bbs.Left = 160;
+            textBox_mycall.Left = 160;
+            textBox_password.Left = 160;
+            echo_comboBox.Left = 160;
+            textBox_prompt.Left = 160;
+            textBox_username_prompt.Left = 160;
+            textBox_password_prompt.Left = 160;
+
             label_ip.Width = 120;
             label_port.Width = 120;
             label_bbs.Width = 120;
@@ -150,6 +161,9 @@ namespace Packet
             Done_button.Left = 60;
             Cancel_button.Width = 75;
             Cancel_button.Left = 195;
+
+            this.Width = 350;
+
             if (Var1 == "BBS")
             {
                 textBox_start.Text = myRegistry.Read(Var1 + "-Start Number");
@@ -160,6 +174,7 @@ namespace Packet
                 label_start.Top = label_password_prompt.Top + 30 ;
                 textBox_start.Top = textBox_password_prompt.Top + 30;
                 textBox_start.Width = 140;
+                textBox_start.Left = 160;
                 Done_button.Top = textBox_start.Top + 30;
                 Cancel_button.Top = textBox_start.Top + 30;
 
@@ -208,14 +223,12 @@ namespace Packet
             {
                 textBox_start.Visible = false;
                 label_start.Visible = false;
-                Done_button.Top = 200;
-                Cancel_button.Top = 200;
-                this.Height = 280;
+                Done_button.Top = textBox_password_prompt.Top + 30;
+                Cancel_button.Top = textBox_password_prompt.Top + 30;
+                this.Height = Done_button.Top + 80;
             }
 
         }
         #endregion
-
-
     }
 }
