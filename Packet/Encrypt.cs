@@ -35,7 +35,7 @@ namespace Utility.Encrypting
             return clearText;
         }
         #endregion
-        
+
         #region Decrypt
         public string Decrypt(string cipherText)
         {

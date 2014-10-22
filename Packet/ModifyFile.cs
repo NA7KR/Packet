@@ -39,7 +39,7 @@ namespace Utility.ModifyFile
                     string tempFile = path + ".tmp";
                     File.Move(path, tempFile);
                     using (StreamReader reader = new StreamReader(tempFile))
-                    { 
+                    {
                         using (StreamWriter writer = new StreamWriter(path, false))
                         {
                             writer.WriteLine(textVale);
@@ -51,9 +51,9 @@ namespace Utility.ModifyFile
                             writer.Close();
                             reader.Close();
                         }
-                        
+
                         File.Delete(tempFile);
-                    } 
+                    }
                     return true;
                 }
 
@@ -71,4 +71,3 @@ namespace Utility.ModifyFile
 
 
 
-	

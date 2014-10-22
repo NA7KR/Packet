@@ -7,12 +7,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Drawing;
-using System.Text.RegularExpressions; 
+using System.Text.RegularExpressions;
 #endregion
 
 namespace PacketSoftware
 {
-   #region  class TerminalEmulator : Control
+    #region  class TerminalEmulator : Control
     public class TerminalEmulator : Control
     {
         System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
@@ -2520,7 +2520,7 @@ namespace PacketSoftware
             this.Caret.Pos.Y = Y;
             this.Caret.Pos.X = X;
         }
-        #endregion 
+        #endregion
 
         #region CaretToAbs
         private void CaretToAbs(System.Int32 Y, System.Int32 X)
@@ -3112,7 +3112,7 @@ namespace PacketSoftware
                 }
             }
         }
-        #endregion 
+        #endregion
 
         #region SetlMode
         private void SetlMode(uc_Params CurParams) // set mode for ESC?l command
@@ -3497,8 +3497,8 @@ namespace PacketSoftware
                     System.Convert.ToInt32(this.CharSize.Height * this._rows + 2));
             };
         }
-        #endregion 
-   
+        #endregion
+
         #region class uc_CommsStateObject
         private class uc_CommsStateObject
         {
@@ -4298,7 +4298,7 @@ namespace PacketSoftware
                 }
             }
         }
-        #endregion 
+        #endregion
 
         #region class uc_VertScrollBar
         private class uc_VertScrollBar : System.Windows.Forms.VScrollBar
@@ -4349,8 +4349,8 @@ namespace PacketSoftware
                 }
             }
         }
-        #endregion 
-     
+        #endregion
+
         #region class uc_Parser
         private class uc_Parser
         {
@@ -4723,7 +4723,7 @@ namespace PacketSoftware
 			};
             }
         }
-        #endregion
+                #endregion
         #endregion
 
         #region Class uc_TelnetParser
@@ -4743,7 +4743,7 @@ namespace PacketSoftware
             {
             }
 
-            
+
             public void ParseString(System.String InString)
             {
                 States NextState = States.None;
@@ -4787,7 +4787,7 @@ namespace PacketSoftware
                     }
                 }
             }
-            
+
 
             #region DoAction
             private void DoAction(NvtActions NextAction)
@@ -4889,7 +4889,7 @@ namespace PacketSoftware
                     this.NextAction = p3;
                 }
             }
-        
+
 
             private class uc_StateChangeEvents
             {
@@ -5199,7 +5199,7 @@ namespace PacketSoftware
                 {
                     reader.OnChannelClosed();
                 }
-                else  
+                else
                 {
                     this.Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
                     this.Parser.ParseString(System.Environment.NewLine);
@@ -5214,5 +5214,5 @@ namespace PacketSoftware
         }
         #endregion
     }
-   #endregion
+    #endregion
 }

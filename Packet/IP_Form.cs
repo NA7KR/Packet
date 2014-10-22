@@ -16,21 +16,21 @@ namespace Packet
 {
     public partial class IP_Form : Form
     {
-         ModifyRegistry myRegistry = new ModifyRegistry();
-         Encrypting myEncrypt = new Encrypting();
-         string Var1;
+        ModifyRegistry myRegistry = new ModifyRegistry();
+        Encrypting myEncrypt = new Encrypting();
+        string Var1;
 
         //---------------------------------------------------------------------------------------------------------
         //  IP_Form2
         //---------------------------------------------------------------------------------------------------------
         #region IP_Form2
         public IP_Form(string _var1)
-            {
-                InitializeComponent();
-                this.myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
-                myRegistry.ShowError = true;
-                Var1 = _var1;
-            }
+        {
+            InitializeComponent();
+            this.myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
+            myRegistry.ShowError = true;
+            Var1 = _var1;
+        }
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ namespace Packet
         //---------------------------------------------------------------------------------------------------------
         #region IP_Form2
         private void Done_button_Click(object sender, EventArgs e)
-        {   
+        {
             myRegistry.Write(Var1 + "-IP", ip_textBox.Text);
             myRegistry.Write(Var1 + "-Port", port_textBox.Text);
             myRegistry.Write(Var1 + "-CallSign", mycall_textBox.Text);
@@ -47,7 +47,7 @@ namespace Packet
             myRegistry.Write(Var1 + "-Password", myEncrypt.Encrypt(password_textBox.Text));
             myRegistry.Write(Var1 + "-Echo", echo_comboBox.Text);
             this.Close();
-            
+
         }
         #endregion
 
@@ -93,7 +93,7 @@ namespace Packet
             password_label.Left = 20;
             password_label.Width = 120;
             echo_label.Left = 20;
-            echo_label.Width =120;
+            echo_label.Width = 120;
             ip_label.Top = 20;
             port_label.Top = 50;
             bbs_label.Top = 80;
@@ -111,26 +111,26 @@ namespace Packet
             bbs_textBox.Width = 140;
             mycall_textBox.Width = 140;
             password_textBox.Width = 140;
-            echo_comboBox.Width=140;
+            echo_comboBox.Width = 140;
             Done_button.Width = 75;
             Done_button.Left = 60;
             Cancel_button.Width = 75;
             Cancel_button.Left = 195;
             if (Var1 == "BBS")
             {
-               start_textBox.Text = myRegistry.Read(Var1 + "-Start Number");
-               start_textBox.TabIndex = 6;
-               start_label.Text = Var1 + " Start Number *";
-               start_label.Left = 20;
-               start_label.Width = 120;
-               start_label.Top = 200;
-               start_textBox.Top = 200;
-               start_textBox.Width = 140;
-               Done_button.Top = 230;
-               Cancel_button.Top = 230;
-             
-               this.Height = 310;
-            }  
+                start_textBox.Text = myRegistry.Read(Var1 + "-Start Number");
+                start_textBox.TabIndex = 6;
+                start_label.Text = Var1 + " Start Number *";
+                start_label.Left = 20;
+                start_label.Width = 120;
+                start_label.Top = 200;
+                start_textBox.Top = 200;
+                start_textBox.Width = 140;
+                Done_button.Top = 230;
+                Cancel_button.Top = 230;
+
+                this.Height = 310;
+            }
             else if (Var1 == "SSH")
             {
                 ip_textBox.Text = myRegistry.Read(Var1 + "-IP");
@@ -161,7 +161,7 @@ namespace Packet
                 this.Height = 260;
                 echo_comboBox.Top = 140;
                 echo_label.Top = 140;
-                
+
             }
             else
             {
@@ -170,8 +170,8 @@ namespace Packet
                 Done_button.Top = 200;
                 Cancel_button.Top = 200;
                 this.Height = 280;
-            }     
-          
+            }
+
         }
         #endregion
 
