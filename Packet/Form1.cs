@@ -34,7 +34,7 @@ namespace Packet
         ModifyRegistry myRegistry = new ModifyRegistry();
         ModifyRegistry myRegistryCom = new ModifyRegistry();
         Encrypting myEncrypt = new Encrypting();
-        ModifyFile myFiles = new ModifyFile();
+        //ModifyFile myFiles = new ModifyFile();
         Color textColor  = Color.Yellow;
         Color backgroundColor = Color.Black;
         Boolean bBeep = true;
@@ -541,6 +541,7 @@ namespace Packet
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
                     this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
                 }
+                this.terminalEmulator1.BBSPrompt = "NA7KR BBS>";
                 this.terminalEmulator1.Connect();
                 this.disconnect_button.Enabled = true;
                 bbs_button.Enabled = false;
@@ -712,6 +713,12 @@ namespace Packet
            return (T)Enum.Parse(typeof(T), value, true);
         }
         #endregion
+
+        private void terminalEmulator1_ForwardDone(object sender, EventArgs e)
+        {
+            base.Invoke((Action)delegate { forward_button.Enabled = true; });
+            
+        }
     }
     #endregion
 }
