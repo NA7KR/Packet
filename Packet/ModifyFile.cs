@@ -65,11 +65,7 @@ namespace Utility.ModifyFile
             }
         } //end write
         #endregion
-
-
     } //end public call
-    
-
 } //end namespace
 
 
