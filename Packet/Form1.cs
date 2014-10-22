@@ -343,9 +343,9 @@ namespace Packet
         #region forward_button_Click
         private void forward_button_Click(object sender, EventArgs e)
         {
-           
-           
-
+            terminalEmulator1.FileActive = true;
+            forward_button.Enabled = false;
+            forward_button.Text = "Forward active";
         }
         #endregion    
 
@@ -648,7 +648,9 @@ namespace Packet
             disconnect_button.Enabled = false;
             ssh_button.Enabled = true;
             terminalEmulator1.closeconnection();
-           
+            terminalEmulator1.FileActive = false;
+            forward_button.Enabled = false;
+            forward_button.Text = "Forward";
         }
         #endregion
 
