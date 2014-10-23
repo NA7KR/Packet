@@ -1434,7 +1434,8 @@ namespace PacketSoftware
                     if (FileActive == true)
                     {
                         //KRR
-                       
+
+                        myFiles.Write(sReceived);
 
                         if (sReceived.Contains(BBSPrompt) == true)
                         {
@@ -1442,7 +1443,7 @@ namespace PacketSoftware
                         }
                         else
                         {
-                            myFiles.Write(sReceived);
+                           // myFiles.Write(sReceived);
                         }
                     }
                     this.Invoke(this.RxdTextEvent, new System.String[] { System.String.Copy(sReceived) });
