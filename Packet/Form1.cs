@@ -543,9 +543,9 @@ namespace Packet
                     this.terminalEmulator1.Username = myRegistryBBS.Read("CallSign");
                     this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistryBBS.Read("Password"));
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                    this.terminalEmulator1.BBSPrompt = myRegistryBBS.Read("Prompt");
-                    this.terminalEmulator1.UernamePrompt = myRegistryBBS.Read("UserNamePrompt");
-                    this.terminalEmulator1.passwordPrompt = myRegistryBBS.Read("PasswordPrompt");
+                    this.terminalEmulator1.BBSPrompt = myRegistryBBS.BRead("Prompt");
+                    this.terminalEmulator1.UernamePrompt = myRegistryBBS.BRead("UserNamePrompt");
+                    this.terminalEmulator1.passwordPrompt = myRegistryBBS.BRead("PasswordPrompt");
                 }
                 else
                 {
@@ -600,9 +600,9 @@ namespace Packet
                 this.terminalEmulator1.Username = myRegistryCluster.Read("CallSign");
                 this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistryCluster.Read("Password"));
                 this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                this.terminalEmulator1.BBSPrompt = myRegistryCluster.Read("Prompt");
-                this.terminalEmulator1.UernamePrompt = myRegistryCluster.Read("UserNamePrompt");
-                this.terminalEmulator1.passwordPrompt = myRegistryCluster.Read("PasswordPrompt");
+                this.terminalEmulator1.BBSPrompt = myRegistryCluster.BRead("Prompt");
+                this.terminalEmulator1.UernamePrompt = myRegistryCluster.BRead("UserNamePrompt");
+                this.terminalEmulator1.passwordPrompt = myRegistryCluster.BRead("PasswordPrompt");
                 this.terminalEmulator1.Connect();
                 this.disconnect_button.Enabled = true;
             }
@@ -644,9 +644,9 @@ namespace Packet
                 this.terminalEmulator1.Username = myRegistryNode.Read("CallSign");
                 this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistryNode.Read("Password"));
                 this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                this.terminalEmulator1.BBSPrompt = myRegistryNode.Read("Prompt");
-                this.terminalEmulator1.UernamePrompt = myRegistryNode.Read("UserNamePrompt");
-                this.terminalEmulator1.passwordPrompt = myRegistryNode.Read("PasswordPrompt");
+                this.terminalEmulator1.BBSPrompt = myRegistryNode.BRead("Prompt");
+                this.terminalEmulator1.UernamePrompt = myRegistryNode.BRead("UserNamePrompt");
+                this.terminalEmulator1.passwordPrompt = myRegistryNode.BRead("PasswordPrompt");
                 this.terminalEmulator1.Connect();
                 this.disconnect_button.Enabled = true;
             }
@@ -726,7 +726,7 @@ namespace Packet
         #region toolStripMenuItem1_Click SSH
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            IP_Form box = new IP_Form("SSH","");
+            IP_Form box = new IP_Form("SSH","SSH");
             box.ShowDialog();
             if (myRegistrySSH.Read("Echo") == "No")
             {

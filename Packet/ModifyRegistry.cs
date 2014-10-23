@@ -53,11 +53,8 @@ namespace Utility.ModifyRegistry
         #region Read
         public string Read(string KeyName)
         {
-            // Opening the registry key
             RegistryKey rk = baseRegistryKey;
-            // Open a subKey as read-only
             RegistryKey sk1 = rk.OpenSubKey(subKey);
-            // If the RegistrySubKey doesn't exist -> (null)
             if (sk1 == null)
             {
                 return null;
@@ -66,8 +63,37 @@ namespace Utility.ModifyRegistry
             {
                 try
                 {
-                    // If the RegistryKey exists I get its value
-                    // or null is returned.
+                    return (string)sk1.GetValue(KeyName);
+                }
+                catch (Exception e)
+                {
+                    ShowErrorMessage(e, "Reading registry " + KeyName);
+                    return null;
+                }
+            }
+        }
+        #endregion
+
+        #region BRead
+        public string BRead(string KeyName)
+        {
+            RegistryKey rk = baseRegistryKey;
+            RegistryKey sk1 = rk.OpenSubKey(subKey);
+            string regkey;
+            if (sk1 == null)
+            {
+                return null;
+            }
+            else
+            {
+                try
+                {
+                    regkey = (string)sk1.GetValue(KeyName);
+                    if (regkey == "")
+                    {
+                        return "BlanKey!!";
+                    }
+                    else
                     return (string)sk1.GetValue(KeyName);
                 }
                 catch (Exception e)
@@ -84,15 +110,10 @@ namespace Utility.ModifyRegistry
         {
             try
             {
-                // Setting
                 RegistryKey rk = baseRegistryKey;
-                // I have to use CreateSubKey 
-                // (create or open it if already exits), 
-                // 'cause OpenSubKey open a subKey as read-only
                 RegistryKey sk1 = rk.CreateSubKey(subKey);
                 // Save the value
                 sk1.SetValue(KeyName, Value);
-
                 return true;
             }
             catch (Exception e)
