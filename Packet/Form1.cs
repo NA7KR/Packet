@@ -145,12 +145,12 @@ namespace Packet
             {
                 case 0:
                     myRegistry.Write("BBS-Mode", "Telnet");
-                    iPConfigToolStripMenuItem.Visible = true;
+                    iPConfigToolStripMenuItem.Text = "IP BBS Config";
                     bbs_button.Enabled = true;
                     break;
                 case 1:
                     myRegistry.Write("BBS-Mode", "Com");
-                    iPConfigToolStripMenuItem.Visible = false;
+                    iPConfigToolStripMenuItem.Text = "BBS Config";
                     bbs_button.Enabled = true;
                     break;
             }
@@ -167,12 +167,12 @@ namespace Packet
             {
                 case 0:
                     myRegistry.Write("Cluster-Mode", "Telnet");
-                    clusterIPConfigToolStripMenuItem.Visible = true;
+                    clusterIPConfigToolStripMenuItem.Text = "IP Cluster Config";
                     cluster_button.Enabled = true;
                     break;
                 case 1:
                     myRegistry.Write("Cluster-Mode", "Com");
-                    clusterIPConfigToolStripMenuItem.Visible = false;
+                    clusterIPConfigToolStripMenuItem.Text = "Cluster Config";
                     cluster_button.Enabled = true;
                     break;
             }
@@ -189,13 +189,13 @@ namespace Packet
             {
                 case 0:
                     myRegistry.Write("Node-Mode", "Telnet");
-                    nodeIPConfigToolStripMenuItem.Visible = true;
+                    nodeIPConfigToolStripMenuItem.Text = "IP Node Config";
                     node_button.Enabled = true;
                     break;
 
                 case 1:
                     myRegistry.Write("Node-Mode", "Com");
-                    nodeIPConfigToolStripMenuItem.Visible = false;
+                    nodeIPConfigToolStripMenuItem.Text = "Node Config";
                     node_button.Enabled = true;
                     break;
             }
@@ -319,7 +319,7 @@ namespace Packet
         #region private void iPConfigToolStripMenuItem_Click
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form box = new IP_Form("BBS");
+            IP_Form box = new IP_Form("BBS",(myRegistry.Read("BBS-Mode")));
             box.ShowDialog();
         }
         #endregion
@@ -358,12 +358,12 @@ namespace Packet
             if (myRegistry.Read("BBS-Mode") == "Telnet")
             {
                 this.toolStripComboBox1.SelectedIndex = 0;
-                iPConfigToolStripMenuItem.Visible = true;
+                iPConfigToolStripMenuItem.Text = "IP BBS Config";
             }
             else if (myRegistry.Read("BBS-Mode") == "Com")
             {
                 this.toolStripComboBox1.SelectedIndex = 1;
-                iPConfigToolStripMenuItem.Visible = false;
+                iPConfigToolStripMenuItem.Text = "BBS Config";
             }
             else
             {
@@ -373,12 +373,12 @@ namespace Packet
             if (myRegistry.Read("Cluster-Mode") == "Telnet")
             {
                 this.toolStripComboBox2.SelectedIndex = 0;
-                clusterIPConfigToolStripMenuItem.Visible = true;
+                clusterIPConfigToolStripMenuItem.Text = "IP Cluster Config";
             }
             else if (myRegistry.Read("Cluster-Mode") == "Com")
             {
                 this.toolStripComboBox2.SelectedIndex = 1;
-                clusterIPConfigToolStripMenuItem.Visible = false;
+                clusterIPConfigToolStripMenuItem.Text = "Cluster Config";;
             }
             else
             {
@@ -394,12 +394,12 @@ namespace Packet
             else if (myRegistry.Read("Node-Mode") == "Com")
             {
                 this.toolStripComboBox3.SelectedIndex = 1;
-                nodeIPConfigToolStripMenuItem.Visible = false;
+                nodeIPConfigToolStripMenuItem.Text = "IP Node Config";
             }
             else
             {
                 node_button.Enabled = false;
-                nodeIPConfigToolStripMenuItem.Visible = false;
+                nodeIPConfigToolStripMenuItem.Text = "Node Config";
             }
             if (myRegistry.Read("Beep") == "Yes")
             {
@@ -656,7 +656,7 @@ namespace Packet
         #region private void clusterIPConfigToolStripMenuItem_Click
         private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form box = new IP_Form("Cluster");
+            IP_Form box = new IP_Form("Cluster", (myRegistry.Read("Cluster-Mode")));
             box.ShowDialog();
         }
         #endregion
@@ -667,7 +667,7 @@ namespace Packet
         #region private void nodeIPConfigToolStripMenuItem_Click
         private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form box = new IP_Form("Node");
+            IP_Form box = new IP_Form("Node",(myRegistry.Read("Node-Mode")));
             box.ShowDialog();
         }
         #endregion
@@ -713,7 +713,7 @@ namespace Packet
         #region toolStripMenuItem1_Click SSH
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            IP_Form box = new IP_Form("SSH");
+            IP_Form box = new IP_Form("SSH","");
             box.ShowDialog();
             if (myRegistry.Read("SSH-Echo") == "No")
             {

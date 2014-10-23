@@ -1423,7 +1423,10 @@ namespace PacketSoftware
                     if (FileActive == true)
                     {
                         //KRR
-
+                        if (sReceived.Contains(UernamePrompt) == true)
+                        {
+//krr
+                        }
 
                         if (sReceived.Contains(BBSPrompt) == true)
                         {
