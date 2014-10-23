@@ -1052,7 +1052,7 @@ namespace PacketSoftware
                 this.Invoke(this.RefreshEvent);
                 if (FileActive == true)
                 {
-                    //KRR
+                    //krr
                     myFiles.Write(InputData);
                 }
             }
@@ -1420,13 +1420,21 @@ namespace PacketSoftware
                         sReceived += System.Convert.ToChar(StateObject.Buffer[i]).ToString();
                     }
                     //krr
+                    if (sReceived.Contains(UernamePrompt) == true)
+                    {
+                        this.DispatchMessage(this, Username);
+                        this.DispatchMessage(this, System.Environment.NewLine);
+                    }
+                    if (sReceived.Contains(passwordPrompt) == true)
+                    {
+                        this.DispatchMessage(this, Password);
+                        this.DispatchMessage(this, System.Environment.NewLine);
+                    }
+
                     if (FileActive == true)
                     {
                         //KRR
-                        if (sReceived.Contains(UernamePrompt) == true)
-                        {
-                            //krr
-                        }
+                       
 
                         if (sReceived.Contains(BBSPrompt) == true)
                         {
