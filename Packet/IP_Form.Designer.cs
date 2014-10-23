@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label_ip = new System.Windows.Forms.Label();
             this.textBox_ip = new System.Windows.Forms.TextBox();
             this.Done_button = new System.Windows.Forms.Button();
@@ -50,6 +51,8 @@
             this.label_username_prompt = new System.Windows.Forms.Label();
             this.textBox_password_prompt = new System.Windows.Forms.TextBox();
             this.label_password_prompt = new System.Windows.Forms.Label();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // label_ip
@@ -275,6 +278,7 @@
             this.Name = "IP_Form";
             this.Text = "IP Config";
             this.Load += new System.EventHandler(this.IP_Form2_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,5 +308,6 @@
         private System.Windows.Forms.Label label_username_prompt;
         private System.Windows.Forms.TextBox textBox_password_prompt;
         private System.Windows.Forms.Label label_password_prompt;
+        private System.Windows.Forms.BindingSource bindingSource1;
     }
 }

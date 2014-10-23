@@ -27,8 +27,9 @@ namespace Packet
         #region IP_Form2
         public IP_Form(string _var1, string _var2)
         {
+            string key = "SOFTWARE\\NA7KR\\Packet\\" + _var1;
             InitializeComponent();
-            this.myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
+            this.myRegistry.SubKey = key;
             myRegistry.ShowError = true;
             Var1 = _var1;
             Var2 = _var2;
@@ -41,16 +42,16 @@ namespace Packet
         #region IP_Form2
         private void Done_button_Click(object sender, EventArgs e)
         {
-            myRegistry.Write(Var1 + "-IP", textBox_ip.Text);
-            myRegistry.Write(Var1 + "-Port", textBox_port.Text);
-            myRegistry.Write(Var1 + "-CallSign", textBox_mycall.Text);
-            myRegistry.Write(Var1 + "-BBS", textBox_bbs.Text);
-            myRegistry.Write(Var1 + "-Start Number", textBox_start.Text);
-            myRegistry.Write(Var1 + "-Password", myEncrypt.Encrypt(textBox_password.Text));
-            myRegistry.Write(Var1 + "-Echo", echo_comboBox.Text);
-            myRegistry.Write(Var1 + "-UserNamePrompt", textBox_username_prompt.Text);
-            myRegistry.Write(Var1 + "-Prompt", textBox_prompt.Text);
-            myRegistry.Write(Var1 + "-PasswordPrompt", textBox_password_prompt.Text);
+            myRegistry.Write( "IP", textBox_ip.Text);
+            myRegistry.Write( "Port", textBox_port.Text);
+            myRegistry.Write( "CallSign", textBox_mycall.Text);
+            myRegistry.Write( "BBS", textBox_bbs.Text);
+            myRegistry.Write( "Start Number", textBox_start.Text);
+            myRegistry.Write( "Password", myEncrypt.Encrypt(textBox_password.Text));
+            myRegistry.Write( "Echo", echo_comboBox.Text);
+            myRegistry.Write( "UserNamePrompt", textBox_username_prompt.Text);
+            myRegistry.Write( "Prompt", textBox_prompt.Text);
+            myRegistry.Write( "PasswordPrompt", textBox_password_prompt.Text);
             this.Close();
 
         }
@@ -64,19 +65,19 @@ namespace Packet
         {
             if ( Var2 == "Telnet")
             {
-                textBox_ip.Text = myRegistry.Read(Var1 + "-IP");
-                textBox_port.Text = myRegistry.Read(Var1 + "-Port");
-                textBox_mycall.Text = myRegistry.Read(Var1 + "-CallSign");
-                textBox_bbs.Text = myRegistry.Read(Var1 + "-BBS");
-                textBox_password.Text = myRegistry.Read(Var1 + "-Password");
-                textBox_prompt.Text = myRegistry.Read(Var1 + "-Prompt");
-                textBox_password_prompt.Text = myRegistry.Read(Var1 + "-PasswordPrompt");
-                textBox_username_prompt.Text = myRegistry.Read(Var1 + "-UserNamePrompt");
-                if (myRegistry.Read(Var1 + "-Echo") == "Yes")
+                textBox_ip.Text = myRegistry.Read( "IP");
+                textBox_port.Text = myRegistry.Read( "Port");
+                textBox_mycall.Text = myRegistry.Read( "CallSign");
+                textBox_bbs.Text = myRegistry.Read( "BBS");
+                textBox_password.Text = myRegistry.Read( "Password");
+                textBox_prompt.Text = myRegistry.Read( "Prompt");
+                textBox_password_prompt.Text = myRegistry.Read( "PasswordPrompt");
+                textBox_username_prompt.Text = myRegistry.Read( "UserNamePrompt");
+                if (myRegistry.Read( "Echo") == "Yes")
                 {
                     echo_comboBox.SelectedIndex = 0;
                 }
-                if (myRegistry.Read(Var1 + "-Echo") == "No")
+                if (myRegistry.Read( "Echo") == "No")
                 {
                     echo_comboBox.SelectedIndex = 1;
                 }
@@ -90,15 +91,15 @@ namespace Packet
                 textBox_username_prompt.TabIndex = 8;
                 textBox_password_prompt.TabIndex = 9;
 
-                label_ip.Text = Var1 + " IP or Hostname";
-                label_port.Text = Var1 + " Port";
-                label_bbs.Text = Var1 + " Callsign";
-                label_mycall.Text = Var1 + " Your Callsign";
-                label_password.Text = Var1 + " Password";
-                label_echo.Text = Var1 + " Echo";
-                label_prompt.Text = Var1 + " Prompt";
-                label_username_prompt.Text = Var1 + " UserName Prompt";
-                label_password_prompt.Text = Var1 + " Password Prompt";
+                label_ip.Text =  " IP or Hostname";
+                label_port.Text =  " Port";
+                label_bbs.Text =  " Callsign";
+                label_mycall.Text =  " Your Callsign";
+                label_password.Text =  " Password";
+                label_echo.Text =  " Echo";
+                label_prompt.Text =  " Prompt";
+                label_username_prompt.Text =  " UserName Prompt";
+                label_password_prompt.Text =  " Password Prompt";
 
                 label_ip.Left = 20;
                 label_port.Left = 20;
@@ -170,9 +171,9 @@ namespace Packet
 
                 if (Var1 == "BBS")
                 {
-                    textBox_start.Text = myRegistry.Read(Var1 + "-Start Number");
+                    textBox_start.Text = myRegistry.Read( "Start Number");
                     textBox_start.TabIndex = 6;
-                    label_start.Text = Var1 + " Start Number *";
+                    label_start.Text =  " Start Number *";
                     label_start.Left = 20;
                     label_start.Width = 120;
                     label_start.Top = label_password_prompt.Top + 30;
@@ -184,44 +185,7 @@ namespace Packet
 
                     this.Height = Done_button.Top + 80;
                 }
-                else if (Var1 == "SSH")
-                {
-                    textBox_ip.Text = myRegistry.Read(Var1 + "-IP");
-                    textBox_port.Text = myRegistry.Read(Var1 + "-Port");
-                    textBox_mycall.Text = myRegistry.Read(Var1 + "-CallSign");
-                    textBox_password.Text = myRegistry.Read(Var1 + "-Password");
-                    textBox_password.Top = 110;
-                    label_password.Top = 110;
-                    textBox_mycall.Top = 80;
-                    label_mycall.Top = 80;
-                    textBox_ip.TabIndex = 1;
-                    textBox_port.TabIndex = 2;
-                    textBox_mycall.TabIndex = 3;
-                    textBox_password.TabIndex = 4;
-
-                    label_ip.Text = Var1 + " IP or Hostname";
-                    label_port.Text = Var1 + " Port";
-                    label_mycall.Text = Var1 + " User Name";
-                    label_password.Text = Var1 + " Password";
-                    label_echo.Text = Var1 + " Enable";
-
-                    label_bbs.Visible = false;
-                    label_start.Visible = false;
-                    label_prompt.Visible = false;
-                    label_username_prompt.Visible = false;
-                    label_password_prompt.Visible = false;
-                    textBox_bbs.Visible = false;
-                    textBox_start.Visible = false;
-                    textBox_prompt.Visible = false;
-                    textBox_username_prompt.Visible = false;
-                    textBox_password_prompt.Visible = false;
-
-                    Done_button.Top = 170;
-                    Cancel_button.Top = 170;
-                    this.Height = 260;
-                    echo_comboBox.Top = 140;
-                    label_echo.Top = 140;
-                }
+                
                 else
                 {
                     textBox_start.Visible = false;
@@ -231,6 +195,68 @@ namespace Packet
                     this.Height = Done_button.Top + 80;
                 }
 
+            }
+            else if (Var1 == "SSH")
+            {
+                if (myRegistry.Read("Echo") == "Yes")
+                {
+                    echo_comboBox.SelectedIndex = 0;
+                }
+                if (myRegistry.Read("Echo") == "No")
+                {
+                    echo_comboBox.SelectedIndex = 1;
+                }
+                textBox_ip.Text = myRegistry.Read("IP");
+                textBox_port.Text = myRegistry.Read("Port");
+                textBox_mycall.Text = myRegistry.Read("CallSign");
+                textBox_password.Text = myRegistry.Read("Password");
+
+                textBox_ip.Width = 120;
+                textBox_port.Width = 120;
+                textBox_mycall.Width = 120;
+                textBox_password.Width = 120;
+                echo_comboBox.Width = 120;
+
+
+                textBox_ip.Left = 160;
+                textBox_port.Left = 160;
+                textBox_mycall.Left = 160;
+                textBox_password.Left = 160;
+                echo_comboBox.Left = 160;
+
+                textBox_password.Top = 110;
+                label_password.Top = 110;
+                textBox_mycall.Top = 80;
+                label_mycall.Top = 80;
+                textBox_ip.TabIndex = 1;
+                textBox_port.TabIndex = 2;
+                textBox_mycall.TabIndex = 3;
+                textBox_password.TabIndex = 4;
+
+                label_ip.Text = " IP or Hostname";
+                label_port.Text = " Port";
+                label_mycall.Text = " User Name";
+                label_password.Text = " Password";
+                label_echo.Text = " Enable";
+
+                label_bbs.Visible = false;
+                label_start.Visible = false;
+                label_prompt.Visible = false;
+                label_username_prompt.Visible = false;
+                label_password_prompt.Visible = false;
+
+                textBox_bbs.Visible = false;
+                textBox_start.Visible = false;
+                textBox_prompt.Visible = false;
+                textBox_username_prompt.Visible = false;
+                textBox_password_prompt.Visible = false;
+
+                label_echo.Top = 140;
+                Done_button.Top = 170;
+                Cancel_button.Top = 170;
+                this.Height = 260;
+                echo_comboBox.Top = 140;
+                
             }
             else
             {
@@ -248,17 +274,17 @@ namespace Packet
                 label_password.Visible = false;
                 label_echo.Visible = false;
 
-                textBox_prompt.Text = myRegistry.Read(Var1 + "-Prompt");
-                textBox_password_prompt.Text = myRegistry.Read(Var1 + "-PasswordPrompt");
-                textBox_username_prompt.Text = myRegistry.Read(Var1 + "-UserNamePrompt");
+                textBox_prompt.Text = myRegistry.Read( "Prompt");
+                textBox_password_prompt.Text = myRegistry.Read( "PasswordPrompt");
+                textBox_username_prompt.Text = myRegistry.Read( "UserNamePrompt");
                
                 textBox_prompt.TabIndex = 7;
                 textBox_username_prompt.TabIndex = 8;
                 textBox_password_prompt.TabIndex = 9;
 
-                label_prompt.Text = Var1 + " Prompt";
-                label_username_prompt.Text = Var1 + " UserName Prompt";
-                label_password_prompt.Text = Var1 + " Password Prompt";
+                label_prompt.Text =  " Prompt";
+                label_username_prompt.Text =  " UserName Prompt";
+                label_password_prompt.Text =  " Password Prompt";
                 
                 label_prompt.Left = 20;
                 label_username_prompt.Left = 20;
@@ -293,9 +319,9 @@ namespace Packet
 
                 if (Var1 == "BBS")
                 {
-                    textBox_start.Text = myRegistry.Read(Var1 + "-Start Number");
+                    textBox_start.Text = myRegistry.Read( "Start Number");
                     textBox_start.TabIndex = 6;
-                    label_start.Text = Var1 + " Start Number *";
+                    label_start.Text =  " Start Number *";
                     label_start.Left = 20;
                     label_start.Width = 120;
                     label_start.Top = label_password_prompt.Top + 30;

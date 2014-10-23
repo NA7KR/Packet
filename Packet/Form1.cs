@@ -33,6 +33,10 @@ namespace Packet
 
         ModifyRegistry myRegistry = new ModifyRegistry();
         ModifyRegistry myRegistryCom = new ModifyRegistry();
+        ModifyRegistry myRegistryBBS = new ModifyRegistry();
+        ModifyRegistry myRegistryNode = new ModifyRegistry();
+        ModifyRegistry myRegistryCluster = new ModifyRegistry();
+        ModifyRegistry myRegistrySSH = new ModifyRegistry();
         Encrypting myEncrypt = new Encrypting();
         //ModifyFile myFiles = new ModifyFile();
         Color textColor = Color.Yellow;
@@ -52,7 +56,15 @@ namespace Packet
             myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             myRegistry.ShowError = true;
             myRegistryCom.SubKey = "SOFTWARE\\NA7KR\\Packet\\Port";
+            myRegistryBBS.SubKey = "SOFTWARE\\NA7KR\\Packet\\BBS";
+            myRegistryNode.SubKey = "SOFTWARE\\NA7KR\\Packet\\Node";
+            myRegistryCluster.SubKey = "SOFTWARE\\NA7KR\\Packet\\Cluster";
+            myRegistrySSH.SubKey = "SOFTWARE\\NA7KR\\Packet\\SSH";
             myRegistryCom.ShowError = true;
+            myRegistryBBS.ShowError = true;
+            myRegistryNode.ShowError = true;
+            myRegistryCluster.ShowError = true;
+            myRegistrySSH.ShowError = true;
             myRegistry.Write("Packet", Application.ProductVersion);
             this.bbs_button.Enabled = true;
             this.forward_button.Enabled = false;
@@ -368,8 +380,9 @@ namespace Packet
             else
             {
                 bbs_button.Enabled = false;
-                iPConfigToolStripMenuItem.Visible = false;
+                iPConfigToolStripMenuItem.Text = "BBS Config";
             }
+
             if (myRegistry.Read("Cluster-Mode") == "Telnet")
             {
                 this.toolStripComboBox2.SelectedIndex = 0;
@@ -378,12 +391,12 @@ namespace Packet
             else if (myRegistry.Read("Cluster-Mode") == "Com")
             {
                 this.toolStripComboBox2.SelectedIndex = 1;
-                clusterIPConfigToolStripMenuItem.Text = "Cluster Config";;
+                clusterIPConfigToolStripMenuItem.Text = "Cluster Config";
             }
             else
             {
                 cluster_button.Enabled = false;
-                clusterIPConfigToolStripMenuItem.Visible = false;
+                clusterIPConfigToolStripMenuItem.Text = "Cluster Config";
             }
 
             if (myRegistry.Read("Node-Mode") == "Telnet")
@@ -493,7 +506,7 @@ namespace Packet
                     break;
             }
             terminalEmulator1.BackColor = backgroundColor;
-            if (myRegistry.Read("SSH-Echo") == "Yes")
+            if (myRegistrySSH.Read("Echo") == "Yes")
             {
                 ssh_button.Visible = true;
             }
@@ -517,7 +530,7 @@ namespace Packet
                 if (myRegistry.Read("BBS-Mode") == "Telnet")
                 {
 
-                    if (myRegistry.Read("BBS-Echo") == "Yes")
+                    if (myRegistryBBS.Read("Echo") == "Yes")
                     {
                         this.terminalEmulator1.LocalEcho = true;
                     }
@@ -525,14 +538,14 @@ namespace Packet
                     {
                         this.terminalEmulator1.LocalEcho = false;
                     }
-                    this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("BBS-Port"));
-                    this.terminalEmulator1.Hostname = myRegistry.Read("BBS-IP");
-                    this.terminalEmulator1.Username = myRegistry.Read("BBS-CallSign");
-                    this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("BBS-Password"));
+                    this.terminalEmulator1.Port = Convert.ToInt32(myRegistryBBS.Read("Port"));
+                    this.terminalEmulator1.Hostname = myRegistryBBS.Read("IP");
+                    this.terminalEmulator1.Username = myRegistryBBS.Read("CallSign");
+                    this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistryBBS.Read("Password"));
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                    this.terminalEmulator1.BBSPrompt = myRegistry.Read("BBS-Prompt");
-                    this.terminalEmulator1.UernamePrompt = myRegistry.Read("BBS-UserNamePrompt");
-                    this.terminalEmulator1.passwordPrompt = myRegistry.Read("BBS-PasswordPrompt");
+                    this.terminalEmulator1.BBSPrompt = myRegistryBBS.Read("Prompt");
+                    this.terminalEmulator1.UernamePrompt = myRegistryBBS.Read("UserNamePrompt");
+                    this.terminalEmulator1.passwordPrompt = myRegistryBBS.Read("PasswordPrompt");
                 }
                 else
                 {
@@ -573,7 +586,7 @@ namespace Packet
             ssh_button.Enabled = false;
             if (myRegistry.Read("Cluster-Mode") == "Telnet")
             {
-                if (myRegistry.Read("Cluster-Echo") == "Yes")
+                if (myRegistryCluster.Read("Echo") == "Yes")
                 {
                     this.terminalEmulator1.LocalEcho = true;
                 }
@@ -582,14 +595,14 @@ namespace Packet
                     this.terminalEmulator1.LocalEcho = false;
                 }
                 this.terminalEmulator1.Beep = bBeep;
-                this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Cluster-Port"));
-                this.terminalEmulator1.Hostname = myRegistry.Read("Cluster-IP");
-                this.terminalEmulator1.Username = myRegistry.Read("Cluster-CallSign");
-                this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("Cluster-Password"));
+                this.terminalEmulator1.Port = Convert.ToInt32(myRegistryCluster.Read("Port"));
+                this.terminalEmulator1.Hostname = myRegistryCluster.Read("IP");
+                this.terminalEmulator1.Username = myRegistryCluster.Read("CallSign");
+                this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistryCluster.Read("Password"));
                 this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                this.terminalEmulator1.BBSPrompt = myRegistry.Read("Cluster-Prompt");
-                this.terminalEmulator1.UernamePrompt = myRegistry.Read("Cluster-UserNamePrompt");
-                this.terminalEmulator1.passwordPrompt = myRegistry.Read("Cluster-PasswordPrompt");
+                this.terminalEmulator1.BBSPrompt = myRegistryCluster.Read("Prompt");
+                this.terminalEmulator1.UernamePrompt = myRegistryCluster.Read("UserNamePrompt");
+                this.terminalEmulator1.passwordPrompt = myRegistryCluster.Read("PasswordPrompt");
                 this.terminalEmulator1.Connect();
                 this.disconnect_button.Enabled = true;
             }
@@ -618,7 +631,7 @@ namespace Packet
             ssh_button.Enabled = false;
             if (myRegistry.Read("Node-Mode") == "Telnet")
             {
-                if (myRegistry.Read("Node-Echo") == "Yes")
+                if (myRegistryNode.Read("Echo") == "Yes")
                 {
                     this.terminalEmulator1.LocalEcho = true;
                 }
@@ -626,14 +639,14 @@ namespace Packet
                 {
                     this.terminalEmulator1.LocalEcho = false;
                 }
-                this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("Node-Port"));
-                this.terminalEmulator1.Hostname = myRegistry.Read("Node-IP");
-                this.terminalEmulator1.Username = myRegistry.Read("Node-CallSign");
-                this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("Node-Password"));
+                this.terminalEmulator1.Port = Convert.ToInt32(myRegistryNode.Read("Port"));
+                this.terminalEmulator1.Hostname = myRegistryNode.Read("IP");
+                this.terminalEmulator1.Username = myRegistryNode.Read("CallSign");
+                this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistryNode.Read("Password"));
                 this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                this.terminalEmulator1.BBSPrompt = myRegistry.Read("Node-Prompt");
-                this.terminalEmulator1.UernamePrompt = myRegistry.Read("Node-UserNamePrompt");
-                this.terminalEmulator1.passwordPrompt = myRegistry.Read("Node-PasswordPrompt");
+                this.terminalEmulator1.BBSPrompt = myRegistryNode.Read("Prompt");
+                this.terminalEmulator1.UernamePrompt = myRegistryNode.Read("UserNamePrompt");
+                this.terminalEmulator1.passwordPrompt = myRegistryNode.Read("PasswordPrompt");
                 this.terminalEmulator1.Connect();
                 this.disconnect_button.Enabled = true;
             }
@@ -702,10 +715,10 @@ namespace Packet
             node_button.Enabled = false;
             disconnect_button.Enabled = true;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.SSH2;
-            this.terminalEmulator1.Port = Convert.ToInt32(myRegistry.Read("SSH-Port"));
-            this.terminalEmulator1.Hostname = myRegistry.Read("SSH-IP");
-            this.terminalEmulator1.Username = myRegistry.Read("SSH-CallSign");
-            this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistry.Read("SSH-Password"));
+            this.terminalEmulator1.Port = Convert.ToInt32(myRegistrySSH.Read("Port"));
+            this.terminalEmulator1.Hostname = myRegistrySSH.Read("IP");
+            this.terminalEmulator1.Username = myRegistrySSH.Read("CallSign");
+            this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistrySSH.Read("Password"));
             this.terminalEmulator1.Connect();
         }
         #endregion
@@ -715,7 +728,7 @@ namespace Packet
         {
             IP_Form box = new IP_Form("SSH","");
             box.ShowDialog();
-            if (myRegistry.Read("SSH-Echo") == "No")
+            if (myRegistrySSH.Read("Echo") == "No")
             {
                 ssh_button.Visible = false;
             }

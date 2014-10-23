@@ -1425,7 +1425,7 @@ namespace PacketSoftware
                         //KRR
                         if (sReceived.Contains(UernamePrompt) == true)
                         {
-//krr
+                            //krr
                         }
 
                         if (sReceived.Contains(BBSPrompt) == true)
