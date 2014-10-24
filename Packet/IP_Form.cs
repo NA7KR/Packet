@@ -64,8 +64,8 @@ namespace Packet
                 myRegistry.Write("IP", textBox_ip.Text);
                 myRegistry.Write("Port", textBox_port.Text);
                 myRegistry.Write("CallSign", textBox_mycall.Text);
-                myRegistry.Write("BBS", textBox_bbs.Text);
-                myRegistry.Write("Echo", echo_comboBox.Text);
+                myRegistry.Write("Active", echo_comboBox.Text);
+                myRegistry.Write("Password", myEncrypt.Encrypt(textBox_password.Text));
             }
             else
             {
@@ -234,11 +234,11 @@ namespace Packet
             else if (Var1 == "SSH")
             {
                 this.Text = "SSH";
-                if (myRegistry.Read("Echo") == "Yes")
+                if (myRegistry.Read("Active") == "Yes")
                 {
                     echo_comboBox.SelectedIndex = 0;
                 }
-                if (myRegistry.Read("Echo") == "No")
+                if (myRegistry.Read("Active") == "No")
                 {
                     echo_comboBox.SelectedIndex = 1;
                 }

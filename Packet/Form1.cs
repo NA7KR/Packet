@@ -506,7 +506,7 @@ namespace Packet
                     break;
             }
             terminalEmulator1.BackColor = backgroundColor;
-            if (myRegistrySSH.Read("Echo") == "Yes")
+            if (myRegistrySSH.Read("Active") == "Yes")
             {
                 ssh_button.Visible = true;
             }
@@ -728,7 +728,7 @@ namespace Packet
         {
             IP_Form box = new IP_Form("SSH","SSH");
             box.ShowDialog();
-            if (myRegistrySSH.Read("Echo") == "No")
+            if (myRegistrySSH.Read("Active") == "No")
             {
                 ssh_button.Visible = false;
             }
