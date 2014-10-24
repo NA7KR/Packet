@@ -48,18 +48,18 @@ namespace Packet
                 myRegistry.Write("Port", textBox_port.Text);
                 myRegistry.Write("CallSign", textBox_mycall.Text);
                 myRegistry.Write("BBS", textBox_bbs.Text);
-                
+
                 myRegistry.Write("Password", myEncrypt.Encrypt(textBox_password.Text));
                 myRegistry.Write("Echo", echo_comboBox.Text);
-                myRegistry.Write( "UserNamePrompt", textBox_username_prompt.Text);
-                myRegistry.Write( "Prompt", textBox_prompt.Text);
-                myRegistry.Write( "PasswordPrompt", textBox_password_prompt.Text);
+                myRegistry.Write("UserNamePrompt", textBox_username_prompt.Text);
+                myRegistry.Write("Prompt", textBox_prompt.Text);
+                myRegistry.Write("PasswordPrompt", textBox_password_prompt.Text);
                 if (Var2 == "BBS")
                 {
                     myRegistry.Write("Start Number", textBox_start.Text);
                 }
             }
-            else if  (Var2 == "SSH")
+            else if (Var2 == "SSH")
             {
                 myRegistry.Write("IP", textBox_ip.Text);
                 myRegistry.Write("Port", textBox_port.Text);
@@ -69,14 +69,14 @@ namespace Packet
             }
             else
             {
-            myRegistry.Write("CallSign", textBox_mycall.Text);
-            myRegistry.Write("BBS", textBox_bbs.Text);
-            myRegistry.Write( "Prompt", textBox_prompt.Text);
-            if (Var2 == "BBS")
-            {
-                myRegistry.Write("Start Number", textBox_start.Text);
-            }
-            
+                myRegistry.Write("CallSign", textBox_mycall.Text);
+                myRegistry.Write("BBS", textBox_bbs.Text);
+                myRegistry.Write("Prompt", textBox_prompt.Text);
+                if (Var2 == "BBS")
+                {
+                    myRegistry.Write("Start Number", textBox_start.Text);
+                }
+
             }
             this.Close();
 
@@ -196,16 +196,20 @@ namespace Packet
 
                 this.Width = 350;
 
-                if (Var1 == "BBS")
+                if (Var2 == "BBS")
                 {
                     textBox_start.Text = myRegistry.Read("Start Number");
                     textBox_start.TabIndex = 6;
                     label_start.Text = " Start Number *";
                     label_start.Left = 20;
                     label_start.Width = 120;
+                    label_bbs.Width = 120;
+                    label_mycall.Width = 120;
                     label_start.Top = label_password_prompt.Top + 30;
                     textBox_start.Top = textBox_password_prompt.Top + 30;
                     textBox_start.Width = 140;
+                    textBox_bbs.Width = 140;
+                    textBox_mycall.Width = 140;
                     textBox_start.Left = 160;
                     Done_button.Top = textBox_start.Top + 30;
                     Cancel_button.Top = textBox_start.Top + 30;
@@ -310,7 +314,7 @@ namespace Packet
                 textBox_mycall.Text = myRegistry.Read("CallSign");
                 textBox_bbs.Text = myRegistry.Read("BBS");
                 textBox_prompt.Text = myRegistry.Read("Prompt");
-               
+
 
                 textBox_mycall.TabIndex = 5;
                 textBox_bbs.TabIndex = 6;
@@ -321,7 +325,7 @@ namespace Packet
                 label_bbs.Text = " Callsign";
                 label_mycall.Text = " Your Callsign";
                 label_prompt.Text = " Prompt";
-               ;
+                ;
 
                 label_bbs.Left = 20;
                 label_mycall.Left = 20;
@@ -332,22 +336,22 @@ namespace Packet
                 textBox_bbs.Left = 160;
                 textBox_mycall.Left = 160;
                 textBox_prompt.Left = 160;
-                
+
 
                 label_bbs.Width = 120;
                 label_mycall.Width = 120;
                 label_prompt.Width = 120;
-               
+
 
                 textBox_bbs.Top = 30;
-                textBox_mycall.Top = textBox_bbs.Top  + 30;
+                textBox_mycall.Top = textBox_bbs.Top + 30;
                 textBox_prompt.Top = textBox_mycall.Top + 30;
-               
+
 
                 label_bbs.Top = 30;
-                label_mycall.Top = textBox_bbs.Top  + 30;
+                label_mycall.Top = textBox_bbs.Top + 30;
                 label_prompt.Top = textBox_mycall.Top + 30;
-               
+
 
                 Done_button.Width = 75;
                 Done_button.Left = 60;
@@ -355,7 +359,7 @@ namespace Packet
                 Cancel_button.Left = 195;
 
                 textBox_prompt.Width = 140;
-               
+
 
                 this.Width = 350;
 
@@ -366,10 +370,12 @@ namespace Packet
                     textBox_start.TabIndex = 6;
                     label_bbs.Text = "BBS to Connect to";
                     label_start.Text = " Start Number *";
+                    textBox_start.Left = 20;
                     label_bbs.Left = 20;
                     label_start.Left = 20;
                     label_start.Width = 120;
-                    
+                    textBox_bbs.Width = 140;
+                    textBox_mycall.Width = 140;
                     textBox_start.Width = 140;
                     textBox_start.Left = 160;
                     Done_button.Top = textBox_start.Top + 30;
