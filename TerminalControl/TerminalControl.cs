@@ -1453,15 +1453,23 @@ namespace PacketSoftware
                         //sReceived1 = Regex.Replace(sReceived1, BBSPrompt, "");
                         //myFiles.Write(sReceived1);
                         DataFile = DataFile + sReceived;
+
+                        string[] lines = DataFile.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
                         
-                        if (sReceived.Contains(BBSPrompt) == true)
-                        //if (Regex.Match(sReceived,BBSPrompt).Success )
-                        {
-                            ForwardDone(this, new EventArgs());
-                            FileActive = false;
-                            myFiles.Write(DataFile);
-                            DataFile = "";
-                        }
+
+                            if (sReceived.Contains(BBSPrompt) == true)
+                            //if (Regex.Match(sReceived,BBSPrompt).Success )
+                            {
+                                ForwardDone(this, new EventArgs());
+                                FileActive = false;
+                                for (int i = 1; i < lines.Length - 1; i++)
+                                {
+                                    myFiles.Write(lines[i]);
+                                }
+                                
+                                DataFile = "";
+                            }
 
                     }
                     this.Invoke(this.RxdTextEvent, new System.String[] { System.String.Copy(sReceived) });
