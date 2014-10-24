@@ -37,9 +37,9 @@ namespace Packet
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
-        //  IP_Form2
+        //  Done_button
         //---------------------------------------------------------------------------------------------------------
-        #region IP_Form2
+        #region Done_button
         private void Done_button_Click(object sender, EventArgs e)
         {
             if (Var2 == "Telnet")
@@ -92,6 +92,7 @@ namespace Packet
             #region Telnet
             if (Var2 == "Telnet")
             {
+                this.Text = "Telnet";
                 textBox_ip.Text = myRegistry.Read("IP");
                 textBox_port.Text = myRegistry.Read("Port");
                 textBox_mycall.Text = myRegistry.Read("CallSign");
@@ -232,6 +233,7 @@ namespace Packet
             #region SSH
             else if (Var1 == "SSH")
             {
+                this.Text = "SSH";
                 if (myRegistry.Read("Echo") == "Yes")
                 {
                     echo_comboBox.SelectedIndex = 0;
@@ -297,6 +299,7 @@ namespace Packet
             #region else com
             else
             {
+                this.Text = "Com Port";
                 textBox_ip.Visible = false;
                 textBox_port.Visible = false;
                 textBox_mycall.Visible = true;
