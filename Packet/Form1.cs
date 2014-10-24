@@ -767,6 +767,11 @@ namespace Packet
             base.Invoke((Action)delegate { forward_button.Enabled = true; });
 
         }
+
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     #endregion
 }

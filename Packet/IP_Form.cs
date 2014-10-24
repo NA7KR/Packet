@@ -69,8 +69,13 @@ namespace Packet
             }
             else
             {
-            
+            myRegistry.Write("CallSign", textBox_mycall.Text);
+            myRegistry.Write("BBS", textBox_bbs.Text);
             myRegistry.Write( "Prompt", textBox_prompt.Text);
+            if (Var2 == "BBS")
+            {
+                myRegistry.Write("Start Number", textBox_start.Text);
+            }
             
             }
             this.Close();
@@ -290,49 +295,59 @@ namespace Packet
             {
                 textBox_ip.Visible = false;
                 textBox_port.Visible = false;
-                textBox_mycall.Visible = false;
-                textBox_bbs.Visible = false;
+                textBox_mycall.Visible = true;
+                textBox_bbs.Visible = true;
                 textBox_password.Visible = false;
                 echo_comboBox.Visible = false;
 
                 label_ip.Visible = false;
                 label_port.Visible = false;
-                label_mycall.Visible = false;
-                label_bbs.Visible = false;
+                label_mycall.Visible = true;
+                label_bbs.Visible = true;
                 label_password.Visible = false;
                 label_echo.Visible = false;
 
+                textBox_mycall.Text = myRegistry.Read("CallSign");
+                textBox_bbs.Text = myRegistry.Read("BBS");
                 textBox_prompt.Text = myRegistry.Read("Prompt");
-                textBox_password_prompt.Text = myRegistry.Read("PasswordPrompt");
-                textBox_username_prompt.Text = myRegistry.Read("UserNamePrompt");
+               
 
+                textBox_mycall.TabIndex = 5;
+                textBox_bbs.TabIndex = 6;
                 textBox_prompt.TabIndex = 7;
                 textBox_username_prompt.TabIndex = 8;
                 textBox_password_prompt.TabIndex = 9;
 
+                label_bbs.Text = " Callsign";
+                label_mycall.Text = " Your Callsign";
                 label_prompt.Text = " Prompt";
-                label_username_prompt.Text = " UserName Prompt";
-                label_password_prompt.Text = " Password Prompt";
+               ;
 
+                label_bbs.Left = 20;
+                label_mycall.Left = 20;
                 label_prompt.Left = 20;
                 label_username_prompt.Left = 20;
                 label_password_prompt.Left = 20;
 
+                textBox_bbs.Left = 160;
+                textBox_mycall.Left = 160;
                 textBox_prompt.Left = 160;
-                textBox_username_prompt.Left = 160;
-                textBox_password_prompt.Left = 160;
+                
 
+                label_bbs.Width = 120;
+                label_mycall.Width = 120;
                 label_prompt.Width = 120;
-                label_username_prompt.Width = 120;
-                label_password_prompt.Width = 120;
+               
 
-                textBox_prompt.Top = 30;
-                textBox_username_prompt.Top = textBox_prompt.Top + 30;
-                textBox_password_prompt.Top = textBox_username_prompt.Top + 30;
+                textBox_bbs.Top = 30;
+                textBox_mycall.Top = textBox_bbs.Top  + 30;
+                textBox_prompt.Top = textBox_mycall.Top + 30;
+               
 
-                label_prompt.Top = 30;
-                label_username_prompt.Top = textBox_prompt.Top + 30;
-                label_password_prompt.Top = textBox_username_prompt.Top + 30;
+                label_bbs.Top = 30;
+                label_mycall.Top = textBox_bbs.Top  + 30;
+                label_prompt.Top = textBox_mycall.Top + 30;
+               
 
                 Done_button.Width = 75;
                 Done_button.Left = 60;
@@ -340,20 +355,21 @@ namespace Packet
                 Cancel_button.Left = 195;
 
                 textBox_prompt.Width = 140;
-                textBox_username_prompt.Width = 140;
-                textBox_password_prompt.Width = 140;
+               
 
                 this.Width = 350;
 
                 if (Var1 == "BBS")
                 {
+                    textBox_mycall.Text = myRegistry.Read("CallSign");
                     textBox_start.Text = myRegistry.Read("Start Number");
                     textBox_start.TabIndex = 6;
+                    label_bbs.Text = "BBS to Connect to";
                     label_start.Text = " Start Number *";
+                    label_bbs.Left = 20;
                     label_start.Left = 20;
                     label_start.Width = 120;
-                    label_start.Top = label_password_prompt.Top + 30;
-                    textBox_start.Top = textBox_password_prompt.Top + 30;
+                    
                     textBox_start.Width = 140;
                     textBox_start.Left = 160;
                     Done_button.Top = textBox_start.Top + 30;
@@ -365,8 +381,8 @@ namespace Packet
                 {
                     textBox_start.Visible = false;
                     label_start.Visible = false;
-                    Done_button.Top = textBox_password_prompt.Top + 30;
-                    Cancel_button.Top = textBox_password_prompt.Top + 30;
+                    Done_button.Top = textBox_prompt.Top + 30;
+                    Cancel_button.Top = textBox_prompt.Top + 30;
                     this.Height = Done_button.Top + 80;
                 }
             }

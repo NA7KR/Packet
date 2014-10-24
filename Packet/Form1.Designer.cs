@@ -63,6 +63,7 @@
             this.ssh_button = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -75,6 +76,7 @@
             this.bbs_button.Size = new System.Drawing.Size(92, 23);
             this.bbs_button.TabIndex = 0;
             this.bbs_button.Text = "Connect BBS";
+            this.toolTip1.SetToolTip(this.bbs_button, "Connect to BBS");
             this.bbs_button.UseVisualStyleBackColor = true;
             this.bbs_button.Click += new System.EventHandler(this.bbs_button_Click);
             // 
@@ -86,7 +88,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1207, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1278, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -101,7 +103,7 @@
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
@@ -129,6 +131,7 @@
             this.telnetComToolStripMenuItem.Name = "telnetComToolStripMenuItem";
             this.telnetComToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.telnetComToolStripMenuItem.Text = "BBS Telnet/Com";
+            this.telnetComToolStripMenuItem.ToolTipText = "Configure Telnet or Com Port";
             // 
             // toolStripComboBox1
             // 
@@ -144,6 +147,7 @@
             this.iPConfigToolStripMenuItem.Name = "iPConfigToolStripMenuItem";
             this.iPConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.iPConfigToolStripMenuItem.Text = "BBS IP Config";
+            this.iPConfigToolStripMenuItem.ToolTipText = "Configure BBS";
             this.iPConfigToolStripMenuItem.Click += new System.EventHandler(this.iPConfigToolStripMenuItem_Click);
             // 
             // clusterTelnetComToolStripMenuItem
@@ -153,6 +157,7 @@
             this.clusterTelnetComToolStripMenuItem.Name = "clusterTelnetComToolStripMenuItem";
             this.clusterTelnetComToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.clusterTelnetComToolStripMenuItem.Text = "Cluster Telnet/Com";
+            this.clusterTelnetComToolStripMenuItem.ToolTipText = "Configure Telnet or Com Port";
             // 
             // toolStripComboBox2
             // 
@@ -165,6 +170,7 @@
             this.clusterIPConfigToolStripMenuItem.Name = "clusterIPConfigToolStripMenuItem";
             this.clusterIPConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.clusterIPConfigToolStripMenuItem.Text = "Cluster IP Config";
+            this.clusterIPConfigToolStripMenuItem.ToolTipText = "Configure Cluster";
             this.clusterIPConfigToolStripMenuItem.Click += new System.EventHandler(this.clusterIPConfigToolStripMenuItem_Click);
             // 
             // nodeTelnetComToolStripMenuItem
@@ -174,6 +180,7 @@
             this.nodeTelnetComToolStripMenuItem.Name = "nodeTelnetComToolStripMenuItem";
             this.nodeTelnetComToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.nodeTelnetComToolStripMenuItem.Text = "Node Telnet/Com";
+            this.nodeTelnetComToolStripMenuItem.ToolTipText = "Configure Telnet or Com Port";
             // 
             // toolStripComboBox3
             // 
@@ -186,6 +193,7 @@
             this.nodeIPConfigToolStripMenuItem.Name = "nodeIPConfigToolStripMenuItem";
             this.nodeIPConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.nodeIPConfigToolStripMenuItem.Text = "Node IP Config";
+            this.nodeIPConfigToolStripMenuItem.ToolTipText = "Configure Node";
             this.nodeIPConfigToolStripMenuItem.Click += new System.EventHandler(this.nodeIPConfigToolStripMenuItem_Click);
             // 
             // toolStripMenuItemCom
@@ -193,6 +201,7 @@
             this.toolStripMenuItemCom.Name = "toolStripMenuItemCom";
             this.toolStripMenuItemCom.Size = new System.Drawing.Size(178, 22);
             this.toolStripMenuItemCom.Text = "Com Port Config";
+            this.toolStripMenuItemCom.ToolTipText = "Configure Com Port";
             this.toolStripMenuItemCom.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
             // 
             // SSHConfigToolStripMenuItem
@@ -200,6 +209,7 @@
             this.SSHConfigToolStripMenuItem.Name = "SSHConfigToolStripMenuItem";
             this.SSHConfigToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.SSHConfigToolStripMenuItem.Text = "SSH Config";
+            this.SSHConfigToolStripMenuItem.ToolTipText = "Configure SSH";
             this.SSHConfigToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // beepToolStripMenuItem
@@ -209,6 +219,7 @@
             this.beepToolStripMenuItem.Name = "beepToolStripMenuItem";
             this.beepToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.beepToolStripMenuItem.Text = "Beep";
+            this.beepToolStripMenuItem.ToolTipText = "Configure Beep";
             // 
             // toolStripComboBoxBeep
             // 
@@ -224,6 +235,7 @@
             this.colourToolStripMenuItem.Name = "colourToolStripMenuItem";
             this.colourToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.colourToolStripMenuItem.Text = "Color";
+            this.colourToolStripMenuItem.ToolTipText = "Configure Color";
             // 
             // backgroundColourToolStripMenuItem
             // 
@@ -264,7 +276,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -291,6 +303,7 @@
             this.forward_button.Size = new System.Drawing.Size(93, 23);
             this.forward_button.TabIndex = 6;
             this.forward_button.Text = "Forward";
+            this.toolTip1.SetToolTip(this.forward_button, "Start Forwarding to BBS");
             this.forward_button.UseVisualStyleBackColor = true;
             this.forward_button.Click += new System.EventHandler(this.forward_button_Click);
             // 
@@ -301,6 +314,7 @@
             this.cluster_button.Size = new System.Drawing.Size(94, 23);
             this.cluster_button.TabIndex = 2;
             this.cluster_button.Text = "Connect Cluster";
+            this.toolTip1.SetToolTip(this.cluster_button, "Connect to Cluster");
             this.cluster_button.UseVisualStyleBackColor = true;
             this.cluster_button.Click += new System.EventHandler(this.cluster_button_Click);
             // 
@@ -311,6 +325,7 @@
             this.node_button.Size = new System.Drawing.Size(94, 23);
             this.node_button.TabIndex = 3;
             this.node_button.Text = "Connect Node";
+            this.toolTip1.SetToolTip(this.node_button, "Connect to Node");
             this.node_button.UseVisualStyleBackColor = true;
             this.node_button.Click += new System.EventHandler(this.node_button_Click);
             // 
@@ -322,6 +337,7 @@
             this.disconnect_button.TabIndex = 7;
             this.disconnect_button.TabStop = false;
             this.disconnect_button.Text = "Disconnect";
+            this.toolTip1.SetToolTip(this.disconnect_button, "Disconnect");
             this.disconnect_button.UseVisualStyleBackColor = true;
             this.disconnect_button.Click += new System.EventHandler(this.disconnect_button_Click);
             // 
@@ -332,6 +348,7 @@
             this.ssh_button.Size = new System.Drawing.Size(94, 23);
             this.ssh_button.TabIndex = 4;
             this.ssh_button.Text = "SSH";
+            this.toolTip1.SetToolTip(this.ssh_button, "To Connect SSH");
             this.ssh_button.UseVisualStyleBackColor = true;
             this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
             // 
@@ -339,9 +356,10 @@
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
             this.terminalEmulator1.BaudRateType = PacketSoftware.TerminalEmulator.BaudRateTypes.Baud_4800;
+            this.terminalEmulator1.BBSPrompt = null;
             this.terminalEmulator1.Beep = true;
             this.terminalEmulator1.Close = false;
-            this.terminalEmulator1.Columns = 162;
+            this.terminalEmulator1.Columns = 172;
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.DataBitsType = PacketSoftware.TerminalEmulator.DataBitsTypes.Data_Bits_8;
             this.terminalEmulator1.FileActive = false;
@@ -354,13 +372,15 @@
             this.terminalEmulator1.Name = "terminalEmulator1";
             this.terminalEmulator1.ParityType = PacketSoftware.TerminalEmulator.ParityTypes.None;
             this.terminalEmulator1.Password = null;
+            this.terminalEmulator1.passwordPrompt = null;
             this.terminalEmulator1.Port = 9000;
-            this.terminalEmulator1.Rows = 35;
+            this.terminalEmulator1.Rows = 40;
             this.terminalEmulator1.SerialPort = "";
-            this.terminalEmulator1.Size = new System.Drawing.Size(1144, 457);
+            this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
             this.terminalEmulator1.StopBitsType = PacketSoftware.TerminalEmulator.StopBitsTypes.One;
             this.terminalEmulator1.TabIndex = 5;
             this.terminalEmulator1.Text = "terminalEmulator1";
+            this.terminalEmulator1.UernamePrompt = null;
             this.terminalEmulator1.Username = null;
             this.terminalEmulator1.Disconnected += new System.EventHandler(this.disconnected);
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
@@ -369,7 +389,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1207, 599);
+            this.ClientSize = new System.Drawing.Size(1278, 637);
             this.Controls.Add(this.terminalEmulator1);
             this.Controls.Add(this.ssh_button);
             this.Controls.Add(this.disconnect_button);
@@ -428,6 +448,8 @@
         private System.Windows.Forms.ToolStripMenuItem SSHConfigToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCom;
         private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.ToolTip toolTip1;
+       
 
       
     }

@@ -52,6 +52,7 @@
             this.textBox_password_prompt = new System.Windows.Forms.TextBox();
             this.label_password_prompt = new System.Windows.Forms.Label();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,6 +71,7 @@
             this.textBox_ip.Name = "textBox_ip";
             this.textBox_ip.Size = new System.Drawing.Size(109, 20);
             this.textBox_ip.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.textBox_ip, "IP or HostName");
             // 
             // Done_button
             // 
@@ -115,6 +117,7 @@
             this.textBox_port.Name = "textBox_port";
             this.textBox_port.Size = new System.Drawing.Size(109, 20);
             this.textBox_port.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.textBox_port, "Port like 6300");
             // 
             // textBox_mycall
             // 
@@ -122,6 +125,7 @@
             this.textBox_mycall.Name = "textBox_mycall";
             this.textBox_mycall.Size = new System.Drawing.Size(109, 20);
             this.textBox_mycall.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.textBox_mycall, "Your Callsign");
             // 
             // textBox_start
             // 
@@ -129,6 +133,7 @@
             this.textBox_start.Name = "textBox_start";
             this.textBox_start.Size = new System.Drawing.Size(109, 20);
             this.textBox_start.TabIndex = 15;
+            this.toolTip1.SetToolTip(this.textBox_start, "Start Number");
             // 
             // textBox_bbs
             // 
@@ -136,6 +141,7 @@
             this.textBox_bbs.Name = "textBox_bbs";
             this.textBox_bbs.Size = new System.Drawing.Size(109, 20);
             this.textBox_bbs.TabIndex = 14;
+            this.toolTip1.SetToolTip(this.textBox_bbs, "BBS Callsign connecting to");
             // 
             // label_start
             // 
@@ -162,6 +168,7 @@
             this.textBox_password.PasswordChar = '#';
             this.textBox_password.Size = new System.Drawing.Size(109, 20);
             this.textBox_password.TabIndex = 18;
+            this.toolTip1.SetToolTip(this.textBox_password, "Your Password");
             // 
             // label_password
             // 
@@ -192,6 +199,7 @@
             this.echo_comboBox.Name = "echo_comboBox";
             this.echo_comboBox.Size = new System.Drawing.Size(111, 21);
             this.echo_comboBox.TabIndex = 21;
+            this.toolTip1.SetToolTip(this.echo_comboBox, "Echo if not display text as you type");
             this.echo_comboBox.ValueMember = "1";
             // 
             // textBox_prompt
@@ -200,6 +208,7 @@
             this.textBox_prompt.Name = "textBox_prompt";
             this.textBox_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_prompt.TabIndex = 23;
+            this.toolTip1.SetToolTip(this.textBox_prompt, "Like NA7KR BBS>");
             // 
             // label_prompt
             // 
@@ -216,6 +225,7 @@
             this.textBox_username_prompt.Name = "textBox_username_prompt";
             this.textBox_username_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_username_prompt.TabIndex = 25;
+            this.toolTip1.SetToolTip(this.textBox_username_prompt, "Like: Callsign :");
             // 
             // label_username_prompt
             // 
@@ -232,6 +242,7 @@
             this.textBox_password_prompt.Name = "textBox_password_prompt";
             this.textBox_password_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_password_prompt.TabIndex = 27;
+            this.toolTip1.SetToolTip(this.textBox_password_prompt, "Like: Password");
             // 
             // label_password_prompt
             // 
@@ -309,5 +320,6 @@
         private System.Windows.Forms.TextBox textBox_password_prompt;
         private System.Windows.Forms.Label label_password_prompt;
         private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
