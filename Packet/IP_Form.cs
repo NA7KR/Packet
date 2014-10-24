@@ -18,8 +18,8 @@ namespace Packet
     {
         ModifyRegistry myRegistry = new ModifyRegistry();
         Encrypting myEncrypt = new Encrypting();
-        string Var1;
-        string Var2;
+        string Var1; // mode bbs
+        string Var2; //mode telnet
 
         //---------------------------------------------------------------------------------------------------------
         //  IP_Form2
@@ -54,9 +54,10 @@ namespace Packet
                 myRegistry.Write("UserNamePrompt", textBox_username_prompt.Text);
                 myRegistry.Write("Prompt", textBox_prompt.Text);
                 myRegistry.Write("PasswordPrompt", textBox_password_prompt.Text);
-                if (Var2 == "BBS")
+                if (Var1 == "BBS")
                 {
                     myRegistry.Write("Start Number", textBox_start.Text);
+                    myRegistry.Write("Header", textBox_header.Text);
                 }
             }
             else if (Var2 == "SSH")
@@ -75,6 +76,7 @@ namespace Packet
                 if (Var2 == "BBS")
                 {
                     myRegistry.Write("Start Number", textBox_start.Text);
+                    myRegistry.Write("Header", textBox_header.Text);
                 }
 
             }
@@ -97,7 +99,7 @@ namespace Packet
                 textBox_port.Text = myRegistry.Read("Port");
                 textBox_mycall.Text = myRegistry.Read("CallSign");
                 textBox_bbs.Text = myRegistry.Read("BBS");
-                textBox_password.Text = myRegistry.Read("Password");
+                textBox_password.Text = myEncrypt.Decrypt(myRegistry.Read("Password"));
                 textBox_prompt.Text = myRegistry.Read("Prompt");
                 textBox_password_prompt.Text = myRegistry.Read("PasswordPrompt");
                 textBox_username_prompt.Text = myRegistry.Read("UserNamePrompt");

@@ -1447,17 +1447,19 @@ namespace PacketSoftware
                     if (FileActive == true)
                     {
                         //KRR
+                        string sReceived1 = sReceived.TrimStart('\r','\n').TrimStart('\r','\n');
+                        sReceived1 = Regex.Replace(sReceived1, Header, "");
+                        sReceived1 = Regex.Replace(sReceived1, BBSPrompt, "");
+                        myFiles.Write(sReceived1);
 
-                        myFiles.Write(sReceived);
-
-                        if (sReceived.Contains(BBSPrompt) == true)
+                        if (Regex.Match(sReceived,BBSPrompt).Success )
                         {
                             ForwardDone(this, new EventArgs());
+                            FileActive = false;
+
+
                         }
-                        else
-                        {
-                           // myFiles.Write(sReceived);
-                        }
+
                     }
                     this.Invoke(this.RxdTextEvent, new System.String[] { System.String.Copy(sReceived) });
                     this.Invoke(this.RefreshEvent);
@@ -1477,7 +1479,7 @@ namespace PacketSoftware
             }
             catch (System.Exception)
             {
-
+                //MessageBox.Show("OnReceivedData");
             }
         }
         #endregion

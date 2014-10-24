@@ -546,6 +546,7 @@ namespace Packet
                     this.terminalEmulator1.BBSPrompt = myRegistryBBS.BRead("Prompt");
                     this.terminalEmulator1.UernamePrompt = myRegistryBBS.BRead("UserNamePrompt");
                     this.terminalEmulator1.passwordPrompt = myRegistryBBS.BRead("PasswordPrompt");
+                    this.terminalEmulator1.Header = myRegistryBBS.BRead("Header");
                 }
                 else
                 {
@@ -555,6 +556,7 @@ namespace Packet
                     this.terminalEmulator1.ParityType = ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
                     this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
+                    this.terminalEmulator1.Header = myRegistryBBS.BRead("Header");
                     this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
                 }
                  
