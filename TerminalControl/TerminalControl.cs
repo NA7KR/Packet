@@ -392,6 +392,7 @@ namespace PacketSoftware
         private string _bbsprompt;
         private string _usernameprompt;
         private string _passwordprompt;
+        private string DataFile = "";
         private string C_Type;
         private string TextAtCursor;    // used to store Cursortext while scrolling
         private string InputData = String.Empty;
@@ -1447,17 +1448,19 @@ namespace PacketSoftware
                     if (FileActive == true)
                     {
                         //KRR
-                        string sReceived1 = sReceived.TrimStart('\r','\n').TrimStart('\r','\n');
-                        sReceived1 = Regex.Replace(sReceived1, Header, "");
-                        sReceived1 = Regex.Replace(sReceived1, BBSPrompt, "");
-                        myFiles.Write(sReceived1);
-
-                        if (Regex.Match(sReceived,BBSPrompt).Success )
+                        //string sReceived1 = sReceived.TrimStart('\r','\n').TrimStart('\r','\n');
+                        //sReceived1 = Regex.Replace(sReceived1, Header, "");
+                        //sReceived1 = Regex.Replace(sReceived1, BBSPrompt, "");
+                        //myFiles.Write(sReceived1);
+                        DataFile = DataFile + sReceived;
+                        
+                        if (sReceived.Contains(BBSPrompt) == true)
+                        //if (Regex.Match(sReceived,BBSPrompt).Success )
                         {
                             ForwardDone(this, new EventArgs());
                             FileActive = false;
-
-
+                            myFiles.Write(DataFile);
+                            DataFile = "";
                         }
 
                     }
