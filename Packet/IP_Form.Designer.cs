@@ -53,6 +53,8 @@
             this.label_password_prompt = new System.Windows.Forms.Label();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.textBox_header = new System.Windows.Forms.TextBox();
+            this.label_header = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,7 +77,7 @@
             // 
             // Done_button
             // 
-            this.Done_button.Location = new System.Drawing.Point(28, 321);
+            this.Done_button.Location = new System.Drawing.Point(28, 345);
             this.Done_button.Name = "Done_button";
             this.Done_button.Size = new System.Drawing.Size(75, 23);
             this.Done_button.TabIndex = 10;
@@ -86,7 +88,7 @@
             // Cancel_button
             // 
             this.Cancel_button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_button.Location = new System.Drawing.Point(154, 321);
+            this.Cancel_button.Location = new System.Drawing.Point(158, 345);
             this.Cancel_button.Name = "Cancel_button";
             this.Cancel_button.Size = new System.Drawing.Size(75, 23);
             this.Cancel_button.TabIndex = 11;
@@ -253,13 +255,32 @@
             this.label_password_prompt.TabIndex = 26;
             this.label_password_prompt.Text = "BBS UserPassword Prompt";
             // 
+            // textBox_header
+            // 
+            this.textBox_header.Location = new System.Drawing.Point(203, 318);
+            this.textBox_header.Name = "textBox_header";
+            this.textBox_header.Size = new System.Drawing.Size(109, 20);
+            this.textBox_header.TabIndex = 29;
+            this.toolTip1.SetToolTip(this.textBox_header, "Like: Password");
+            // 
+            // label_header
+            // 
+            this.label_header.AutoSize = true;
+            this.label_header.Location = new System.Drawing.Point(62, 318);
+            this.label_header.Name = "label_header";
+            this.label_header.Size = new System.Drawing.Size(97, 13);
+            this.label_header.TabIndex = 28;
+            this.label_header.Text = "Forwarding Header";
+            // 
             // IP_Form
             // 
             this.AcceptButton = this.Done_button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_button;
-            this.ClientSize = new System.Drawing.Size(314, 356);
+            this.ClientSize = new System.Drawing.Size(319, 390);
+            this.Controls.Add(this.textBox_header);
+            this.Controls.Add(this.label_header);
             this.Controls.Add(this.textBox_password_prompt);
             this.Controls.Add(this.label_password_prompt);
             this.Controls.Add(this.textBox_username_prompt);
@@ -321,5 +342,7 @@
         private System.Windows.Forms.Label label_password_prompt;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.TextBox textBox_header;
+        private System.Windows.Forms.Label label_header;
     }
 }

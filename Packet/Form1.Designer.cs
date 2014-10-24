@@ -64,8 +64,10 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
             // bbs_button
@@ -103,7 +105,7 @@
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
@@ -276,7 +278,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -365,6 +367,7 @@
             this.terminalEmulator1.FileActive = false;
             this.terminalEmulator1.FlowType = PacketSoftware.TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
+            this.terminalEmulator1.Header = null;
             this.terminalEmulator1.Hostname = null;
             this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.terminalEmulator1.LocalEcho = false;
@@ -407,6 +410,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -449,6 +453,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCom;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.BindingSource bindingSource2;
        
 
       

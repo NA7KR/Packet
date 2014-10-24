@@ -245,6 +245,17 @@ namespace PacketSoftware
                 this._passwordprompt = value;
             }
         }
+        public String Header
+        {
+            get
+            {
+                return this._header;
+            }
+            set
+            {
+                this._header = value;
+            }
+        }
 
         #endregion
 
@@ -362,76 +373,78 @@ namespace PacketSoftware
         #endregion
 
         #region Fields
+        private ContextMenu contextMenu1;    // rightclick menu
+        private MenuItem mnuCopy;
+        private MenuItem mnuPaste;
+        private MenuItem mnuCopyPaste;
         private ConnectionTypes _ConnectionType;
         private BaudRateTypes _BaudRateType;
         private DataBitsTypes _DataBitsType;
         private StopBitsTypes _StopBitsType;
         private ParityTypes _ParityType;
         private FlowTypes _FlowType;
+        private Reader reader;
         private string _hostname;       // used for connecting to SSH
         private string _username;       // maybe
         private string _password;
-        private System.Boolean _fileactive;
+        private string _header;
         private string _serialport;
         private string _bbsprompt;
         private string _usernameprompt;
         private string _passwordprompt;
         private string C_Type;
-        private System.Int32 _port;
-        private System.Boolean _beep;
-        private System.Boolean _localecho;
-        private System.Boolean _close;
-        private ContextMenu contextMenu1;    // rightclick menu
-        private MenuItem mnuCopy;
-        private MenuItem mnuPaste;
-        private MenuItem mnuCopyPaste;
-        private System.Drawing.Point BeginDrag;       // used in Mouse Selecting Text
-        private System.Drawing.Point EndDrag;         // used in mouse selecting text
         private string TextAtCursor;    // used to store Cursortext while scrolling
+        private string InputData = String.Empty;
         private int LastVisibleLine; // used for scrolling
-        private System.AsyncCallback callbackProc;
-        private System.AsyncCallback callbackEndDispatch;
-        private System.Net.Sockets.Socket CurSocket;
-        private System.Boolean XOFF = false;
-        private System.String OutBuff = "";
-        private Reader reader;
         private int ScrollbackBufferSize;
         private StringCollection ScrollbackBuffer;
         private uc_Parser Parser = null;
         private uc_TelnetParser NvtParser = null;
         private uc_Keyboard Keyboard = null;
         private uc_TabStops TabStops = null;
-        private System.Drawing.Bitmap EraseBitmap = null;
-        private System.Drawing.Graphics EraseBuffer = null;
-        private System.Char[][] CharGrid = null;
         private CharAttribStruct[][] AttribGrid = null;
         private CharAttribStruct CharAttribs;
+        private System.Boolean _fileactive;
+        private System.Int32 _port;
+        private System.Boolean _beep;
+        private System.Boolean _localecho;
+        private System.Boolean _close;
+        private System.Boolean XOFF = false;
+        private System.AsyncCallback callbackProc;
+        private System.AsyncCallback callbackEndDispatch; 
+        private System.String OutBuff = "";
+        private System.Int16 count;
         private System.Int32 _cols;
         private System.Int32 _rows;
         private System.Int32 TopMargin;
         private System.Int32 BottomMargin;
-        private System.Int16 count;
-        private System.String TypeFace = FontFamily.GenericMonospace.GetName(0);
-        private System.Drawing.FontStyle TypeStyle = System.Drawing.FontStyle.Regular;
         private System.Int32 TypeSize = 8;
-        private System.Drawing.Size CharSize;
         private System.Int32 UnderlinePos;
-        private uc_Caret Caret;
+        private System.String TypeFace = FontFamily.GenericMonospace.GetName(0);
+        private System.Char[][] CharGrid = null;
+        private System.Drawing.Bitmap EraseBitmap = null;
+        private System.Drawing.Graphics EraseBuffer = null;
         private System.Collections.ArrayList SavedCarets;
         private System.Drawing.Point DrawStringOffset;
         private System.Drawing.Color FGColor;
         private System.Drawing.Color BoldColor;
         private System.Drawing.Color BlinkColor;
+        private System.Drawing.FontStyle TypeStyle = System.Drawing.FontStyle.Regular;
+        private System.Drawing.Size CharSize;
+        private System.Drawing.Point BeginDrag;       // used in Mouse Selecting Text
+        private System.Drawing.Point EndDrag;         // used in mouse selecting text
+        private System.IO.Ports.SerialPort serialPort1;
+        private System.ComponentModel.IContainer components;
+        private System.Net.Sockets.Socket CurSocket;
+        private uc_Caret Caret;
         private uc_Chars G0;
         private uc_Chars G1;
         private uc_Chars G2;
         private uc_Chars G3;
         private uc_Mode Modes;
         private uc_VertScrollBar VertScrollBar;
-        private System.IO.Ports.SerialPort serialPort1;
-        private System.ComponentModel.IContainer components;
         private IAsyncResult lastAR;
-        private string InputData = String.Empty;
+        
 
         #endregion
 

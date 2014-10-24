@@ -717,7 +717,7 @@ namespace Packet
             this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.SSH2;
             this.terminalEmulator1.Port = Convert.ToInt32(myRegistrySSH.Read("Port"));
             this.terminalEmulator1.Hostname = myRegistrySSH.Read("IP");
-            this.terminalEmulator1.Username = myRegistrySSH.Read("CallSign");
+            this.terminalEmulator1.Username = myRegistrySSH.Read("UserName");
             this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistrySSH.Read("Password"));
             this.terminalEmulator1.Connect();
         }
