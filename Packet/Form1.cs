@@ -358,6 +358,8 @@ namespace Packet
             terminalEmulator1.FileActive = true;
             forward_button.Enabled = false;
             forward_button.Text = "Forward active";
+            terminalEmulator1.LastNumber =  myRegistryBBS.Read("Start Number");
+            terminalEmulator1.startforward();
         }
         #endregion
 
@@ -770,10 +772,14 @@ namespace Packet
 
         }
 
-        private void toolStripLabel1_Click(object sender, EventArgs e)
+        private void terminalEmulator1_LastNumberevt(object sender, EventArgs e)
         {
-
+           String number = ( terminalEmulator1.LastNumber).ToString();
+           myRegistryBBS.Write("Start Number", number);
         }
+
+
+
     }
     #endregion
 }

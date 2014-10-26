@@ -62,9 +62,9 @@
             this.disconnect_button = new System.Windows.Forms.Button();
             this.ssh_button = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -370,6 +370,7 @@
             this.terminalEmulator1.Header = null;
             this.terminalEmulator1.Hostname = null;
             this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            
             this.terminalEmulator1.LocalEcho = false;
             this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";
@@ -387,6 +388,7 @@
             this.terminalEmulator1.Username = null;
             this.terminalEmulator1.Disconnected += new System.EventHandler(this.disconnected);
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
+            this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
             // Form1
             // 

@@ -40,6 +40,17 @@ namespace PacketSoftware
             {
             }
         }
+        public String LastNumber
+        {
+            get
+            {
+                return this._lastnumber;
+            }
+            set
+            {
+                this._lastnumber = value;
+            }
+        }
         public ConnectionTypes ConnectionType
         {
             get
@@ -319,6 +330,16 @@ namespace PacketSoftware
         }
         #endregion
 
+        #region
+        public void startforward()
+        {
+            //krr
+            string nb = ( "LR " + LastNumber + "-999999" );
+            this.DispatchMessage(this, nb);
+            this.DispatchMessage(this, System.Environment.NewLine);
+        }
+        #endregion
+
         #region public enums
         public enum ConnectionTypes
         {
@@ -394,6 +415,7 @@ namespace PacketSoftware
         private string _passwordprompt;
         private string DataFile = "";
         private string C_Type;
+        private string _lastnumber;
         private string TextAtCursor;    // used to store Cursortext while scrolling
         private string InputData = String.Empty;
         private int LastVisibleLine; // used for scrolling
@@ -459,6 +481,7 @@ namespace PacketSoftware
         private delegate void ParserEventHandler(object Sender, ParserEventArgs e);
 
         #endregion
+       
 
         #region Events private
         private event RefreshEventHandler RefreshEvent;
@@ -470,6 +493,7 @@ namespace PacketSoftware
         #region Constructors
         public event EventHandler Disconnected;
         public event EventHandler ForwardDone;
+        public event EventHandler LastNumberevt;
         #endregion
 
         #region TerminalEmulator
@@ -1448,26 +1472,24 @@ namespace PacketSoftware
                     if (FileActive == true)
                     {
                         //KRR
-                        //string sReceived1 = sReceived.TrimStart('\r','\n').TrimStart('\r','\n');
-                        //sReceived1 = Regex.Replace(sReceived1, Header, "");
-                        //sReceived1 = Regex.Replace(sReceived1, BBSPrompt, "");
-                        //myFiles.Write(sReceived1);
                         DataFile = DataFile + sReceived;
-
-                        string[] lines = DataFile.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
                         
-
-                            if (sReceived.Contains(BBSPrompt) == true)
+                        string[] lines = DataFile.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        
+                           if (sReceived.Contains(BBSPrompt) == true)
                             //if (Regex.Match(sReceived,BBSPrompt).Success )
                             {
                                 ForwardDone(this, new EventArgs());
                                 FileActive = false;
+
                                 for (int i = 1; i < lines.Length - 1; i++)
+                                //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
                                 {
-                                    myFiles.Write(lines[i]);
+                                    myFiles.Write(lines[i] + Environment.NewLine);
+                                    LastNumber = lines[i].Substring(0, 5);
+                                  
                                 }
-                                
+                                LastNumberevt(this, new EventArgs());
                                 DataFile = "";
                             }
 
@@ -5314,5 +5336,10 @@ namespace PacketSoftware
         }
         #endregion
     }
-    #endregion
+    class MyCustomEventArgs : EventArgs
+    {
+        public string Foo { get; set; }
+    }
+#endregion
+
 }

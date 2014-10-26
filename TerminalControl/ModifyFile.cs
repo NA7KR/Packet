@@ -21,8 +21,10 @@ namespace Utility.ModifyFile
                     DirectoryInfo di = Directory.CreateDirectory(path);
                 }
                 path = path + @"\myMailList.txt";
-                if (!File.Exists(path))
+                
+                /* if (!File.Exists(path))
                 {
+                    
                     using (StreamWriter sw = File.CreateText(path))
                     {
                         sw.WriteLine(textVale);
@@ -51,9 +53,10 @@ namespace Utility.ModifyFile
                         File.Delete(tempFile);
                     }
                     return true;
-                }
-                //File.AppendAllText(path, textVale);
-                //return true;  
+                } 
+                     */
+                File.AppendAllText(path, textVale);
+                return true;  
             } //end try
             catch (Exception e)
             {
