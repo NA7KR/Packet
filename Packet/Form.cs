@@ -23,7 +23,7 @@ namespace Packet
     //---------------------------------------------------------------------------------------------------------
 
     #region partial class Form1
-    public partial class Form1 : Form
+    public partial class Form : Form
     {
 
         //---------------------------------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ namespace Packet
         // Form1
         //---------------------------------------------------------------------------------------------------------
         #region Form1
-        public Form1()
+        public Form()
         {
             InitializeComponent();
             myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
@@ -779,12 +779,6 @@ namespace Packet
         {
            String number = ( terminalEmulator1.LastNumber).ToString();
            myRegistryBBS.Write("Start Number", number);
-        }
-
-        private void mail_button_Click(object sender, EventArgs e)
-        {
-            Mail box = new Mail();
-            box.ShowDialog();
         }
 
     }

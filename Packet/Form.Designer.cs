@@ -1,6 +1,6 @@
 ﻿namespace Packet
 {
-    partial class Form1
+    partial class Form
     {
         /// <summary>
         /// Required designer variable.
@@ -63,9 +63,9 @@
             this.ssh_button = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.mail_button = new System.Windows.Forms.Button();
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
+            this.mail_button = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -279,7 +279,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -298,6 +298,7 @@
             this.textBox1.TabIndex = 4;
             this.textBox1.TabStop = false;
             this.textBox1.Visible = false;
+          
             // 
             // forward_button
             // 
@@ -355,17 +356,6 @@
             this.ssh_button.UseVisualStyleBackColor = true;
             this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
             // 
-            // mail_button
-            // 
-            this.mail_button.Location = new System.Drawing.Point(673, 40);
-            this.mail_button.Name = "mail_button";
-            this.mail_button.Size = new System.Drawing.Size(94, 23);
-            this.mail_button.TabIndex = 8;
-            this.mail_button.Text = "Mail";
-            this.toolTip1.SetToolTip(this.mail_button, "Mail List");
-            this.mail_button.UseVisualStyleBackColor = true;
-            this.mail_button.Click += new System.EventHandler(this.mail_button_Click);
-            // 
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
@@ -401,6 +391,17 @@
             this.terminalEmulator1.Disconnected += new System.EventHandler(this.disconnected);
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
+            // 
+            // mail_button
+            // 
+            this.mail_button.Location = new System.Drawing.Point(673, 40);
+            this.mail_button.Name = "mail_button";
+            this.mail_button.Size = new System.Drawing.Size(94, 23);
+            this.mail_button.TabIndex = 8;
+            this.mail_button.Text = "Mail";
+            this.toolTip1.SetToolTip(this.mail_button, "Mail List");
+            this.mail_button.UseVisualStyleBackColor = true;
+            
             // 
             // Form1
             // 

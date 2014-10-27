@@ -84,6 +84,12 @@
     <Compile Include="IP_Form.Designer.cs">
       <DependentUpon>IP_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mail.Designer.cs">
+      <DependentUpon>Mail.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModifyRegistry.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
