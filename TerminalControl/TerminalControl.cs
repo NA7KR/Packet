@@ -1124,14 +1124,11 @@ namespace PacketSoftware
             }
             catch
             {
-                MessageBox.Show("Error");
+                MessageBox.Show("Error Com");
             }
         }
         #endregion
         
-   
-        
-
         #region Connect Telnet
         private void ConnectTelnet(string HostName, System.Int32 Port)
         {
@@ -1159,8 +1156,7 @@ namespace PacketSoftware
             }
             catch (System.Exception CurException)
             {
-                //System.Console.WriteLine ("Connect: " + CurException.Message);
-                MessageBox.Show(CurException.Message);
+                MessageBox.Show("Connect: " + CurException.Message);
             }
         }
         #endregion
@@ -1432,9 +1428,10 @@ namespace PacketSoftware
                 // attainable by user interaction.
                 this.VertScrollBar.Maximum += this.VertScrollBar.LargeChange;
             }
-            catch
+           
+            catch (System.Exception CurException)
             {
-                MessageBox.Show("Error SetScrollBarValues");
+                MessageBox.Show("Error SetScrollBarValues: " + CurException.Message);
             }
         }
         #endregion
@@ -1628,9 +1625,6 @@ namespace PacketSoftware
             }
             catch (System.Exception CurException)
             {
-                //System.Console.WriteLine ("DispatchMessage: " + CurException.Message);
-                //System.Console.WriteLine ("DispatchMessage: Character is " + System.Convert.ToInt32 (strText[i]));
-                //System.Console.WriteLine ("DispatchMessage: String is " + strText);
                 MessageBox.Show("DispatchMessage: " + CurException.Message);
                 MessageBox.Show("DispatchMessage: Character is " + System.Convert.ToInt32(strText[i]));
                 MessageBox.Show("DispatchMessage: String is " + strText);
@@ -1644,12 +1638,10 @@ namespace PacketSoftware
             try
             {
                 System.Net.Sockets.Socket Sock = (System.Net.Sockets.Socket)ar.AsyncState;
-
                 Sock.EndSend(ar);
             }
             catch (System.Exception CurException)
             {
-                //System.Console.WriteLine ("EndDispatchMessage: " + CurException.Message);
                 MessageBox.Show("EndDispatchMessage: " + CurException.Message);
             }
         }
@@ -1676,20 +1668,15 @@ namespace PacketSoftware
             if (this.CharAttribs.GS != null)
             {
                 CurChar = uc_Chars.Get(CurChar, this.AttribGrid[Y][X].GS.Set, this.AttribGrid[Y][X].GR.Set);
-
                 if (this.CharAttribs.GS.Set == uc_Chars.Sets.DECSG) this.AttribGrid[Y][X].IsDECSG = true;
-
                 this.CharAttribs.GS = null;
             }
             else
             {
                 CurChar = uc_Chars.Get(CurChar, this.AttribGrid[Y][X].GL.Set, this.AttribGrid[Y][X].GR.Set);
-
                 if (this.CharAttribs.GL.Set == uc_Chars.Sets.DECSG) this.AttribGrid[Y][X].IsDECSG = true;
             }
-
             this.CharGrid[Y][X] = CurChar;
-
             this.CaretRight();
         }
         #endregion
@@ -2338,15 +2325,12 @@ namespace PacketSoftware
 
                 int i;
 
-
                 for (i = this.BottomMargin; i > this.TopMargin; i--)
                 {
                     this.CharGrid[i] = this.CharGrid[i - 1];
                     this.AttribGrid[i] = this.AttribGrid[i - 1];
                 }
-
                 this.CharGrid[this.TopMargin] = new System.Char[this._cols];
-
                 this.AttribGrid[this.TopMargin] = new CharAttribStruct[this._cols];
             }
 
@@ -2454,27 +2438,20 @@ namespace PacketSoftware
                 s = s + Convert.ToString(CurChar);
             }
             this.ScrollbackBuffer.Add(s);
-            //System.Console.WriteLine("there are " + Convert.ToString(this.ScrollbackBuffer.Count) + " lines in the scrollback buffer");
-            //System.Console.WriteLine(s);
-
+        
             if (this.Caret.Pos.Y == this.BottomMargin || this.Caret.Pos.Y == this._rows - 1)
             {
                 // we need to add a new line so shift all the rows up in the array and
                 // insert a new row at the bottom
-
                 int i;
-
                 for (i = this.TopMargin; i < this.BottomMargin; i++)
                 {
                     this.CharGrid[i] = this.CharGrid[i + 1];
                     this.AttribGrid[i] = this.AttribGrid[i + 1];
                 }
-
                 this.CharGrid[i] = new System.Char[this._cols];
                 this.AttribGrid[i] = new CharAttribStruct[this._cols];
-
             }
-
             this.CaretDown();
         }
         #endregion
