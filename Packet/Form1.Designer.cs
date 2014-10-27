@@ -65,6 +65,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
+            this.mail_button = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -290,13 +291,14 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(690, 41);
+            this.textBox1.Location = new System.Drawing.Point(808, 42);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(250, 20);
             this.textBox1.TabIndex = 4;
             this.textBox1.TabStop = false;
             this.textBox1.Visible = false;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // forward_button
             // 
@@ -370,7 +372,7 @@
             this.terminalEmulator1.Header = null;
             this.terminalEmulator1.Hostname = null;
             this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            
+            this.terminalEmulator1.LastNumber = null;
             this.terminalEmulator1.LocalEcho = false;
             this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";
@@ -390,11 +392,23 @@
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
+            // mail_button
+            // 
+            this.mail_button.Location = new System.Drawing.Point(673, 40);
+            this.mail_button.Name = "mail_button";
+            this.mail_button.Size = new System.Drawing.Size(94, 23);
+            this.mail_button.TabIndex = 8;
+            this.mail_button.Text = "Mail";
+            this.toolTip1.SetToolTip(this.mail_button, "Mail List");
+            this.mail_button.UseVisualStyleBackColor = true;
+            this.mail_button.Click += new System.EventHandler(this.Mail_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 637);
+            this.Controls.Add(this.mail_button);
             this.Controls.Add(this.terminalEmulator1);
             this.Controls.Add(this.ssh_button);
             this.Controls.Add(this.disconnect_button);
@@ -456,6 +470,7 @@
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.BindingSource bindingSource2;
+        private System.Windows.Forms.Button mail_button;
        
 
       

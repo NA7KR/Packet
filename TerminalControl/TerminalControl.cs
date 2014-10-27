@@ -334,7 +334,9 @@ namespace PacketSoftware
         public void startforward()
         {
             //krr
-            string nb = ( "LR " + LastNumber + "-999999" );
+            System.Int32 ln = Convert.ToInt32(LastNumber);
+            ln = ln + 1;
+            string nb = ("LR " + ln.ToString() + "-999999");
             this.DispatchMessage(this, nb);
             this.DispatchMessage(this, System.Environment.NewLine);
         }
@@ -4192,7 +4194,7 @@ namespace PacketSoftware
 
                         //Parent.NvtParser.ParseString (OutString); 
                         //this.Parent.Invalidate ();
-                        OutString = System.Environment.NewLine;
+                        OutString =  System.Environment.NewLine;
 
                         KeyboardEvent(this, OutString);
                     }
@@ -5336,10 +5338,7 @@ namespace PacketSoftware
         }
         #endregion
     }
-    class MyCustomEventArgs : EventArgs
-    {
-        public string Foo { get; set; }
-    }
+ 
 #endregion
 
 }

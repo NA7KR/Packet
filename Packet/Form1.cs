@@ -121,6 +121,9 @@ namespace Packet
 
             this.ssh_button.Left = 580;
             this.ssh_button.Top = 40;
+
+            this.mail_button.Left = 670;
+            this.mail_button.Top = 40;
         }
         #endregion
 
@@ -777,8 +780,6 @@ namespace Packet
            String number = ( terminalEmulator1.LastNumber).ToString();
            myRegistryBBS.Write("Start Number", number);
         }
-
-
 
     }
     #endregion
