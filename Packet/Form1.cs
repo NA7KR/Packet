@@ -531,6 +531,10 @@ namespace Packet
         {
             try
             {
+                if (myRegistryBBS.BRead("Prompt") == "BlanKey!!")
+                {
+                    MessageBox.Show("BBS may not correct as BBS Prompt cot configured", "Important Note", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                }
 
                 if (myRegistry.Read("BBS-Mode") == "Telnet")
                 {
@@ -551,7 +555,7 @@ namespace Packet
                     this.terminalEmulator1.BBSPrompt = myRegistryBBS.BRead("Prompt");
                     this.terminalEmulator1.UernamePrompt = myRegistryBBS.BRead("UserNamePrompt");
                     this.terminalEmulator1.passwordPrompt = myRegistryBBS.BRead("PasswordPrompt");
-                    this.terminalEmulator1.Header = myRegistryBBS.BRead("Header");
+                    
                 }
                 else
                 {
@@ -561,7 +565,7 @@ namespace Packet
                     this.terminalEmulator1.ParityType = ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
                     this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
-                    this.terminalEmulator1.Header = myRegistryBBS.BRead("Header");
+                    this.terminalEmulator1.BBSPrompt = myRegistryBBS.BRead("Prompt");
                     this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
                 }
                  

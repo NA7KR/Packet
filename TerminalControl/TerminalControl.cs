@@ -868,7 +868,6 @@ namespace PacketSoftware
         #region Com Port
         private void ConnectCom()
         {
-
             try
             {
 
@@ -1077,28 +1076,61 @@ namespace PacketSoftware
             //this.Invoke(this.RxdTextEvent, new System.String[] { "hello" });
             //this.Invoke(this.RefreshEvent);
         }
+        #endregion
 
+        #region
         void port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            InputData = port.ReadExisting();
-            if (InputData != String.Empty)
+            try
             {
-                this.Parser.ParseString(InputData);
-                //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
-                if (InputData == "/r")
+                InputData = port.ReadExisting();
+                if (InputData != String.Empty)
                 {
-                    InputData = System.Environment.NewLine;
+                    this.Parser.ParseString(InputData);
+                    //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
+                    if (InputData == "/r")
+                    {
+                        InputData = System.Environment.NewLine;
+                    }
+                    this.Invoke(this.RefreshEvent);
+                    if (FileActive == true)
+                    {
+                        //KRR
+                        DataFile = DataFile + InputData;
+
+                        string[] lines = DataFile.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (DataFile.Contains(BBSPrompt) == true)
+                        //if (Regex.Match(sReceived,BBSPrompt).Success )
+                        {
+                            ForwardDone(this, new EventArgs());
+                            FileActive = false;
+
+                            for (int i = 1; i < lines.Length - 1; i++)
+                            //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
+                            {
+                                myFiles.Write(lines[i] + Environment.NewLine);
+                                //LastNumber = lines[i].Substring(0, 5);
+
+                            }
+                            LastNumberevt(this, new EventArgs());
+                            DataFile = "";
+                        }
+
+                    }
+
                 }
-                this.Invoke(this.RefreshEvent);
-                if (FileActive == true)
-                {
-                    //krr
-                    myFiles.Write(InputData);
-                }
+                // throw new NotImplementedException();
             }
-            // throw new NotImplementedException();
+            catch
+            {
+                MessageBox.Show("Error");
+            }
         }
         #endregion
+        
+   
+        
 
         #region Connect Telnet
         private void ConnectTelnet(string HostName, System.Int32 Port)
@@ -1401,7 +1433,9 @@ namespace PacketSoftware
                 this.VertScrollBar.Maximum += this.VertScrollBar.LargeChange;
             }
             catch
-            { }
+            {
+                MessageBox.Show("Error SetScrollBarValues");
+            }
         }
         #endregion
 

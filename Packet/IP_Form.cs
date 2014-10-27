@@ -57,7 +57,7 @@ namespace Packet
                 if (Var1 == "BBS")
                 {
                     myRegistry.Write("Start Number", textBox_start.Text);
-                    myRegistry.Write("Header", textBox_header.Text);
+                    
                 }
             }
             else if (Var2 == "SSH")
@@ -76,7 +76,7 @@ namespace Packet
                 if (Var2 == "BBS")
                 {
                     myRegistry.Write("Start Number", textBox_start.Text);
-                    myRegistry.Write("Header", textBox_header.Text);
+                   
                 }
 
             }
@@ -103,7 +103,7 @@ namespace Packet
                 textBox_prompt.Text = myRegistry.Read("Prompt");
                 textBox_password_prompt.Text = myRegistry.Read("PasswordPrompt");
                 textBox_username_prompt.Text = myRegistry.Read("UserNamePrompt");
-                textBox_header.Text = myRegistry.Read("Header");
+                
                 if (myRegistry.Read("Echo") == "Yes")
                 {
                     echo_comboBox.SelectedIndex = 0;
@@ -133,7 +133,6 @@ namespace Packet
                 label_username_prompt.Text = "UserName Prompt";
                 label_password_prompt.Text = "Password Prompt";
                 
-
                 label_ip.Left = 20;
                 label_port.Left = 20;
                 label_bbs.Left = 20;
@@ -144,7 +143,6 @@ namespace Packet
                 label_username_prompt.Left = 20;
                 label_password_prompt.Left = 20;
                
-
                 textBox_ip.Left = 160;
                 textBox_port.Left = 160;
                 textBox_bbs.Left = 160;
@@ -155,7 +153,6 @@ namespace Packet
                 textBox_username_prompt.Left = 160;
                 textBox_password_prompt.Left = 160;
                
-
                 label_ip.Width = 120;
                 label_port.Width = 120;
                 label_bbs.Width = 120;
@@ -165,9 +162,7 @@ namespace Packet
                 label_prompt.Width = 120;
                 label_username_prompt.Width = 120;
                 label_password_prompt.Width = 120;
-                textBox_header.TabIndex = 10;
                 
-
                 label_ip.Top = 20;
                 label_port.Top = label_ip.Top + 30;
                 label_bbs.Top = label_port.Top + 30;
@@ -177,7 +172,6 @@ namespace Packet
                 label_prompt.Top = label_echo.Top + 30;
                 label_username_prompt.Top = label_prompt.Top + 30;
                 label_password_prompt.Top = label_username_prompt.Top + 30;
-
 
                 textBox_ip.Top = 20;
                 textBox_port.Top = textBox_ip.Top + 30;
@@ -204,7 +198,6 @@ namespace Packet
                 Cancel_button.Width = 75;
                 Cancel_button.Left = 195;
 
-
                 this.Width = 350;
 
                 if (Var1 == "BBS")
@@ -222,24 +215,17 @@ namespace Packet
                     textBox_bbs.Width = 140;
                     textBox_mycall.Width = 140;
                     textBox_start.Left = 160;
-                    label_header.Text = "Forward Header";
-                    label_header.Left = 20;
-                    textBox_header.Left = 160;
-                    label_header.Width = 120;
-                    textBox_header.Width = 140;
-                    label_header.Top = label_start.Top + 30;
-                    textBox_header.Top = textBox_start.Top + 30;
 
-                    Done_button.Top = textBox_header.Top + 30;
-                    Cancel_button.Top = textBox_header.Top + 30;
+
+                    Done_button.Top = textBox_start.Top + 30;
+                    Cancel_button.Top = textBox_start.Top + 30;
 
                     this.Height = Done_button.Top + 80;
                 }
 
                 else
                 {
-                    label_header.Visible = false;
-                    textBox_header.Visible = false;
+                    
                     textBox_start.Visible = false;
                     label_start.Visible = false;
                     Done_button.Top = textBox_password_prompt.Top + 30;
@@ -273,7 +259,6 @@ namespace Packet
                 textBox_password.Width = 120;
                 echo_comboBox.Width = 120;
 
-
                 textBox_ip.Left = 160;
                 textBox_port.Left = 160;
                 textBox_mycall.Left = 160;
@@ -306,9 +291,7 @@ namespace Packet
                 textBox_prompt.Visible = false;
                 textBox_username_prompt.Visible = false;
                 textBox_password_prompt.Visible = false;
-                label_header.Visible = false;
-                textBox_header.Visible = false;
-
+                
                 label_echo.Top = 140;
                 Done_button.Top = 170;
                 Cancel_button.Top = 170;
@@ -396,22 +379,15 @@ namespace Packet
                     textBox_mycall.Width = 140;
                     textBox_start.Width = 140;
                     textBox_start.Left = 160;
-                    label_header.Text = "Forward Header";
-                    label_header.Left = 20;
-                    textBox_header.Left = 160;
-                    label_header.Width = 120;
-                    textBox_header.Width = 140;
-                    label_header.Top = label_start.Top + 30;
-                    textBox_header.Top = textBox_start.Top + 30;
+       
 
-                    Done_button.Top = textBox_header.Top + 30;
-                    Cancel_button.Top = textBox_header.Top + 30;
+                    Done_button.Top = label_start.Top + 30;
+                    Cancel_button.Top = label_start.Top + 30;
                     this.Height = Done_button.Top + 80;
                 }
                 else
                 {
-                    label_header.Visible = false;
-                    textBox_header.Visible = false;
+                    
                     textBox_start.Visible = false;
                     label_start.Visible = false;
                     Done_button.Top = textBox_prompt.Top + 30;
