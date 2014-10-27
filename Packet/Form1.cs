@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using Utility.ModifyFile;
 using Utility.ModifyRegistry;
 using Utility.Encrypting;
+
 #endregion
 
 namespace Packet
@@ -23,33 +24,37 @@ namespace Packet
     //---------------------------------------------------------------------------------------------------------
 
     #region partial class Form1
+
     public partial class Form1 : Form
     {
-
         //---------------------------------------------------------------------------------------------------------
         //  private TelnetConnection
         //---------------------------------------------------------------------------------------------------------
+
         #region private TelnetConnection
 
-        ModifyRegistry myRegistry = new ModifyRegistry();
-        ModifyRegistry myRegistryCom = new ModifyRegistry();
-        ModifyRegistry myRegistryBBS = new ModifyRegistry();
-        ModifyRegistry myRegistryNode = new ModifyRegistry();
-        ModifyRegistry myRegistryCluster = new ModifyRegistry();
-        ModifyRegistry myRegistrySSH = new ModifyRegistry();
-        Encrypting myEncrypt = new Encrypting();
+        private ModifyRegistry myRegistry = new ModifyRegistry();
+        private ModifyRegistry myRegistryCom = new ModifyRegistry();
+        private ModifyRegistry myRegistryBBS = new ModifyRegistry();
+        private ModifyRegistry myRegistryNode = new ModifyRegistry();
+        private ModifyRegistry myRegistryCluster = new ModifyRegistry();
+        private ModifyRegistry myRegistrySSH = new ModifyRegistry();
+        private Encrypting myEncrypt = new Encrypting();
         //ModifyFile myFiles = new ModifyFile();
-        Color textColor = Color.Yellow;
-        Color backgroundColor = Color.Black;
-        Boolean bBeep = true;
+        private Color textColor = Color.Yellow;
+        private Color backgroundColor = Color.Black;
+        private Boolean bBeep = true;
         //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
         //string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // Form1
         //---------------------------------------------------------------------------------------------------------
+
         #region Form1
+
         public Form1()
         {
             InitializeComponent();
@@ -125,35 +130,44 @@ namespace Packet
             this.mail_button.Left = 690;
             this.mail_button.Top = 40;
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void aboutToolStripMenuItem_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region private void aboutToolStripMenuItem_Click
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox1 box = new AboutBox1();
             box.ShowDialog();
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void exitToolStripMenuItem1_Click
         // Progran Close
         //---------------------------------------------------------------------------------------------------------
+
         #region private void exitToolStripMenuItem1_Click
+
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Close();
             Application.Exit();
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // toolStripComboBox1 BBS
         //---------------------------------------------------------------------------------------------------------
+
         #region
+
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBox1.SelectedIndex)
@@ -170,12 +184,15 @@ namespace Packet
                     break;
             }
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // toolStripComboBox2 Cluster
         //---------------------------------------------------------------------------------------------------------
+
         #region private void toolStripComboBox2_SelectedIndexChanged
+
         private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBox2.SelectedIndex)
@@ -192,12 +209,15 @@ namespace Packet
                     break;
             }
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // toolStripComboBox3 Node
         //---------------------------------------------------------------------------------------------------------
+
         #region private void toolStripComboBox3_SelectedIndexChanged
+
         private void toolStripComboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBox3.SelectedIndex)
@@ -215,12 +235,15 @@ namespace Packet
                     break;
             }
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void toolStripComboBoxBeep_SelectedIndexChanged
         //---------------------------------------------------------------------------------------------------------
+
         #region private void toolStripComboBoxBeep_SelectedIndexChanged
+
         private void toolStripComboBoxBeep_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxBeep.SelectedIndex)
@@ -235,12 +258,15 @@ namespace Packet
                     break;
             }
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // toolStripComboBoxTXTC_SelectedIndexChanged
         //---------------------------------------------------------------------------------------------------------
+
         #region toolStripComboBoxTXTC_SelectedIndexChanged
+
         private void toolStripComboBoxTXTC_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxTXTC.SelectedIndex)
@@ -279,14 +305,16 @@ namespace Packet
                     break;
             }
             terminalEmulator1.ForeColor = textColor;
-
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // toolStripComboBoxBGC
         //---------------------------------------------------------------------------------------------------------
+
         #region toolStripComboBoxBGC
+
         private void toolStripComboBoxBGC_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxBGC.SelectedIndex)
@@ -326,50 +354,62 @@ namespace Packet
             }
             terminalEmulator1.BackColor = backgroundColor;
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void iPConfigToolStripMenuItem_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region private void iPConfigToolStripMenuItem_Click
+
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form box = new IP_Form("BBS",(myRegistry.Read("BBS-Mode")));
+            IP_Form box = new IP_Form("BBS", (myRegistry.Read("BBS-Mode")));
             box.ShowDialog();
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void Form1_Resize_1
         //---------------------------------------------------------------------------------------------------------
+
         #region private void Form1_Resize_1
+
         private void Form1_Resize_1(object sender, EventArgs e)
         {
             this.terminalEmulator1.Left = 20;
             this.terminalEmulator1.Top = 80;
             this.terminalEmulator1.Height = (this.Height - 20);
             this.terminalEmulator1.Width = (this.Width - 60);
-
         }
+
         #endregion
+
         //---------------------------------------------------------------------------------------------------------
         // forward_button_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region forward_button_Click
+
         private void forward_button_Click(object sender, EventArgs e)
         {
             terminalEmulator1.FileActive = true;
             forward_button.Enabled = false;
             forward_button.Text = "Forward active";
-            terminalEmulator1.LastNumber =  myRegistryBBS.Read("Start Number");
+            terminalEmulator1.LastNumber = myRegistryBBS.Read("Start Number");
             terminalEmulator1.startforward();
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void Form1_Load
         //---------------------------------------------------------------------------------------------------------
+
         #region load
+
         private void Form1_Load(object sender, EventArgs e)
         {
             if (myRegistry.Read("BBS-Mode") == "Telnet")
@@ -407,7 +447,6 @@ namespace Packet
             if (myRegistry.Read("Node-Mode") == "Telnet")
             {
                 this.toolStripComboBox3.SelectedIndex = 0;
-
             }
             else if (myRegistry.Read("Node-Mode") == "Com")
             {
@@ -517,28 +556,28 @@ namespace Packet
             }
             else
                 ssh_button.Visible = false;
-
-
-
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // connect bbs
         //---------------------------------------------------------------------------------------------------------
+
         #region connect bbs
+
         private void bbs_button_Click(object sender, EventArgs e)
         {
             try
             {
                 if (myRegistryBBS.BRead("Prompt") == "BlanKey!!")
                 {
-                    MessageBox.Show("BBS may not correct as BBS Prompt cot configured", "Important Note", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                    MessageBox.Show("BBS may not correct as BBS Prompt cot configured", "Important Note",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
                 }
 
                 if (myRegistry.Read("BBS-Mode") == "Telnet")
                 {
-
                     if (myRegistryBBS.Read("Echo") == "Yes")
                     {
                         this.terminalEmulator1.LocalEcho = true;
@@ -555,20 +594,25 @@ namespace Packet
                     this.terminalEmulator1.BBSPrompt = myRegistryBBS.BRead("Prompt");
                     this.terminalEmulator1.UernamePrompt = myRegistryBBS.BRead("UserNamePrompt");
                     this.terminalEmulator1.passwordPrompt = myRegistryBBS.BRead("PasswordPrompt");
-                    
                 }
                 else
                 {
-                    this.terminalEmulator1.BaudRateType = ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
-                    this.terminalEmulator1.DataBitsType = ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" + myRegistryCom.Read("Data Bits"));
-                    this.terminalEmulator1.StopBitsType = ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>(myRegistryCom.Read("Stop Bits"));
-                    this.terminalEmulator1.ParityType = ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
-                    this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
+                    this.terminalEmulator1.BaudRateType =
+                        ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
+                    this.terminalEmulator1.DataBitsType =
+                        ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" +
+                                                                                 myRegistryCom.Read("Data Bits"));
+                    this.terminalEmulator1.StopBitsType =
+                        ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>(myRegistryCom.Read("Stop Bits"));
+                    this.terminalEmulator1.ParityType =
+                        ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
+                    this.terminalEmulator1.FlowType =
+                        ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
                     this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
                     this.terminalEmulator1.BBSPrompt = myRegistryBBS.BRead("Prompt");
                     this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
                 }
-                 
+
                 this.terminalEmulator1.Connect();
                 this.disconnect_button.Enabled = true;
                 bbs_button.Enabled = false;
@@ -576,19 +620,22 @@ namespace Packet
                 node_button.Enabled = false;
                 ssh_button.Enabled = false;
                 forward_button.Enabled = true;
-
             }
             catch
             {
-                MessageBox.Show("Com Port or Telnet Error", "Important Note", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Com Port or Telnet Error", "Important Note", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
             }
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // cluster_button_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region connect_cluster
+
         private void cluster_button_Click(object sender, EventArgs e)
         {
             bbs_button.Enabled = false;
@@ -619,21 +666,30 @@ namespace Packet
             }
             else
             {
-                this.terminalEmulator1.BaudRateType = ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
-                this.terminalEmulator1.DataBitsType = ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" + myRegistryCom.Read("Data Bits"));
-                this.terminalEmulator1.StopBitsType = ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>(myRegistryCom.Read("Stop Bits"));
-                this.terminalEmulator1.ParityType = ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
-                this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
+                this.terminalEmulator1.BaudRateType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
+                this.terminalEmulator1.DataBitsType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" +
+                                                                             myRegistryCom.Read("Data Bits"));
+                this.terminalEmulator1.StopBitsType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>(myRegistryCom.Read("Stop Bits"));
+                this.terminalEmulator1.ParityType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
+                this.terminalEmulator1.FlowType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
                 this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
                 this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
             }
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // node_button_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region private void node_button_Click
+
         private void node_button_Click(object sender, EventArgs e)
         {
             bbs_button.Enabled = false;
@@ -663,43 +719,58 @@ namespace Packet
             }
             else
             {
-                this.terminalEmulator1.BaudRateType = ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
-                this.terminalEmulator1.DataBitsType = ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" + myRegistryCom.Read("Data Bits"));
-                this.terminalEmulator1.StopBitsType = ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>(myRegistryCom.Read("Stop Bits"));
-                this.terminalEmulator1.ParityType = ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
-                this.terminalEmulator1.FlowType = ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
+                this.terminalEmulator1.BaudRateType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.BaudRateTypes>("Baud_" + myRegistryCom.Read("Baud"));
+                this.terminalEmulator1.DataBitsType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.DataBitsTypes>("Data_Bits_" +
+                                                                             myRegistryCom.Read("Data Bits"));
+                this.terminalEmulator1.StopBitsType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.StopBitsTypes>(myRegistryCom.Read("Stop Bits"));
+                this.terminalEmulator1.ParityType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.ParityTypes>(myRegistryCom.Read("Parity"));
+                this.terminalEmulator1.FlowType =
+                    ParseEnum<PacketSoftware.TerminalEmulator.FlowTypes>(myRegistryCom.Read("Flow"));
                 this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.COM;
                 this.terminalEmulator1.SerialPort = myRegistryCom.Read("Port");
             }
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void clusterIPConfigToolStripMenuItem_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region private void clusterIPConfigToolStripMenuItem_Click
+
         private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IP_Form box = new IP_Form("Cluster", (myRegistry.Read("Cluster-Mode")));
             box.ShowDialog();
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void nodeIPConfigToolStripMenuItem_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region private void nodeIPConfigToolStripMenuItem_Click
+
         private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IP_Form box = new IP_Form("Node",(myRegistry.Read("Node-Mode")));
+            IP_Form box = new IP_Form("Node", (myRegistry.Read("Node-Mode")));
             box.ShowDialog();
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // private void disconnect_button_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region private void disconnect_button_Click
+
         private void disconnect_button_Click(object sender, EventArgs e)
         {
             bbs_button.Enabled = true;
@@ -712,12 +783,15 @@ namespace Packet
             forward_button.Enabled = false;
             forward_button.Text = "Forward";
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         // ssh_button_Click
         //---------------------------------------------------------------------------------------------------------
+
         #region ssh_button_Click
+
         private void ssh_button_Click(object sender, EventArgs e)
         {
             ssh_button.Enabled = false;
@@ -732,12 +806,14 @@ namespace Packet
             this.terminalEmulator1.Password = myEncrypt.Decrypt(myRegistrySSH.Read("Password"));
             this.terminalEmulator1.Connect();
         }
+
         #endregion
 
         #region toolStripMenuItem1_Click SSH
+
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            IP_Form box = new IP_Form("SSH","SSH");
+            IP_Form box = new IP_Form("SSH", "SSH");
             box.ShowDialog();
             if (myRegistrySSH.Read("Active") == "No")
             {
@@ -746,43 +822,49 @@ namespace Packet
             else
                 ssh_button.Visible = true;
         }
+
         #endregion
 
         #region disconnect
+
         private void disconnected(object sender, EventArgs e)
         {
-            base.Invoke((Action)delegate { bbs_button.Enabled = true; });
-            base.Invoke((Action)delegate { cluster_button.Enabled = true; });
-            base.Invoke((Action)delegate { node_button.Enabled = true; });
-            base.Invoke((Action)delegate { disconnect_button.Enabled = false; });
+            base.Invoke((Action) delegate { bbs_button.Enabled = true; });
+            base.Invoke((Action) delegate { cluster_button.Enabled = true; });
+            base.Invoke((Action) delegate { node_button.Enabled = true; });
+            base.Invoke((Action) delegate { disconnect_button.Enabled = false; });
         }
+
         #endregion
 
         #region toolStripMenu click show Com port config
+
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
             Com_Form box = new Com_Form();
             box.ShowDialog();
         }
+
         #endregion
 
         #region ParseEnum
+
         public static T ParseEnum<T>(string value)
         {
-            return (T)Enum.Parse(typeof(T), value, true);
+            return (T) Enum.Parse(typeof (T), value, true);
         }
+
         #endregion
 
         private void terminalEmulator1_ForwardDone(object sender, EventArgs e)
         {
-            base.Invoke((Action)delegate { forward_button.Enabled = true; });
-
+            base.Invoke((Action) delegate { forward_button.Enabled = true; });
         }
 
         private void terminalEmulator1_LastNumberevt(object sender, EventArgs e)
         {
-           String number = ( terminalEmulator1.LastNumber).ToString();
-           myRegistryBBS.Write("Start Number", number);
+            String number = (terminalEmulator1.LastNumber).ToString();
+            myRegistryBBS.Write("Start Number", number);
         }
 
         private void mail_button_Click(object sender, EventArgs e)
@@ -790,7 +872,7 @@ namespace Packet
             Mail box = new Mail();
             box.ShowDialog();
         }
-
     }
+
     #endregion
 }

@@ -1,4 +1,5 @@
 ﻿#region Using Directive
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,21 +11,24 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyRegistry;
 using Utility.Encrypting;
+
 #endregion
 
 namespace Packet
 {
     public partial class IP_Form : Form
     {
-        ModifyRegistry myRegistry = new ModifyRegistry();
-        Encrypting myEncrypt = new Encrypting();
-        string Var1; // mode bbs
-        string Var2; //mode telnet
+        private ModifyRegistry myRegistry = new ModifyRegistry();
+        private Encrypting myEncrypt = new Encrypting();
+        private string Var1; // mode bbs
+        private string Var2; //mode telnet
 
         //---------------------------------------------------------------------------------------------------------
         //  IP_Form2
         //---------------------------------------------------------------------------------------------------------
+
         #region IP_Form2
+
         public IP_Form(string _var1, string _var2)
         {
             string key = "SOFTWARE\\NA7KR\\Packet\\" + _var1;
@@ -34,12 +38,15 @@ namespace Packet
             Var1 = _var1;
             Var2 = _var2;
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         //  Done_button
         //---------------------------------------------------------------------------------------------------------
+
         #region Done_button
+
         private void Done_button_Click(object sender, EventArgs e)
         {
             if (Var2 == "Telnet")
@@ -57,7 +64,6 @@ namespace Packet
                 if (Var1 == "BBS")
                 {
                     myRegistry.Write("Start Number", textBox_start.Text);
-                    
                 }
             }
             else if (Var2 == "SSH")
@@ -76,22 +82,23 @@ namespace Packet
                 if (Var2 == "BBS")
                 {
                     myRegistry.Write("Start Number", textBox_start.Text);
-                   
                 }
-
             }
             this.Close();
-
         }
+
         #endregion
 
         //---------------------------------------------------------------------------------------------------------
         //  IP_Form2
         //---------------------------------------------------------------------------------------------------------
+
         #region IP_Form2
+
         private void IP_Form2_Load(object sender, EventArgs e)
         {
             #region Telnet
+
             if (Var2 == "Telnet")
             {
                 this.Text = "Telnet";
@@ -103,7 +110,7 @@ namespace Packet
                 textBox_prompt.Text = myRegistry.Read("Prompt");
                 textBox_password_prompt.Text = myRegistry.Read("PasswordPrompt");
                 textBox_username_prompt.Text = myRegistry.Read("UserNamePrompt");
-                
+
                 if (myRegistry.Read("Echo") == "Yes")
                 {
                     echo_comboBox.SelectedIndex = 0;
@@ -121,7 +128,7 @@ namespace Packet
                 textBox_prompt.TabIndex = 7;
                 textBox_username_prompt.TabIndex = 8;
                 textBox_password_prompt.TabIndex = 9;
-                
+
 
                 label_ip.Text = "IP or Hostname";
                 label_port.Text = "Port";
@@ -132,7 +139,7 @@ namespace Packet
                 label_prompt.Text = "Prompt";
                 label_username_prompt.Text = "UserName Prompt";
                 label_password_prompt.Text = "Password Prompt";
-                
+
                 label_ip.Left = 20;
                 label_port.Left = 20;
                 label_bbs.Left = 20;
@@ -142,7 +149,7 @@ namespace Packet
                 label_prompt.Left = 20;
                 label_username_prompt.Left = 20;
                 label_password_prompt.Left = 20;
-               
+
                 textBox_ip.Left = 160;
                 textBox_port.Left = 160;
                 textBox_bbs.Left = 160;
@@ -152,7 +159,7 @@ namespace Packet
                 textBox_prompt.Left = 160;
                 textBox_username_prompt.Left = 160;
                 textBox_password_prompt.Left = 160;
-               
+
                 label_ip.Width = 120;
                 label_port.Width = 120;
                 label_bbs.Width = 120;
@@ -162,7 +169,7 @@ namespace Packet
                 label_prompt.Width = 120;
                 label_username_prompt.Width = 120;
                 label_password_prompt.Width = 120;
-                
+
                 label_ip.Top = 20;
                 label_port.Top = label_ip.Top + 30;
                 label_bbs.Top = label_port.Top + 30;
@@ -225,18 +232,17 @@ namespace Packet
 
                 else
                 {
-                    
                     textBox_start.Visible = false;
                     label_start.Visible = false;
                     Done_button.Top = textBox_password_prompt.Top + 30;
                     Cancel_button.Top = textBox_password_prompt.Top + 30;
                     this.Height = Done_button.Top + 80;
                 }
-
             }
-            #endregion
+                #endregion
 
-            #region SSH
+                #region SSH
+
             else if (Var1 == "SSH")
             {
                 this.Text = "SSH";
@@ -291,17 +297,17 @@ namespace Packet
                 textBox_prompt.Visible = false;
                 textBox_username_prompt.Visible = false;
                 textBox_password_prompt.Visible = false;
-                
+
                 label_echo.Top = 140;
                 Done_button.Top = 170;
                 Cancel_button.Top = 170;
                 this.Height = 260;
                 echo_comboBox.Top = 140;
-
             }
-            #endregion
+                #endregion
 
-            #region else com
+                #region else com
+
             else
             {
                 this.Text = "Com Port";
@@ -379,7 +385,7 @@ namespace Packet
                     textBox_mycall.Width = 140;
                     textBox_start.Width = 140;
                     textBox_start.Left = 160;
-       
+
 
                     Done_button.Top = label_start.Top + 30;
                     Cancel_button.Top = label_start.Top + 30;
@@ -387,7 +393,6 @@ namespace Packet
                 }
                 else
                 {
-                    
                     textBox_start.Visible = false;
                     label_start.Visible = false;
                     Done_button.Top = textBox_prompt.Top + 30;
@@ -395,9 +400,10 @@ namespace Packet
                     this.Height = Done_button.Top + 80;
                 }
             }
-            #endregion
-        #endregion
-        }
 
+            #endregion
+
+            #endregion
+        }
     }
 }

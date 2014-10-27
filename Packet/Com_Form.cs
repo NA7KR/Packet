@@ -1,4 +1,5 @@
 ﻿#region Using Directive
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,15 +11,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utility.ModifyRegistry;
 using Utility.Encrypting;
+
 #endregion
 
 namespace Packet
 {
+
     #region partial class Com_Form
+
     public partial class Com_Form : Form
     {
-        ModifyRegistry myRegistry = new ModifyRegistry();
-        Encrypting myEncrypt = new Encrypting();
+        private ModifyRegistry myRegistry = new ModifyRegistry();
+        private Encrypting myEncrypt = new Encrypting();
         public System.Int32 Speed;
         public System.Int32 speed;
         public System.Int32 data;
@@ -33,6 +37,7 @@ namespace Packet
         public System.Int32 top = 30;
 
         #region Com_Form()
+
         public Com_Form()
         {
             InitializeComponent();
@@ -43,13 +48,13 @@ namespace Packet
             radioButton600.Top = top;
             radioButton1200.Top = top;
             radioButton2400.Top = top;
-            radioButton4800.Top = top * 2;
-            radioButton9600.Top = top * 2;
-            radioButton19200.Top = top * 2;
-            radioButton38400.Top = top * 2;
-            radioButton57600.Top = top * 2;
+            radioButton4800.Top = top*2;
+            radioButton9600.Top = top*2;
+            radioButton19200.Top = top*2;
+            radioButton38400.Top = top*2;
+            radioButton57600.Top = top*2;
 
-            groupBoxBaudRate.Height = top * 3;
+            groupBoxBaudRate.Height = top*3;
             groupBoxBaudRate.Top = top;
             groupBoxBaudRate.Left = top;
             radioButton9600.Checked = true;
@@ -60,8 +65,8 @@ namespace Packet
             radioButton_Data_7.Top = top;
             radioButton_Data_8.Top = top;
 
-            groupBoxDataBits.Height = top * 2;
-            groupBoxDataBits.Top = top * 5;
+            groupBoxDataBits.Height = top*2;
+            groupBoxDataBits.Top = top*5;
             groupBoxDataBits.Left = top;
             radioButton_Data_8.Checked = true;
 
@@ -70,41 +75,41 @@ namespace Packet
             radioButton_Stop_2.Top = top;
             radioButton_Stop_None.Top = top;
 
-            groupBoxStopBits.Height = top * 2;
-            groupBoxStopBits.Top = top * 5;
+            groupBoxStopBits.Height = top*2;
+            groupBoxStopBits.Top = top*5;
             radioButton_Stop_1.Checked = true;
 
             radioButton_Parity_None.Top = top;
-            radioButton_Parity_Odd.Top = top * 2;
-            radioButton_Parity_Even.Top = top * 3;
-            radioButton_Parity_Mark.Top = top * 4;
-            radioButton_Parity_Space.Top = top * 5;
+            radioButton_Parity_Odd.Top = top*2;
+            radioButton_Parity_Even.Top = top*3;
+            radioButton_Parity_Mark.Top = top*4;
+            radioButton_Parity_Space.Top = top*5;
 
-            groupBoxParity.Height = top * 6;
-            groupBoxParity.Top = top * 8;
+            groupBoxParity.Height = top*6;
+            groupBoxParity.Top = top*8;
             groupBoxParity.Left = top;
             radioButton_Parity_None.Checked = true;
 
             radioButton_Flow_Xon_Xoff.Top = top;
-            radioButton_Flow_RequestToSendXOnXOff.Top = top * 2;
-            radioButton_Flow_RequestToSend.Top = top * 3;
-            radioButton_Flow_None.Top = top * 4;
+            radioButton_Flow_RequestToSendXOnXOff.Top = top*2;
+            radioButton_Flow_RequestToSend.Top = top*3;
+            radioButton_Flow_None.Top = top*4;
 
-            groupBoxFlow.Height = top * 5;
-            groupBoxFlow.Top = top * 8;
+            groupBoxFlow.Height = top*5;
+            groupBoxFlow.Top = top*8;
             radioButton_Flow_None.Checked = true;
 
             ok_button.Top = top + 10;
             cancel_button.Top = top + 10 + ok_button.Height + top;
 
-            Port_label.Top = top * 8 + 10;
-            comboBoxPort.Top = top * 8 + 30;
-
-
+            Port_label.Top = top*8 + 10;
+            comboBoxPort.Top = top*8 + 30;
         }
+
         #endregion
 
         #region button
+
         private void ok_button_Click(object sender, EventArgs e)
         {
             try
@@ -122,9 +127,11 @@ namespace Packet
                 this.Close();
             }
         }
+
         #endregion
 
         #region screen layout
+
         private void radioButton110_CheckedChanged(object sender, EventArgs e)
         {
             Speed = 110;
@@ -199,6 +206,7 @@ namespace Packet
         {
             StopBits = "None";
         }
+
         private void radioButton_Stop_1_CheckedChanged(object sender, EventArgs e)
         {
             StopBits = "One";
@@ -253,190 +261,201 @@ namespace Packet
         {
             Flow = "None";
         }
+
         #endregion
 
         #region load
+
         private void Com_Form_Load(object sender, EventArgs e)
         {
             #region  case switch baud
+
             speed = Convert.ToInt32(myRegistry.Read("Baud"));
             switch (speed)
             {
                 case 110:
-                    {
-                        this.radioButton110.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton110.Checked = true;
+                    break;
+                }
                 case 300:
-                    {
-                        this.radioButton300.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton300.Checked = true;
+                    break;
+                }
                 case 600:
-                    {
-                        this.radioButton600.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton600.Checked = true;
+                    break;
+                }
                 case 1200:
-                    {
-                        this.radioButton1200.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton1200.Checked = true;
+                    break;
+                }
                 case 2400:
-                    {
-                        this.radioButton2400.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton2400.Checked = true;
+                    break;
+                }
                 case 4800:
-                    {
-                        this.radioButton4800.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton4800.Checked = true;
+                    break;
+                }
                 case 9600:
-                    {
-                        this.radioButton9600.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton9600.Checked = true;
+                    break;
+                }
                 case 19200:
-                    {
-                        this.radioButton19200.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton19200.Checked = true;
+                    break;
+                }
                 case 38400:
-                    {
-                        this.radioButton38400.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton38400.Checked = true;
+                    break;
+                }
                 case 57600:
-                    {
-                        this.radioButton57600.Checked = true;
-                        break;
-                    }
+                {
+                    this.radioButton57600.Checked = true;
+                    break;
+                }
                 default:
                     break;
-
             }
+
             #endregion
 
             #region  case switch Data Bits
+
             data = Convert.ToInt32(myRegistry.Read("Data Bits"));
             switch (data)
             {
                 case 5:
-                    {
-                        radioButton_Data_5.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Data_5.Checked = true;
+                    break;
+                }
                 case 6:
-                    {
-                        radioButton_Data_6.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Data_6.Checked = true;
+                    break;
+                }
                 case 7:
-                    {
-                        radioButton_Data_7.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Data_7.Checked = true;
+                    break;
+                }
                 case 8:
-                    {
-                        radioButton_Data_8.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Data_8.Checked = true;
+                    break;
+                }
                 default:
                     break;
             }
+
             #endregion
 
             #region  case switch Stop Bits
+
             stop = myRegistry.Read("Stop Bits");
             switch (stop)
             {
                 case "One":
-                    {
-                        radioButton_Stop_1.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Stop_1.Checked = true;
+                    break;
+                }
                 case "OnePointFive":
-                    {
-                        radioButton_Stop_1_5.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Stop_1_5.Checked = true;
+                    break;
+                }
                 case "Two":
-                    {
-                        radioButton_Stop_2.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Stop_2.Checked = true;
+                    break;
+                }
                 case "None":
-                    {
-                        radioButton_Stop_None.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Stop_None.Checked = true;
+                    break;
+                }
 
                 default:
                     break;
             }
+
             #endregion
 
             #region  case switch Parity
+
             parity = myRegistry.Read("Parity");
             switch (parity)
             {
                 case "None":
-                    {
-                        radioButton_Parity_None.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Parity_None.Checked = true;
+                    break;
+                }
                 case "Old":
-                    {
-                        radioButton_Parity_Odd.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Parity_Odd.Checked = true;
+                    break;
+                }
                 case "Even":
-                    {
-                        radioButton_Parity_Even.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Parity_Even.Checked = true;
+                    break;
+                }
                 case "Mark":
-                    {
-                        radioButton_Parity_Mark.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Parity_Mark.Checked = true;
+                    break;
+                }
                 case "Space":
-                    {
-                        radioButton_Parity_Space.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Parity_Space.Checked = true;
+                    break;
+                }
 
                 default:
                     break;
             }
+
             #endregion
 
-
             #region  case switch flow
+
             flow = myRegistry.Read("Flow");
             switch (flow)
             {
                 case "XOnXOff":
-                    {
-                        radioButton_Flow_Xon_Xoff.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Flow_Xon_Xoff.Checked = true;
+                    break;
+                }
                 case "RequestToSendXOnXOff":
-                    {
-                        radioButton_Flow_RequestToSendXOnXOff.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Flow_RequestToSendXOnXOff.Checked = true;
+                    break;
+                }
                 case "None":
-                    {
-                        radioButton_Flow_None.Checked = true;
-                        break;
-                    }
+                {
+                    radioButton_Flow_None.Checked = true;
+                    break;
+                }
 
                 default:
                     break;
             }
+
             #endregion
+
             comboBoxPort.Items.Clear();
             foreach (string item in System.IO.Ports.SerialPort.GetPortNames())
             {
@@ -444,17 +463,19 @@ namespace Packet
             }
             comboBoxPort.SelectedItem = myRegistry.Read("Port");
             // needs work
-
         }
+
         #endregion
 
         #region combbox changed
+
         private void comboBoxPort_SelectedIndexChanged(object sender, EventArgs e)
         {
             port = Convert.ToString(comboBoxPort.SelectedItem);
         }
-        #endregion
 
+        #endregion
     }
+
     #endregion
 }

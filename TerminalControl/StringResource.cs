@@ -1,42 +1,45 @@
-using System;
+ï»¿using System;
 using System.Globalization;
 using System.Resources;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Routrek.SSHC 
+namespace Routrek.SSHC
 {
-	/// <summary>
-	/// StringResource ‚ÌŠT—v‚Ìà–¾‚Å‚·B
-	/// </summary>
-	internal class StringResources {
-		private string _resourceName;
-		private ResourceManager _resMan;
+    /// <summary>
+    /// StringResource ï¿½ÌŠTï¿½vï¿½Ìï¿½ï¿½ï¿½Å‚ï¿½ï¿½B
+    /// </summary>
+    internal class StringResources
+    {
+        private string _resourceName;
+        private ResourceManager _resMan;
 
-		public StringResources(string name, Assembly asm) {
-			_resourceName = name;
-			LoadResourceManager(name, asm);
-		}
+        public StringResources(string name, Assembly asm)
+        {
+            _resourceName = name;
+            LoadResourceManager(name, asm);
+        }
 
-		public string GetString(string id) 
-		{
-			try
-			{
-				return _resMan.GetString(id); //‚à‚µ‚±‚ê‚ª’x‚¢‚æ‚¤‚È‚ç‚±‚ÌƒNƒ‰ƒX‚ÅƒLƒƒƒbƒVƒ…‚Å‚à‚Â‚­‚ê‚Î‚¢‚¢‚¾‚ë‚¤
-			}
-			catch
-			{
-				return "error loading string";
-			}
-		}
+        public string GetString(string id)
+        {
+            try
+            {
+                return _resMan.GetString(id); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚ªï¿½xï¿½ï¿½ï¿½æ‚¤ï¿½È‚ç‚±ï¿½ÌƒNï¿½ï¿½ï¿½Xï¿½ÅƒLï¿½ï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½Å‚ï¿½Â‚ï¿½ï¿½ï¿½Î‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë‚¤
+            }
+            catch
+            {
+                return "error loading string";
+            }
+        }
 
-		private void LoadResourceManager(string name, Assembly asm) {
-			//“––Ê‚Í‰pŒêE“ú–{Œê‚µ‚©‚µ‚È‚¢
-			CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentUICulture;
-			//if(ci.Name.StartsWith("ja"))
-				//_resMan = new ResourceManager(name+"_ja", asm);
-			//else
-			_resMan = new ResourceManager(name, asm);
-		}
-	}
+        private void LoadResourceManager(string name, Assembly asm)
+        {
+            //ï¿½ï¿½ï¿½Ê‚Í‰pï¿½ï¿½Eï¿½ï¿½ï¿½{ï¿½ê‚µï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+            CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentUICulture;
+            //if(ci.Name.StartsWith("ja"))
+            //_resMan = new ResourceManager(name+"_ja", asm);
+            //else
+            _resMan = new ResourceManager(name, asm);
+        }
+    }
 }
