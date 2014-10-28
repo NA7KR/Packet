@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.IO;
+using PacketComs;
 using Routrek.PKI;
 
 namespace Routrek.SSHC

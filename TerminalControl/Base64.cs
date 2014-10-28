@@ -1,10 +1,10 @@
 using System;
 
-namespace Routrek.Toolkit
+namespace PacketComs
 {
     public class Base64
     {
-        private static readonly int[] _fromBase64 = new int[]
+        private static readonly int[] FromBase64 =
         {
             -1, -1, -1, -1, -1, -1, -1, -1,
             -1, -1, -1, -1, -1, -1, -1, -1,
@@ -24,7 +24,7 @@ namespace Routrek.Toolkit
             49, 50, 51, -1, -1, -1, -1, -1
         };
 
-        private static readonly byte[] _toBase64 = new byte[]
+        private static readonly byte[] ToBase64 =
         {
             // 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
             65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
@@ -36,7 +36,7 @@ namespace Routrek.Toolkit
             119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 43, 47, (byte) '='
         };
 
-        private const int PAD = 64;
+        private const int Pad = 64;
 
         public static byte[] Encode(byte[] data)
         {
@@ -60,10 +60,10 @@ namespace Routrek.Toolkit
             j = 0;
             for (int i = offset; i < n; i++)
             {
-                c = _fromBase64[encoded[i]];
+                c = FromBase64[encoded[i]];
                 if (c < 0)
                 {
-                    if (encoded[i] == _toBase64[PAD])
+                    if (encoded[i] == ToBase64[Pad])
                         break;
                     continue;
                 }
@@ -102,38 +102,31 @@ namespace Routrek.Toolkit
                 x2 = (((data[i] & 0x03) << 4) | ((data[i + 1] & 0xf0) >> 4));
                 x3 = (((data[i + 1] & 0x0f) << 2) | ((data[i + 2] & 0xc0) >> 6));
                 x4 = (data[i + 2] & 0x3f);
-                encoded[j] = _toBase64[x1];
-                encoded[j + 1] = _toBase64[x2];
-                encoded[j + 2] = _toBase64[x3];
-                encoded[j + 3] = _toBase64[x4];
+                encoded[j] = ToBase64[x1];
+                encoded[j + 1] = ToBase64[x2];
+                encoded[j + 2] = ToBase64[x3];
+                encoded[j + 3] = ToBase64[x4];
             }
 
             if (r != 0)
             {
                 x1 = (data[i] & 0xfc) >> 2;
                 x2 = (data[i] & 0x03) << 4;
-                x3 = PAD;
-                x4 = PAD;
+                x3 = Pad;
+                x4 = Pad;
                 if (r == 2)
                 {
                     x2 |= ((data[i + 1] & 0xf0) >> 4);
                     x3 = (data[i + 1] & 0x0f) << 2;
                 }
-                encoded[j++] = _toBase64[x1];
-                encoded[j++] = _toBase64[x2];
-                encoded[j++] = _toBase64[x3];
-                encoded[j++] = _toBase64[x4];
+                encoded[j++] = ToBase64[x1];
+                encoded[j++] = ToBase64[x2];
+                encoded[j++] = ToBase64[x3];
+                encoded[j++] = ToBase64[x4];
             }
 
             return encoded;
         }
 
-
-        //for test
-        public static void test()
-        {
-            string t = "hernan crespo";
-            string s = System.Text.Encoding.ASCII.GetString(Decode(Encode(System.Text.Encoding.ASCII.GetBytes(t))));
-        }
     }
 }

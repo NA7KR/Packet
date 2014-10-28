@@ -1,7 +1,5 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Resources;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Routrek.SSHC

@@ -102,7 +102,6 @@
     <Compile Include="CipherUtil.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Com.cs" />
     <Compile Include="ConnectionInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -125,6 +124,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ModifyFile.cs" />
+    <Compile Include="PacketType.cs" />
     <Compile Include="PKIBase.cs">
       <SubType>Code</SubType>
     </Compile>

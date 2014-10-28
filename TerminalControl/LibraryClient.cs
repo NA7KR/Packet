@@ -40,15 +40,15 @@ namespace Routrek.SSHC
     /// </summary>
     public interface ISSHConnectionEventReceiver
     {
-        void OnDebugMessage(bool always_display, byte[] msg);
+        void OnDebugMessage(bool alwaysDisplay, byte[] msg);
         void OnIgnoreMessage(byte[] msg);
         void OnUnknownMessage(byte type, byte[] data);
         void OnError(Exception error, string msg);
         void OnConnectionClosed();
         void OnAuthenticationPrompt(string[] prompts); //keyboard-interactive only
 
-        PortForwardingCheckResult CheckPortForwardingRequest(string remote_host, int remote_port, string originator_ip,
-            int originator_port);
+        PortForwardingCheckResult CheckPortForwardingRequest(string remote_host, int remote_port, string originatorHost,
+            int originatorPort);
 
         void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SSHChannel channel);
     }

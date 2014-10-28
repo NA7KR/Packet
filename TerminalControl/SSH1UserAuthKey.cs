@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Security.Cryptography;
-using System.Diagnostics;
+using PacketComs;
 using Routrek.SSHC;
 
 namespace Routrek.SSHCV1
@@ -56,7 +56,7 @@ namespace Routrek.SSHCV1
             CipherAlgorithm algo = (CipherAlgorithm) cipher[1];
             if (algo != 0)
             {
-                Cipher c = CipherFactory.CreateCipher(SSHProtocol.SSH1, algo, ConvertToKey(passphrase));
+                ICipher c = CipherFactory.CreateCipher(SSHProtocol.SSH1, algo, ConvertToKey(passphrase));
                 byte[] buf = new byte[prvt.Length];
                 c.Decrypt(prvt, 0, prvt.Length, buf, 0);
                 prvt = buf;

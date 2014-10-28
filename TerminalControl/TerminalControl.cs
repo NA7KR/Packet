@@ -13,7 +13,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
-using PacketSoftware;
 using Routrek.SSHC;
 
 #endregion
@@ -1136,9 +1135,9 @@ namespace PacketComs
             //s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
             s.Connect(new IPEndPoint(ip, Port));
             _conn = SSHConnection.Connect(f, _reader, s);
-            _reader._conn = _conn;
+            _reader.Conn = _conn;
             SSHChannel ch = _conn.OpenShell(_reader);
-            _reader._pf = ch;
+            _reader.Pf = ch;
         }
 
         #endregion
@@ -1548,7 +1547,7 @@ namespace PacketComs
                     {
                         try
                         {
-                            _reader._pf.Transmit(smk);
+                            _reader.Pf.Transmit(smk);
                         }
                         catch
                         {

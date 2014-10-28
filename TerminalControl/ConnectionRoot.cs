@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
-using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using Routrek.Crypto;
-using Routrek.PKI;
+using PacketComs;
 using Routrek.SSHCV1;
-using Routrek.SSHCV2;
 
 namespace Routrek.SSHC
 {
@@ -16,7 +13,7 @@ namespace Routrek.SSHC
         internal ISSHConnectionEventReceiver _eventReceiver;
 
         protected byte[] _sessionID;
-        internal Cipher _tCipher; //transmission
+        internal ICipher _tCipher; //transmission
         //internal Cipher _rCipher; //reception
         protected SSHConnectionParameter _param;
 

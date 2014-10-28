@@ -1,19 +1,10 @@
 ﻿#region Using Directive
 
 using System;
-using System.Collections.Specialized;
-using System.Windows.Forms;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
-using System.IO;
-using System.Drawing;
-using System.Text.RegularExpressions;
-using PacketComs;
 
 #endregion
 
-namespace PacketSoftware
+namespace PacketComs
 {
 
     #region Routrek SSH Reader Class
@@ -27,8 +18,8 @@ namespace PacketSoftware
             Terminal = (TerminalEmulator) obj;
         }
 
-        public Routrek.SSHC.SSHConnection _conn;
-        public bool _ready;
+        public Routrek.SSHC.SSHConnection Conn;
+        public bool Ready;
 
         public void OnData(byte[] data, int offset, int length)
         {
@@ -37,7 +28,7 @@ namespace PacketSoftware
             //System.Console.Write(Encoding.ASCII.GetString(data, offset, length));
         }
 
-        public void OnDebugMessage(bool always_display, byte[] data)
+        public void OnDebugMessage(bool alwaysDisplay, byte[] data)
         {
             //Debug.WriteLine("DEBUG: "+ Encoding.ASCII.GetString(data));
         }
@@ -60,14 +51,14 @@ namespace PacketSoftware
         public void OnChannelClosed()
         {
             //Debug.WriteLine("Channel closed");
-            _conn.Disconnect("");
+            Conn.Disconnect("");
             //_conn.AsyncReceive(this);
             Terminal.Disconnectby();
         }
 
         public void OnChannelEOF()
         {
-            _pf.Close();
+            Pf.Close();
             //Debug.WriteLine("Channel EOF");
         }
 
@@ -88,7 +79,7 @@ namespace PacketSoftware
 
         public void OnChannelReady()
         {
-            _ready = true;
+            Ready = true;
         }
 
         public void OnChannelError(Exception error, string msg)
@@ -101,7 +92,7 @@ namespace PacketSoftware
         }
 
         public Routrek.SSHC.PortForwardingCheckResult CheckPortForwardingRequest(string host, int port,
-            string originator_host, int originator_port)
+            string originatorHost, int originatorPort)
         {
             Routrek.SSHC.PortForwardingCheckResult r = new Routrek.SSHC.PortForwardingCheckResult();
             r.allowed = true;
@@ -111,10 +102,10 @@ namespace PacketSoftware
 
         public void EstablishPortforwarding(Routrek.SSHC.ISSHChannelEventReceiver rec, Routrek.SSHC.SSHChannel channel)
         {
-            _pf = channel;
+            Pf = channel;
         }
 
-        public Routrek.SSHC.SSHChannel _pf;
+        public Routrek.SSHC.SSHChannel Pf;
     }
 
     #endregion

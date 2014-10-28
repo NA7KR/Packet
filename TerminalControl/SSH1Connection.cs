@@ -1,12 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Net.Sockets;
 using System.Text;
-using System.Diagnostics;
-using Routrek.PKI;
+using PacketComs;
 using Routrek.SSHC;
-using Routrek.Toolkit;
 
 namespace Routrek.SSHCV1
 {
@@ -164,13 +161,13 @@ namespace Routrek.SSHCV1
             bool found = false;
             foreach (CipherAlgorithm a in _param.PreferableCipherAlgorithms)
             {
-                if (a != CipherAlgorithm.Blowfish && a != CipherAlgorithm.TripleDES)
+                if (a != CipherAlgorithm.Blowfish && a != CipherAlgorithm.TripleDes)
                     continue;
                 else if (a == CipherAlgorithm.Blowfish &&
                          (supported_ciphers_mask & (1 << (int) CipherAlgorithm.Blowfish)) == 0)
                     continue;
-                else if (a == CipherAlgorithm.TripleDES &&
-                         (supported_ciphers_mask & (1 << (int) CipherAlgorithm.TripleDES)) == 0)
+                else if (a == CipherAlgorithm.TripleDes &&
+                         (supported_ciphers_mask & (1 << (int) CipherAlgorithm.TripleDes)) == 0)
                     continue;
 
                 _cInfo._algorithmForReception = _cInfo._algorithmForTransmittion = a;
@@ -475,7 +472,7 @@ namespace Routrek.SSHCV1
         private void InitCipher(byte[] session_key)
         {
             _tCipher = CipherFactory.CreateCipher(SSHProtocol.SSH1, _cInfo._algorithmForTransmittion, session_key);
-            Cipher rc = CipherFactory.CreateCipher(SSHProtocol.SSH1, _cInfo._algorithmForReception, session_key);
+            ICipher rc = CipherFactory.CreateCipher(SSHProtocol.SSH1, _cInfo._algorithmForReception, session_key);
             _packetBuilder.SetCipher(rc, _param.CheckMACError);
         }
 

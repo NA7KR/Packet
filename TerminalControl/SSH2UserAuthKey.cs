@@ -5,9 +5,9 @@ using System.Security.Cryptography;
 using System.Text;
 using Routrek.PKI;
 using Routrek.SSHC;
-using Routrek.Toolkit;
+using Routrek.SSHCV2;
 
-namespace Routrek.SSHCV2
+namespace PacketComs
 {
     public class SSH2UserAuthKey
     {
@@ -125,7 +125,7 @@ namespace Routrek.SSHCV2
             {
                 CipherAlgorithm algo = CipherFactory.SSH2NameToAlgorithm(ciphername);
                 byte[] key = PassphraseToKey(passphrase, CipherFactory.GetKeySize(algo));
-                Cipher c = CipherFactory.CreateCipher(SSHProtocol.SSH2, algo, key);
+                ICipher c = CipherFactory.CreateCipher(SSHProtocol.SSH2, algo, key);
                 byte[] tmp = new Byte[re.Image.Length - re.Offset];
                 c.Decrypt(re.Image, re.Offset, re.Image.Length - re.Offset, tmp, 0);
                 re = new SSH2DataReader(tmp);
@@ -205,7 +205,7 @@ namespace Routrek.SSHCV2
             //encrypt if necessary
             if (passphrase != null)
             {
-                Cipher c = CipherFactory.CreateCipher(SSHProtocol.SSH2, CipherAlgorithm.TripleDES,
+                ICipher c = CipherFactory.CreateCipher(SSHProtocol.SSH2, CipherAlgorithm.TripleDes,
                     PassphraseToKey(passphrase, 24));
                 Debug.Assert(encrypted_body.Length%8 == 0);
                 byte[] tmp = new Byte[encrypted_body.Length];

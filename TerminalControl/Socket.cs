@@ -1,9 +1,8 @@
 using System;
 using System.Text;
-using System.IO;
 using System.Net.Sockets;
 using System.Threading;
-using System.Diagnostics;
+using PacketComs;
 
 namespace Routrek.SSHC
 {

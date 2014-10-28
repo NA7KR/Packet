@@ -1,4 +1,5 @@
 using System;
+using PacketComs;
 using Routrek.PKI;
 
 namespace Routrek.SSHC
@@ -172,7 +173,7 @@ namespace Routrek.SSHC
             _height = 25;
             _protocol = SSHProtocol.SSH2;
             _cipherAlgorithms = new CipherAlgorithm[]
-            {CipherAlgorithm.AES128, CipherAlgorithm.Blowfish, CipherAlgorithm.TripleDES};
+            {CipherAlgorithm.Aes128, CipherAlgorithm.Blowfish, CipherAlgorithm.TripleDes};
             _hostkeyAlgorithms = new PublicKeyAlgorithm[] {PublicKeyAlgorithm.DSA, PublicKeyAlgorithm.RSA};
             _windowsize = 0x1000;
             _maxpacketsize = 0x10000;

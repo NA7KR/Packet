@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Threading;
-using Routrek.Crypto;
+using PacketComs;
 using Routrek.SSHC;
 
 namespace Routrek.SSHCV1
@@ -101,7 +100,7 @@ namespace Routrek.SSHCV1
 		* writes to encrypted stream
 		*/
 
-        public void WriteTo(AbstractSocket output, Cipher cipher)
+        public void WriteTo(AbstractSocket output, ICipher cipher)
         {
             byte[] image = BuildImage();
             //dumpBA(image);
@@ -216,7 +215,7 @@ namespace Routrek.SSHCV1
         private byte[] _buffer;
         private int _readOffset;
         private int _writeOffset;
-        private Cipher _cipher;
+        private ICipher _cipher;
         private bool _checkMAC;
         private ManualResetEvent _event;
 
@@ -241,7 +240,7 @@ namespace Routrek.SSHCV1
                 _event.Reset();
         }
 
-        public void SetCipher(Cipher c, bool check_mac)
+        public void SetCipher(ICipher c, bool check_mac)
         {
             _cipher = c;
             _checkMAC = check_mac;

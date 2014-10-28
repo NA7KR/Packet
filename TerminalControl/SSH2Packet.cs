@@ -1,22 +1,11 @@
 using System;
 using System.Collections;
-using System.IO;
 using System.Threading;
-using System.Diagnostics;
 using Routrek.SSHC;
+using Routrek.SSHCV2;
 
-namespace Routrek.SSHCV2
+namespace PacketComs
 {
-    /* SSH2 Packet Structure
-	 * 
-	 * uint32    packet_length
-     * byte      padding_length
-     * byte[n1]  payload; n1 = packet_length - padding_length - 1
-     * byte[n2]  random padding; n2 = padding_length (max 255)
-     * byte[m]   mac (message authentication code); m = mac_length
-	 * 
-	 * 4+1+n1+n2 must be a multiple of the cipher block size
-	 */
 
     internal class SSH2Packet
     {
@@ -33,7 +22,7 @@ namespace Routrek.SSHCV2
         }
 
         //constracts and appends mac
-        public void CalcHash(MAC mac, int sequence)
+        public void CalcHash(IMac mac, int sequence)
         {
             byte[] buf = new byte[4 + 4 + _packetLength];
             SSHUtil.WriteIntToByteArray(buf, 0, sequence);
@@ -42,7 +31,7 @@ namespace Routrek.SSHCV2
             _mac = mac.Calc(buf);
         }
 
-        public void WriteTo(AbstractSocket strm, Cipher cipher)
+        public void WriteTo(AbstractSocket strm, ICipher cipher)
         {
             int bodylen = 4 + _packetLength;
             byte[] buf = new byte[bodylen + (_mac == null ? 0 : _mac.Length)];
@@ -96,8 +85,8 @@ namespace Routrek.SSHCV2
             return p;
         }
 
-        public static SSH2Packet FromDecryptedHead(byte[] head, byte[] buffer, int offset, Cipher cipher, int sequence,
-            MAC mac)
+        public static SSH2Packet FromDecryptedHead(byte[] head, byte[] buffer, int offset, ICipher cipher, int sequence,
+            IMac mac)
         {
             SSH2Packet p = new SSH2Packet();
             p._packetLength = SSHUtil.ReadInt32(head, 0);
@@ -124,7 +113,7 @@ namespace Routrek.SSHCV2
             if (mac != null)
             {
                 p._mac = mac.Calc(result);
-                if (SSHUtil.memcmp(p._mac, 0, buffer, offset, mac.Size) != 0)
+                if (SSHUtil.Memcmp(p._mac, 0, buffer, offset, mac.Size) != 0)
                     throw new SSHException("MAC Error");
             }
             return p;
@@ -221,8 +210,8 @@ namespace Routrek.SSHCV2
         private int _readOffset;
         private int _writeOffset;
         private int _sequence;
-        private Cipher _cipher;
-        private MAC _mac;
+        private ICipher _cipher;
+        private IMac _mac;
         private ManualResetEvent _event;
 
         public SSH2PacketBuilder(ISSH2PacketHandler handler)
@@ -247,7 +236,7 @@ namespace Routrek.SSHCV2
                 _event.Reset();
         }
 
-        public void SetCipher(Cipher c, MAC m)
+        public void SetCipher(ICipher c, IMac m)
         {
             _cipher = c;
             _mac = m;

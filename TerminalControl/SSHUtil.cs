@@ -1,59 +1,11 @@
 using System;
 using System.IO;
-using System.Threading;
-using System.Diagnostics;
 using System.Text;
-//using SHA1CryptoServiceProvider = System.Security.Cryptography.SHA1CryptoServiceProvider;
-using HMACSHA1 = System.Security.Cryptography.HMACSHA1;
-using Routrek.PKI;
-using Routrek.Crypto;
-using Routrek.Toolkit;
+using Routrek.SSHC;
 
-namespace Routrek.SSHC
+namespace PacketComs
 {
-    /*
-	internal class RWBuffer {
-		private byte[] _data;
-		private int _readOffset;
-		private int _writeOffset;
-
-		public RWBuffer() {
-			_data = new byte[0x1000];
-		}
-
-		public void Write(byte[] src, int offset, int length) {
-			lock(this) {
-				while(_data.Length-_writeOffset < length)
-					Expand();
-				Array.Copy(src, offset, _data, _writeOffset, length);
-				_writeOffset += length;
-				Monitor.Pulse(this);
-			}
-		}
-		public int Read(byte[] dest, int offset, int length) {
-			while(_writeOffset - _readOffset < length) {
-				Debug.WriteLine("waiting");
-				Monitor.Wait(this);
-			}
-
-			lock(this) {
-				Array.Copy(_data, _readOffset, dest, offset, length);
-				_readOffset += length;
-				return length;
-			}
-		}
-
-		private void Expand() {
-			lock(this) {
-				byte[] t = new byte[_data.Length*2];
-				Array.Copy(_data, 0, t, 0, _data.Length);
-				_data = t;
-			}
-		}
-	}
-	*/
-
-
+ 
     public class SSHException : Exception
     {
         private byte[] _data;
@@ -76,9 +28,9 @@ namespace Routrek.SSHC
 
     public enum CipherAlgorithm
     {
-        TripleDES = 3,
+        TripleDes = 3,
         Blowfish = 6,
-        AES128 = 10 //SSH2 ONLY
+        Aes128 = 10 //SSH2 ONLY
     }
 
     public enum AuthenticationType
@@ -96,7 +48,7 @@ namespace Routrek.SSHC
     }
 
 
-    public enum MACAlgorithm
+    public enum MacAlgorithm
     {
         HMACSHA1
     }
@@ -119,13 +71,13 @@ namespace Routrek.SSHC
         public static int ReadInt32(byte[] data, int offset)
         {
             int ret = 0;
-            ret |= (int) (data[offset]);
+            ret |= data[offset];
             ret <<= 8;
-            ret |= (int) (data[offset + 1]);
+            ret |= data[offset + 1];
             ret <<= 8;
-            ret |= (int) (data[offset + 2]);
+            ret |= data[offset + 2];
             ret <<= 8;
-            ret |= (int) (data[offset + 3]);
+            ret |= data[offset + 3];
             return ret;
         }
 
@@ -177,20 +129,20 @@ namespace Routrek.SSHC
             return false;
         }
 
-        public static int memcmp(byte[] d1, byte[] d2)
+        public static int Memcmp(byte[] d1, byte[] d2)
         {
             for (int i = 0; i < d1.Length; i++)
             {
-                if (d1[i] != d2[i]) return (int) (d2[i] - d1[i]);
+                if (d1[i] != d2[i]) return d2[i] - d1[i];
             }
             return 0;
         }
 
-        public static int memcmp(byte[] d1, int o1, byte[] d2, int o2, int len)
+        public static int Memcmp(byte[] d1, int o1, byte[] d2, int o2, int len)
         {
             for (int i = 0; i < len; i++)
             {
-                if (d1[o1 + i] != d2[o2 + i]) return (int) (d2[o2 + i] - d1[o1 + i]);
+                if (d1[o1 + i] != d2[o2 + i]) return d2[o2 + i] - d1[o1 + i];
             }
             return 0;
         }

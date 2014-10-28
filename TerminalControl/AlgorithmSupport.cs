@@ -1,23 +1,19 @@
-using System;
-using HMACSHA1 = System.Security.Cryptography.HMACSHA1;
+using System.Security.Cryptography;
 using Routrek.Crypto;
+using DES = Routrek.Crypto.DES;
+using Rijndael = Routrek.Crypto.Rijndael;
 
-namespace Routrek.SSHC
+namespace PacketComs
 {
-    /*
-	 * Cipher
-	 *  The numbers at the tail of the class names indicates the version of SSH protocol.
-	 *  The difference between V1 and V2 is the CBC procedure
-	 */
 
-    internal interface Cipher
+    internal interface ICipher
     {
-        void Encrypt(byte[] data, int offset, int len, byte[] result, int result_offset);
-        void Decrypt(byte[] data, int offset, int len, byte[] result, int result_offset);
+        void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset);
+        void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset);
         int BlockSize { get; }
     }
 
-    internal class BlowfishCipher1 : Cipher
+    internal class BlowfishCipher1 : ICipher
     {
         private Blowfish _bf;
 
@@ -27,14 +23,14 @@ namespace Routrek.SSHC
             _bf.initializeKey(key);
         }
 
-        public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _bf.encryptSSH1Style(data, offset, len, result, ro);
+            _bf.encryptSSH1Style(data, offset, len, result, resultOffset);
         }
 
-        public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _bf.decryptSSH1Style(data, offset, len, result, ro);
+            _bf.decryptSSH1Style(data, offset, len, result, resultOffset);
         }
 
         public int BlockSize
@@ -43,7 +39,7 @@ namespace Routrek.SSHC
         }
     }
 
-    internal class BlowfishCipher2 : Cipher
+    internal class BlowfishCipher2 : ICipher
     {
         private Blowfish _bf;
 
@@ -60,14 +56,14 @@ namespace Routrek.SSHC
             _bf.initializeKey(key);
         }
 
-        public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _bf.encryptCBC(data, offset, len, result, ro);
+            _bf.encryptCBC(data, offset, len, result, resultOffset);
         }
 
-        public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _bf.decryptCBC(data, offset, len, result, ro);
+            _bf.decryptCBC(data, offset, len, result, resultOffset);
         }
 
         public int BlockSize
@@ -76,13 +72,13 @@ namespace Routrek.SSHC
         }
     }
 
-    internal class TripleDESCipher1 : Cipher
+    internal class TripleDesCipher1 : ICipher
     {
         private DES _DESCipher1;
         private DES _DESCipher2;
         private DES _DESCipher3;
 
-        public TripleDESCipher1(byte[] key)
+        public TripleDesCipher1(byte[] key)
         {
             _DESCipher1 = new DES();
             _DESCipher2 = new DES();
@@ -93,20 +89,20 @@ namespace Routrek.SSHC
             _DESCipher3.InitializeKey(key, 16);
         }
 
-        public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
             byte[] buf1 = new byte[len];
-            _DESCipher1.EncryptCBC(data, offset, len, result, ro);
-            _DESCipher2.DecryptCBC(result, ro, buf1.Length, buf1, 0);
-            _DESCipher3.EncryptCBC(buf1, 0, buf1.Length, result, ro);
+            _DESCipher1.EncryptCBC(data, offset, len, result, resultOffset);
+            _DESCipher2.DecryptCBC(result, resultOffset, buf1.Length, buf1, 0);
+            _DESCipher3.EncryptCBC(buf1, 0, buf1.Length, result, resultOffset);
         }
 
-        public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
             byte[] buf1 = new byte[len];
-            _DESCipher3.DecryptCBC(data, offset, len, result, ro);
-            _DESCipher2.EncryptCBC(result, ro, buf1.Length, buf1, 0);
-            _DESCipher1.DecryptCBC(buf1, 0, buf1.Length, result, ro);
+            _DESCipher3.DecryptCBC(data, offset, len, result, resultOffset);
+            _DESCipher2.EncryptCBC(result, resultOffset, buf1.Length, buf1, 0);
+            _DESCipher1.DecryptCBC(buf1, 0, buf1.Length, result, resultOffset);
         }
 
         public int BlockSize
@@ -115,13 +111,13 @@ namespace Routrek.SSHC
         }
     }
 
-    internal class TripleDESCipher2 : Cipher
+    internal class TripleDesCipher2 : ICipher
     {
         private DES _DESCipher1;
         private DES _DESCipher2;
         private DES _DESCipher3;
 
-        public TripleDESCipher2(byte[] key)
+        public TripleDesCipher2(byte[] key)
         {
             _DESCipher1 = new DES();
             _DESCipher2 = new DES();
@@ -132,7 +128,7 @@ namespace Routrek.SSHC
             _DESCipher3.InitializeKey(key, 16);
         }
 
-        public TripleDESCipher2(byte[] key, byte[] iv)
+        public TripleDesCipher2(byte[] key, byte[] iv)
         {
             _DESCipher1 = new DES();
             _DESCipher1.SetIV(iv);
@@ -146,31 +142,31 @@ namespace Routrek.SSHC
             _DESCipher3.InitializeKey(key, 16);
         }
 
-        public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
             byte[] buf1 = new byte[8];
             int n = 0;
             while (n < len)
             {
-                _DESCipher1.EncryptCBC(data, offset + n, 8, result, ro + n);
-                _DESCipher2.DecryptCBC(result, ro + n, 8, buf1, 0);
-                _DESCipher3.EncryptCBC(buf1, 0, 8, result, ro + n);
-                _DESCipher1.SetIV(result, ro + n);
-                _DESCipher2.SetIV(result, ro + n);
-                _DESCipher3.SetIV(result, ro + n);
+                _DESCipher1.EncryptCBC(data, offset + n, 8, result, resultOffset + n);
+                _DESCipher2.DecryptCBC(result, resultOffset + n, 8, buf1, 0);
+                _DESCipher3.EncryptCBC(buf1, 0, 8, result, resultOffset + n);
+                _DESCipher1.SetIV(result, resultOffset + n);
+                _DESCipher2.SetIV(result, resultOffset + n);
+                _DESCipher3.SetIV(result, resultOffset + n);
                 n += 8;
             }
         }
 
-        public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
             byte[] buf1 = new byte[8];
             int n = 0;
             while (n < len)
             {
-                _DESCipher3.DecryptCBC(data, offset + n, 8, result, ro + n);
-                _DESCipher2.EncryptCBC(result, ro + n, 8, buf1, 0);
-                _DESCipher1.DecryptCBC(buf1, 0, 8, result, ro + n);
+                _DESCipher3.DecryptCBC(data, offset + n, 8, result, resultOffset + n);
+                _DESCipher2.EncryptCBC(result, resultOffset + n, 8, buf1, 0);
+                _DESCipher1.DecryptCBC(buf1, 0, 8, result, resultOffset + n);
                 _DESCipher3.SetIV(data, offset + n);
                 _DESCipher2.SetIV(data, offset + n);
                 _DESCipher1.SetIV(data, offset + n);
@@ -184,7 +180,7 @@ namespace Routrek.SSHC
         }
     }
 
-    internal class RijindaelCipher2 : Cipher
+    internal class RijindaelCipher2 : ICipher
     {
         private Rijndael _rijindael;
 
@@ -195,14 +191,14 @@ namespace Routrek.SSHC
             _rijindael.InitializeKey(key);
         }
 
-        public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _rijindael.encryptCBC(data, offset, len, result, ro);
+            _rijindael.encryptCBC(data, offset, len, result, resultOffset);
         }
 
-        public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro)
+        public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _rijindael.decryptCBC(data, offset, len, result, ro);
+            _rijindael.decryptCBC(data, offset, len, result, resultOffset);
         }
 
         public int BlockSize
@@ -216,14 +212,14 @@ namespace Routrek.SSHC
     /// </summary>
     internal class CipherFactory
     {
-        public static Cipher CreateCipher(SSHProtocol protocol, CipherAlgorithm algorithm, byte[] key)
+        public static ICipher CreateCipher(SSHProtocol protocol, CipherAlgorithm algorithm, byte[] key)
         {
             if (protocol == SSHProtocol.SSH1)
             {
                 switch (algorithm)
                 {
-                    case CipherAlgorithm.TripleDES:
-                        return new TripleDESCipher1(key);
+                    case CipherAlgorithm.TripleDes:
+                        return new TripleDesCipher1(key);
                     case CipherAlgorithm.Blowfish:
                         return new BlowfishCipher1(key);
                     default:
@@ -234,8 +230,8 @@ namespace Routrek.SSHC
             {
                 switch (algorithm)
                 {
-                    case CipherAlgorithm.TripleDES:
-                        return new TripleDESCipher2(key);
+                    case CipherAlgorithm.TripleDes:
+                        return new TripleDesCipher2(key);
                     case CipherAlgorithm.Blowfish:
                         return new BlowfishCipher2(key);
                     default:
@@ -244,7 +240,7 @@ namespace Routrek.SSHC
             }
         }
 
-        public static Cipher CreateCipher(SSHProtocol protocol, CipherAlgorithm algorithm, byte[] key, byte[] iv)
+        public static ICipher CreateCipher(SSHProtocol protocol, CipherAlgorithm algorithm, byte[] key, byte[] iv)
         {
             if (protocol == SSHProtocol.SSH1)
             {
@@ -254,11 +250,11 @@ namespace Routrek.SSHC
             {
                 switch (algorithm)
                 {
-                    case CipherAlgorithm.TripleDES:
-                        return new TripleDESCipher2(key, iv);
+                    case CipherAlgorithm.TripleDes:
+                        return new TripleDesCipher2(key, iv);
                     case CipherAlgorithm.Blowfish:
                         return new BlowfishCipher2(key, iv);
-                    case CipherAlgorithm.AES128:
+                    case CipherAlgorithm.Aes128:
                         return new RijindaelCipher2(key, iv);
                     default:
                         throw new SSHException("unknown algorithm " + algorithm);
@@ -273,10 +269,10 @@ namespace Routrek.SSHC
         {
             switch (algorithm)
             {
-                case CipherAlgorithm.TripleDES:
+                case CipherAlgorithm.TripleDes:
                     return 24;
                 case CipherAlgorithm.Blowfish:
-                case CipherAlgorithm.AES128:
+                case CipherAlgorithm.Aes128:
                     return 16;
                 default:
                     throw new SSHException("unknown algorithm " + algorithm);
@@ -290,10 +286,10 @@ namespace Routrek.SSHC
         {
             switch (algorithm)
             {
-                case CipherAlgorithm.TripleDES:
+                case CipherAlgorithm.TripleDes:
                 case CipherAlgorithm.Blowfish:
                     return 8;
-                case CipherAlgorithm.AES128:
+                case CipherAlgorithm.Aes128:
                     return 16;
                 default:
                     throw new SSHException("unknown algorithm " + algorithm);
@@ -304,11 +300,11 @@ namespace Routrek.SSHC
         {
             switch (algorithm)
             {
-                case CipherAlgorithm.TripleDES:
+                case CipherAlgorithm.TripleDes:
                     return "3des-cbc";
                 case CipherAlgorithm.Blowfish:
                     return "blowfish-cbc";
-                case CipherAlgorithm.AES128:
+                case CipherAlgorithm.Aes128:
                     return "aes128-cbc";
                 default:
                     throw new SSHException("unknown algorithm " + algorithm);
@@ -318,11 +314,11 @@ namespace Routrek.SSHC
         public static CipherAlgorithm SSH2NameToAlgorithm(string name)
         {
             if (name == "3des-cbc")
-                return CipherAlgorithm.TripleDES;
+                return CipherAlgorithm.TripleDes;
             else if (name == "blowfish-cbc")
                 return CipherAlgorithm.Blowfish;
             else if (name == "aes128-cbc")
-                return CipherAlgorithm.AES128;
+                return CipherAlgorithm.Aes128;
             else
                 throw new SSHException("Unknown algorithm " + name);
         }
@@ -331,17 +327,17 @@ namespace Routrek.SSHC
 
     /**********        MAC        ***********/
 
-    internal interface MAC
+    internal interface IMac
     {
         byte[] Calc(byte[] data);
         int Size { get; }
     }
 
-    internal class MACSHA1 : MAC
+    internal class Macsha1 : IMac
     {
         private HMACSHA1 _algorithm;
 
-        public MACSHA1(byte[] key)
+        public Macsha1(byte[] key)
         {
             _algorithm = new HMACSHA1(key);
         }
@@ -358,19 +354,19 @@ namespace Routrek.SSHC
         }
     }
 
-    internal class MACFactory
+    internal static class MACFactory
     {
-        public static MAC CreateMAC(MACAlgorithm algorithm, byte[] key)
+        public static IMac CreateMac(MacAlgorithm algorithm, byte[] key)
         {
-            if (algorithm == MACAlgorithm.HMACSHA1)
-                return new MACSHA1(key);
+            if (algorithm == MacAlgorithm.HMACSHA1)
+                return new Macsha1(key);
             else
                 throw new SSHException("unknown algorithm" + algorithm);
         }
 
-        public static int GetSize(MACAlgorithm algorithm)
+        public static int GetSize(MacAlgorithm algorithm)
         {
-            if (algorithm == MACAlgorithm.HMACSHA1)
+            if (algorithm == MacAlgorithm.HMACSHA1)
                 return 20;
             else
                 throw new SSHException("unknown algorithm" + algorithm);

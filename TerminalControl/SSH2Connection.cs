@@ -1,16 +1,13 @@
 using System;
-using System.Collections;
-using System.IO;
-using System.Threading;
 using System.Diagnostics;
-using System.Net.Sockets;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
 using Routrek.PKI;
 using Routrek.SSHC;
-using Routrek.Toolkit;
+using Routrek.SSHCV2;
 
-namespace Routrek.SSHCV2
+namespace PacketComs
 {
     public sealed class SSH2Connection : SSHConnection
     {
@@ -18,7 +15,7 @@ namespace Routrek.SSHCV2
         private int _tSequence;
 
         //MAC for transmission and reception
-        private MAC _tMAC;
+        private IMac _tMAC;
         private SSH2PacketBuilder _packetBuilder;
 
         //server info
@@ -476,7 +473,7 @@ namespace Routrek.SSHCV2
             _packetBuilder.SetSignal(true);
         }
 
-        internal void RefreshKeys(byte[] sessionID, Cipher tc, Cipher rc, MAC tm, MAC rm)
+        internal void RefreshKeys(byte[] sessionID, ICipher tc, ICipher rc, IMac tm, IMac rm)
         {
             _sessionID = sessionID;
             _tCipher = tc;
@@ -848,10 +845,10 @@ namespace Routrek.SSHCV2
         private byte[] _sessionID;
 
         //results
-        private Cipher _rc;
-        private Cipher _tc;
-        private MAC _rm;
-        private MAC _tm;
+        private ICipher _rc;
+        private ICipher _tc;
+        private IMac _rm;
+        private IMac _tm;
 
         private void TransmitPacket(byte[] payload)
         {
@@ -1041,9 +1038,9 @@ namespace Routrek.SSHCV2
                 DeriveKey(_k, _hash, 'B', CipherFactory.GetBlockSize(_cInfo._algorithmForReception)));
 
             //establish MACs
-            MACAlgorithm ma = MACAlgorithm.HMACSHA1;
-            _tm = MACFactory.CreateMAC(MACAlgorithm.HMACSHA1, DeriveKey(_k, _hash, 'E', MACFactory.GetSize(ma)));
-            _rm = MACFactory.CreateMAC(MACAlgorithm.HMACSHA1, DeriveKey(_k, _hash, 'F', MACFactory.GetSize(ma)));
+            MacAlgorithm ma = MacAlgorithm.HMACSHA1;
+            _tm = MACFactory.CreateMac(MacAlgorithm.HMACSHA1, DeriveKey(_k, _hash, 'E', MACFactory.GetSize(ma)));
+            _rm = MACFactory.CreateMac(MacAlgorithm.HMACSHA1, DeriveKey(_k, _hash, 'F', MACFactory.GetSize(ma)));
             _newKeyEvent.Set();
         }
 
