@@ -68,15 +68,15 @@ namespace PacketComs
 
         public ParityTypes ParityType
         {
-            get { return _ParityType; }
-            set { _ParityType = value; }
+            get { return _parityType; }
+            set { _parityType = value; }
         }
 
 
         public FlowTypes FlowType
         {
-            get { return _FlowType; }
-            set { _FlowType = value; }
+            get { return _flowType; }
+            set { _flowType = value; }
         }
 
         public BaudRateTypes BaudRateType
@@ -313,8 +313,8 @@ namespace PacketComs
         private BaudRateTypes _baudRateType;
         private DataBitsTypes _dataBitsType;
         private StopBitsTypes _stopBitsType;
-        private ParityTypes _ParityType;
-        private FlowTypes _FlowType;
+        private ParityTypes _parityType;
+        private FlowTypes _flowType;
         private Reader _reader;
         private string _hostname; // used for connecting to SSH
         private string _username; // maybe
@@ -335,37 +335,37 @@ namespace PacketComs
         private UcParser Parser;
         private UcKeyboard Keyboard = null;
         private UcTabStops TabStops = null;
-        private CharAttribStruct[][] AttribGrid = null;
+        private CharAttribStruct[][] _attribGrid = null;
         private CharAttribStruct _charAttribs;
         private Boolean _fileactive;
         private Int32 _port;
         private Boolean _beep;
         private Boolean _localecho;
         private Boolean _close;
-        private Boolean XOFF = false;
-        private AsyncCallback callbackProc;
-        private AsyncCallback callbackEndDispatch;
-        private String OutBuff = "";
-        private Int16 count;
+        private Boolean _xoff = false;
+        private AsyncCallback _callbackProc;
+        private AsyncCallback _callbackEndDispatch;
+        private String _outBuff = "";
+        private Int16 _count;
         private Int32 _cols;
         private Int32 _rows;
-        private Int32 TopMargin;
-        private Int32 BottomMargin;
+        private Int32 _topMargin;
+        private Int32 _bottomMargin;
         private Int32 TypeSize = 8;
-        private Int32 UnderlinePos;
+        private Int32 _underlinePos;
         private String TypeFace = FontFamily.GenericMonospace.GetName(0);
-        private Char[][] CharGrid = null;
-        private Bitmap EraseBitmap = null;
-        private Graphics EraseBuffer = null;
+        private Char[][] _charGrid = null;
+        private Bitmap _eraseBitmap = null;
+        private Graphics _eraseBuffer = null;
         private ArrayList SavedCarets;
-        private Point DrawStringOffset;
+        private Point _drawStringOffset;
         private Color FGColor;
         private Color BoldColor;
         private Color BlinkColor;
         private FontStyle TypeStyle = FontStyle.Regular;
-        private Size CharSize;
-        private Point BeginDrag; // used in Mouse Selecting Text
-        private Point EndDrag; // used in mouse selecting text
+        private Size _charSize;
+        private Point _beginDrag; // used in Mouse Selecting Text
+        private Point _endDrag; // used in mouse selecting text
         private Socket _curSocket;
         private UcCaret Caret;
         private UcChars G0;
@@ -430,7 +430,7 @@ namespace PacketComs
             //this.Name       = "ACK-TERM";
             //this.Text       = "ACK-TERM";
             Caret.Pos = new Point(0, 0);
-            CharSize = new Size();
+            _charSize = new Size();
             Font = new Font(TypeFace, TypeSize, TypeStyle);
             //this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
             //this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
@@ -487,8 +487,8 @@ namespace PacketComs
             //this.CaretOnEvent += new CaretOnEventHandler(this.CaretOn);
             RxdTextEvent += nvtParser.ParseString;
 
-            BeginDrag = new Point();
-            EndDrag = new Point();
+            _beginDrag = new Point();
+            _endDrag = new Point();
 
             ConnectionType = ConnectionTypes.Telnet; // default
         }
@@ -508,7 +508,7 @@ namespace PacketComs
             string textAtCursor = "";
             for (int x = 0; x < _cols; x++)
             {
-                char curChar = CharGrid[Caret.Pos.Y][x];
+                char curChar = _charGrid[Caret.Pos.Y][x];
                 if (curChar == '\0')
                 {
                     continue;
@@ -516,21 +516,21 @@ namespace PacketComs
                 textAtCursor = textAtCursor + Convert.ToString(curChar);
             }
             // calculate new rows and columns
-            int columns = ClientSize.Width/CharSize.Width - 1;
-            int rows = ClientSize.Height/CharSize.Height;
+            int columns = ClientSize.Width/_charSize.Width - 1;
+            int rows = ClientSize.Height/_charSize.Height;
 
             // make sure at least 1 row and 1 col or Control will throw
             if (rows < 5)
             {
                 rows = 5;
-                Height = CharSize.Height*rows;
+                Height = _charSize.Height*rows;
             }
 
             // make sure at least 1 row and 1 col or Control will throw
             if (columns < 5)
             {
                 columns = 5;
-                Width = CharSize.Width*columns;
+                Width = _charSize.Width*columns;
             }
 
             // make sure the bottom of this doesn't exceed bottom of parent client area
@@ -566,7 +566,7 @@ namespace PacketComs
                     //this.CharGrid[i][column] = '0';
                     if (column > visiblebuffer[i].Length - 1)
                         continue;
-                    CharGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
+                    _charGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
                 }
                 lastline = i;
             }
@@ -576,7 +576,7 @@ namespace PacketComs
             {
                 if (column > textAtCursor.Length - 1)
                     continue;
-                CharGrid[lastline + 1][column] = textAtCursor.ToCharArray()[column];
+                _charGrid[lastline + 1][column] = textAtCursor.ToCharArray()[column];
             }
             CaretToAbs(lastline + 1, textAtCursor.Length);
             Refresh();
@@ -643,20 +643,20 @@ namespace PacketComs
                 return;
 
             //Console.WriteLine(Convert.ToString(CurArgs.X) + "," + Convert.ToString(CurArgs.Y));
-            EndDrag.X = curArgs.X;
-            EndDrag.Y = curArgs.Y;
+            _endDrag.X = curArgs.X;
+            _endDrag.Y = curArgs.Y;
 
-            int endCol = EndDrag.X/CharSize.Width;
-            int endRow = EndDrag.Y/CharSize.Height;
+            int endCol = _endDrag.X/_charSize.Width;
+            int endRow = _endDrag.Y/_charSize.Height;
 
-            int begCol = BeginDrag.X/CharSize.Width;
-            int begRow = BeginDrag.Y/CharSize.Height;
+            int begCol = _beginDrag.X/_charSize.Width;
+            int begRow = _beginDrag.Y/_charSize.Height;
 
 
             // reset highlights
             for (int iRow = 0; iRow < _rows; iRow++)
                 for (int iCol = 0; iCol < _cols; iCol++)
-                    AttribGrid[iRow][iCol].IsInverse = false;
+                    _attribGrid[iRow][iCol].IsInverse = false;
 
 
             if (endRow < begRow) // we're parsing backwards
@@ -672,7 +672,7 @@ namespace PacketComs
                     for (int curCol = 0; curCol < _cols; curCol++)
                     {
                         // don't select if nothing is there
-                        if (CharGrid[curRow][curCol] == '\0')
+                        if (_charGrid[curRow][curCol] == '\0')
                             continue;
 
                         // on first row, make sure we start at begCol
@@ -682,11 +682,11 @@ namespace PacketComs
                         // on last row, don't pass the end col
                         if (curRow == endRow && curCol == begCol)
                         {
-                            AttribGrid[curRow][curCol].IsInverse = true;
+                            _attribGrid[curRow][curCol].IsInverse = true;
                             break;
                         }
 
-                        AttribGrid[curRow][curCol].IsInverse = true;
+                        _attribGrid[curRow][curCol].IsInverse = true;
                     }
                 }
                 Refresh();
@@ -711,7 +711,7 @@ namespace PacketComs
                 for (int curCol = 0; curCol < _cols; curCol++)
                 {
                     // don't select if nothing is there
-                    if (CharGrid[curRow][curCol] == '\0')
+                    if (_charGrid[curRow][curCol] == '\0')
                         continue;
 
                     // on first row, make sure we start at begCol
@@ -721,10 +721,10 @@ namespace PacketComs
                     // on last row, don't pass the end col
                     if (curRow == endRow && curCol == endCol)
                     {
-                        AttribGrid[curRow][curCol].IsInverse = true;
+                        _attribGrid[curRow][curCol].IsInverse = true;
                         break;
                     }
-                    AttribGrid[curRow][curCol].IsInverse = true;
+                    _attribGrid[curRow][curCol].IsInverse = true;
                 }
             }
             Refresh();
@@ -738,12 +738,12 @@ namespace PacketComs
         {
             if (curArgs.Button == MouseButtons.Left)
             {
-                if (BeginDrag.X == curArgs.X && BeginDrag.Y == curArgs.Y)
+                if (_beginDrag.X == curArgs.X && _beginDrag.Y == curArgs.Y)
                 {
                     // reset highlights
                     for (int iRow = 0; iRow < _rows; iRow++)
                         for (int iCol = 0; iCol < _cols; iCol++)
-                            AttribGrid[iRow][iCol].IsInverse = false;
+                            _attribGrid[iRow][iCol].IsInverse = false;
                     Refresh();
                 }
             }
@@ -759,8 +759,8 @@ namespace PacketComs
             if (curArgs.Button == MouseButtons.Left)
             {
                 // begin select
-                BeginDrag.X = curArgs.X;
-                BeginDrag.Y = curArgs.Y;
+                _beginDrag.X = curArgs.X;
+                _beginDrag.Y = curArgs.Y;
             }
             base.OnMouseDown(curArgs);
         }
@@ -1157,7 +1157,7 @@ namespace PacketComs
             {
                 for (int col = 0; col < _cols; col++)
                 {
-                    if (foundStart == false && AttribGrid[row][col].IsInverse)
+                    if (foundStart == false && _attribGrid[row][col].IsInverse)
                     {
                         start.X = col;
                         start.Y = row;
@@ -1169,8 +1169,8 @@ namespace PacketComs
                     // then we'll back up and stop at the last char in the prev line
                     if (foundStart &&
                         foundStop == false &&
-                        AttribGrid[row][col].IsInverse == false &&
-                        CharGrid[row][col] != '\0'
+                        _attribGrid[row][col].IsInverse == false &&
+                        _charGrid[row][col] != '\0'
                         )
                     {
                         stop.X = col - 1;
@@ -1182,11 +1182,11 @@ namespace PacketComs
                             // make sure we don't have a null row
                             // this shouldn't throw
                             row--;
-                            while (CharGrid[row][0] == '\0')
+                            while (_charGrid[row][0] == '\0')
                                 row--;
                             for (col = 0; col < _cols; col++) // parse the row
                             {
-                                if (CharGrid[row][col] == '\0') // we found the end
+                                if (_charGrid[row][col] == '\0') // we found the end
                                 {
                                     stop.X = col - 1;
                                     stop.Y = row;
@@ -1205,7 +1205,7 @@ namespace PacketComs
                 {
                     for (int col = 0; col < _cols; col++) // parse the row
                     {
-                        if (CharGrid[row][col] == '\0') // we found the end
+                        if (_charGrid[row][col] == '\0') // we found the end
                         {
                             stop.X = col - 1;
                             stop.Y = row;
@@ -1256,7 +1256,7 @@ namespace PacketComs
                 _textAtCursor = "";
                 for (int x = 0; x < _cols; x++)
                 {
-                    char curChar = CharGrid[Caret.Pos.Y][x];
+                    char curChar = _charGrid[Caret.Pos.Y][x];
                     if (curChar == '\0')
                     {
                         continue;
@@ -1316,7 +1316,7 @@ namespace PacketComs
                     //this.CharGrid[i][column] = '0';
                     if (column > visiblebuffer[i].Length - 1)
                         continue;
-                    CharGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
+                    _charGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
                 }
                 // if we're displaying the last line in scrollbackbuffer, then
                 // replace the cursor and the text on the cursor line
@@ -1329,7 +1329,7 @@ namespace PacketComs
                     {
                         if (column > _textAtCursor.Length - 1)
                             continue;
-                        CharGrid[_rows - 1][column] = _textAtCursor.ToCharArray()[column];
+                        _charGrid[_rows - 1][column] = _textAtCursor.ToCharArray()[column];
                     }
                     CaretToAbs(_rows - 1, _textAtCursor.Length);
                 }
@@ -1361,9 +1361,9 @@ namespace PacketComs
                 }
 
                 // If the offset does not make the Maximum less than zero, set its value.    
-                if ((ScrollbackBuffer.Count*CharSize.Height) - Height > 0)
+                if ((ScrollbackBuffer.Count*_charSize.Height) - Height > 0)
                 {
-                    VertScrollBar.Maximum = ScrollbackBuffer.Count*CharSize.Height - Height;
+                    VertScrollBar.Maximum = ScrollbackBuffer.Count*_charSize.Height - Height;
                 }
 
                 // If the HScrollBar is visible, adjust the Maximum of the 
@@ -1372,8 +1372,8 @@ namespace PacketComs
                 //{
                 //	this.vScrollBar1.Maximum += this.hScrollBar1.Height;
                 //}
-                VertScrollBar.LargeChange = VertScrollBar.Maximum/CharSize.Height*10;
-                VertScrollBar.SmallChange = VertScrollBar.Maximum/CharSize.Height;
+                VertScrollBar.LargeChange = VertScrollBar.Maximum/_charSize.Height*10;
+                VertScrollBar.SmallChange = VertScrollBar.Maximum/_charSize.Height;
                 // Adjust the Maximum value to make the raw Maximum value 
                 // attainable by user interaction.
                 VertScrollBar.Maximum += VertScrollBar.LargeChange;
@@ -1407,11 +1407,11 @@ namespace PacketComs
                     stateObject.Socket = sock1;
 
                     // Assign Callback function to read from Asyncronous Socket
-                    callbackProc = OnReceivedData;
+                    _callbackProc = OnReceivedData;
 
                     // Begin reading data asyncronously
                     sock1.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
-                        SocketFlags.None, callbackProc, stateObject);
+                        SocketFlags.None, _callbackProc, stateObject);
                 }
             }
 
@@ -1508,10 +1508,10 @@ namespace PacketComs
         private void DispatchMessage(Object sender, string strText)
         {
             //Console.WriteLine(strText);
-            if (XOFF)
+            if (_xoff)
             {
                 // store the characters in the outputbuffer
-                OutBuff += strText;
+                _outBuff += strText;
                 return;
             }
 
@@ -1521,10 +1521,10 @@ namespace PacketComs
             {
                 Byte[] smk = new Byte[strText.Length];
 
-                if (OutBuff != "")
+                if (_outBuff != "")
                 {
-                    strText = OutBuff + strText;
-                    OutBuff = "";
+                    strText = _outBuff + strText;
+                    _outBuff = "";
                 }
 
                 for (i = 0; i < strText.Length; i++)
@@ -1533,9 +1533,9 @@ namespace PacketComs
                     smk[i] = ss;
                 }
 
-                if (callbackEndDispatch == null)
+                if (_callbackEndDispatch == null)
                 {
-                    callbackEndDispatch = EndDispatchMessage;
+                    _callbackEndDispatch = EndDispatchMessage;
                 }
 
                 if (_cType == "Com")
@@ -1564,7 +1564,7 @@ namespace PacketComs
                                 0,
                                 smk.Length,
                                 SocketFlags.None,
-                                callbackEndDispatch,
+                                _callbackEndDispatch,
                                 _curSocket);
                             _lastAr = ar;
                         }
@@ -1619,20 +1619,20 @@ namespace PacketComs
             Int32 x = Caret.Pos.X;
             Int32 y = Caret.Pos.Y;
 
-            AttribGrid[y][x] = _charAttribs;
+            _attribGrid[y][x] = _charAttribs;
 
             if (_charAttribs.GS != null)
             {
-                curChar = UcChars.Get(curChar, AttribGrid[y][x].GS.Set, AttribGrid[y][x].GR.Set);
-                if (_charAttribs.GS.Set == UcChars.Sets.DECSG) AttribGrid[y][x].IsDECSG = true;
+                curChar = UcChars.Get(curChar, _attribGrid[y][x].GS.Set, _attribGrid[y][x].GR.Set);
+                if (_charAttribs.GS.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
                 _charAttribs.GS = null;
             }
             else
             {
-                curChar = UcChars.Get(curChar, AttribGrid[y][x].GL.Set, AttribGrid[y][x].GR.Set);
-                if (_charAttribs.GL.Set == UcChars.Sets.DECSG) AttribGrid[y][x].IsDECSG = true;
+                curChar = UcChars.Get(curChar, _attribGrid[y][x].GL.Set, _attribGrid[y][x].GR.Set);
+                if (_charAttribs.GL.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
             }
-            CharGrid[y][x] = curChar;
+            _charGrid[y][x] = curChar;
             CaretRight();
         }
 
@@ -1776,11 +1776,11 @@ namespace PacketComs
                 (curBgColor != FGColor && (Modes.Flags & UcMode.LightBackground) > 0))
             {
                 // Erase the current Character underneath the cursor postion
-                EraseBuffer.Clear(curBgColor);
+                _eraseBuffer.Clear(curBgColor);
 
                 // paint a rectangle over the cursor position in the character's BGColor
                 curGraphics.DrawImageUnscaled(
-                    EraseBitmap,
+                    _eraseBitmap,
                     x,
                     y);
             }
@@ -1788,8 +1788,8 @@ namespace PacketComs
             if (curAttribs.IsUnderscored)
             {
                 curGraphics.DrawLine(new Pen(curFgColor, 1),
-                    x, y + UnderlinePos,
-                    x + CharSize.Width, y + UnderlinePos);
+                    x, y + _underlinePos,
+                    x + _charSize.Width, y + _underlinePos);
             }
 
             if (curAttribs.IsDECSG &&
@@ -1820,8 +1820,8 @@ namespace PacketComs
                 curChar.ToString(CultureInfo.InvariantCulture),
                 Font,
                 new SolidBrush(curFgColor),
-                x - DrawStringOffset.X,
-                y - DrawStringOffset.Y);
+                x - _drawStringOffset.X,
+                y - _drawStringOffset.Y);
         }
 
         #endregion
@@ -1839,10 +1839,10 @@ namespace PacketComs
             {
                 case '`': // diamond
 
-                    curPoints[0] = new Point(x + CharSize.Width/2, y + CharSize.Height/6);
-                    curPoints[1] = new Point(x + 5*CharSize.Width/6, y + CharSize.Height/2);
-                    curPoints[2] = new Point(x + CharSize.Width/2, y + 5*CharSize.Height/6);
-                    curPoints[3] = new Point(x + CharSize.Width/6, y + CharSize.Height/2);
+                    curPoints[0] = new Point(x + _charSize.Width/2, y + _charSize.Height/6);
+                    curPoints[1] = new Point(x + 5*_charSize.Width/6, y + _charSize.Height/2);
+                    curPoints[2] = new Point(x + _charSize.Width/2, y + 5*_charSize.Height/6);
+                    curPoints[3] = new Point(x + _charSize.Width/6, y + _charSize.Height/2);
 
                     curGraphics.FillPolygon(
                         new SolidBrush(curFgColor),
@@ -1851,95 +1851,95 @@ namespace PacketComs
 
                 case 'l': // top left bracket
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2 - 1, y + CharSize.Height/2,
-                        x + CharSize.Width, y + CharSize.Height/2);
+                        x + _charSize.Width/2 - 1, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y + CharSize.Height/2,
-                        x + CharSize.Width/2, y + CharSize.Height);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 'q': // horizontal line
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + CharSize.Height/2,
-                        x + CharSize.Width, y + CharSize.Height/2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     break;
 
                 case 'w': // top tee-piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + CharSize.Height/2,
-                        x + CharSize.Width, y + CharSize.Height/2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y + CharSize.Height/2,
-                        x + CharSize.Width/2, y + CharSize.Height);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 'k': // top right bracket
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + CharSize.Height/2,
-                        x + CharSize.Width/2, y + CharSize.Height/2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y + CharSize.Height/2,
-                        x + CharSize.Width/2, y + CharSize.Height);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 'x': // vertical line
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y,
-                        x + CharSize.Width/2, y + CharSize.Height);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 't': // left hand tee-piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y,
-                        x + CharSize.Width/2, y + CharSize.Height);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y + CharSize.Height/2,
-                        x + CharSize.Width, y + CharSize.Height/2);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     break;
 
                 case 'n': // cross piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y,
-                        x + CharSize.Width/2, y + CharSize.Height);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + CharSize.Height/2,
-                        x + CharSize.Width, y + CharSize.Height/2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     break;
 
                 case 'u': // right hand tee-piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + CharSize.Height/2,
-                        x + CharSize.Width/2, y + CharSize.Height/2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y,
-                        x + CharSize.Width/2, y + CharSize.Height);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 'm': // bottom left bracket
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y + CharSize.Height/2,
-                        x + CharSize.Width, y + CharSize.Height/2);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y,
-                        x + CharSize.Width/2, y + CharSize.Height/2);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     break;
 
                 case 'v': // bottom tee-piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + CharSize.Height/2,
-                        x + CharSize.Width, y + CharSize.Height/2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y,
-                        x + CharSize.Width/2, y + CharSize.Height/2);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     break;
 
                 case 'j': // bottom right bracket
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + CharSize.Height/2,
-                        x + CharSize.Width/2, y + CharSize.Height/2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + CharSize.Width/2, y,
-                        x + CharSize.Width/2, y + CharSize.Height/2);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     break;
             }
         }
@@ -1972,25 +1972,25 @@ namespace PacketComs
             {
                 case 0: // from cursor to bottom inclusive
 
-                    Array.Clear(CharGrid[y], x, CharGrid[y].Length - x);
-                    Array.Clear(AttribGrid[y], x, AttribGrid[y].Length - x);
+                    Array.Clear(_charGrid[y], x, _charGrid[y].Length - x);
+                    Array.Clear(_attribGrid[y], x, _attribGrid[y].Length - x);
 
                     for (int i = y + 1; i < _rows; i++)
                     {
-                        Array.Clear(CharGrid[i], 0, CharGrid[i].Length);
-                        Array.Clear(AttribGrid[i], 0, AttribGrid[i].Length);
+                        Array.Clear(_charGrid[i], 0, _charGrid[i].Length);
+                        Array.Clear(_attribGrid[i], 0, _attribGrid[i].Length);
                     }
                     break;
 
                 case 1: // from top to cursor inclusive
 
-                    Array.Clear(CharGrid[y], 0, x + 1);
-                    Array.Clear(AttribGrid[y], 0, x + 1);
+                    Array.Clear(_charGrid[y], 0, x + 1);
+                    Array.Clear(_attribGrid[y], 0, x + 1);
 
                     for (int i = 0; i < y; i++)
                     {
-                        Array.Clear(CharGrid[i], 0, CharGrid[i].Length);
-                        Array.Clear(AttribGrid[i], 0, AttribGrid[i].Length);
+                        Array.Clear(_charGrid[i], 0, _charGrid[i].Length);
+                        Array.Clear(_attribGrid[i], 0, _attribGrid[i].Length);
                     }
                     break;
 
@@ -1998,8 +1998,8 @@ namespace PacketComs
 
                     for (int i = 0; i < _rows; i++)
                     {
-                        Array.Clear(CharGrid[i], 0, CharGrid[i].Length);
-                        Array.Clear(AttribGrid[i], 0, AttribGrid[i].Length);
+                        Array.Clear(_charGrid[i], 0, _charGrid[i].Length);
+                        Array.Clear(_attribGrid[i], 0, _attribGrid[i].Length);
                     }
                     break;
             }
@@ -2018,18 +2018,18 @@ namespace PacketComs
             {
                 case 0: // from cursor to end of line inclusive
 
-                    Array.Clear(CharGrid[y], x, CharGrid[y].Length - x);
-                    Array.Clear(AttribGrid[y], x, AttribGrid[y].Length - x);
+                    Array.Clear(_charGrid[y], x, _charGrid[y].Length - x);
+                    Array.Clear(_attribGrid[y], x, _attribGrid[y].Length - x);
                     break;
 
                 case 1: // from beginning to cursor inclusive
-                    Array.Clear(CharGrid[y], 0, x + 1);
-                    Array.Clear(AttribGrid[y], 0, x + 1);
+                    Array.Clear(_charGrid[y], 0, x + 1);
+                    Array.Clear(_attribGrid[y], 0, x + 1);
                     break;
 
                 case 2: // entire line
-                    Array.Clear(CharGrid[y], 0, CharGrid[y].Length);
-                    Array.Clear(AttribGrid[y], 0, AttribGrid[y].Length);
+                    Array.Clear(_charGrid[y], 0, _charGrid[y].Length);
+                    Array.Clear(_attribGrid[y], 0, _attribGrid[y].Length);
                     break;
             }
         }
@@ -2059,7 +2059,7 @@ namespace PacketComs
             {
                 for (Int32 x = 0; x < _cols; x++)
                 {
-                    CurChar = CharGrid[y][x];
+                    CurChar = _charGrid[y][x];
 
                     if (CurChar == '\0')
                     {
@@ -2067,15 +2067,15 @@ namespace PacketComs
                     }
 
                     CurPoint = new Point(
-                        x*CharSize.Width,
-                        y*CharSize.Height);
+                        x*_charSize.Width,
+                        y*_charSize.Height);
 
                     ShowChar(
                         curGraphics,
                         CurChar,
                         CurPoint.Y,
                         CurPoint.X,
-                        AttribGrid[y][x]);
+                        _attribGrid[y][x]);
                 }
             }
         }
@@ -2287,7 +2287,7 @@ namespace PacketComs
         private void ReverseLineFeed()
         {
             // if we're at the top of the scroll region (top margin)
-            if (Caret.Pos.Y == TopMargin)
+            if (Caret.Pos.Y == _topMargin)
             {
                 // we need to add a new line at the top of the screen margin
                 // so shift all the rows in the scroll region down in the array and
@@ -2295,13 +2295,13 @@ namespace PacketComs
 
                 int i;
 
-                for (i = BottomMargin; i > TopMargin; i--)
+                for (i = _bottomMargin; i > _topMargin; i--)
                 {
-                    CharGrid[i] = CharGrid[i - 1];
-                    AttribGrid[i] = AttribGrid[i - 1];
+                    _charGrid[i] = _charGrid[i - 1];
+                    _attribGrid[i] = _attribGrid[i - 1];
                 }
-                CharGrid[TopMargin] = new Char[_cols];
-                AttribGrid[TopMargin] = new CharAttribStruct[_cols];
+                _charGrid[_topMargin] = new Char[_cols];
+                _attribGrid[_topMargin] = new CharAttribStruct[_cols];
             }
 
             CaretUp();
@@ -2314,8 +2314,8 @@ namespace PacketComs
         private void InsertLine(UcParams curParams)
         {
             // if we're not in the scroll region then bail
-            if (Caret.Pos.Y < TopMargin ||
-                Caret.Pos.Y > BottomMargin)
+            if (Caret.Pos.Y < _topMargin ||
+                Caret.Pos.Y > _bottomMargin)
             {
                 return;
             }
@@ -2330,15 +2330,15 @@ namespace PacketComs
             while (nbrOff > 0)
             {
                 // Shift all the rows from the current row to the bottom margin down one place
-                for (int i = BottomMargin; i > Caret.Pos.Y; i--)
+                for (int i = _bottomMargin; i > Caret.Pos.Y; i--)
                 {
-                    CharGrid[i] = CharGrid[i - 1];
-                    AttribGrid[i] = AttribGrid[i - 1];
+                    _charGrid[i] = _charGrid[i - 1];
+                    _attribGrid[i] = _attribGrid[i - 1];
                 }
 
 
-                CharGrid[Caret.Pos.Y] = new Char[_cols];
-                AttribGrid[Caret.Pos.Y] = new CharAttribStruct[_cols];
+                _charGrid[Caret.Pos.Y] = new Char[_cols];
+                _attribGrid[Caret.Pos.Y] = new CharAttribStruct[_cols];
 
                 nbrOff--;
             }
@@ -2351,8 +2351,8 @@ namespace PacketComs
         private void DeleteLine(UcParams curParams)
         {
             // if we're not in the scroll region then bail
-            if (Caret.Pos.Y < TopMargin ||
-                Caret.Pos.Y > BottomMargin)
+            if (Caret.Pos.Y < _topMargin ||
+                Caret.Pos.Y > _bottomMargin)
             {
                 return;
             }
@@ -2367,14 +2367,14 @@ namespace PacketComs
             while (nbrOff > 0)
             {
                 // Shift all the rows from below the current row to the bottom margin up one place
-                for (int i = Caret.Pos.Y; i < BottomMargin; i++)
+                for (int i = Caret.Pos.Y; i < _bottomMargin; i++)
                 {
-                    CharGrid[i] = CharGrid[i + 1];
-                    AttribGrid[i] = AttribGrid[i + 1];
+                    _charGrid[i] = _charGrid[i + 1];
+                    _attribGrid[i] = _attribGrid[i + 1];
                 }
 
-                CharGrid[BottomMargin] = new Char[_cols];
-                AttribGrid[BottomMargin] = new CharAttribStruct[_cols];
+                _charGrid[_bottomMargin] = new Char[_cols];
+                _attribGrid[_bottomMargin] = new CharAttribStruct[_cols];
 
                 nbrOff--;
             }
@@ -2400,7 +2400,7 @@ namespace PacketComs
             string s = "";
             for (int x = 0; x < _cols; x++)
             {
-                char curChar = CharGrid[Caret.Pos.Y][x];
+                char curChar = _charGrid[Caret.Pos.Y][x];
 
                 if (curChar == '\0')
                 {
@@ -2410,18 +2410,18 @@ namespace PacketComs
             }
             ScrollbackBuffer.Add(s);
 
-            if (Caret.Pos.Y == BottomMargin || Caret.Pos.Y == _rows - 1)
+            if (Caret.Pos.Y == _bottomMargin || Caret.Pos.Y == _rows - 1)
             {
                 // we need to add a new line so shift all the rows up in the array and
                 // insert a new row at the bottom
                 int i;
-                for (i = TopMargin; i < BottomMargin; i++)
+                for (i = _topMargin; i < _bottomMargin; i++)
                 {
-                    CharGrid[i] = CharGrid[i + 1];
-                    AttribGrid[i] = AttribGrid[i + 1];
+                    _charGrid[i] = _charGrid[i + 1];
+                    _attribGrid[i] = _attribGrid[i + 1];
                 }
-                CharGrid[i] = new Char[_cols];
-                AttribGrid[i] = new CharAttribStruct[_cols];
+                _charGrid[i] = new Char[_cols];
+                _attribGrid[i] = new CharAttribStruct[_cols];
             }
             CaretDown();
         }
@@ -2499,11 +2499,11 @@ namespace PacketComs
             // paint a rectangle over the cursor position
             curGraphics.DrawImageUnscaled(
                 Caret.Bitmap,
-                x*CharSize.Width,
-                y*CharSize.Height);
+                x*_charSize.Width,
+                y*_charSize.Height);
 
             // if we don't have a char to redraw then leave
-            if (CharGrid[y][x] == '\0')
+            if (_charGrid[y][x] == '\0')
             {
                 return;
             }
@@ -2512,28 +2512,28 @@ namespace PacketComs
 
             curAttribs.UseAltColor = true;
 
-            curAttribs.GL = AttribGrid[y][x].GL;
-            curAttribs.GR = AttribGrid[y][x].GR;
-            curAttribs.GS = AttribGrid[y][x].GS;
+            curAttribs.GL = _attribGrid[y][x].GL;
+            curAttribs.GR = _attribGrid[y][x].GR;
+            curAttribs.GS = _attribGrid[y][x].GS;
 
-            if (AttribGrid[y][x].UseAltBGColor == false)
+            if (_attribGrid[y][x].UseAltBGColor == false)
             {
                 curAttribs.AltColor = BackColor;
             }
-            else if (AttribGrid[y][x].UseAltBGColor)
+            else if (_attribGrid[y][x].UseAltBGColor)
             {
-                curAttribs.AltColor = AttribGrid[y][x].AltBGColor;
+                curAttribs.AltColor = _attribGrid[y][x].AltBGColor;
             }
 
-            curAttribs.IsUnderscored = AttribGrid[y][x].IsUnderscored;
-            curAttribs.IsDECSG = AttribGrid[y][x].IsDECSG;
+            curAttribs.IsUnderscored = _attribGrid[y][x].IsUnderscored;
+            curAttribs.IsDECSG = _attribGrid[y][x].IsDECSG;
 
             // redispay the current char in the background colour
             ShowChar(
                 curGraphics,
-                CharGrid[y][x],
-                Caret.Pos.Y*CharSize.Height,
-                Caret.Pos.X*CharSize.Width,
+                _charGrid[y][x],
+                Caret.Pos.Y*_charSize.Height,
+                Caret.Pos.X*_charSize.Width,
                 curAttribs);
         }
 
@@ -2546,7 +2546,7 @@ namespace PacketComs
             Caret.EOL = false;
 
             if ((Caret.Pos.Y > 0 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
-                (Caret.Pos.Y > TopMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
+                (Caret.Pos.Y > _topMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
             {
                 Caret.Pos.Y -= 1;
             }
@@ -2561,7 +2561,7 @@ namespace PacketComs
             Caret.EOL = false;
 
             if ((Caret.Pos.Y < _rows - 1 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
-                (Caret.Pos.Y < BottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
+                (Caret.Pos.Y < _bottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
             {
                 Caret.Pos.Y += 1;
             }
@@ -2619,7 +2619,7 @@ namespace PacketComs
 
             /* the origin mode is relative so add the top and left margin
                    to Y and X respectively */
-            y += TopMargin;
+            y += _topMargin;
 
             if (x < 0)
             {
@@ -2631,14 +2631,14 @@ namespace PacketComs
                 x = _cols - 1;
             }
 
-            if (y < TopMargin)
+            if (y < _topMargin)
             {
-                y = TopMargin;
+                y = _topMargin;
             }
 
-            if (y > BottomMargin)
+            if (y > _bottomMargin)
             {
-                y = BottomMargin;
+                y = _bottomMargin;
             }
 
             Caret.Pos.Y = y;
@@ -2668,9 +2668,9 @@ namespace PacketComs
                 y = 0;
             }
 
-            if (y < TopMargin && (Modes.Flags & UcMode.OriginRelative) > 0)
+            if (y < _topMargin && (Modes.Flags & UcMode.OriginRelative) > 0)
             {
-                y = TopMargin;
+                y = _topMargin;
             }
 
             if (y > _rows - 1 && (Modes.Flags & UcMode.OriginRelative) == 0)
@@ -2678,9 +2678,9 @@ namespace PacketComs
                 y = _rows - 1;
             }
 
-            if (y > BottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0)
+            if (y > _bottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0)
             {
-                y = BottomMargin;
+                y = _bottomMargin;
             }
 
             Caret.Pos.Y = y;
@@ -3267,22 +3267,22 @@ namespace PacketComs
         {
             if (curParams.Count() > 0)
             {
-                TopMargin = Convert.ToInt32(curParams.Elements[0]) - 1;
+                _topMargin = Convert.ToInt32(curParams.Elements[0]) - 1;
             }
 
             if (curParams.Count() > 1)
             {
-                BottomMargin = Convert.ToInt32(curParams.Elements[1]) - 1;
+                _bottomMargin = Convert.ToInt32(curParams.Elements[1]) - 1;
             }
 
-            if (BottomMargin == 0)
+            if (_bottomMargin == 0)
             {
-                BottomMargin = _rows - 1;
+                _bottomMargin = _rows - 1;
             }
 
-            if (TopMargin < 0)
+            if (_topMargin < 0)
             {
-                BottomMargin = 0;
+                _bottomMargin = 0;
             }
         }
 
@@ -3456,15 +3456,15 @@ namespace PacketComs
                     // this.BELL;
                     if (_beep)
                     {
-                        if (count == 0)
+                        if (_count == 0)
                         {
                             // Beep at 5000 Hz for 1 second
                             Console.Beep(2000, 500);
-                            count = 1;
+                            _count = 1;
                         }
                         else
                         {
-                            count = 0;
+                            _count = 0;
                         }
                     }
                     break;
@@ -3497,12 +3497,12 @@ namespace PacketComs
                     break;
 
                 case '\x11': // DC1/XON continue sending characters
-                    XOFF = false;
+                    _xoff = false;
                     DispatchMessage(this, "");
                     break;
 
                 case '\x13': // DC3/XOFF stop sending characters
-                    XOFF = true;
+                    _xoff = true;
                     break;
 
                 case '\x85': // NEL Next line (same as line feed and carriage return)
@@ -3537,29 +3537,29 @@ namespace PacketComs
             _rows = rows;
             _cols = Columns;
 
-            TopMargin = 0;
-            BottomMargin = rows - 1;
+            _topMargin = 0;
+            _bottomMargin = rows - 1;
 
             //this.ClientSize = new System.Drawing.Size (
             //	System.Convert.ToInt32 (this.CharSize.Width  * this.Columns + 2) + this.VertScrollBar.Width,
             //	System.Convert.ToInt32 (this.CharSize.Height * this.Rows    + 2));
 
             // create the character grid (rows by columns) this is a shadow of what's displayed
-            CharGrid = new Char[rows][];
+            _charGrid = new Char[rows][];
 
             Caret.Pos.X = 0;
             Caret.Pos.Y = 0;
 
-            for (int i = 0; i < CharGrid.Length; i++)
+            for (int i = 0; i < _charGrid.Length; i++)
             {
-                CharGrid[i] = new Char[Columns];
+                _charGrid[i] = new Char[Columns];
             }
 
-            AttribGrid = new CharAttribStruct[rows][];
+            _attribGrid = new CharAttribStruct[rows][];
 
-            for (int i = 0; i < AttribGrid.Length; i++)
+            for (int i = 0; i < _attribGrid.Length; i++)
             {
-                AttribGrid[i] = new CharAttribStruct[Columns];
+                _attribGrid[i] = new CharAttribStruct[Columns];
             }
         }
 
@@ -3572,13 +3572,13 @@ namespace PacketComs
             Graphics tmpGraphics = CreateGraphics();
 
             // get the offset that the moron Graphics.Drawstring method adds by default
-            DrawStringOffset = GetDrawStringOffset(tmpGraphics, 0, 0, 'A');
+            _drawStringOffset = GetDrawStringOffset(tmpGraphics, 0, 0, 'A');
 
             // get the size of the character using the same type of method
             Point tmpPoint = GetCharSize(tmpGraphics);
 
-            CharSize.Width = tmpPoint.X; // make a little breathing room
-            CharSize.Height = tmpPoint.Y;
+            _charSize.Width = tmpPoint.X; // make a little breathing room
+            _charSize.Height = tmpPoint.Y;
 
             //Graphics g = this.CreateGraphics();
             //SizeF size = g.MeasureString("_", this.Font);
@@ -3587,13 +3587,13 @@ namespace PacketComs
 
             tmpGraphics.Dispose();
 
-            UnderlinePos = CharSize.Height - 2;
+            _underlinePos = _charSize.Height - 2;
 
-            Caret.Bitmap = new Bitmap(CharSize.Width, CharSize.Height);
+            Caret.Bitmap = new Bitmap(_charSize.Width, _charSize.Height);
             Caret.Buffer = Graphics.FromImage(Caret.Bitmap);
             Caret.Buffer.Clear(Color.FromArgb(255, 181, 106));
-            EraseBitmap = new Bitmap(CharSize.Width, CharSize.Height);
-            EraseBuffer = Graphics.FromImage(EraseBitmap);
+            _eraseBitmap = new Bitmap(_charSize.Width, _charSize.Height);
+            _eraseBuffer = Graphics.FromImage(_eraseBitmap);
         }
 
         #endregion

@@ -370,10 +370,8 @@ namespace Packet
             this.mail_button.UseVisualStyleBackColor = true;
             this.mail_button.Click += new System.EventHandler(this.mail_button_Click);
             // 
-            // terminalEmulator1
-            // 
-            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            this.terminalEmulator1.BaudRateType = TerminalEmulator.BaudRateTypes.Baud_4800;
+            terminalEmulator1.BackColor = System.Drawing.Color.Black;
+            terminalEmulator1.BaudRateType = TerminalEmulator.BaudRateTypes.Baud_4800;
             this.terminalEmulator1.BBSPrompt = null;
             this.terminalEmulator1.Beep = true;
             this.terminalEmulator1.Close = false;
