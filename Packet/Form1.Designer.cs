@@ -398,7 +398,7 @@
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.UernamePrompt = null;
             this.terminalEmulator1.Username = null;
-            this.terminalEmulator1.Disconnected += new System.EventHandler(this.disconnected);
+            this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
