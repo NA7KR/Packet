@@ -4,8 +4,6 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using PacketSoftware;
-using Utility.Encrypting;
-using Utility.ModifyRegistry;
 
 #endregion
 
@@ -21,13 +19,7 @@ namespace Packet
     {
         #region private TelnetConnection
 
-        private readonly Encrypting _myEncrypt = new Encrypting();
-        private readonly ModifyRegistry _myRegistry = new ModifyRegistry();
-        private readonly ModifyRegistry _myRegistryBBS = new ModifyRegistry();
-        private readonly ModifyRegistry _myRegistryCluster = new ModifyRegistry();
-        private readonly ModifyRegistry _myRegistryCom = new ModifyRegistry();
-        private readonly ModifyRegistry _myRegistryNode = new ModifyRegistry();
-        private readonly ModifyRegistry _myRegistrySSH = new ModifyRegistry();
+      
         private Boolean _bBeep = true;
         private Color _backgroundColor = Color.Black;
         private Color _textColor = Color.Yellow;
@@ -44,15 +36,15 @@ namespace Packet
             _myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             _myRegistry.ShowError = true;
             _myRegistryCom.SubKey = "SOFTWARE\\NA7KR\\Packet\\Port";
-            _myRegistryBBS.SubKey = "SOFTWARE\\NA7KR\\Packet\\BBS";
+            _myRegistryBbs.SubKey = "SOFTWARE\\NA7KR\\Packet\\BBS";
             _myRegistryNode.SubKey = "SOFTWARE\\NA7KR\\Packet\\Node";
             _myRegistryCluster.SubKey = "SOFTWARE\\NA7KR\\Packet\\Cluster";
-            _myRegistrySSH.SubKey = "SOFTWARE\\NA7KR\\Packet\\SSH";
+            _myRegistrySsh.SubKey = "SOFTWARE\\NA7KR\\Packet\\SSH";
             _myRegistryCom.ShowError = true;
-            _myRegistryBBS.ShowError = true;
+            _myRegistryBbs.ShowError = true;
             _myRegistryNode.ShowError = true;
             _myRegistryCluster.ShowError = true;
-            _myRegistrySSH.ShowError = true;
+            _myRegistrySsh.ShowError = true;
             _myRegistry.Write("Packet", Application.ProductVersion);
             bbs_button.Enabled = true;
             forward_button.Enabled = false;
@@ -311,7 +303,7 @@ namespace Packet
 
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var box = new IP_Form("BBS", (_myRegistry.Read("BBS-Mode")));
+            var box = new IpForm("BBS", (_myRegistry.Read("BBS-Mode")));
             box.ShowDialog();
         }
 
@@ -336,7 +328,7 @@ namespace Packet
             terminalEmulator1.FileActive = true;
             forward_button.Enabled = false;
             forward_button.Text = "Forward active";
-            terminalEmulator1.LastNumber = _myRegistryBBS.Read("Start Number");
+            terminalEmulator1.LastNumber = _myRegistryBbs.Read("Start Number");
             terminalEmulator1.startforward();
         }
 
@@ -402,8 +394,9 @@ namespace Packet
                 _bBeep = false;
                 toolStripComboBoxBeep.SelectedIndex = 1;
             }
-            string myREG = _myRegistry.Read("Color Text");
-            switch (myREG)
+            string myReg = _myRegistry.Read("Color Text");
+            if (myReg == null) throw new ArgumentNullException("myReg");
+            switch (myReg)
             {
                 case "Black":
                     toolStripComboBoxTXTC.SelectedIndex = 0;
@@ -484,7 +477,7 @@ namespace Packet
                     break;
             }
             terminalEmulator1.BackColor = _backgroundColor;
-            if (_myRegistrySSH.Read("Active") == "Yes")
+            if (_myRegistrySsh.Read("Active") == "Yes")
             {
                 ssh_button.Visible = true;
             }
@@ -500,7 +493,7 @@ namespace Packet
         {
             try
             {
-                if (_myRegistryBBS.BRead("Prompt") == "BlanKey!!")
+                if (_myRegistryBbs.BRead("Prompt") == "BlanKey!!")
                 {
                     MessageBox.Show("BBS may not correct as BBS Prompt cot configured", "Important Note",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
@@ -508,7 +501,7 @@ namespace Packet
 
                 if (_myRegistry.Read("BBS-Mode") == "Telnet")
                 {
-                    if (_myRegistryBBS.Read("Echo") == "Yes")
+                    if (_myRegistryBbs.Read("Echo") == "Yes")
                     {
                         terminalEmulator1.LocalEcho = true;
                     }
@@ -516,14 +509,14 @@ namespace Packet
                     {
                         terminalEmulator1.LocalEcho = false;
                     }
-                    terminalEmulator1.Port = Convert.ToInt32(_myRegistryBBS.Read("Port"));
-                    terminalEmulator1.Hostname = _myRegistryBBS.Read("IP");
-                    terminalEmulator1.Username = _myRegistryBBS.Read("CallSign");
-                    terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryBBS.Read("Password"));
+                    terminalEmulator1.Port = Convert.ToInt32(_myRegistryBbs.Read("Port"));
+                    terminalEmulator1.Hostname = _myRegistryBbs.Read("IP");
+                    terminalEmulator1.Username = _myRegistryBbs.Read("CallSign");
+                    terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryBbs.Read("Password"));
                     terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-                    terminalEmulator1.BBSPrompt = _myRegistryBBS.BRead("Prompt");
-                    terminalEmulator1.UernamePrompt = _myRegistryBBS.BRead("UserNamePrompt");
-                    terminalEmulator1.passwordPrompt = _myRegistryBBS.BRead("PasswordPrompt");
+                    terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
+                    terminalEmulator1.UernamePrompt = _myRegistryBbs.BRead("UserNamePrompt");
+                    terminalEmulator1.passwordPrompt = _myRegistryBbs.BRead("PasswordPrompt");
                 }
                 else
                 {
@@ -539,7 +532,7 @@ namespace Packet
                     terminalEmulator1.FlowType =
                         ParseEnum<TerminalEmulator.FlowTypes>(_myRegistryCom.Read("Flow"));
                     terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.COM;
-                    terminalEmulator1.BBSPrompt = _myRegistryBBS.BRead("Prompt");
+                    terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
                     terminalEmulator1.SerialPort = _myRegistryCom.Read("Port");
                 }
 
@@ -663,7 +656,7 @@ namespace Packet
 
         private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var box = new IP_Form("Cluster", (_myRegistry.Read("Cluster-Mode")));
+            var box = new IpForm("Cluster", (_myRegistry.Read("Cluster-Mode")));
             box.ShowDialog();
         }
 
@@ -673,7 +666,7 @@ namespace Packet
 
         private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var box = new IP_Form("Node", (_myRegistry.Read("Node-Mode")));
+            var box = new IpForm("Node", (_myRegistry.Read("Node-Mode")));
             box.ShowDialog();
         }
 
@@ -706,10 +699,10 @@ namespace Packet
             node_button.Enabled = false;
             disconnect_button.Enabled = true;
             terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.SSH2;
-            terminalEmulator1.Port = Convert.ToInt32(_myRegistrySSH.Read("Port"));
-            terminalEmulator1.Hostname = _myRegistrySSH.Read("IP");
-            terminalEmulator1.Username = _myRegistrySSH.Read("UserName");
-            terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistrySSH.Read("Password"));
+            terminalEmulator1.Port = Convert.ToInt32(_myRegistrySsh.Read("Port"));
+            terminalEmulator1.Hostname = _myRegistrySsh.Read("IP");
+            terminalEmulator1.Username = _myRegistrySsh.Read("UserName");
+            terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistrySsh.Read("Password"));
             terminalEmulator1.Connect();
         }
 
@@ -719,9 +712,9 @@ namespace Packet
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var box = new IP_Form("SSH", "SSH");
+            var box = new IpForm("SSH", "SSH");
             box.ShowDialog();
-            if (_myRegistrySSH.Read("Active") == "No")
+            if (_myRegistrySsh.Read("Active") == "No")
             {
                 ssh_button.Visible = false;
             }
@@ -747,7 +740,7 @@ namespace Packet
 
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
-            var box = new Com_Form();
+            var box = new ComForm();
             box.ShowDialog();
         }
 
@@ -855,7 +848,7 @@ namespace Packet
         private void terminalEmulator1_LastNumberevt(object sender, EventArgs e)
         {
             String number = (terminalEmulator1.LastNumber);
-            _myRegistryBBS.Write("Start Number", number);
+            _myRegistryBbs.Write("Start Number", number);
         }
 
         private void mail_button_Click(object sender, EventArgs e)

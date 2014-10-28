@@ -1,6 +1,6 @@
 ﻿namespace Packet
 {
-    partial class IP_Form
+    partial class IpForm
     {
         /// <summary>
         /// Required designer variable.
@@ -288,7 +288,7 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "IP_Form";
+            this.Name = "IpForm";
             this.Text = "IP Config";
             this.Load += new System.EventHandler(this.IP_Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
@@ -325,5 +325,7 @@
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.BindingSource bindingSource2;
+        private readonly string _var1; // mode bbs
+        private readonly string _var2; //mode telnet
     }
 }

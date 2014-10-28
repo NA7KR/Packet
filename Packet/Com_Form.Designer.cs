@@ -1,6 +1,8 @@
-﻿namespace Packet
+﻿using System;
+
+namespace Packet
 {
-    partial class Com_Form
+    partial class ComForm
     {
         /// <summary>
         /// Required designer variable.
@@ -522,7 +524,7 @@
             this.Controls.Add(this.groupBoxBaudRate);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Com_Form";
+            this.Name = "ComForm";
             this.Text = "Com Port Config";
             this.Load += new System.EventHandler(this.Com_Form_Load);
             this.groupBoxBaudRate.ResumeLayout(false);
@@ -578,5 +580,18 @@
         private System.Windows.Forms.RadioButton radioButton_Stop_None;
         private System.Windows.Forms.RadioButton radioButton_Stop_2;
         private System.Windows.Forms.RadioButton radioButton_Flow_RequestToSend;
+        public string flow;
+        public string parity;
+        public string port;
+        public Int32 speed;
+        public string stop;
+        public Int32 top = 30;
+        public Int32 DataBits;
+        public string Flow;
+        public string Parity;
+        public Int32 Speed;
+        public string StopBits;
+        public Int32 Data;
+        private Encrypting _myEncrypt = new Encrypting();
     }
 }

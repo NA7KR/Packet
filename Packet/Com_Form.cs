@@ -1,16 +1,8 @@
 ﻿#region Using Directive
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO.Ports;
 using System.Windows.Forms;
-using Utility.ModifyRegistry;
-using Utility.Encrypting;
 
 #endregion
 
@@ -19,30 +11,18 @@ namespace Packet
 
     #region partial class Com_Form
 
-    public partial class Com_Form : Form
+    public partial class ComForm : Form
     {
-        private ModifyRegistry myRegistry = new ModifyRegistry();
-        private Encrypting myEncrypt = new Encrypting();
-        public System.Int32 Speed;
-        public System.Int32 speed;
-        public System.Int32 data;
-        public System.Int32 DataBits;
-        public string StopBits;
-        public string Parity;
-        public string Flow;
-        public string stop;
-        public string parity;
-        public string flow;
-        public string port;
-        public System.Int32 top = 30;
+        private readonly ModifyRegistry _myRegistry = new ModifyRegistry();
 
         #region Com_Form()
 
-        public Com_Form()
+        public ComForm(Encrypting myEncrypt)
         {
+            MyEncrypt = myEncrypt;
             InitializeComponent();
-            this.myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet\\Port";
-            myRegistry.ShowError = true;
+            _myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet\\Port";
+            _myRegistry.ShowError = true;
             radioButton110.Top = top;
             radioButton300.Top = top;
             radioButton600.Top = top;
@@ -106,6 +86,17 @@ namespace Packet
             comboBoxPort.Top = top*8 + 30;
         }
 
+        public ComForm()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Encrypting MyEncrypt
+        {
+            get { return _myEncrypt; }
+            set { _myEncrypt = value; }
+        }
+
         #endregion
 
         #region button
@@ -114,17 +105,17 @@ namespace Packet
         {
             try
             {
-                myRegistry.Write("Baud", Convert.ToString(Speed));
-                myRegistry.Write("Data Bits", Convert.ToString(DataBits));
-                myRegistry.Write("Stop Bits", StopBits);
-                myRegistry.Write("Parity", Parity);
-                myRegistry.Write("Flow", Flow);
-                myRegistry.Write("Port", port);
-                this.Close();
+                _myRegistry.Write("Baud", Convert.ToString(Speed));
+                _myRegistry.Write("Data Bits", Convert.ToString(DataBits));
+                _myRegistry.Write("Stop Bits", StopBits);
+                _myRegistry.Write("Parity", Parity);
+                _myRegistry.Write("Flow", Flow);
+                _myRegistry.Write("Port", port);
+                Close();
             }
             catch
             {
-                this.Close();
+                Close();
             }
         }
 
@@ -202,11 +193,6 @@ namespace Packet
             DataBits = 8;
         }
 
-        private void radioButton_Stop_None_CheckedChanged(object sender, EventArgs e)
-        {
-            StopBits = "None";
-        }
-
         private void radioButton_Stop_1_CheckedChanged(object sender, EventArgs e)
         {
             StopBits = "One";
@@ -270,69 +256,67 @@ namespace Packet
         {
             #region  case switch baud
 
-            speed = Convert.ToInt32(myRegistry.Read("Baud"));
+            speed = Convert.ToInt32(_myRegistry.Read("Baud"));
             switch (speed)
             {
                 case 110:
                 {
-                    this.radioButton110.Checked = true;
+                    radioButton110.Checked = true;
                     break;
                 }
                 case 300:
                 {
-                    this.radioButton300.Checked = true;
+                    radioButton300.Checked = true;
                     break;
                 }
                 case 600:
                 {
-                    this.radioButton600.Checked = true;
+                    radioButton600.Checked = true;
                     break;
                 }
                 case 1200:
                 {
-                    this.radioButton1200.Checked = true;
+                    radioButton1200.Checked = true;
                     break;
                 }
                 case 2400:
                 {
-                    this.radioButton2400.Checked = true;
+                    radioButton2400.Checked = true;
                     break;
                 }
                 case 4800:
                 {
-                    this.radioButton4800.Checked = true;
+                    radioButton4800.Checked = true;
                     break;
                 }
                 case 9600:
                 {
-                    this.radioButton9600.Checked = true;
+                    radioButton9600.Checked = true;
                     break;
                 }
                 case 19200:
                 {
-                    this.radioButton19200.Checked = true;
+                    radioButton19200.Checked = true;
                     break;
                 }
                 case 38400:
                 {
-                    this.radioButton38400.Checked = true;
+                    radioButton38400.Checked = true;
                     break;
                 }
                 case 57600:
                 {
-                    this.radioButton57600.Checked = true;
+                    radioButton57600.Checked = true;
                     break;
                 }
-                default:
-                    break;
             }
 
             #endregion
 
             #region  case switch Data Bits
 
-            data = Convert.ToInt32(myRegistry.Read("Data Bits"));
-            switch (data)
+            Data = Convert.ToInt32(_myRegistry.Read("Data Bits"));
+            switch (Data)
             {
                 case 5:
                 {
@@ -354,15 +338,13 @@ namespace Packet
                     radioButton_Data_8.Checked = true;
                     break;
                 }
-                default:
-                    break;
             }
 
             #endregion
 
             #region  case switch Stop Bits
 
-            stop = myRegistry.Read("Stop Bits");
+            stop = _myRegistry.Read("Stop Bits");
             switch (stop)
             {
                 case "One":
@@ -385,16 +367,13 @@ namespace Packet
                     radioButton_Stop_None.Checked = true;
                     break;
                 }
-
-                default:
-                    break;
             }
 
             #endregion
 
             #region  case switch Parity
 
-            parity = myRegistry.Read("Parity");
+            parity = _myRegistry.Read("Parity");
             switch (parity)
             {
                 case "None":
@@ -422,16 +401,13 @@ namespace Packet
                     radioButton_Parity_Space.Checked = true;
                     break;
                 }
-
-                default:
-                    break;
             }
 
             #endregion
 
             #region  case switch flow
 
-            flow = myRegistry.Read("Flow");
+            flow = _myRegistry.Read("Flow");
             switch (flow)
             {
                 case "XOnXOff":
@@ -449,19 +425,16 @@ namespace Packet
                     radioButton_Flow_None.Checked = true;
                     break;
                 }
-
-                default:
-                    break;
             }
 
             #endregion
 
             comboBoxPort.Items.Clear();
-            foreach (string item in System.IO.Ports.SerialPort.GetPortNames())
+            foreach (string item in SerialPort.GetPortNames())
             {
                 comboBoxPort.Items.Add(item);
             }
-            comboBoxPort.SelectedItem = myRegistry.Read("Port");
+            comboBoxPort.SelectedItem = _myRegistry.Read("Port");
             // needs work
         }
 

@@ -1,12 +1,12 @@
 #region Using Directive
 
 using System;
-using Microsoft.Win32;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 #endregion
 
-namespace Utility.ModifyRegistry
+namespace Packet
 {
     // An useful class to read/write/delete registry keys
 
@@ -14,16 +14,16 @@ namespace Utility.ModifyRegistry
 
     public class ModifyRegistry
     {
-        private bool showError = false;
-        private string subKey = "SOFTWARE\\" + Application.ProductName;
-        private RegistryKey baseRegistryKey = Registry.LocalMachine;
+        private RegistryKey _baseRegistryKey = Registry.LocalMachine;
+        private bool _showError;
+        private string _subKey = "SOFTWARE\\" + Application.ProductName;
 
         #region Show Error
 
         public bool ShowError
         {
-            get { return showError; }
-            set { showError = value; }
+            get { return _showError; }
+            set { _showError = value; }
         }
 
         #endregion
@@ -32,8 +32,8 @@ namespace Utility.ModifyRegistry
 
         public string SubKey
         {
-            get { return subKey; }
-            set { subKey = value; }
+            get { return _subKey; }
+            set { _subKey = value; }
         }
 
         #endregion
@@ -42,33 +42,30 @@ namespace Utility.ModifyRegistry
 
         public RegistryKey BaseRegistryKey
         {
-            get { return baseRegistryKey; }
-            set { baseRegistryKey = value; }
+            get { return _baseRegistryKey; }
+            set { _baseRegistryKey = value; }
         }
 
         #endregion
 
         #region Read
 
-        public string Read(string KeyName)
+        public string Read(string keyName)
         {
-            RegistryKey rk = baseRegistryKey;
-            RegistryKey sk1 = rk.OpenSubKey(subKey);
+            RegistryKey rk = _baseRegistryKey;
+            RegistryKey sk1 = rk.OpenSubKey(_subKey);
             if (sk1 == null)
             {
                 return null;
             }
-            else
+            try
             {
-                try
-                {
-                    return (string) sk1.GetValue(KeyName);
-                }
-                catch (Exception e)
-                {
-                    ShowErrorMessage(e, "Reading registry " + KeyName);
-                    return null;
-                }
+                return (string) sk1.GetValue(keyName);
+            }
+            catch (Exception e)
+            {
+                ShowErrorMessage(e, "Reading registry " + keyName);
+                return null;
             }
         }
 
@@ -76,32 +73,28 @@ namespace Utility.ModifyRegistry
 
         #region BRead
 
-        public string BRead(string KeyName)
+        public string BRead(string keyName)
         {
-            RegistryKey rk = baseRegistryKey;
-            RegistryKey sk1 = rk.OpenSubKey(subKey);
+            RegistryKey rk = _baseRegistryKey;
+            RegistryKey sk1 = rk.OpenSubKey(_subKey);
             string regkey;
             if (sk1 == null)
             {
                 return null;
             }
-            else
+            try
             {
-                try
+                regkey = (string) sk1.GetValue(keyName);
+                if (regkey == "")
                 {
-                    regkey = (string) sk1.GetValue(KeyName);
-                    if (regkey == "")
-                    {
-                        return "BlanKey!!";
-                    }
-                    else
-                        return (string) sk1.GetValue(KeyName);
+                    return "BlanKey!!";
                 }
-                catch (Exception e)
-                {
-                    ShowErrorMessage(e, "Reading registry " + KeyName);
-                    return null;
-                }
+                return (string) sk1.GetValue(keyName);
+            }
+            catch (Exception e)
+            {
+                ShowErrorMessage(e, "Reading registry " + keyName);
+                return null;
             }
         }
 
@@ -109,19 +102,19 @@ namespace Utility.ModifyRegistry
 
         #region Write
 
-        public bool Write(string KeyName, object Value)
+        public bool Write(string keyName, object value)
         {
             try
             {
-                RegistryKey rk = baseRegistryKey;
-                RegistryKey sk1 = rk.CreateSubKey(subKey);
+                RegistryKey rk = _baseRegistryKey;
+                RegistryKey sk1 = rk.CreateSubKey(_subKey);
                 // Save the value
-                sk1.SetValue(KeyName, Value);
+                if (sk1 != null) sk1.SetValue(keyName, value);
                 return true;
             }
             catch (Exception e)
             {
-                ShowErrorMessage(e, "Writing registry " + KeyName);
+                ShowErrorMessage(e, "Writing registry " + keyName);
                 return false;
             }
         }
@@ -130,24 +123,23 @@ namespace Utility.ModifyRegistry
 
         #region DeleteKey
 
-        public bool DeleteKey(string KeyName)
+        public bool DeleteKey(string keyName)
         {
             try
             {
                 // Setting
-                RegistryKey rk = baseRegistryKey;
-                RegistryKey sk1 = rk.CreateSubKey(subKey);
+                RegistryKey rk = _baseRegistryKey;
+                RegistryKey sk1 = rk.CreateSubKey(_subKey);
                 // If the RegistrySubKey doesn't exists -> (true)
                 if (sk1 == null)
                     return true;
-                else
-                    sk1.DeleteValue(KeyName);
+                sk1.DeleteValue(keyName);
 
                 return true;
             }
             catch (Exception e)
             {
-                ShowErrorMessage(e, "Deleting SubKey " + subKey);
+                ShowErrorMessage(e, "Deleting SubKey " + _subKey);
                 return false;
             }
         }
@@ -156,10 +148,10 @@ namespace Utility.ModifyRegistry
 
         #region ShowErrorMessage
 
-        private void ShowErrorMessage(Exception e, string Title)
+        private void ShowErrorMessage(Exception e, string title)
         {
-            if (showError == true)
-                MessageBox.Show(e.Message, Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (_showError)
+                MessageBox.Show(e.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         #endregion

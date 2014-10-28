@@ -470,9 +470,13 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.BindingSource bindingSource2;
         private System.Windows.Forms.Button mail_button;
-       
-
-      
+        private readonly ModifyRegistry _myRegistryBbs = new ModifyRegistry();
+        private readonly Encrypting _myEncrypt = new Encrypting();
+        private readonly ModifyRegistry _myRegistry = new ModifyRegistry();
+        private readonly ModifyRegistry _myRegistryCluster = new ModifyRegistry();
+        private readonly ModifyRegistry _myRegistryCom = new ModifyRegistry();
+        private readonly ModifyRegistry _myRegistryNode = new ModifyRegistry();
+        private readonly ModifyRegistry _myRegistrySsh = new ModifyRegistry();
     }
 }
 
