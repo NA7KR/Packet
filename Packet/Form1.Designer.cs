@@ -1,4 +1,6 @@
-﻿namespace Packet
+﻿using PacketComs;
+
+namespace Packet
 {
     partial class Form1
     {
@@ -65,7 +67,9 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mail_button = new System.Windows.Forms.Button();
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.terminalEmulator1 = new PacketSoftware.TerminalEmulator();
+            
+            this.terminalEmulator1 = new TerminalEmulator();
+            
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -369,15 +373,15 @@
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            this.terminalEmulator1.BaudRateType = PacketSoftware.TerminalEmulator.BaudRateTypes.Baud_4800;
+            this.terminalEmulator1.BaudRateType = TerminalEmulator.BaudRateTypes.Baud_4800;
             this.terminalEmulator1.BBSPrompt = null;
             this.terminalEmulator1.Beep = true;
             this.terminalEmulator1.Close = false;
             this.terminalEmulator1.Columns = 172;
-            this.terminalEmulator1.ConnectionType = PacketSoftware.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.DataBitsType = PacketSoftware.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.DataBitsType = TerminalEmulator.DataBitsTypes.Data_Bits_8;
             this.terminalEmulator1.FileActive = false;
-            this.terminalEmulator1.FlowType = PacketSoftware.TerminalEmulator.FlowTypes.XOnXOff;
+            this.terminalEmulator1.FlowType = TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
             this.terminalEmulator1.Header = null;
             this.terminalEmulator1.Hostname = null;
@@ -386,14 +390,14 @@
             this.terminalEmulator1.LocalEcho = false;
             this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";
-            this.terminalEmulator1.ParityType = PacketSoftware.TerminalEmulator.ParityTypes.None;
+            this.terminalEmulator1.ParityType = TerminalEmulator.ParityTypes.None;
             this.terminalEmulator1.Password = null;
             this.terminalEmulator1.passwordPrompt = null;
             this.terminalEmulator1.Port = 9000;
             this.terminalEmulator1.Rows = 40;
             this.terminalEmulator1.SerialPort = "";
             this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
-            this.terminalEmulator1.StopBitsType = PacketSoftware.TerminalEmulator.StopBitsTypes.One;
+            this.terminalEmulator1.StopBitsType = TerminalEmulator.StopBitsTypes.One;
             this.terminalEmulator1.TabIndex = 5;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.UernamePrompt = null;
@@ -463,7 +467,7 @@
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBGC;
         private System.Windows.Forms.ToolStripMenuItem textColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxTXTC;
-        private PacketSoftware.TerminalEmulator terminalEmulator1;
+        private TerminalEmulator terminalEmulator1;
         private System.Windows.Forms.ToolStripMenuItem SSHConfigToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCom;
         private System.Windows.Forms.BindingSource bindingSource1;

@@ -1,168 +1,173 @@
 #region Using Directive
 
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.Globalization;
 using System.IO;
+using System.IO.Ports;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using PacketComs;
+using PacketSoftware;
+using Routrek.SSHC;
 
 #endregion
 
-namespace PacketSoftware
+namespace PacketComs
 {
 
     #region  class TerminalEmulator : Control
 
-    public class TerminalEmulator : Control
+    public sealed class TerminalEmulator : Control
     {
-        private System.IO.Ports.SerialPort port = new System.IO.Ports.SerialPort();
+        private SerialPort port = new SerialPort();
         private ModifyFile myFiles = new ModifyFile();
 
         #region Public Properties of Comonent
 
         public int Rows
         {
-            get { return this._rows; }
-            set { }
+            get { return _rows; }
+             set { }
         }
 
         public int Columns
         {
-            get { return this._cols; }
+            get { return _cols; }
             set { }
         }
 
         public String LastNumber
         {
-            get { return this._lastnumber; }
-            set { this._lastnumber = value; }
+            get { return _lastnumber; }
+            set { _lastnumber = value; }
         }
 
         public ConnectionTypes ConnectionType
         {
-            get { return this._ConnectionType; }
-            set { this._ConnectionType = value; }
+            get { return _connectionType; }
+            set { _connectionType = value; }
         }
 
         public DataBitsTypes DataBitsType
         {
-            get { return this._DataBitsType; }
-            set { this._DataBitsType = value; }
+            get { return _dataBitsType; }
+            set { _dataBitsType = value; }
         }
 
         public StopBitsTypes StopBitsType
         {
-            get { return this._StopBitsType; }
-            set { this._StopBitsType = value; }
+            get { return _stopBitsType; }
+            set { _stopBitsType = value; }
         }
 
         public ParityTypes ParityType
         {
-            get { return this._ParityType; }
-            set { this._ParityType = value; }
+            get { return _ParityType; }
+            set { _ParityType = value; }
         }
 
 
         public FlowTypes FlowType
         {
-            get { return this._FlowType; }
-            set { this._FlowType = value; }
+            get { return _FlowType; }
+            set { _FlowType = value; }
         }
 
         public BaudRateTypes BaudRateType
         {
-            get { return this._BaudRateType; }
-            set { this._BaudRateType = value; }
+            get { return _baudRateType; }
+            set { _baudRateType = value; }
         }
 
         public string Hostname
         {
-            get { return this._hostname; }
-            set { this._hostname = value; }
+            get { return _hostname; }
+            set { _hostname = value; }
         }
 
-        public System.Int32 Port
+        public Int32 Port
         {
-            get { return this._port; }
-            set { this._port = value; }
+            get { return _port; }
+            set { _port = value; }
         }
 
-        public System.Boolean Beep
+        public Boolean Beep
         {
-            get { return this._beep; }
-            set { this._beep = value; }
+            get { return _beep; }
+            set { _beep = value; }
         }
 
-        public System.Boolean LocalEcho
+        public Boolean LocalEcho
         {
-            get { return this._localecho; }
-            set { this._localecho = value; }
+            get { return _localecho; }
+            set { _localecho = value; }
         }
 
-        public System.Boolean FileActive
+        public Boolean FileActive
         {
-            get { return this._fileactive; }
-            set { this._fileactive = value; }
+            get { return _fileactive; }
+            set { _fileactive = value; }
         }
 
-        public System.Boolean Close
+        public Boolean Close
         {
-            get { return this._close; }
-            set { this._close = value; }
+            get { return _close; }
+            set { _close = value; }
         }
 
         public string Username
         {
-            get { return this._username; }
-            set { this._username = value; }
+            get { return _username; }
+            set { _username = value; }
         }
 
         public string Password
         {
-            get { return this._password; }
-            set { this._password = value; }
+            get { return _password; }
+            set { _password = value; }
         }
 
         public string SerialPort
         {
-            get { return this._serialport; }
-            set { this._serialport = value; }
+            get { return _serialport; }
+            set { _serialport = value; }
         }
 
         public String BBSPrompt
         {
-            get { return this._bbsprompt; }
-            set { this._bbsprompt = value; }
+            get { return _bbsprompt; }
+            set { _bbsprompt = value; }
         }
 
         public String UernamePrompt
         {
-            get { return this._usernameprompt; }
-            set { this._usernameprompt = value; }
+            get { return _usernameprompt; }
+            set { _usernameprompt = value; }
         }
 
         public String passwordPrompt
         {
-            get { return this._passwordprompt; }
-            set { this._passwordprompt = value; }
+            get { return _passwordprompt; }
+            set { _passwordprompt = value; }
         }
 
         public String Header
         {
-            get { return this._header; }
-            set { this._header = value; }
+            get { return _header; }
+            set { _header = value; }
         }
 
         #endregion
 
         #region Close Connection
 
-        public void closeconnection()
+        public void Closeconnection()
         {
             Close = true;
             Disconnect();
@@ -172,10 +177,10 @@ namespace PacketSoftware
 
         #region StringCollection
 
-        public StringCollection ScreenScrape(int StartRow, int StartColumn, int EndRow, int EndColumn)
+        public StringCollection ScreenScrape()
         {
-            StringCollection ScrapedText = new StringCollection();
-            return ScrapedText;
+            StringCollection scrapedText = new StringCollection();
+            return scrapedText;
         }
 
         #endregion
@@ -185,8 +190,8 @@ namespace PacketSoftware
         public void Write(byte[] data, int offset, int length)
         {
             string sReceived = Encoding.ASCII.GetString(data, offset, length);
-            this.Invoke(this.RxdTextEvent, new System.String[] {System.String.Copy(sReceived)});
-            this.Invoke(this.RefreshEvent);
+            Invoke(RxdTextEvent, new object[] {String.Copy(sReceived)});
+            Invoke(RefreshEvent);
         }
 
         #endregion
@@ -195,18 +200,18 @@ namespace PacketSoftware
 
         public void Connect()
         {
-            switch (this.ConnectionType)
+            switch (ConnectionType)
             {
                 case ConnectionTypes.Telnet:
                 {
-                    C_Type = "Telnet";
-                    this.ConnectTelnet(this.Hostname, this.Port);
+                    _cType = "Telnet";
+                    ConnectTelnet(Hostname, Port);
                     break;
                 }
                 case ConnectionTypes.COM:
                 {
-                    C_Type = "Com";
-                    this.ConnectCom();
+                    _cType = "Com";
+                    ConnectCom();
                     break;
                 }
                 case ConnectionTypes.SSH1:
@@ -215,8 +220,8 @@ namespace PacketSoftware
                 }
                 case ConnectionTypes.SSH2:
                 {
-                    C_Type = "SSH";
-                    this.ConnectSSH2(this.Hostname, this.Username, this.Password, this.Port);
+                    _cType = "SSH";
+                    ConnectSsh2(Hostname, Username, Password, Port);
                     break;
                 }
                 default:
@@ -230,14 +235,14 @@ namespace PacketSoftware
 
         #region
 
-        public void startforward()
+        public void Startforward()
         {
             //krr
-            System.Int32 ln = Convert.ToInt32(LastNumber);
+            Int32 ln = Convert.ToInt32(LastNumber);
             ln = ln + 1;
-            string nb = ("LR " + ln.ToString() + "-999999");
-            this.DispatchMessage(this, nb);
-            this.DispatchMessage(this, System.Environment.NewLine);
+            string nb = ("LR " + ln + "-999999");
+            DispatchMessage(this, nb);
+            DispatchMessage(this, Environment.NewLine);
         }
 
         #endregion
@@ -304,17 +309,13 @@ namespace PacketSoftware
 
         #region Fields
 
-        private ContextMenu contextMenu1; // rightclick menu
-        private MenuItem mnuCopy;
-        private MenuItem mnuPaste;
-        private MenuItem mnuCopyPaste;
-        private ConnectionTypes _ConnectionType;
-        private BaudRateTypes _BaudRateType;
-        private DataBitsTypes _DataBitsType;
-        private StopBitsTypes _StopBitsType;
+        private ConnectionTypes _connectionType;
+        private BaudRateTypes _baudRateType;
+        private DataBitsTypes _dataBitsType;
+        private StopBitsTypes _stopBitsType;
         private ParityTypes _ParityType;
         private FlowTypes _FlowType;
-        private Reader reader;
+        private Reader _reader;
         private string _hostname; // used for connecting to SSH
         private string _username; // maybe
         private string _password;
@@ -323,78 +324,71 @@ namespace PacketSoftware
         private string _bbsprompt;
         private string _usernameprompt;
         private string _passwordprompt;
-        private string DataFile = "";
-        private string C_Type;
+        private string _dataFile = "";
+        private string _cType;
         private string _lastnumber;
-        private string TextAtCursor; // used to store Cursortext while scrolling
-        private string InputData = String.Empty;
-        private int LastVisibleLine; // used for scrolling
+        private string _textAtCursor; // used to store Cursortext while scrolling
+        private string _inputData = String.Empty;
+        private int _lastVisibleLine; // used for scrolling
         private int ScrollbackBufferSize;
         private StringCollection ScrollbackBuffer;
-        private uc_Parser Parser = null;
-        private uc_TelnetParser NvtParser = null;
-        private uc_Keyboard Keyboard = null;
-        private uc_TabStops TabStops = null;
+        private UcParser Parser;
+        private UcKeyboard Keyboard = null;
+        private UcTabStops TabStops = null;
         private CharAttribStruct[][] AttribGrid = null;
-        private CharAttribStruct CharAttribs;
-        private System.Boolean _fileactive;
-        private System.Int32 _port;
-        private System.Boolean _beep;
-        private System.Boolean _localecho;
-        private System.Boolean _close;
-        private System.Boolean XOFF = false;
-        private System.AsyncCallback callbackProc;
-        private System.AsyncCallback callbackEndDispatch;
-        private System.String OutBuff = "";
-        private System.Int16 count;
-        private System.Int32 _cols;
-        private System.Int32 _rows;
-        private System.Int32 TopMargin;
-        private System.Int32 BottomMargin;
-        private System.Int32 TypeSize = 8;
-        private System.Int32 UnderlinePos;
-        private System.String TypeFace = FontFamily.GenericMonospace.GetName(0);
-        private System.Char[][] CharGrid = null;
-        private System.Drawing.Bitmap EraseBitmap = null;
-        private System.Drawing.Graphics EraseBuffer = null;
-        private System.Collections.ArrayList SavedCarets;
-        private System.Drawing.Point DrawStringOffset;
-        private System.Drawing.Color FGColor;
-        private System.Drawing.Color BoldColor;
-        private System.Drawing.Color BlinkColor;
-        private System.Drawing.FontStyle TypeStyle = System.Drawing.FontStyle.Regular;
-        private System.Drawing.Size CharSize;
-        private System.Drawing.Point BeginDrag; // used in Mouse Selecting Text
-        private System.Drawing.Point EndDrag; // used in mouse selecting text
-        private System.IO.Ports.SerialPort serialPort1;
-        private System.ComponentModel.IContainer components;
-        private System.Net.Sockets.Socket CurSocket;
-        private uc_Caret Caret;
-        private uc_Chars G0;
-        private uc_Chars G1;
-        private uc_Chars G2;
-        private uc_Chars G3;
-        private uc_Mode Modes;
-        private uc_VertScrollBar VertScrollBar;
-        private IAsyncResult lastAR;
+        private CharAttribStruct _charAttribs;
+        private Boolean _fileactive;
+        private Int32 _port;
+        private Boolean _beep;
+        private Boolean _localecho;
+        private Boolean _close;
+        private Boolean XOFF = false;
+        private AsyncCallback callbackProc;
+        private AsyncCallback callbackEndDispatch;
+        private String OutBuff = "";
+        private Int16 count;
+        private Int32 _cols;
+        private Int32 _rows;
+        private Int32 TopMargin;
+        private Int32 BottomMargin;
+        private Int32 TypeSize = 8;
+        private Int32 UnderlinePos;
+        private String TypeFace = FontFamily.GenericMonospace.GetName(0);
+        private Char[][] CharGrid = null;
+        private Bitmap EraseBitmap = null;
+        private Graphics EraseBuffer = null;
+        private ArrayList SavedCarets;
+        private Point DrawStringOffset;
+        private Color FGColor;
+        private Color BoldColor;
+        private Color BlinkColor;
+        private FontStyle TypeStyle = FontStyle.Regular;
+        private Size CharSize;
+        private Point BeginDrag; // used in Mouse Selecting Text
+        private Point EndDrag; // used in mouse selecting text
+        private Socket _curSocket;
+        private UcCaret Caret;
+        private UcChars G0;
+        private UcChars G1;
+        private UcChars G2;
+        private UcChars G3;
+        private UcMode Modes;
+        private UcVertScrollBar VertScrollBar;
+        private IAsyncResult _lastAr;
 
         #endregion
 
         #region Delegates
 
-        private delegate void NvtParserEventHandler(object Sender, NvtParserEventArgs e);
+        private delegate void NvtParserEventHandler(object sender, NvtParserEventArgs e);
 
-        private delegate void KeyboardEventHandler(object Sender, System.String e);
+        private delegate void KeyboardEventHandler(object sender, String e);
 
         private delegate void RefreshEventHandler();
 
-        private delegate void RxdTextEventHandler(System.String sReceived);
+        private delegate void RxdTextEventHandler(String sReceived);
 
-        private delegate void CaretOffEventHandler();
-
-        private delegate void CaretOnEventHandler();
-
-        private delegate void ParserEventHandler(object Sender, ParserEventArgs e);
+        private delegate void ParserEventHandler(object sender, ParserEventArgs e);
 
         #endregion
 
@@ -419,84 +413,84 @@ namespace PacketSoftware
 
         public TerminalEmulator()
         {
-            this.ScrollbackBufferSize = 3000;
-            this.ScrollbackBuffer = new StringCollection();
+            ScrollbackBufferSize = 3000;
+            ScrollbackBuffer = new StringCollection();
 
             // set the display options
-            this.SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer,
+            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer,
                 true);
-            this.Keyboard = new uc_Keyboard(this);
-            this.Parser = new uc_Parser();
-            this.NvtParser = new uc_TelnetParser();
-            this.Caret = new uc_Caret();
-            this.Modes = new uc_Mode();
-            this.TabStops = new uc_TabStops();
-            this.SavedCarets = new System.Collections.ArrayList();
+            Keyboard = new UcKeyboard(this);
+            Parser = new UcParser();
+            UcTelnetParser nvtParser = new UcTelnetParser();
+            Caret = new UcCaret();
+            Modes = new UcMode();
+            TabStops = new UcTabStops();
+            SavedCarets = new ArrayList();
 
             //this.Name       = "ACK-TERM";
             //this.Text       = "ACK-TERM";
-            this.Caret.Pos = new System.Drawing.Point(0, 0);
-            this.CharSize = new System.Drawing.Size();
-            this.Font = new System.Drawing.Font(this.TypeFace, this.TypeSize, this.TypeStyle);
+            Caret.Pos = new Point(0, 0);
+            CharSize = new Size();
+            Font = new Font(TypeFace, TypeSize, TypeStyle);
             //this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
             //this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
-            this.FGColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            this.BackColor = System.Drawing.Color.FromArgb(0, 0, 160);
-            this.BoldColor = System.Drawing.Color.FromArgb(255, 255, 255);
-            this.BlinkColor = System.Drawing.Color.Red;
-            this.G0 = new uc_Chars(uc_Chars.Sets.ASCII);
-            this.G1 = new uc_Chars(uc_Chars.Sets.ASCII);
-            this.G2 = new uc_Chars(uc_Chars.Sets.DECSG);
-            this.G3 = new uc_Chars(uc_Chars.Sets.DECSG);
-            this.CharAttribs.GL = G0;
-            this.CharAttribs.GR = G2;
-            this.CharAttribs.GS = null;
-            this.GetFontInfo();
+            FGColor = Color.FromArgb(0, 0, 0);
+            BackColor = Color.FromArgb(0, 0, 160);
+            BoldColor = Color.FromArgb(255, 255, 255);
+            BlinkColor = Color.Red;
+            G0 = new UcChars(UcChars.Sets.ASCII);
+            G1 = new UcChars(UcChars.Sets.ASCII);
+            G2 = new UcChars(UcChars.Sets.DECSG);
+            G3 = new UcChars(UcChars.Sets.DECSG);
+            _charAttribs.GL = G0;
+            _charAttribs.GR = G2;
+            _charAttribs.GS = null;
+            GetFontInfo();
             // Create and initialize contextmenu
-            this.contextMenu1 = new ContextMenu();
-            this.mnuCopy = new MenuItem("Copy");
-            this.mnuPaste = new MenuItem("Paste");
-            this.mnuCopyPaste = new MenuItem("Copy and Paste");
-            this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
+            ContextMenu contextMenu1 = new ContextMenu();
+            MenuItem mnuCopy = new MenuItem("Copy");
+            MenuItem mnuPaste = new MenuItem("Paste");
+            MenuItem mnuCopyPaste = new MenuItem("Copy and Paste");
+            contextMenu1.MenuItems.AddRange(new[]
             {
-                this.mnuCopyPaste,
-                this.mnuPaste,
-                this.mnuCopy
+                mnuCopyPaste,
+                mnuPaste,
+                mnuCopy
             });
-            this.mnuCopy.Index = 0;
-            this.mnuPaste.Index = 1;
-            this.mnuCopyPaste.Index = 2;
-            this.ContextMenu = this.contextMenu1;
-            this.mnuCopy.Click += new System.EventHandler(this.mnuCopy_Click);
-            this.mnuPaste.Click += new System.EventHandler(this.mnuPaste_Click);
-            this.mnuCopyPaste.Click += new System.EventHandler(this.mnuCopyPaste_Click);
+            mnuCopy.Index = 0;
+            mnuPaste.Index = 1;
+            mnuCopyPaste.Index = 2;
+            ContextMenu = contextMenu1;
+            mnuCopy.Click += mnuCopy_Click;
+            mnuPaste.Click += mnuPaste_Click;
+            mnuCopyPaste.Click += mnuCopyPaste_Click;
 
             // Create and initialize a VScrollBar.
-            VertScrollBar = new uc_VertScrollBar();
-            VertScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleScroll);
+            VertScrollBar = new UcVertScrollBar();
+            VertScrollBar.Scroll += HandleScroll;
 
             // Dock the scroll bar to the right side of the form.
-            VertScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
+            VertScrollBar.Dock = DockStyle.Right;
 
             // Add the scroll bar to the form.
             Controls.Add(VertScrollBar);
 
             // create the character grid (rows by columns). This is a shadow of what's displayed
             // Set the window size to match
-            this.SetSize(24, 80);
+            SetSize(24, 80);
 
-            this.Parser.ParserEvent += new ParserEventHandler(CommandRouter);
-            this.Keyboard.KeyboardEvent += new KeyboardEventHandler(DispatchMessage);
-            this.NvtParser.NvtParserEvent += new NvtParserEventHandler(TelnetInterpreter);
-            this.RefreshEvent += new RefreshEventHandler(ShowBuffer);
+            Parser.ParserEvent += CommandRouter;
+            Keyboard.KeyboardEvent += DispatchMessage;
+            nvtParser.NvtParserEvent += TelnetInterpreter;
+            RefreshEvent += ShowBuffer;
             //this.CaretOffEvent += new CaretOffEventHandler(this.CaretOff);
             //this.CaretOnEvent += new CaretOnEventHandler(this.CaretOn);
-            this.RxdTextEvent += new RxdTextEventHandler(this.NvtParser.ParseString);
+            RxdTextEvent += nvtParser.ParseString;
 
-            this.BeginDrag = new System.Drawing.Point();
-            this.EndDrag = new System.Drawing.Point();
+            BeginDrag = new Point();
+            EndDrag = new Point();
 
-            this.ConnectionType = ConnectionTypes.Telnet; // default
+            ConnectionType = ConnectionTypes.Telnet; // default
         }
 
         #endregion
@@ -505,48 +499,48 @@ namespace PacketSoftware
 
         #region override OnResize
 
-        protected override void OnResize(System.EventArgs e)
+        protected override void OnResize(EventArgs e)
         {
-            this.Font = new System.Drawing.Font(this.TypeFace, this.TypeSize, this.TypeStyle);
+            Font = new Font(TypeFace, TypeSize, TypeStyle);
             // reset scrollbar values
-            this.SetScrollBarValues();
+            SetScrollBarValues();
             // capture text at cursor b/c it's not in the scrollback buffer yet
-            string TextAtCursor = "";
-            for (int x = 0; x < this._cols; x++)
+            string textAtCursor = "";
+            for (int x = 0; x < _cols; x++)
             {
-                char CurChar = this.CharGrid[this.Caret.Pos.Y][x];
-                if (CurChar == '\0')
+                char curChar = CharGrid[Caret.Pos.Y][x];
+                if (curChar == '\0')
                 {
                     continue;
                 }
-                TextAtCursor = TextAtCursor + Convert.ToString(CurChar);
+                textAtCursor = textAtCursor + Convert.ToString(curChar);
             }
             // calculate new rows and columns
-            int columns = this.ClientSize.Width/this.CharSize.Width - 1;
-            int rows = this.ClientSize.Height/this.CharSize.Height;
+            int columns = ClientSize.Width/CharSize.Width - 1;
+            int rows = ClientSize.Height/CharSize.Height;
 
             // make sure at least 1 row and 1 col or Control will throw
             if (rows < 5)
             {
                 rows = 5;
-                this.Height = this.CharSize.Height*rows;
+                Height = CharSize.Height*rows;
             }
 
             // make sure at least 1 row and 1 col or Control will throw
             if (columns < 5)
             {
                 columns = 5;
-                this.Width = this.CharSize.Width*columns;
+                Width = CharSize.Width*columns;
             }
 
             // make sure the bottom of this doesn't exceed bottom of parent client area
             // for some reason it was getting stuck like that
-            if (this.Parent != null)
-                if (this.Bottom > this.Parent.ClientSize.Height)
-                    this.Height = this.Parent.ClientSize.Height - this.Top;
+            if (Parent != null)
+                if (Bottom > Parent.ClientSize.Height)
+                    Height = Parent.ClientSize.Height - Top;
 
             // reset the char grid
-            this.SetSize(rows, columns);
+            SetSize(rows, columns);
 
             //Console.WriteLine(Convert.ToString(rows) + " rows. " + Convert.ToString(this.ScrollbackBuffer.Count + " buffer lines"));
 
@@ -556,9 +550,9 @@ namespace PacketSoftware
             // ScrollbackBuffer[0] is the "oldest" string
             // chargrid[0] is the top row on the display
             StringCollection visiblebuffer = new StringCollection();
-            for (int i = this.ScrollbackBuffer.Count - 1; i >= 0; i--)
+            for (int i = ScrollbackBuffer.Count - 1; i >= 0; i--)
             {
-                visiblebuffer.Insert(0, this.ScrollbackBuffer[i]);
+                visiblebuffer.Insert(0, ScrollbackBuffer[i]);
                 // don't parse more strings than our display can show
                 if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
                     break;
@@ -572,7 +566,7 @@ namespace PacketSoftware
                     //this.CharGrid[i][column] = '0';
                     if (column > visiblebuffer[i].Length - 1)
                         continue;
-                    this.CharGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
+                    CharGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
                 }
                 lastline = i;
             }
@@ -580,12 +574,12 @@ namespace PacketSoftware
             // replace cursor text
             for (int column = 0; column < columns; column++)
             {
-                if (column > TextAtCursor.Length - 1)
+                if (column > textAtCursor.Length - 1)
                     continue;
-                this.CharGrid[lastline + 1][column] = TextAtCursor.ToCharArray()[column];
+                CharGrid[lastline + 1][column] = textAtCursor.ToCharArray()[column];
             }
-            this.CaretToAbs(lastline + 1, TextAtCursor.Length);
-            this.Refresh();
+            CaretToAbs(lastline + 1, textAtCursor.Length);
+            Refresh();
             base.OnResize(e);
         }
 
@@ -593,23 +587,23 @@ namespace PacketSoftware
 
         #region override OnPaint
 
-        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+            e.Graphics.TextRenderingHint = TextRenderingHint.SystemDefault;
             e.Graphics.TextContrast = 0;
-            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
-            this.WipeScreen(e.Graphics);
-            this.Redraw(e.Graphics);
-            this.ShowCaret(e.Graphics);
+            WipeScreen(e.Graphics);
+            Redraw(e.Graphics);
+            ShowCaret(e.Graphics);
         }
 
         #endregion
 
         #region override OnPaintBackground
 
-        protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs e)
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
         }
 
@@ -617,7 +611,7 @@ namespace PacketSoftware
 
         #region override WndProc
 
-        protected override void WndProc(ref System.Windows.Forms.Message m)
+        protected override void WndProc(ref Message m)
         {
             // Listen for operating system messages and handle the key events.
             switch (m.Msg)
@@ -628,7 +622,7 @@ namespace PacketSoftware
                 case WMCodes.WM_SYSKEYUP:
                 case WMCodes.WM_SYSCHAR:
                 case WMCodes.WM_CHAR:
-                    this.Keyboard.KeyDown(m);
+                    Keyboard.KeyDown(m);
                     break;
 
                 default:
@@ -643,26 +637,26 @@ namespace PacketSoftware
 
         #region override OnMouseMove
 
-        protected override void OnMouseMove(MouseEventArgs CurArgs)
+        protected override void OnMouseMove(MouseEventArgs curArgs)
         {
-            if (CurArgs.Button != MouseButtons.Left)
+            if (curArgs.Button != MouseButtons.Left)
                 return;
 
             //Console.WriteLine(Convert.ToString(CurArgs.X) + "," + Convert.ToString(CurArgs.Y));
-            this.EndDrag.X = CurArgs.X;
-            this.EndDrag.Y = CurArgs.Y;
+            EndDrag.X = curArgs.X;
+            EndDrag.Y = curArgs.Y;
 
-            int endCol = this.EndDrag.X/this.CharSize.Width;
-            int endRow = this.EndDrag.Y/this.CharSize.Height;
+            int endCol = EndDrag.X/CharSize.Width;
+            int endRow = EndDrag.Y/CharSize.Height;
 
-            int begCol = this.BeginDrag.X/this.CharSize.Width;
-            int begRow = this.BeginDrag.Y/this.CharSize.Height;
+            int begCol = BeginDrag.X/CharSize.Width;
+            int begRow = BeginDrag.Y/CharSize.Height;
 
 
             // reset highlights
-            for (int iRow = 0; iRow < this._rows; iRow++)
-                for (int iCol = 0; iCol < this._cols; iCol++)
-                    this.AttribGrid[iRow][iCol].IsInverse = false;
+            for (int iRow = 0; iRow < _rows; iRow++)
+                for (int iCol = 0; iCol < _cols; iCol++)
+                    AttribGrid[iRow][iCol].IsInverse = false;
 
 
             if (endRow < begRow) // we're parsing backwards
@@ -675,10 +669,10 @@ namespace PacketSoftware
                     if (curRow <= 0)
                         continue;
 
-                    for (int curCol = 0; curCol < this._cols; curCol++)
+                    for (int curCol = 0; curCol < _cols; curCol++)
                     {
                         // don't select if nothing is there
-                        if (this.CharGrid[curRow][curCol] == '\0')
+                        if (CharGrid[curRow][curCol] == '\0')
                             continue;
 
                         // on first row, make sure we start at begCol
@@ -688,14 +682,14 @@ namespace PacketSoftware
                         // on last row, don't pass the end col
                         if (curRow == endRow && curCol == begCol)
                         {
-                            this.AttribGrid[curRow][curCol].IsInverse = true;
+                            AttribGrid[curRow][curCol].IsInverse = true;
                             break;
                         }
 
-                        this.AttribGrid[curRow][curCol].IsInverse = true;
+                        AttribGrid[curRow][curCol].IsInverse = true;
                     }
                 }
-                this.Refresh();
+                Refresh();
                 return;
             }
 
@@ -711,13 +705,13 @@ namespace PacketSoftware
             // begRow/begCol are where the mouse was when the button was pushed
             for (int curRow = begRow; curRow <= endRow; curRow++)
             {
-                if (curRow >= this._rows)
+                if (curRow >= _rows)
                     break;
 
-                for (int curCol = 0; curCol < this._cols; curCol++)
+                for (int curCol = 0; curCol < _cols; curCol++)
                 {
                     // don't select if nothing is there
-                    if (this.CharGrid[curRow][curCol] == '\0')
+                    if (CharGrid[curRow][curCol] == '\0')
                         continue;
 
                     // on first row, make sure we start at begCol
@@ -727,30 +721,30 @@ namespace PacketSoftware
                     // on last row, don't pass the end col
                     if (curRow == endRow && curCol == endCol)
                     {
-                        this.AttribGrid[curRow][curCol].IsInverse = true;
+                        AttribGrid[curRow][curCol].IsInverse = true;
                         break;
                     }
-                    this.AttribGrid[curRow][curCol].IsInverse = true;
+                    AttribGrid[curRow][curCol].IsInverse = true;
                 }
             }
-            this.Refresh();
+            Refresh();
         }
 
         #endregion
 
         #region override OnMouseUp
 
-        protected override void OnMouseUp(MouseEventArgs CurArgs)
+        protected override void OnMouseUp(MouseEventArgs curArgs)
         {
-            if (CurArgs.Button == System.Windows.Forms.MouseButtons.Left)
+            if (curArgs.Button == MouseButtons.Left)
             {
-                if (this.BeginDrag.X == CurArgs.X && this.BeginDrag.Y == CurArgs.Y)
+                if (BeginDrag.X == curArgs.X && BeginDrag.Y == curArgs.Y)
                 {
                     // reset highlights
-                    for (int iRow = 0; iRow < this._rows; iRow++)
-                        for (int iCol = 0; iCol < this._cols; iCol++)
-                            this.AttribGrid[iRow][iCol].IsInverse = false;
-                    this.Refresh();
+                    for (int iRow = 0; iRow < _rows; iRow++)
+                        for (int iCol = 0; iCol < _cols; iCol++)
+                            AttribGrid[iRow][iCol].IsInverse = false;
+                    Refresh();
                 }
             }
         }
@@ -759,16 +753,16 @@ namespace PacketSoftware
 
         #region override OnMouseDown
 
-        protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs CurArgs)
+        protected override void OnMouseDown(MouseEventArgs curArgs)
         {
-            this.Focus();
-            if (CurArgs.Button == System.Windows.Forms.MouseButtons.Left)
+            Focus();
+            if (curArgs.Button == MouseButtons.Left)
             {
                 // begin select
-                this.BeginDrag.X = CurArgs.X;
-                this.BeginDrag.Y = CurArgs.Y;
+                BeginDrag.X = curArgs.X;
+                BeginDrag.Y = curArgs.Y;
             }
-            base.OnMouseDown(CurArgs);
+            base.OnMouseDown(curArgs);
         }
 
         #endregion
@@ -788,9 +782,9 @@ namespace PacketSoftware
 
         public void Disconnectby()
         {
-            this.Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m ");
-            this.Parser.ParseString(System.Environment.NewLine);
-            this.Invoke(this.RefreshEvent);
+            Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m ");
+            Parser.ParseString(Environment.NewLine);
+            Invoke(RefreshEvent);
             if (Disconnected != null)
             {
                 Disconnected(this, new EventArgs());
@@ -807,7 +801,7 @@ namespace PacketSoftware
             {
                 #region case baud
 
-                switch (this.BaudRateType)
+                switch (BaudRateType)
                 {
                     case
                         BaudRateTypes.Baud_110:
@@ -876,30 +870,30 @@ namespace PacketSoftware
 
                 #region case stop
 
-                switch (this.StopBitsType)
+                switch (StopBitsType)
                 {
                     case
                         StopBitsTypes.None:
                     {
-                        port.StopBits = System.IO.Ports.StopBits.None;
+                        port.StopBits = StopBits.None;
                         break;
                     }
                     case
                         StopBitsTypes.One:
                     {
-                        port.StopBits = System.IO.Ports.StopBits.One;
+                        port.StopBits = StopBits.One;
                         break;
                     }
                     case
                         StopBitsTypes.OnePointFive:
                     {
-                        port.StopBits = System.IO.Ports.StopBits.OnePointFive;
+                        port.StopBits = StopBits.OnePointFive;
                         break;
                     }
                     case
                         StopBitsTypes.Two:
                     {
-                        port.StopBits = System.IO.Ports.StopBits.Two;
+                        port.StopBits = StopBits.Two;
                         break;
                     }
                 }
@@ -908,7 +902,7 @@ namespace PacketSoftware
 
                 #region case databits
 
-                switch (this.DataBitsType)
+                switch (DataBitsType)
                 {
                     case
                         DataBitsTypes.Data_Bits_5:
@@ -940,30 +934,30 @@ namespace PacketSoftware
 
                 #region  case flow
 
-                switch (this.FlowType)
+                switch (FlowType)
                 {
                     case
                         FlowTypes.XOnXOff:
                     {
-                        port.Handshake = System.IO.Ports.Handshake.XOnXOff;
+                        port.Handshake = Handshake.XOnXOff;
                         break;
                     }
                     case
                         FlowTypes.RequestToSend:
                     {
-                        port.Handshake = System.IO.Ports.Handshake.RequestToSend;
+                        port.Handshake = Handshake.RequestToSend;
                         break;
                     }
                     case
                         FlowTypes.RequestToSendXOnXOff:
                     {
-                        port.Handshake = System.IO.Ports.Handshake.RequestToSendXOnXOff;
+                        port.Handshake = Handshake.RequestToSendXOnXOff;
                         break;
                     }
                     case
                         FlowTypes.None:
                     {
-                        port.Handshake = System.IO.Ports.Handshake.None;
+                        port.Handshake = Handshake.None;
                         break;
                     }
                 }
@@ -972,43 +966,43 @@ namespace PacketSoftware
 
                 #region case parity
 
-                switch (this.ParityType)
+                switch (ParityType)
                 {
                     case
                         ParityTypes.None:
                     {
-                        port.Parity = System.IO.Ports.Parity.None;
+                        port.Parity = Parity.None;
                         break;
                     }
                     case
                         ParityTypes.Odd:
                     {
-                        port.Parity = System.IO.Ports.Parity.Odd;
+                        port.Parity = Parity.Odd;
                         break;
                     }
                     case
                         ParityTypes.Even:
                     {
-                        port.Parity = System.IO.Ports.Parity.Even;
+                        port.Parity = Parity.Even;
                         break;
                     }
                     case
                         ParityTypes.Mark:
                     {
-                        port.Parity = System.IO.Ports.Parity.Mark;
+                        port.Parity = Parity.Mark;
                         break;
                     }
                     case
                         ParityTypes.Space:
                     {
-                        port.Parity = System.IO.Ports.Parity.Space;
+                        port.Parity = Parity.Space;
                         break;
                     }
                 }
 
                 #endregion
 
-                port.PortName = this.SerialPort;
+                port.PortName = SerialPort;
                 port.Open();
                 port.DataReceived += port_DataReceived;
                 //this.Focus();  
@@ -1025,29 +1019,29 @@ namespace PacketSoftware
 
         #region
 
-        private void port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             try
             {
-                InputData = port.ReadExisting();
-                if (InputData != String.Empty)
+                _inputData = port.ReadExisting();
+                if (_inputData != String.Empty)
                 {
-                    this.Parser.ParseString(InputData);
+                    Parser.ParseString(_inputData);
                     //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
-                    if (InputData == "/r")
+                    if (_inputData == "/r")
                     {
-                        InputData = System.Environment.NewLine;
+                        _inputData = Environment.NewLine;
                     }
-                    this.Invoke(this.RefreshEvent);
-                    if (FileActive == true)
+                    Invoke(RefreshEvent);
+                    if (FileActive)
                     {
                         //KRR
-                        DataFile = DataFile + InputData;
+                        _dataFile = _dataFile + _inputData;
 
-                        string[] lines = DataFile.Split(new string[] {Environment.NewLine},
+                        string[] lines = _dataFile.Split(new[] {Environment.NewLine},
                             StringSplitOptions.RemoveEmptyEntries);
 
-                        if (DataFile.Contains(BBSPrompt) == true)
+                        if (_dataFile.Contains(BBSPrompt))
                             //if (Regex.Match(sReceived,BBSPrompt).Success )
                         {
                             ForwardDone(this, new EventArgs());
@@ -1060,7 +1054,7 @@ namespace PacketSoftware
                                 //LastNumber = lines[i].Substring(0, 5);
                             }
                             LastNumberevt(this, new EventArgs());
-                            DataFile = "";
+                            _dataFile = "";
                         }
                     }
                 }
@@ -1076,33 +1070,33 @@ namespace PacketSoftware
 
         #region Connect Telnet
 
-        private void ConnectTelnet(string HostName, System.Int32 Port)
+        private void ConnectTelnet(string hostName, Int32 Port)
         {
-            this.Focus();
+            Focus();
 
-            System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostEntry(HostName);
+            IPHostEntry ipHost = Dns.GetHostEntry(hostName);
             //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
-            System.Net.IPAddress[] addr = IPHost.AddressList;
+            IPAddress[] addr = ipHost.AddressList;
 
             try
             {
                 // Create New Socket 
-                this.CurSocket = new System.Net.Sockets.Socket(
-                    System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream,
-                    System.Net.Sockets.ProtocolType.Tcp);
+                _curSocket = new Socket(
+                    AddressFamily.InterNetwork, SocketType.Stream,
+                    ProtocolType.Tcp);
 
                 // Create New EndPoint
-                System.Net.IPEndPoint iep = new System.Net.IPEndPoint(addr[0], Port);
+                IPEndPoint iep = new IPEndPoint(addr[0], Port);
 
                 // This is a non blocking IO
-                this.CurSocket.Blocking = false;
+                _curSocket.Blocking = false;
 
                 // Begin Asyncronous Connection
-                this.CurSocket.BeginConnect(iep, new System.AsyncCallback(ConnectCallback), CurSocket);
+                _curSocket.BeginConnect(iep, ConnectCallback, _curSocket);
             }
-            catch (System.Exception CurException)
+            catch (Exception curException)
             {
-                MessageBox.Show("Connect: " + CurException.Message);
+                MessageBox.Show("Connect: " + curException.Message);
             }
         }
 
@@ -1110,27 +1104,27 @@ namespace PacketSoftware
 
         #region SSH Connect
 
-        private void ConnectSSH2(string hostname, string username, string password, System.Int32 Port)
+        private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
         {
             // connect ssh
-            this.Focus();
-            Routrek.SSHC.SSHConnection _conn;
-            Routrek.SSHC.SSHConnectionParameter f = new Routrek.SSHC.SSHConnectionParameter();
+            Focus();
+            SSHConnection _conn;
+            SSHConnectionParameter f = new SSHConnectionParameter();
             f.UserName = username;
             f.Password = password;
-            f.Protocol = Routrek.SSHC.SSHProtocol.SSH2;
+            f.Protocol = SSHProtocol.SSH2;
 
-            f.AuthenticationType = Routrek.SSHC.AuthenticationType.Password;
+            f.AuthenticationType = AuthenticationType.Password;
             f.WindowSize = 0x1000;
-            this.reader = new Reader(this);
+            _reader = new Reader(this);
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             //s.Blocking = false;
             IPAddress ip;
             try
             {
-                System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostEntry(hostname);
+                IPHostEntry ipHost = Dns.GetHostEntry(hostname);
                 //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
-                System.Net.IPAddress[] addr = IPHost.AddressList;
+                IPAddress[] addr = ipHost.AddressList;
                 ip = addr[0];
             }
             catch
@@ -1141,59 +1135,58 @@ namespace PacketSoftware
 
             //s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
             s.Connect(new IPEndPoint(ip, Port));
-            _conn = Routrek.SSHC.SSHConnection.Connect(f, reader, s);
-            reader._conn = _conn;
-            Routrek.SSHC.SSHChannel ch = _conn.OpenShell(reader);
-            reader._pf = ch;
-            Routrek.SSHC.SSHConnectionInfo ci = _conn.ConnectionInfo;
+            _conn = SSHConnection.Connect(f, _reader, s);
+            _reader._conn = _conn;
+            SSHChannel ch = _conn.OpenShell(_reader);
+            _reader._pf = ch;
         }
 
         #endregion
 
         #region mnuCopy
 
-        private void mnuCopy_Click(object sender, System.EventArgs e)
+        private void mnuCopy_Click(object sender, EventArgs e)
         {
             Point start = new Point();
             Point stop = new Point();
-            bool FoundStart = false;
-            bool FoundStop = false;
+            bool foundStart = false;
+            bool foundStop = false;
 
             // find coordinates of Highlighted Text
-            for (int row = 0; row < this._rows; row++)
+            for (int row = 0; row < _rows; row++)
             {
-                for (int col = 0; col < this._cols; col++)
+                for (int col = 0; col < _cols; col++)
                 {
-                    if (FoundStart == false && this.AttribGrid[row][col].IsInverse == true)
+                    if (foundStart == false && AttribGrid[row][col].IsInverse)
                     {
                         start.X = col;
                         start.Y = row;
-                        FoundStart = true;
+                        foundStart = true;
                     }
 
                     // this next check will first find the first non-inverse coord with a
                     // character in it. If it happens to be at the beginning of a line, 
                     // then we'll back up and stop at the last char in the prev line
-                    if (FoundStart == true &&
-                        FoundStop == false &&
-                        this.AttribGrid[row][col].IsInverse == false &&
-                        this.CharGrid[row][col] != '\0'
+                    if (foundStart &&
+                        foundStop == false &&
+                        AttribGrid[row][col].IsInverse == false &&
+                        CharGrid[row][col] != '\0'
                         )
                     {
                         stop.X = col - 1;
                         stop.Y = row;
-                        FoundStop = true;
+                        foundStop = true;
                         // here we back up if col == 0
                         if (col == 0)
                         {
                             // make sure we don't have a null row
                             // this shouldn't throw
                             row--;
-                            while (this.CharGrid[row][0] == '\0')
+                            while (CharGrid[row][0] == '\0')
                                 row--;
-                            for (col = 0; col < this._cols; col++) // parse the row
+                            for (col = 0; col < _cols; col++) // parse the row
                             {
-                                if (this.CharGrid[row][col] == '\0') // we found the end
+                                if (CharGrid[row][col] == '\0') // we found the end
                                 {
                                     stop.X = col - 1;
                                     stop.Y = row;
@@ -1203,16 +1196,16 @@ namespace PacketSoftware
                         break;
                     }
 
-                    if (FoundStop == true && FoundStart == true)
+                    if (foundStop && foundStart)
                         break;
                 } // column parse
                 // if we get to this point without finding a match, and we're on the last row
                 // we should include the last row and stop here
-                if (FoundStart == true && FoundStop == false && row == this._rows - 1)
+                if (foundStart && foundStop == false && row == _rows - 1)
                 {
-                    for (int col = 0; col < this._cols; col++) // parse the row
+                    for (int col = 0; col < _cols; col++) // parse the row
                     {
-                        if (this.CharGrid[row][col] == '\0') // we found the end
+                        if (CharGrid[row][col] == '\0') // we found the end
                         {
                             stop.X = col - 1;
                             stop.Y = row;
@@ -1225,7 +1218,7 @@ namespace PacketSoftware
                               " stop.Y " + Convert.ToString(stop.Y) +
                               " stop.X " + Convert.ToString(stop.X));
 
-            StringCollection sc = this.ScreenScrape(start.Y, start.X, stop.Y, stop.X);
+            StringCollection sc = ScreenScrape();
             foreach (string s in sc)
             {
                 Console.WriteLine(s);
@@ -1236,7 +1229,7 @@ namespace PacketSoftware
 
         #region mnuPaste
 
-        private void mnuPaste_Click(object sender, System.EventArgs e)
+        private void mnuPaste_Click(object sender, EventArgs e)
         {
         }
 
@@ -1244,7 +1237,7 @@ namespace PacketSoftware
 
         #region mnuCopyPaste
 
-        private void mnuCopyPaste_Click(object sender, System.EventArgs e)
+        private void mnuCopyPaste_Click(object sender, EventArgs e)
         {
         }
 
@@ -1255,30 +1248,30 @@ namespace PacketSoftware
         private void HandleScroll(Object sender, ScrollEventArgs se)
         {
             // capture text at cursor
-            if (this.Caret.IsOff)
+            if (Caret.IsOff)
             {
             }
             else
             {
-                this.TextAtCursor = "";
-                for (int x = 0; x < this._cols; x++)
+                _textAtCursor = "";
+                for (int x = 0; x < _cols; x++)
                 {
-                    char CurChar = this.CharGrid[this.Caret.Pos.Y][x];
-                    if (CurChar == '\0')
+                    char curChar = CharGrid[Caret.Pos.Y][x];
+                    if (curChar == '\0')
                     {
                         continue;
                     }
-                    this.TextAtCursor = this.TextAtCursor + Convert.ToString(CurChar);
+                    _textAtCursor = _textAtCursor + Convert.ToString(curChar);
                 }
             }
 
             switch (se.Type)
             {
                 case ScrollEventType.SmallIncrement: // down
-                    this.LastVisibleLine += 1;
+                    _lastVisibleLine += 1;
                     break;
                 case ScrollEventType.SmallDecrement: // up
-                    this.LastVisibleLine += -1;
+                    _lastVisibleLine += -1;
                     break;
                 default:
                     return;
@@ -1287,26 +1280,26 @@ namespace PacketSoftware
             // make sure we don't set LastVisibleLine past the end of the StringCollection
             // LastVisibleLine is relative to the last line in the StringCollection
             // 0 is the Last element
-            if (this.LastVisibleLine > 0)
+            if (_lastVisibleLine > 0)
             {
-                this.LastVisibleLine = 0;
+                _lastVisibleLine = 0;
             }
 
-            if (this.LastVisibleLine < (0 - this.ScrollbackBuffer.Count) + (this._rows))
+            if (_lastVisibleLine < (0 - ScrollbackBuffer.Count) + (_rows))
             {
-                this.LastVisibleLine = (0 - this.ScrollbackBuffer.Count) + (this._rows) - 1;
+                _lastVisibleLine = (0 - ScrollbackBuffer.Count) + (_rows) - 1;
             }
 
 
-            int columns = this._cols;
-            int rows = this._rows;
+            int columns = _cols;
+            int rows = _rows;
 
-            this.SetSize(rows, columns);
+            SetSize(rows, columns);
 
             StringCollection visiblebuffer = new StringCollection();
-            for (int i = this.ScrollbackBuffer.Count - 1 + this.LastVisibleLine; i >= 0; i--)
+            for (int i = ScrollbackBuffer.Count - 1 + _lastVisibleLine; i >= 0; i--)
             {
-                visiblebuffer.Insert(0, this.ScrollbackBuffer[i]);
+                visiblebuffer.Insert(0, ScrollbackBuffer[i]);
 
                 // don't parse more strings than our display can show
                 if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
@@ -1323,30 +1316,30 @@ namespace PacketSoftware
                     //this.CharGrid[i][column] = '0';
                     if (column > visiblebuffer[i].Length - 1)
                         continue;
-                    this.CharGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
+                    CharGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
                 }
                 // if we're displaying the last line in scrollbackbuffer, then
                 // replace the cursor and the text on the cursor line
                 //System.Console.WriteLine(Convert.ToString(lastline) + " " + Convert.ToString(this.ScrollbackBuffer.Count));
-                if (this.LastVisibleLine == 0)
+                if (_lastVisibleLine == 0)
                 {
-                    this.CaretOn();
+                    CaretOn();
                     //this.CaretToAbs(0,0);
-                    for (int column = 0; column < this._cols; column++)
+                    for (int column = 0; column < _cols; column++)
                     {
-                        if (column > this.TextAtCursor.Length - 1)
+                        if (column > _textAtCursor.Length - 1)
                             continue;
-                        this.CharGrid[this._rows - 1][column] = this.TextAtCursor.ToCharArray()[column];
+                        CharGrid[_rows - 1][column] = _textAtCursor.ToCharArray()[column];
                     }
-                    this.CaretToAbs(this._rows - 1, this.TextAtCursor.Length);
+                    CaretToAbs(_rows - 1, _textAtCursor.Length);
                 }
                 else
                 {
-                    this.CaretOff();
+                    CaretOff();
                 }
             }
 
-            this.Refresh();
+            Refresh();
         }
 
         #endregion
@@ -1358,19 +1351,19 @@ namespace PacketSoftware
             try
             {
                 // Set the Maximum, Minimum, LargeChange and SmallChange properties.
-                this.VertScrollBar.Minimum = 0;
+                VertScrollBar.Minimum = 0;
 
                 // if the scrollbackbuffer is empty, there's nothing to scroll
-                if (this.ScrollbackBuffer.Count == 0)
+                if (ScrollbackBuffer.Count == 0)
                 {
-                    this.VertScrollBar.Maximum = 0;
+                    VertScrollBar.Maximum = 0;
                     return;
                 }
 
                 // If the offset does not make the Maximum less than zero, set its value.    
-                if ((this.ScrollbackBuffer.Count*this.CharSize.Height) - this.Height > 0)
+                if ((ScrollbackBuffer.Count*CharSize.Height) - Height > 0)
                 {
-                    this.VertScrollBar.Maximum = this.ScrollbackBuffer.Count*this.CharSize.Height - this.Height;
+                    VertScrollBar.Maximum = ScrollbackBuffer.Count*CharSize.Height - Height;
                 }
 
                 // If the HScrollBar is visible, adjust the Maximum of the 
@@ -1379,16 +1372,16 @@ namespace PacketSoftware
                 //{
                 //	this.vScrollBar1.Maximum += this.hScrollBar1.Height;
                 //}
-                this.VertScrollBar.LargeChange = this.VertScrollBar.Maximum/this.CharSize.Height*10;
-                this.VertScrollBar.SmallChange = this.VertScrollBar.Maximum/this.CharSize.Height;
+                VertScrollBar.LargeChange = VertScrollBar.Maximum/CharSize.Height*10;
+                VertScrollBar.SmallChange = VertScrollBar.Maximum/CharSize.Height;
                 // Adjust the Maximum value to make the raw Maximum value 
                 // attainable by user interaction.
-                this.VertScrollBar.Maximum += this.VertScrollBar.LargeChange;
+                VertScrollBar.Maximum += VertScrollBar.LargeChange;
             }
 
-            catch (System.Exception CurException)
+            catch (Exception curException)
             {
-                MessageBox.Show("Error SetScrollBarValues: " + CurException.Message);
+                MessageBox.Show("Error SetScrollBarValues: " + curException.Message);
             }
         }
 
@@ -1396,36 +1389,36 @@ namespace PacketSoftware
 
         #region ConnectCallback
 
-        private void ConnectCallback(System.IAsyncResult ar)
+        private void ConnectCallback(IAsyncResult ar)
         {
             try
             {
                 // Get The connection socket from the callback
-                System.Net.Sockets.Socket sock1 = (System.Net.Sockets.Socket) ar.AsyncState;
-                if (C_Type == "Com")
+                Socket sock1 = (Socket) ar.AsyncState;
+                if (_cType == "Com")
                 {
-                    this.Refresh();
+                    Refresh();
                 }
 
                 if (sock1.Connected)
                 {
-                    uc_CommsStateObject StateObject = new uc_CommsStateObject();
+                    UcCommsStateObject stateObject = new UcCommsStateObject();
 
-                    StateObject.Socket = sock1;
+                    stateObject.Socket = sock1;
 
                     // Assign Callback function to read from Asyncronous Socket
-                    callbackProc = new System.AsyncCallback(OnReceivedData);
+                    callbackProc = OnReceivedData;
 
                     // Begin reading data asyncronously
-                    sock1.BeginReceive(StateObject.Buffer, 0, StateObject.Buffer.Length,
-                        System.Net.Sockets.SocketFlags.None, callbackProc, StateObject);
+                    sock1.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
+                        SocketFlags.None, callbackProc, stateObject);
                 }
             }
 
-            catch (System.Exception CurException)
+            catch (Exception curException)
             {
                 //System.Console.WriteLine ("ConnectCallback: " + CurException.Message);
-                MessageBox.Show(CurException.Message);
+                MessageBox.Show(curException.Message);
             }
         }
 
@@ -1433,15 +1426,15 @@ namespace PacketSoftware
 
         #region OnReceiveData
 
-        private void OnReceivedData(System.IAsyncResult ar)
+        private void OnReceivedData(IAsyncResult ar)
         {
             try
             {
                 // Get The connection socket from the callback
-                uc_CommsStateObject StateObject = (uc_CommsStateObject) ar.AsyncState;
+                UcCommsStateObject stateObject = (UcCommsStateObject) ar.AsyncState;
 
                 // Get The data , if any
-                int nBytesRec = StateObject.Socket.EndReceive(ar);
+                int nBytesRec = stateObject.Socket.EndReceive(ar);
 
                 if (nBytesRec > 0)
                 {
@@ -1449,29 +1442,29 @@ namespace PacketSoftware
 
                     for (int i = 0; i < nBytesRec; i++)
                     {
-                        sReceived += System.Convert.ToChar(StateObject.Buffer[i]).ToString();
+                        sReceived += Convert.ToChar(stateObject.Buffer[i]).ToString(CultureInfo.InvariantCulture);
                     }
                     //krr
-                    if (sReceived.Contains(UernamePrompt) == true)
+                    if (sReceived.Contains(UernamePrompt))
                     {
-                        this.DispatchMessage(this, Username);
-                        this.DispatchMessage(this, System.Environment.NewLine);
+                        DispatchMessage(this, Username);
+                        DispatchMessage(this, Environment.NewLine);
                     }
-                    if (sReceived.Contains(passwordPrompt) == true)
+                    if (sReceived.Contains(passwordPrompt))
                     {
-                        this.DispatchMessage(this, Password);
-                        this.DispatchMessage(this, System.Environment.NewLine);
+                        DispatchMessage(this, Password);
+                        DispatchMessage(this, Environment.NewLine);
                     }
 
-                    if (FileActive == true)
+                    if (FileActive)
                     {
                         //KRR
-                        DataFile = DataFile + sReceived;
+                        _dataFile = _dataFile + sReceived;
 
-                        string[] lines = DataFile.Split(new string[] {Environment.NewLine},
+                        string[] lines = _dataFile.Split(new[] {Environment.NewLine},
                             StringSplitOptions.RemoveEmptyEntries);
 
-                        if (sReceived.Contains(BBSPrompt) == true)
+                        if (sReceived.Contains(BBSPrompt))
                             //if (Regex.Match(sReceived,BBSPrompt).Success )
                         {
                             ForwardDone(this, new EventArgs());
@@ -1484,26 +1477,25 @@ namespace PacketSoftware
                                 LastNumber = lines[i].Substring(0, 5);
                             }
                             LastNumberevt(this, new EventArgs());
-                            DataFile = "";
+                            _dataFile = "";
                         }
                     }
-                    this.Invoke(this.RxdTextEvent, new System.String[] {System.String.Copy(sReceived)});
-                    this.Invoke(this.RefreshEvent);
-                    sReceived = "";
+                    Invoke(RxdTextEvent, new object[] {String.Copy(sReceived)});
+                    Invoke(RefreshEvent);
                     // Re-Establish the next asyncronous receveived data callback as
-                    StateObject.Socket.BeginReceive(StateObject.Buffer, 0, StateObject.Buffer.Length,
-                        System.Net.Sockets.SocketFlags.None, new System.AsyncCallback(OnReceivedData), StateObject);
+                    stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
+                        SocketFlags.None, OnReceivedData, stateObject);
                 }
                 else
                 {
                     // If no data was recieved then the connection is probably dead
                     //System.Console.WriteLine ("Disconnected", StateObject.Socket.RemoteEndPoint);
-                    StateObject.Socket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
-                    StateObject.Socket.Close();
+                    stateObject.Socket.Shutdown(SocketShutdown.Both);
+                    stateObject.Socket.Close();
                     Disconnectby();
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 //MessageBox.Show("OnReceivedData");
             }
@@ -1513,10 +1505,10 @@ namespace PacketSoftware
 
         #region  DispatchMessage
 
-        private void DispatchMessage(System.Object sender, string strText)
+        private void DispatchMessage(Object sender, string strText)
         {
             //Console.WriteLine(strText);
-            if (this.XOFF == true)
+            if (XOFF)
             {
                 // store the characters in the outputbuffer
                 OutBuff += strText;
@@ -1527,7 +1519,7 @@ namespace PacketSoftware
 
             try
             {
-                System.Byte[] smk = new System.Byte[strText.Length];
+                Byte[] smk = new Byte[strText.Length];
 
                 if (OutBuff != "")
                 {
@@ -1537,26 +1529,26 @@ namespace PacketSoftware
 
                 for (i = 0; i < strText.Length; i++)
                 {
-                    System.Byte ss = System.Convert.ToByte(strText[i]);
+                    Byte ss = Convert.ToByte(strText[i]);
                     smk[i] = ss;
                 }
 
                 if (callbackEndDispatch == null)
                 {
-                    callbackEndDispatch = new System.AsyncCallback(EndDispatchMessage);
+                    callbackEndDispatch = EndDispatchMessage;
                 }
 
-                if (C_Type == "Com")
+                if (_cType == "Com")
                 {
                     port.Write(strText);
                 }
                 else
                 {
-                    if (this.CurSocket == null)
+                    if (_curSocket == null)
                     {
                         try
                         {
-                            reader._pf.Transmit(smk);
+                            _reader._pf.Transmit(smk);
                         }
                         catch
                         {
@@ -1567,14 +1559,14 @@ namespace PacketSoftware
                     {
                         try
                         {
-                            System.IAsyncResult ar = this.CurSocket.BeginSend(
+                            IAsyncResult ar = _curSocket.BeginSend(
                                 smk,
                                 0,
                                 smk.Length,
-                                System.Net.Sockets.SocketFlags.None,
+                                SocketFlags.None,
                                 callbackEndDispatch,
-                                this.CurSocket);
-                            lastAR = ar;
+                                _curSocket);
+                            _lastAr = ar;
                         }
                         catch
                         {
@@ -1583,10 +1575,10 @@ namespace PacketSoftware
                     }
                 }
             }
-            catch (System.Exception CurException)
+            catch (Exception curException)
             {
-                MessageBox.Show("DispatchMessage: " + CurException.Message);
-                MessageBox.Show("DispatchMessage: Character is " + System.Convert.ToInt32(strText[i]));
+                MessageBox.Show("DispatchMessage: " + curException.Message);
+                MessageBox.Show("DispatchMessage: Character is " + Convert.ToInt32(strText[i]));
                 MessageBox.Show("DispatchMessage: String is " + strText);
             }
         }
@@ -1595,16 +1587,16 @@ namespace PacketSoftware
 
         #region EndDispatchMessage
 
-        private void EndDispatchMessage(System.IAsyncResult ar)
+        private void EndDispatchMessage(IAsyncResult ar)
         {
             try
             {
-                System.Net.Sockets.Socket Sock = (System.Net.Sockets.Socket) ar.AsyncState;
-                Sock.EndSend(ar);
+                Socket sock = (Socket) ar.AsyncState;
+                sock.EndSend(ar);
             }
-            catch (System.Exception CurException)
+            catch (Exception curException)
             {
-                MessageBox.Show("EndDispatchMessage: " + CurException.Message);
+                MessageBox.Show("EndDispatchMessage: " + curException.Message);
             }
         }
 
@@ -1612,156 +1604,154 @@ namespace PacketSoftware
 
         #region PrintChar
 
-        private void PrintChar(System.Char CurChar)
+        private void PrintChar(Char curChar)
         {
-            if (this.Caret.EOL == true)
+            if (Caret.EOL)
             {
-                if ((this.Modes.Flags & uc_Mode.AutoWrap) == uc_Mode.AutoWrap)
+                if ((Modes.Flags & UcMode.AutoWrap) == UcMode.AutoWrap)
                 {
-                    this.LineFeed();
-                    this.CarriageReturn();
-                    this.Caret.EOL = false;
+                    LineFeed();
+                    CarriageReturn();
+                    Caret.EOL = false;
                 }
             }
 
-            System.Int32 X = this.Caret.Pos.X;
-            System.Int32 Y = this.Caret.Pos.Y;
+            Int32 x = Caret.Pos.X;
+            Int32 y = Caret.Pos.Y;
 
-            this.AttribGrid[Y][X] = this.CharAttribs;
+            AttribGrid[y][x] = _charAttribs;
 
-            if (this.CharAttribs.GS != null)
+            if (_charAttribs.GS != null)
             {
-                CurChar = uc_Chars.Get(CurChar, this.AttribGrid[Y][X].GS.Set, this.AttribGrid[Y][X].GR.Set);
-                if (this.CharAttribs.GS.Set == uc_Chars.Sets.DECSG) this.AttribGrid[Y][X].IsDECSG = true;
-                this.CharAttribs.GS = null;
+                curChar = UcChars.Get(curChar, AttribGrid[y][x].GS.Set, AttribGrid[y][x].GR.Set);
+                if (_charAttribs.GS.Set == UcChars.Sets.DECSG) AttribGrid[y][x].IsDECSG = true;
+                _charAttribs.GS = null;
             }
             else
             {
-                CurChar = uc_Chars.Get(CurChar, this.AttribGrid[Y][X].GL.Set, this.AttribGrid[Y][X].GR.Set);
-                if (this.CharAttribs.GL.Set == uc_Chars.Sets.DECSG) this.AttribGrid[Y][X].IsDECSG = true;
+                curChar = UcChars.Get(curChar, AttribGrid[y][x].GL.Set, AttribGrid[y][x].GR.Set);
+                if (_charAttribs.GL.Set == UcChars.Sets.DECSG) AttribGrid[y][x].IsDECSG = true;
             }
-            this.CharGrid[Y][X] = CurChar;
-            this.CaretRight();
+            CharGrid[y][x] = curChar;
+            CaretRight();
         }
 
         #endregion
 
         #region System.Drawing.Point GetDrawStringOffset
 
-        private System.Drawing.Point GetDrawStringOffset(System.Drawing.Graphics CurGraphics, System.Int32 X,
-            System.Int32 Y, System.Char CurChar)
+        private Point GetDrawStringOffset(Graphics curGraphics, Int32 x,
+            Int32 y, Char curChar)
         {
             // DrawString doesn't actually print where you tell it to but instead consistently prints
             // with an offset. This is annoying when the other draw commands do not print with an offset
             // this method returns a point defining the offset so we can take it off the printstring command.
 
-            System.Drawing.CharacterRange[] characterRanges =
+            CharacterRange[] characterRanges =
             {
-                new System.Drawing.CharacterRange(0, 1)
+                new CharacterRange(0, 1)
             };
 
-            System.Drawing.RectangleF layoutRect = new System.Drawing.RectangleF(X, Y, 100, 100);
+            RectangleF layoutRect = new RectangleF(x, y, 100, 100);
 
-            System.Drawing.StringFormat stringFormat = new System.Drawing.StringFormat();
+            StringFormat stringFormat = new StringFormat();
 
             stringFormat.SetMeasurableCharacterRanges(characterRanges);
 
-            System.Drawing.Region[] stringRegions = new System.Drawing.Region[1];
+            Region[] stringRegions;
 
-            stringRegions = CurGraphics.MeasureCharacterRanges(
-                CurChar.ToString(),
-                this.Font,
+            stringRegions = curGraphics.MeasureCharacterRanges(
+                curChar.ToString(CultureInfo.InvariantCulture),
+                Font,
                 layoutRect,
                 stringFormat);
 
-            System.Drawing.RectangleF measureRect1 = stringRegions[0].GetBounds(CurGraphics);
+            RectangleF measureRect1 = stringRegions[0].GetBounds(curGraphics);
 
-            return new System.Drawing.Point((int) (measureRect1.X + 0.5), (int) (measureRect1.Y + 0.5));
+            return new Point((int) (measureRect1.X + 0.5), (int) (measureRect1.Y + 0.5));
         }
 
         #endregion
 
         #region System.Drawing.Point GetCharSize
 
-        private System.Drawing.Point GetCharSize(System.Drawing.Graphics CurGraphics)
+        private Point GetCharSize(Graphics curGraphics)
         {
             // DrawString doesn't actually print where you tell it to but instead consistently prints
             // with an offset. This is annoying when the other draw commands do not print with an offset
             // this method returns a point defining the offset so we can take it off the printstring command.
 
-            System.Drawing.CharacterRange[] characterRanges =
+            CharacterRange[] characterRanges =
             {
-                new System.Drawing.CharacterRange(0, 1)
+                new CharacterRange(0, 1)
             };
 
-            System.Drawing.RectangleF layoutRect = new System.Drawing.RectangleF(0, 0, 100, 100);
+            RectangleF layoutRect = new RectangleF(0, 0, 100, 100);
 
-            System.Drawing.StringFormat stringFormat = new System.Drawing.StringFormat();
+            StringFormat stringFormat = new StringFormat();
 
             stringFormat.SetMeasurableCharacterRanges(characterRanges);
 
-            System.Drawing.Region[] stringRegions = new System.Drawing.Region[1];
-
-            stringRegions = CurGraphics.MeasureCharacterRanges(
+            Region[] stringRegions = curGraphics.MeasureCharacterRanges(
                 "A",
-                this.Font,
+                Font,
                 layoutRect,
                 stringFormat);
 
-            System.Drawing.RectangleF measureRect1 = stringRegions[0].GetBounds(CurGraphics);
+            RectangleF measureRect1 = stringRegions[0].GetBounds(curGraphics);
 
-            return new System.Drawing.Point((int) (measureRect1.Width + 0.5), (int) (measureRect1.Height + 0.5));
+            return new Point((int) (measureRect1.Width + 0.5), (int) (measureRect1.Height + 0.5));
         }
 
         #endregion
 
         #region AssignColors
 
-        private void AssignColors(CharAttribStruct CurAttribs, ref System.Drawing.Color CurFGColor,
-            ref System.Drawing.Color CurBGColor)
+        private void AssignColors(CharAttribStruct curAttribs, ref Color CurFGColor,
+            ref Color CurBGColor)
         {
-            CurFGColor = this.ForeColor;
-            CurBGColor = this.BackColor;
+            CurFGColor = ForeColor;
+            CurBGColor = BackColor;
 
-            if (CurAttribs.IsBlinking == true)
+            if (curAttribs.IsBlinking)
             {
-                CurFGColor = this.BlinkColor;
+                CurFGColor = BlinkColor;
             }
 
             // bold takes precedence over the blink color
-            if (CurAttribs.IsBold == true)
+            if (curAttribs.IsBold)
             {
-                CurFGColor = this.BoldColor;
+                CurFGColor = BoldColor;
             }
 
-            if (CurAttribs.UseAltColor == true)
+            if (curAttribs.UseAltColor)
             {
-                CurFGColor = CurAttribs.AltColor;
+                CurFGColor = curAttribs.AltColor;
             }
 
             // alternate color takes precedence over the bold color
-            if (CurAttribs.UseAltBGColor == true)
+            if (curAttribs.UseAltBGColor)
             {
-                CurBGColor = CurAttribs.AltBGColor;
+                CurBGColor = curAttribs.AltBGColor;
             }
 
-            if (CurAttribs.IsInverse == true)
+            if (curAttribs.IsInverse)
             {
-                System.Drawing.Color TmpColor = CurBGColor;
+                Color tmpColor = CurBGColor;
 
                 CurBGColor = CurFGColor;
-                CurFGColor = TmpColor;
+                CurFGColor = tmpColor;
             }
 
             // If light background is on and we're not using alt colors
             // reverse the colors
-            if ((this.Modes.Flags & uc_Mode.LightBackground) > 0 &&
-                CurAttribs.UseAltColor == false && CurAttribs.UseAltBGColor == false)
+            if ((Modes.Flags & UcMode.LightBackground) > 0 &&
+                curAttribs.UseAltColor == false && curAttribs.UseAltBGColor == false)
             {
-                System.Drawing.Color TmpColor = CurBGColor;
+                Color tmpColor = CurBGColor;
 
                 CurBGColor = CurFGColor;
-                CurFGColor = TmpColor;
+                CurFGColor = tmpColor;
             }
         }
 
@@ -1769,211 +1759,203 @@ namespace PacketSoftware
 
         #region ShowChar
 
-        private void ShowChar(System.Drawing.Graphics CurGraphics, System.Char CurChar, System.Int32 Y, System.Int32 X,
-            CharAttribStruct CurAttribs)
+        private void ShowChar(Graphics curGraphics, Char curChar, Int32 y, Int32 x,
+            CharAttribStruct curAttribs)
         {
-            if (CurChar == '\0')
+            if (curChar == '\0')
             {
                 return;
             }
 
-            System.Drawing.Color CurFGColor = System.Drawing.Color.White;
-            System.Drawing.Color CurBGColor = System.Drawing.Color.Black;
+            Color curFgColor = Color.White;
+            Color curBgColor = Color.Black;
 
-            this.AssignColors(CurAttribs, ref CurFGColor, ref CurBGColor);
+            AssignColors(curAttribs, ref curFgColor, ref curBgColor);
 
-            if ((CurBGColor != this.BackColor && (this.Modes.Flags & uc_Mode.LightBackground) == 0) ||
-                (CurBGColor != this.FGColor && (this.Modes.Flags & uc_Mode.LightBackground) > 0))
+            if ((curBgColor != BackColor && (Modes.Flags & UcMode.LightBackground) == 0) ||
+                (curBgColor != FGColor && (Modes.Flags & UcMode.LightBackground) > 0))
             {
                 // Erase the current Character underneath the cursor postion
-                this.EraseBuffer.Clear(CurBGColor);
+                EraseBuffer.Clear(curBgColor);
 
                 // paint a rectangle over the cursor position in the character's BGColor
-                CurGraphics.DrawImageUnscaled(
-                    this.EraseBitmap,
-                    X,
-                    Y);
+                curGraphics.DrawImageUnscaled(
+                    EraseBitmap,
+                    x,
+                    y);
             }
 
-            if (CurAttribs.IsUnderscored)
+            if (curAttribs.IsUnderscored)
             {
-                CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                    X, Y + this.UnderlinePos,
-                    X + this.CharSize.Width, Y + this.UnderlinePos);
+                curGraphics.DrawLine(new Pen(curFgColor, 1),
+                    x, y + UnderlinePos,
+                    x + CharSize.Width, y + UnderlinePos);
             }
 
-            if ((CurAttribs.IsDECSG == true) &&
-                (CurChar == 'l' ||
-                 CurChar == 'q' ||
-                 CurChar == 'w' ||
-                 CurChar == 'k' ||
-                 CurChar == 'x' ||
-                 CurChar == 't' ||
-                 CurChar == 'n' ||
-                 CurChar == 'u' ||
-                 CurChar == 'm' ||
-                 CurChar == 'v' ||
-                 CurChar == 'j' ||
-                 CurChar == '`'))
+            if (curAttribs.IsDECSG &&
+                (curChar == 'l' ||
+                 curChar == 'q' ||
+                 curChar == 'w' ||
+                 curChar == 'k' ||
+                 curChar == 'x' ||
+                 curChar == 't' ||
+                 curChar == 'n' ||
+                 curChar == 'u' ||
+                 curChar == 'm' ||
+                 curChar == 'v' ||
+                 curChar == 'j' ||
+                 curChar == '`'))
             {
-                this.ShowSpecialChar(
-                    CurGraphics,
-                    CurChar,
-                    Y,
-                    X,
-                    CurFGColor,
-                    CurBGColor);
+                ShowSpecialChar(
+                    curGraphics,
+                    curChar,
+                    y,
+                    x,
+                    curFgColor);
 
                 return;
             }
 
-            CurGraphics.DrawString(
-                CurChar.ToString(),
-                this.Font,
-                new System.Drawing.SolidBrush(CurFGColor),
-                X - this.DrawStringOffset.X,
-                Y - this.DrawStringOffset.Y);
+            curGraphics.DrawString(
+                curChar.ToString(CultureInfo.InvariantCulture),
+                Font,
+                new SolidBrush(curFgColor),
+                x - DrawStringOffset.X,
+                y - DrawStringOffset.Y);
         }
 
         #endregion
 
-        #region ShowSpecialChar
-
-        private void ShowSpecialChar(System.Drawing.Graphics CurGraphics, System.Char CurChar, System.Int32 Y,
-            System.Int32 X, System.Drawing.Color CurFGColor, System.Drawing.Color CurBGColor)
+        private void ShowSpecialChar(Graphics curGraphics, Char curChar, Int32 y,
+            Int32 x, Color curFgColor)
         {
-            if (CurChar == '\0')
+            if (curChar == '\0')
             {
                 return;
             }
 
-            switch (CurChar)
+            Point[] curPoints = new Point[4];
+            switch (curChar)
             {
                 case '`': // diamond
-                    System.Drawing.Point[] CurPoints = new System.Drawing.Point[4];
 
-                    CurPoints[0] = new System.Drawing.Point(X + this.CharSize.Width/2, Y + this.CharSize.Height/6);
-                    CurPoints[1] = new System.Drawing.Point(X + 5*this.CharSize.Width/6, Y + this.CharSize.Height/2);
-                    CurPoints[2] = new System.Drawing.Point(X + this.CharSize.Width/2, Y + 5*this.CharSize.Height/6);
-                    CurPoints[3] = new System.Drawing.Point(X + this.CharSize.Width/6, Y + this.CharSize.Height/2);
+                    curPoints[0] = new Point(x + CharSize.Width/2, y + CharSize.Height/6);
+                    curPoints[1] = new Point(x + 5*CharSize.Width/6, y + CharSize.Height/2);
+                    curPoints[2] = new Point(x + CharSize.Width/2, y + 5*CharSize.Height/6);
+                    curPoints[3] = new Point(x + CharSize.Width/6, y + CharSize.Height/2);
 
-                    CurGraphics.FillPolygon(
-                        new System.Drawing.SolidBrush(CurFGColor),
-                        CurPoints);
+                    curGraphics.FillPolygon(
+                        new SolidBrush(curFgColor),
+                        curPoints);
                     break;
 
                 case 'l': // top left bracket
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2 - 1, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width, Y + this.CharSize.Height/2);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2 - 1, y + CharSize.Height/2,
+                        x + CharSize.Width, y + CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y + CharSize.Height/2,
+                        x + CharSize.Width/2, y + CharSize.Height);
                     break;
 
                 case 'q': // horizontal line
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width, Y + this.CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x, y + CharSize.Height/2,
+                        x + CharSize.Width, y + CharSize.Height/2);
                     break;
 
                 case 'w': // top tee-piece
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width, Y + this.CharSize.Height/2);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x, y + CharSize.Height/2,
+                        x + CharSize.Width, y + CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y + CharSize.Height/2,
+                        x + CharSize.Width/2, y + CharSize.Height);
                     break;
 
                 case 'k': // top right bracket
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x, y + CharSize.Height/2,
+                        x + CharSize.Width/2, y + CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y + CharSize.Height/2,
+                        x + CharSize.Width/2, y + CharSize.Height);
                     break;
 
                 case 'x': // vertical line
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y,
+                        x + CharSize.Width/2, y + CharSize.Height);
                     break;
 
                 case 't': // left hand tee-piece
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width, Y + this.CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y,
+                        x + CharSize.Width/2, y + CharSize.Height);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y + CharSize.Height/2,
+                        x + CharSize.Width, y + CharSize.Height/2);
                     break;
 
                 case 'n': // cross piece
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width, Y + this.CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y,
+                        x + CharSize.Width/2, y + CharSize.Height);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x, y + CharSize.Height/2,
+                        x + CharSize.Width, y + CharSize.Height/2);
                     break;
 
                 case 'u': // right hand tee-piece
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x, y + CharSize.Height/2,
+                        x + CharSize.Width/2, y + CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y,
+                        x + CharSize.Width/2, y + CharSize.Height);
                     break;
 
                 case 'm': // bottom left bracket
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width, Y + this.CharSize.Height/2);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y + CharSize.Height/2,
+                        x + CharSize.Width, y + CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y,
+                        x + CharSize.Width/2, y + CharSize.Height/2);
                     break;
 
                 case 'v': // bottom tee-piece
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width, Y + this.CharSize.Height/2);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x, y + CharSize.Height/2,
+                        x + CharSize.Width, y + CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y,
+                        x + CharSize.Width/2, y + CharSize.Height/2);
                     break;
 
                 case 'j': // bottom right bracket
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X, Y + this.CharSize.Height/2,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2);
-                    CurGraphics.DrawLine(new System.Drawing.Pen(CurFGColor, 1),
-                        X + this.CharSize.Width/2, Y,
-                        X + this.CharSize.Width/2, Y + this.CharSize.Height/2);
-                    break;
-
-                default:
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x, y + CharSize.Height/2,
+                        x + CharSize.Width/2, y + CharSize.Height/2);
+                    curGraphics.DrawLine(new Pen(curFgColor, 1),
+                        x + CharSize.Width/2, y,
+                        x + CharSize.Width/2, y + CharSize.Height/2);
                     break;
             }
         }
 
-        #endregion
-
         #region WipeScreen
 
-        private void WipeScreen(System.Drawing.Graphics CurGraphics)
+        private void WipeScreen(Graphics curGraphics)
         {
             // clear the screen buffer area
-            if ((this.Modes.Flags & uc_Mode.LightBackground) > 0)
+            if ((Modes.Flags & UcMode.LightBackground) > 0)
             {
-                CurGraphics.Clear(this.FGColor);
+                curGraphics.Clear(FGColor);
             }
             else
             {
-                CurGraphics.Clear(this.BackColor);
+                curGraphics.Clear(BackColor);
             }
         }
 
@@ -1981,47 +1963,44 @@ namespace PacketSoftware
 
         #region ClearDown
 
-        private void ClearDown(System.Int32 Param)
+        private void ClearDown(Int32 param)
         {
-            System.Int32 X = this.Caret.Pos.X;
-            System.Int32 Y = this.Caret.Pos.Y;
+            Int32 x = Caret.Pos.X;
+            Int32 y = Caret.Pos.Y;
 
-            switch (Param)
+            switch (param)
             {
                 case 0: // from cursor to bottom inclusive
 
-                    System.Array.Clear(this.CharGrid[Y], X, this.CharGrid[Y].Length - X);
-                    System.Array.Clear(this.AttribGrid[Y], X, this.AttribGrid[Y].Length - X);
+                    Array.Clear(CharGrid[y], x, CharGrid[y].Length - x);
+                    Array.Clear(AttribGrid[y], x, AttribGrid[y].Length - x);
 
-                    for (int i = Y + 1; i < this._rows; i++)
+                    for (int i = y + 1; i < _rows; i++)
                     {
-                        System.Array.Clear(this.CharGrid[i], 0, this.CharGrid[i].Length);
-                        System.Array.Clear(this.AttribGrid[i], 0, this.AttribGrid[i].Length);
+                        Array.Clear(CharGrid[i], 0, CharGrid[i].Length);
+                        Array.Clear(AttribGrid[i], 0, AttribGrid[i].Length);
                     }
                     break;
 
                 case 1: // from top to cursor inclusive
 
-                    System.Array.Clear(this.CharGrid[Y], 0, X + 1);
-                    System.Array.Clear(this.AttribGrid[Y], 0, X + 1);
+                    Array.Clear(CharGrid[y], 0, x + 1);
+                    Array.Clear(AttribGrid[y], 0, x + 1);
 
-                    for (int i = 0; i < Y; i++)
+                    for (int i = 0; i < y; i++)
                     {
-                        System.Array.Clear(this.CharGrid[i], 0, this.CharGrid[i].Length);
-                        System.Array.Clear(this.AttribGrid[i], 0, this.AttribGrid[i].Length);
+                        Array.Clear(CharGrid[i], 0, CharGrid[i].Length);
+                        Array.Clear(AttribGrid[i], 0, AttribGrid[i].Length);
                     }
                     break;
 
                 case 2: // entire screen
 
-                    for (int i = 0; i < this._rows; i++)
+                    for (int i = 0; i < _rows; i++)
                     {
-                        System.Array.Clear(this.CharGrid[i], 0, this.CharGrid[i].Length);
-                        System.Array.Clear(this.AttribGrid[i], 0, this.AttribGrid[i].Length);
+                        Array.Clear(CharGrid[i], 0, CharGrid[i].Length);
+                        Array.Clear(AttribGrid[i], 0, AttribGrid[i].Length);
                     }
-                    break;
-
-                default:
                     break;
             }
         }
@@ -2030,30 +2009,27 @@ namespace PacketSoftware
 
         #region ClearRight
 
-        private void ClearRight(System.Int32 Param)
+        private void ClearRight(Int32 param)
         {
-            System.Int32 X = this.Caret.Pos.X;
-            System.Int32 Y = this.Caret.Pos.Y;
+            Int32 x = Caret.Pos.X;
+            Int32 y = Caret.Pos.Y;
 
-            switch (Param)
+            switch (param)
             {
                 case 0: // from cursor to end of line inclusive
 
-                    System.Array.Clear(this.CharGrid[Y], X, this.CharGrid[Y].Length - X);
-                    System.Array.Clear(this.AttribGrid[Y], X, this.AttribGrid[Y].Length - X);
+                    Array.Clear(CharGrid[y], x, CharGrid[y].Length - x);
+                    Array.Clear(AttribGrid[y], x, AttribGrid[y].Length - x);
                     break;
 
                 case 1: // from beginning to cursor inclusive
-                    System.Array.Clear(this.CharGrid[Y], 0, X + 1);
-                    System.Array.Clear(this.AttribGrid[Y], 0, X + 1);
+                    Array.Clear(CharGrid[y], 0, x + 1);
+                    Array.Clear(AttribGrid[y], 0, x + 1);
                     break;
 
                 case 2: // entire line
-                    System.Array.Clear(this.CharGrid[Y], 0, this.CharGrid[Y].Length);
-                    System.Array.Clear(this.AttribGrid[Y], 0, this.AttribGrid[Y].Length);
-                    break;
-
-                default:
+                    Array.Clear(CharGrid[y], 0, CharGrid[y].Length);
+                    Array.Clear(AttribGrid[y], 0, AttribGrid[y].Length);
                     break;
             }
         }
@@ -2064,42 +2040,42 @@ namespace PacketSoftware
 
         private void ShowBuffer()
         {
-            this.Invalidate();
+            Invalidate();
         }
 
         #endregion
 
         #region Redraw
 
-        private void Redraw(System.Drawing.Graphics CurGraphics)
+        private void Redraw(Graphics curGraphics)
         {
-            System.Drawing.Point CurPoint;
+            Point CurPoint;
 
-            System.Char CurChar;
+            Char CurChar;
 
 
             // refresh the screen
-            for (System.Int32 Y = 0; Y < this._rows; Y++)
+            for (Int32 y = 0; y < _rows; y++)
             {
-                for (System.Int32 X = 0; X < this._cols; X++)
+                for (Int32 x = 0; x < _cols; x++)
                 {
-                    CurChar = this.CharGrid[Y][X];
+                    CurChar = CharGrid[y][x];
 
                     if (CurChar == '\0')
                     {
                         continue;
                     }
 
-                    CurPoint = new System.Drawing.Point(
-                        X*this.CharSize.Width,
-                        Y*this.CharSize.Height);
+                    CurPoint = new Point(
+                        x*CharSize.Width,
+                        y*CharSize.Height);
 
-                    this.ShowChar(
-                        CurGraphics,
+                    ShowChar(
+                        curGraphics,
                         CurChar,
                         CurPoint.Y,
                         CurPoint.X,
-                        this.AttribGrid[Y][X]);
+                        AttribGrid[y][x]);
                 }
             }
         }
@@ -2108,93 +2084,86 @@ namespace PacketSoftware
 
         #region NvtSendWill
 
-        private void NvtSendWill(System.Char CurChar)
+        private void NvtSendWill(Char curChar)
         {
-            DispatchMessage(this, "\xFF\xFB" + CurChar.ToString());
+            DispatchMessage(this, strText: string.Format("\xFF\xFB{0}", curChar));
         }
 
         #endregion
 
         #region NvtSendWont
 
-        private void NvtSendWont(System.Char CurChar)
+        private void NvtSendWont(Char curChar)
         {
-            DispatchMessage(this, "\xFF\xFC" + CurChar.ToString());
+            DispatchMessage(this, strText: string.Format("\xFF\xFC{0}", curChar));
         }
 
         #endregion
 
         #region NvtSendDont
 
-        private void NvtSendDont(System.Char CurChar)
+        private void NvtSendDont(Char curChar)
         {
-            DispatchMessage(this, "\xFF\xFE" + CurChar.ToString());
+            DispatchMessage(this, strText: string.Format("\xFF\xFE{0}", curChar));
         }
 
         #endregion
 
         #region NvtSendDo
 
-        private void NvtSendDo(System.Char CurChar)
+        private void NvtSendDo(Char curChar)
         {
-            DispatchMessage(this, "\xFF\xFD" + CurChar.ToString());
+            DispatchMessage(this, strText: string.Format("\xFF\xFD{0}", curChar));
         }
 
         #endregion
 
         #region NvtSendSubNeg
 
-        private void NvtSendSubNeg(System.Char CurChar, System.String CurString)
+        private void NvtSendSubNeg(Char curChar, String curString)
         {
-            DispatchMessage(this, "\xFF\xFA" + CurChar.ToString() + "\x00" + CurString + "\xFF\xF0");
+            DispatchMessage(this, strText: string.Format("\xFF\xFA{0}\x00{1}\xFF\xF0", curChar, curString));
         }
 
         #endregion
 
         #region NvtExecuteChar
 
-        private void NvtExecuteChar(System.Char CurChar)
+        private void NvtExecuteChar()
         {
-            switch (CurChar)
-            {
-                default:
-                    //System.Console.WriteLine ("Telnet command {0} encountered", CurChar);
-                    break;
-            }
+            
         }
 
         #endregion
 
         #region TelnetInterpreter
 
-        private void TelnetInterpreter(object Sender, NvtParserEventArgs e)
+        private void TelnetInterpreter(object sender, NvtParserEventArgs e)
         {
             switch (e.Action)
             {
                 case NvtActions.SendUp:
-                    this.Parser.ParseString(e.CurChar.ToString());
+                    Parser.ParseString(inString: e.CurChar.ToString(CultureInfo.InvariantCulture));
                     break;
                 case NvtActions.Execute:
-                    this.NvtExecuteChar(e.CurChar);
-                    break;
-                default:
+                    NvtExecuteChar();
                     break;
             }
 
             // if the sequence is a DO message
             if (e.CurSequence.StartsWith("\xFD"))
             {
-                System.Char CurCmd = System.Convert.ToChar(e.CurSequence.Substring(1, 1));
+                Char curCmd = Convert.ToChar(e.CurSequence.Substring(1, 1));
 
-                switch (CurCmd)
+                switch (curCmd)
                 {
                         // 24 - terminal type 
                     case '\x18':
-                        NvtSendWill(CurCmd);
+                        NvtSendWill(curCmd);
                         break;
 
                     default:
-                        NvtSendWont(CurCmd);
+                        NvtSendWont(curCmd);
                         //System.Console.Write ("unsupported telnet DO sequence {0} happened\n", 
                         //System.Convert.ToInt32 (System.Convert.ToChar (e.CurSequence.Substring (1,1))));
                         break;
@@ -2204,16 +2173,16 @@ namespace PacketSoftware
             // if the sequence is a WILL message
             if (e.CurSequence.StartsWith("\xFB"))
             {
-                System.Char CurCmd = System.Convert.ToChar(e.CurSequence.Substring(1, 1));
+                Char curCmd = Convert.ToChar(e.CurSequence.Substring(1, 1));
 
-                switch (CurCmd)
+                switch (curCmd)
                 {
                     case '\x01': // echo
-                        NvtSendDo(CurCmd);
+                        NvtSendDo(curCmd);
                         break;
 
                     default:
-                        NvtSendDont(CurCmd);
+                        NvtSendDont(curCmd);
                         //System.Console.Write ("unsupported telnet WILL sequence {0} happened\n", 
                         //System.Convert.ToInt32 (System.Convert.ToChar (e.CurSequence.Substring (1,1))));
                         break;
@@ -2229,19 +2198,19 @@ namespace PacketSoftware
                     return;
                 }
 
-                System.Char CurCmd = System.Convert.ToChar(e.CurSequence.Substring(1, 1));
+                Char curCmd = Convert.ToChar(e.CurSequence.Substring(1, 1));
 
-                switch (CurCmd)
+                switch (curCmd)
                 {
                         // 24 - terminal type 
                     case '\x18':
-                        NvtSendSubNeg(CurCmd, "vt220");
+                        NvtSendSubNeg(curCmd, "vt220");
                         break;
 
                     default:
-                        NvtSendSubNeg(CurCmd, "");
-                        System.Console.Write("unsupported telnet SUBNEG sequence {0} happened\n",
-                            System.Convert.ToInt32(System.Convert.ToChar(e.CurSequence.Substring(1, 1))));
+                        NvtSendSubNeg(curCmd, "");
+                        Console.Write("unsupported telnet SUBNEG sequence {0} happened\n",
+                            Convert.ToInt32(Convert.ToChar(e.CurSequence.Substring(1, 1))));
                         break;
                 }
             }
@@ -2253,7 +2222,7 @@ namespace PacketSoftware
 
         private void CarriageReturn()
         {
-            this.CaretToAbs(this.Caret.Pos.Y, 0);
+            CaretToAbs(Caret.Pos.Y, 0);
         }
 
         #endregion
@@ -2262,17 +2231,16 @@ namespace PacketSoftware
 
         private void Tab()
         {
-            for (System.Int32 i = 0; i < this.TabStops.Columns.Length; i++)
+            for (Int32 i = 0; i < TabStops.Columns.Length; i++)
             {
-                if (i > this.Caret.Pos.X && this.TabStops.Columns[i] == true)
+                if (i > Caret.Pos.X && TabStops.Columns[i])
                 {
-                    this.CaretToAbs(this.Caret.Pos.Y, i);
+                    CaretToAbs(Caret.Pos.Y, i);
                     return;
                 }
             }
 
-            this.CaretToAbs(this.Caret.Pos.Y, this._cols - 1);
-            return;
+            CaretToAbs(Caret.Pos.Y, _cols - 1);
         }
 
         #endregion
@@ -2281,36 +2249,33 @@ namespace PacketSoftware
 
         private void TabSet()
         {
-            this.TabStops.Columns[this.Caret.Pos.X] = true;
+            TabStops.Columns[Caret.Pos.X] = true;
         }
 
         #endregion
 
         #region ClearTabs
 
-        private void ClearTabs(uc_Params CurParams) // TBC 
+        private void ClearTabs(UcParams curParams) // TBC 
         {
-            System.Int32 Param = 0;
+            Int32 param = 0;
 
-            if (CurParams.Count() > 0)
+            if (curParams.Count() > 0)
             {
-                Param = System.Convert.ToInt32(CurParams.Elements[0]);
+                param = Convert.ToInt32(curParams.Elements[0]);
             }
 
-            switch (Param)
+            switch (param)
             {
                 case 0: // Current Position
-                    this.TabStops.Columns[this.Caret.Pos.X] = false;
+                    TabStops.Columns[Caret.Pos.X] = false;
                     break;
 
                 case 3: // All Tabs
-                    for (int i = 0; i < this.TabStops.Columns.Length; i++)
+                    for (int i = 0; i < TabStops.Columns.Length; i++)
                     {
-                        this.TabStops.Columns[i] = false;
+                        TabStops.Columns[i] = false;
                     }
-                    break;
-
-                default:
                     break;
             }
         }
@@ -2322,7 +2287,7 @@ namespace PacketSoftware
         private void ReverseLineFeed()
         {
             // if we're at the top of the scroll region (top margin)
-            if (this.Caret.Pos.Y == this.TopMargin)
+            if (Caret.Pos.Y == TopMargin)
             {
                 // we need to add a new line at the top of the screen margin
                 // so shift all the rows in the scroll region down in the array and
@@ -2330,52 +2295,52 @@ namespace PacketSoftware
 
                 int i;
 
-                for (i = this.BottomMargin; i > this.TopMargin; i--)
+                for (i = BottomMargin; i > TopMargin; i--)
                 {
-                    this.CharGrid[i] = this.CharGrid[i - 1];
-                    this.AttribGrid[i] = this.AttribGrid[i - 1];
+                    CharGrid[i] = CharGrid[i - 1];
+                    AttribGrid[i] = AttribGrid[i - 1];
                 }
-                this.CharGrid[this.TopMargin] = new System.Char[this._cols];
-                this.AttribGrid[this.TopMargin] = new CharAttribStruct[this._cols];
+                CharGrid[TopMargin] = new Char[_cols];
+                AttribGrid[TopMargin] = new CharAttribStruct[_cols];
             }
 
-            this.CaretUp();
+            CaretUp();
         }
 
         #endregion
 
         #region Insertline
 
-        private void InsertLine(uc_Params CurParams)
+        private void InsertLine(UcParams curParams)
         {
             // if we're not in the scroll region then bail
-            if (this.Caret.Pos.Y < this.TopMargin ||
-                this.Caret.Pos.Y > this.BottomMargin)
+            if (Caret.Pos.Y < TopMargin ||
+                Caret.Pos.Y > BottomMargin)
             {
                 return;
             }
 
-            System.Int32 NbrOff = 1;
+            Int32 nbrOff = 1;
 
-            if (CurParams.Count() > 0)
+            if (curParams.Count() > 0)
             {
-                NbrOff = System.Convert.ToInt32(CurParams.Elements[0]);
+                nbrOff = Convert.ToInt32(curParams.Elements[0]);
             }
 
-            while (NbrOff > 0)
+            while (nbrOff > 0)
             {
                 // Shift all the rows from the current row to the bottom margin down one place
-                for (int i = this.BottomMargin; i > this.Caret.Pos.Y; i--)
+                for (int i = BottomMargin; i > Caret.Pos.Y; i--)
                 {
-                    this.CharGrid[i] = this.CharGrid[i - 1];
-                    this.AttribGrid[i] = this.AttribGrid[i - 1];
+                    CharGrid[i] = CharGrid[i - 1];
+                    AttribGrid[i] = AttribGrid[i - 1];
                 }
 
 
-                this.CharGrid[this.Caret.Pos.Y] = new System.Char[this._cols];
-                this.AttribGrid[this.Caret.Pos.Y] = new CharAttribStruct[this._cols];
+                CharGrid[Caret.Pos.Y] = new Char[_cols];
+                AttribGrid[Caret.Pos.Y] = new CharAttribStruct[_cols];
 
-                NbrOff--;
+                nbrOff--;
             }
         }
 
@@ -2383,35 +2348,35 @@ namespace PacketSoftware
 
         #region DeleteLine
 
-        private void DeleteLine(uc_Params CurParams)
+        private void DeleteLine(UcParams curParams)
         {
             // if we're not in the scroll region then bail
-            if (this.Caret.Pos.Y < this.TopMargin ||
-                this.Caret.Pos.Y > this.BottomMargin)
+            if (Caret.Pos.Y < TopMargin ||
+                Caret.Pos.Y > BottomMargin)
             {
                 return;
             }
 
-            System.Int32 NbrOff = 1;
+            Int32 nbrOff = 1;
 
-            if (CurParams.Count() > 0)
+            if (curParams.Count() > 0)
             {
-                NbrOff = System.Convert.ToInt32(CurParams.Elements[0]);
+                nbrOff = Convert.ToInt32(curParams.Elements[0]);
             }
 
-            while (NbrOff > 0)
+            while (nbrOff > 0)
             {
                 // Shift all the rows from below the current row to the bottom margin up one place
-                for (int i = this.Caret.Pos.Y; i < this.BottomMargin; i++)
+                for (int i = Caret.Pos.Y; i < BottomMargin; i++)
                 {
-                    this.CharGrid[i] = this.CharGrid[i + 1];
-                    this.AttribGrid[i] = this.AttribGrid[i + 1];
+                    CharGrid[i] = CharGrid[i + 1];
+                    AttribGrid[i] = AttribGrid[i + 1];
                 }
 
-                this.CharGrid[this.BottomMargin] = new System.Char[this._cols];
-                this.AttribGrid[this.BottomMargin] = new CharAttribStruct[this._cols];
+                CharGrid[BottomMargin] = new Char[_cols];
+                AttribGrid[BottomMargin] = new CharAttribStruct[_cols];
 
-                NbrOff--;
+                nbrOff--;
             }
         }
 
@@ -2421,57 +2386,57 @@ namespace PacketSoftware
 
         private void LineFeed()
         {
-            this.SetScrollBarValues();
+            SetScrollBarValues();
 
             // capture the new line into the scrollback buffer
-            if (this.ScrollbackBuffer.Count < this.ScrollbackBufferSize)
+            if (ScrollbackBuffer.Count < ScrollbackBufferSize)
             {
             }
             else
             {
-                this.ScrollbackBuffer.RemoveAt(0);
+                ScrollbackBuffer.RemoveAt(0);
             }
 
             string s = "";
-            for (int x = 0; x < this._cols; x++)
+            for (int x = 0; x < _cols; x++)
             {
-                char CurChar = this.CharGrid[this.Caret.Pos.Y][x];
+                char curChar = CharGrid[Caret.Pos.Y][x];
 
-                if (CurChar == '\0')
+                if (curChar == '\0')
                 {
                     continue;
                 }
-                s = s + Convert.ToString(CurChar);
+                s = s + Convert.ToString(curChar);
             }
-            this.ScrollbackBuffer.Add(s);
+            ScrollbackBuffer.Add(s);
 
-            if (this.Caret.Pos.Y == this.BottomMargin || this.Caret.Pos.Y == this._rows - 1)
+            if (Caret.Pos.Y == BottomMargin || Caret.Pos.Y == _rows - 1)
             {
                 // we need to add a new line so shift all the rows up in the array and
                 // insert a new row at the bottom
                 int i;
-                for (i = this.TopMargin; i < this.BottomMargin; i++)
+                for (i = TopMargin; i < BottomMargin; i++)
                 {
-                    this.CharGrid[i] = this.CharGrid[i + 1];
-                    this.AttribGrid[i] = this.AttribGrid[i + 1];
+                    CharGrid[i] = CharGrid[i + 1];
+                    AttribGrid[i] = AttribGrid[i + 1];
                 }
-                this.CharGrid[i] = new System.Char[this._cols];
-                this.AttribGrid[i] = new CharAttribStruct[this._cols];
+                CharGrid[i] = new Char[_cols];
+                AttribGrid[i] = new CharAttribStruct[_cols];
             }
-            this.CaretDown();
+            CaretDown();
         }
 
         #endregion
 
         #region Index
 
-        private void Index(System.Int32 Param)
+        private void Index(Int32 param)
         {
-            if (Param == 0) Param = 1;
+            if (param == 0) param = 1;
 
-            for (int i = 0; i < Param; i++)
+            for (int i = 0; i < param; i++)
             {
-                this.LineFeed();
+                LineFeed();
             }
         }
 
@@ -2479,13 +2444,13 @@ namespace PacketSoftware
 
         #region ReverseIndex
 
-        private void ReverseIndex(System.Int32 Param)
+        private void ReverseIndex(Int32 param)
         {
-            if (Param == 0) Param = 1;
+            if (param == 0) param = 1;
 
-            for (int i = 0; i < Param; i++)
+            for (int i = 0; i < param; i++)
             {
-                this.ReverseLineFeed();
+                ReverseLineFeed();
             }
         }
 
@@ -2495,12 +2460,12 @@ namespace PacketSoftware
 
         private void CaretOff()
         {
-            if (this.Caret.IsOff == true)
+            if (Caret.IsOff)
             {
                 return;
             }
 
-            this.Caret.IsOff = true;
+            Caret.IsOff = true;
         }
 
         #endregion
@@ -2509,67 +2474,67 @@ namespace PacketSoftware
 
         private void CaretOn()
         {
-            if (this.Caret.IsOff == false)
+            if (Caret.IsOff == false)
             {
                 return;
             }
 
-            this.Caret.IsOff = false;
+            Caret.IsOff = false;
         }
 
         #endregion
 
         #region ShowCaret
 
-        private void ShowCaret(System.Drawing.Graphics CurGraphics)
+        private void ShowCaret(Graphics curGraphics)
         {
-            System.Int32 X = this.Caret.Pos.X;
-            System.Int32 Y = this.Caret.Pos.Y;
+            Int32 x = Caret.Pos.X;
+            Int32 y = Caret.Pos.Y;
 
-            if (this.Caret.IsOff == true)
+            if (Caret.IsOff)
             {
                 return;
             }
 
             // paint a rectangle over the cursor position
-            CurGraphics.DrawImageUnscaled(
-                this.Caret.Bitmap,
-                X*(int) this.CharSize.Width,
-                Y*(int) this.CharSize.Height);
+            curGraphics.DrawImageUnscaled(
+                Caret.Bitmap,
+                x*CharSize.Width,
+                y*CharSize.Height);
 
             // if we don't have a char to redraw then leave
-            if (this.CharGrid[Y][X] == '\0')
+            if (CharGrid[y][x] == '\0')
             {
                 return;
             }
 
-            CharAttribStruct CurAttribs = new CharAttribStruct();
+            CharAttribStruct curAttribs = new CharAttribStruct();
 
-            CurAttribs.UseAltColor = true;
+            curAttribs.UseAltColor = true;
 
-            CurAttribs.GL = this.AttribGrid[Y][X].GL;
-            CurAttribs.GR = this.AttribGrid[Y][X].GR;
-            CurAttribs.GS = this.AttribGrid[Y][X].GS;
+            curAttribs.GL = AttribGrid[y][x].GL;
+            curAttribs.GR = AttribGrid[y][x].GR;
+            curAttribs.GS = AttribGrid[y][x].GS;
 
-            if (this.AttribGrid[Y][X].UseAltBGColor == false)
+            if (AttribGrid[y][x].UseAltBGColor == false)
             {
-                CurAttribs.AltColor = this.BackColor;
+                curAttribs.AltColor = BackColor;
             }
-            else if (this.AttribGrid[Y][X].UseAltBGColor == true)
+            else if (AttribGrid[y][x].UseAltBGColor)
             {
-                CurAttribs.AltColor = this.AttribGrid[Y][X].AltBGColor;
+                curAttribs.AltColor = AttribGrid[y][x].AltBGColor;
             }
 
-            CurAttribs.IsUnderscored = this.AttribGrid[Y][X].IsUnderscored;
-            CurAttribs.IsDECSG = this.AttribGrid[Y][X].IsDECSG;
+            curAttribs.IsUnderscored = AttribGrid[y][x].IsUnderscored;
+            curAttribs.IsDECSG = AttribGrid[y][x].IsDECSG;
 
             // redispay the current char in the background colour
-            this.ShowChar(
-                CurGraphics,
-                this.CharGrid[Y][X],
-                Caret.Pos.Y*this.CharSize.Height,
-                Caret.Pos.X*this.CharSize.Width,
-                CurAttribs);
+            ShowChar(
+                curGraphics,
+                CharGrid[y][x],
+                Caret.Pos.Y*CharSize.Height,
+                Caret.Pos.X*CharSize.Width,
+                curAttribs);
         }
 
         #endregion
@@ -2578,12 +2543,12 @@ namespace PacketSoftware
 
         private void CaretUp()
         {
-            this.Caret.EOL = false;
+            Caret.EOL = false;
 
-            if ((this.Caret.Pos.Y > 0 && (this.Modes.Flags & uc_Mode.OriginRelative) == 0) ||
-                (this.Caret.Pos.Y > this.TopMargin && (this.Modes.Flags & uc_Mode.OriginRelative) > 0))
+            if ((Caret.Pos.Y > 0 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
+                (Caret.Pos.Y > TopMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
             {
-                this.Caret.Pos.Y -= 1;
+                Caret.Pos.Y -= 1;
             }
         }
 
@@ -2593,12 +2558,12 @@ namespace PacketSoftware
 
         private void CaretDown()
         {
-            this.Caret.EOL = false;
+            Caret.EOL = false;
 
-            if ((this.Caret.Pos.Y < this._rows - 1 && (this.Modes.Flags & uc_Mode.OriginRelative) == 0) ||
-                (this.Caret.Pos.Y < this.BottomMargin && (this.Modes.Flags & uc_Mode.OriginRelative) > 0))
+            if ((Caret.Pos.Y < _rows - 1 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
+                (Caret.Pos.Y < BottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
             {
-                this.Caret.Pos.Y += 1;
+                Caret.Pos.Y += 1;
             }
         }
 
@@ -2608,11 +2573,11 @@ namespace PacketSoftware
 
         private void CaretLeft()
         {
-            this.Caret.EOL = false;
+            Caret.EOL = false;
 
-            if (this.Caret.Pos.X > 0)
+            if (Caret.Pos.X > 0)
             {
-                this.Caret.Pos.X -= 1;
+                Caret.Pos.X -= 1;
             }
         }
 
@@ -2622,14 +2587,14 @@ namespace PacketSoftware
 
         private void CaretRight()
         {
-            if (this.Caret.Pos.X < this._cols - 1)
+            if (Caret.Pos.X < _cols - 1)
             {
-                this.Caret.Pos.X += 1;
-                this.Caret.EOL = false;
+                Caret.Pos.X += 1;
+                Caret.EOL = false;
             }
             else
             {
-                this.Caret.EOL = true;
+                Caret.EOL = true;
             }
         }
 
@@ -2637,339 +2602,335 @@ namespace PacketSoftware
 
         #region CaretToRel
 
-        private void CaretToRel(System.Int32 Y, System.Int32 X)
+        private void CaretToRel(Int32 y, Int32 x)
         {
-            this.Caret.EOL = false;
+            Caret.EOL = false;
             /* This code is used when we get a cursor position command from
                    the host. Even if we're not in relative mode we use this as this will
                    sort that out for us. The ToAbs code is used internally by this prog 
                    but is smart enough to stay within the margins if the originrelative 
                    flagis set. */
 
-            if ((this.Modes.Flags & uc_Mode.OriginRelative) == 0)
+            if ((Modes.Flags & UcMode.OriginRelative) == 0)
             {
-                this.CaretToAbs(Y, X);
+                CaretToAbs(y, x);
                 return;
             }
 
             /* the origin mode is relative so add the top and left margin
                    to Y and X respectively */
-            Y += this.TopMargin;
+            y += TopMargin;
 
-            if (X < 0)
+            if (x < 0)
             {
-                X = 0;
+                x = 0;
             }
 
-            if (X > this._cols - 1)
+            if (x > _cols - 1)
             {
-                X = this._cols - 1;
+                x = _cols - 1;
             }
 
-            if (Y < this.TopMargin)
+            if (y < TopMargin)
             {
-                Y = this.TopMargin;
+                y = TopMargin;
             }
 
-            if (Y > this.BottomMargin)
+            if (y > BottomMargin)
             {
-                Y = this.BottomMargin;
+                y = BottomMargin;
             }
 
-            this.Caret.Pos.Y = Y;
-            this.Caret.Pos.X = X;
+            Caret.Pos.Y = y;
+            Caret.Pos.X = x;
         }
 
         #endregion
 
         #region CaretToAbs
 
-        private void CaretToAbs(System.Int32 Y, System.Int32 X)
+        private void CaretToAbs(Int32 y, Int32 x)
         {
-            this.Caret.EOL = false;
+            Caret.EOL = false;
 
-            if (X < 0)
+            if (x < 0)
             {
-                X = 0;
+                x = 0;
             }
 
-            if (X > this._cols - 1)
+            if (x > _cols - 1)
             {
-                X = this._cols - 1;
+                x = _cols - 1;
             }
 
-            if (Y < 0 && (this.Modes.Flags & uc_Mode.OriginRelative) == 0)
+            if (y < 0 && (Modes.Flags & UcMode.OriginRelative) == 0)
             {
-                Y = 0;
+                y = 0;
             }
 
-            if (Y < this.TopMargin && (this.Modes.Flags & uc_Mode.OriginRelative) > 0)
+            if (y < TopMargin && (Modes.Flags & UcMode.OriginRelative) > 0)
             {
-                Y = this.TopMargin;
+                y = TopMargin;
             }
 
-            if (Y > this._rows - 1 && (this.Modes.Flags & uc_Mode.OriginRelative) == 0)
+            if (y > _rows - 1 && (Modes.Flags & UcMode.OriginRelative) == 0)
             {
-                Y = this._rows - 1;
+                y = _rows - 1;
             }
 
-            if (Y > this.BottomMargin && (this.Modes.Flags & uc_Mode.OriginRelative) > 0)
+            if (y > BottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0)
             {
-                Y = this.BottomMargin;
+                y = BottomMargin;
             }
 
-            this.Caret.Pos.Y = Y;
-            this.Caret.Pos.X = X;
+            Caret.Pos.Y = y;
+            Caret.Pos.X = x;
         }
 
         #endregion
 
         #region CommandRouter
 
-        private void CommandRouter(object Sender, ParserEventArgs e)
+        private void CommandRouter(object sender, ParserEventArgs e)
         {
             switch (e.Action)
             {
                 case Actions.Print:
-                    this.PrintChar(e.CurChar);
+                    PrintChar(e.CurChar);
                     //System.Console.Write ("{0}", e.CurChar);
                     break;
 
                 case Actions.Execute:
-                    this.ExecuteChar(e.CurChar);
+                    ExecuteChar(e.CurChar);
                     break;
 
                 case Actions.Dispatch:
                     break;
-
-                default:
-                    break;
             }
 
-            System.Int32 Param = 0;
+            Int32 param = 0;
 
-            System.Int32 Inc = 1; // increment
+            Int32 inc = 1; // increment
 
             switch (e.CurSequence)
             {
                 case "":
-                    ;
                     break;
 
                 case "\x1b" + "7": //DECSC Save Cursor position and attributes
-                    this.SavedCarets.Add(new uc_CaretAttribs(
-                        this.Caret.Pos,
-                        this.G0.Set,
-                        this.G1.Set,
-                        this.G2.Set,
-                        this.G3.Set,
-                        this.CharAttribs));
+                    SavedCarets.Add(new UcCaretAttribs(
+                        Caret.Pos,
+                        G0.Set,
+                        G1.Set,
+                        G2.Set,
+                        G3.Set,
+                        _charAttribs));
 
                     break;
 
                 case "\x1b" + "8": //DECRC Restore Cursor position and attributes
-                    this.Caret.Pos = ((uc_CaretAttribs) this.SavedCarets[this.SavedCarets.Count - 1]).Pos;
-                    this.CharAttribs = ((uc_CaretAttribs) this.SavedCarets[this.SavedCarets.Count - 1]).Attribs;
+                    Caret.Pos = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).Pos;
+                    _charAttribs = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).Attribs;
 
-                    this.G0.Set = ((uc_CaretAttribs) this.SavedCarets[this.SavedCarets.Count - 1]).G0Set;
-                    this.G1.Set = ((uc_CaretAttribs) this.SavedCarets[this.SavedCarets.Count - 1]).G1Set;
-                    this.G2.Set = ((uc_CaretAttribs) this.SavedCarets[this.SavedCarets.Count - 1]).G2Set;
-                    this.G3.Set = ((uc_CaretAttribs) this.SavedCarets[this.SavedCarets.Count - 1]).G3Set;
+                    G0.Set = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).G0Set;
+                    G1.Set = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).G1Set;
+                    G2.Set = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).G2Set;
+                    G3.Set = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).G3Set;
 
-                    this.SavedCarets.RemoveAt(this.SavedCarets.Count - 1);
+                    SavedCarets.RemoveAt(SavedCarets.Count - 1);
 
                     break;
 
                 case "\x1b~": //LS1R Locking Shift G1 -> GR
-                    this.CharAttribs.GR = G1;
+                    _charAttribs.GR = G1;
                     break;
 
                 case "\x1bn": //LS2 Locking Shift G2 -> GL
-                    this.CharAttribs.GL = G2;
+                    _charAttribs.GL = G2;
                     break;
 
                 case "\x1b}": //LS2R Locking Shift G2 -> GR
-                    this.CharAttribs.GR = G2;
+                    _charAttribs.GR = G2;
                     break;
 
                 case "\x1bo": //LS3 Locking Shift G3 -> GL
-                    this.CharAttribs.GL = G3;
+                    _charAttribs.GL = G3;
                     break;
 
                 case "\x1b|": //LS3R Locking Shift G3 -> GR
-                    this.CharAttribs.GR = G3;
+                    _charAttribs.GR = G3;
                     break;
 
                 case "\x1b#8": //DECALN
                     e.CurParams.Elements.Add("1");
-                    e.CurParams.Elements.Add(this._rows.ToString());
-                    this.SetScrollRegion(e.CurParams);
+                    e.CurParams.Elements.Add(value: _rows.ToString(CultureInfo.InvariantCulture));
+                    SetScrollRegion(e.CurParams);
 
                     // put E's on the entire screen
-                    for (int y = 0; y < this._rows; y++)
+                    for (int y = 0; y < _rows; y++)
                     {
-                        this.CaretToAbs(y, 0);
+                        CaretToAbs(y, 0);
 
-                        for (int x = 0; x < this._cols; x++)
+                        for (int x = 0; x < _cols; x++)
                         {
-                            this.PrintChar('E');
+                            PrintChar('E');
                         }
                     }
                     break;
 
                 case "\x1b=": // Keypad to Application mode
-                    this.Modes.Flags = this.Modes.Flags | uc_Mode.KeypadAppln;
+                    Modes.Flags = Modes.Flags | UcMode.KeypadAppln;
                     break;
 
                 case "\x1b>": // Keypad to Numeric mode
-                    this.Modes.Flags = this.Modes.Flags ^ uc_Mode.KeypadAppln;
+                    Modes.Flags = Modes.Flags ^ UcMode.KeypadAppln;
                     break;
 
                 case "\x1b[B": // CUD
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Inc = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        inc = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    if (Inc == 0) Inc = 1;
+                    if (inc == 0) inc = 1;
 
-                    this.CaretToAbs(this.Caret.Pos.Y + Inc, this.Caret.Pos.X);
+                    CaretToAbs(Caret.Pos.Y + inc, Caret.Pos.X);
                     break;
 
                 case "\x1b[A": // CUU
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Inc = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        inc = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    if (Inc == 0) Inc = 1;
+                    if (inc == 0) inc = 1;
 
-                    this.CaretToAbs(this.Caret.Pos.Y - Inc, this.Caret.Pos.X);
+                    CaretToAbs(Caret.Pos.Y - inc, Caret.Pos.X);
                     break;
 
                 case "\x1b[C": // CUF
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Inc = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        inc = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    if (Inc == 0) Inc = 1;
+                    if (inc == 0) inc = 1;
 
-                    this.CaretToAbs(this.Caret.Pos.Y, this.Caret.Pos.X + Inc);
+                    CaretToAbs(Caret.Pos.Y, Caret.Pos.X + inc);
                     break;
 
                 case "\x1b[D": // CUB
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Inc = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        inc = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    if (Inc == 0) Inc = 1;
+                    if (inc == 0) inc = 1;
 
-                    this.CaretToAbs(this.Caret.Pos.Y, this.Caret.Pos.X - Inc);
+                    CaretToAbs(Caret.Pos.Y, Caret.Pos.X - inc);
                     break;
 
                 case "\x1b[H": // CUP
                 case "\x1b[f": // HVP
 
-                    System.Int32 X = 0;
-                    System.Int32 Y = 0;
+                    Int32 X = 0;
+                    Int32 Y = 0;
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Y = System.Convert.ToInt32(e.CurParams.Elements[0]) - 1;
+                        Y = Convert.ToInt32(e.CurParams.Elements[0]) - 1;
                     }
 
                     if (e.CurParams.Count() > 1)
                     {
-                        X = System.Convert.ToInt32(e.CurParams.Elements[1]) - 1;
+                        X = Convert.ToInt32(e.CurParams.Elements[1]) - 1;
                     }
 
-                    this.CaretToRel(Y, X);
+                    CaretToRel(Y, X);
                     break;
 
                 case "\x1b[J":
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Param = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        param = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    this.ClearDown(Param);
+                    ClearDown(param);
                     break;
 
                 case "\x1b[K":
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Param = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        param = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    this.ClearRight(Param);
+                    ClearRight(param);
                     break;
 
                 case "\x1b[L": // INSERT LINE
-                    this.InsertLine(e.CurParams);
+                    InsertLine(e.CurParams);
                     break;
 
                 case "\x1b[M": // DELETE LINE
-                    this.DeleteLine(e.CurParams);
+                    DeleteLine(e.CurParams);
                     break;
 
                 case "\x1bN": // SS2 Single Shift (G2 -> GL)
-                    this.CharAttribs.GS = this.G2;
+                    _charAttribs.GS = G2;
                     break;
 
                 case "\x1bO": // SS3 Single Shift (G3 -> GL)
-                    this.CharAttribs.GS = this.G3;
+                    _charAttribs.GS = G3;
                     //System.Console.WriteLine ("SS3: GS = {0}", this.CharAttribs.GS);
                     break;
 
                 case "\x1b[m":
-                    this.SetCharAttribs(e.CurParams);
+                    SetCharAttribs(e.CurParams);
                     break;
 
                 case "\x1b[?h":
-                    this.SetqmhMode(e.CurParams);
+                    SetqmhMode(e.CurParams);
                     break;
 
                 case "\x1b[?l":
-                    this.SetqmlMode(e.CurParams);
+                    SetqmlMode(e.CurParams);
                     break;
 
                 case "\x1b[c": // DA Device Attributes
                     //                    this.DispatchMessage (this, "\x1b[?64;1;2;6;7;8;9c");
-                    this.DispatchMessage(this, "\x1b[?6c");
+                    DispatchMessage(this, "\x1b[?6c");
                     break;
 
                 case "\x1b[g":
-                    this.ClearTabs(e.CurParams);
+                    ClearTabs(e.CurParams);
                     break;
 
                 case "\x1b[h":
-                    this.SethMode(e.CurParams);
+                    SethMode(e.CurParams);
                     break;
 
                 case "\x1b[l":
-                    this.SetlMode(e.CurParams);
+                    SetlMode(e.CurParams);
                     break;
 
                 case "\x1b[r": // DECSTBM Set Top and Bottom Margins
-                    this.SetScrollRegion(e.CurParams);
+                    SetScrollRegion(e.CurParams);
                     break;
 
                 case "\x1b[t": // DECSLPP Set Lines Per Page
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Param = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        param = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    if (Param > 0) this.SetSize(Param, this._cols);
+                    if (param > 0) SetSize(param, _cols);
 
                     break;
 
@@ -2977,53 +2938,51 @@ namespace PacketSoftware
 
                     if (e.CurParams.Count() > 0)
                     {
-                        Param = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        param = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    this.Index(Param);
+                    Index(param);
                     break;
 
                 case "\x1b" + "E": // NEL
-                    this.LineFeed();
-                    this.CarriageReturn();
+                    LineFeed();
+                    CarriageReturn();
                     break;
 
                 case "\x1bH": // HTS
-                    this.TabSet();
+                    TabSet();
                     break;
 
                 case "\x1bM": // RI
                     if (e.CurParams.Count() > 0)
                     {
-                        Param = System.Convert.ToInt32(e.CurParams.Elements[0]);
+                        param = Convert.ToInt32(e.CurParams.Elements[0]);
                     }
 
-                    this.ReverseIndex(Param);
+                    ReverseIndex(param);
                     break;
 
-                default:
                     //System.Console.Write ("unsupported VT sequence {0} happened\n", e.CurSequence);
-                    break;
             }
 
             if (e.CurSequence.StartsWith("\x1b("))
             {
-                this.SelectCharSet(ref this.G0.Set, e.CurSequence.Substring(2));
+                SelectCharSet(ref G0.Set, e.CurSequence.Substring(2));
             }
             else if (e.CurSequence.StartsWith("\x1b-") ||
                      e.CurSequence.StartsWith("\x1b)"))
             {
-                this.SelectCharSet(ref this.G1.Set, e.CurSequence.Substring(2));
+                SelectCharSet(ref G1.Set, e.CurSequence.Substring(2));
             }
             else if (e.CurSequence.StartsWith("\x1b.") ||
                      e.CurSequence.StartsWith("\x1b*"))
             {
-                this.SelectCharSet(ref this.G2.Set, e.CurSequence.Substring(2));
+                SelectCharSet(ref G2.Set, e.CurSequence.Substring(2));
             }
             else if (e.CurSequence.StartsWith("\x1b/") ||
                      e.CurSequence.StartsWith("\x1b+"))
             {
-                this.SelectCharSet(ref this.G3.Set, e.CurSequence.Substring(2));
+                SelectCharSet(ref G3.Set, e.CurSequence.Substring(2));
             }
         }
 
@@ -3031,38 +2990,38 @@ namespace PacketSoftware
 
         #region SelectCharSet
 
-        private void SelectCharSet(ref uc_Chars.Sets CurTarget, System.String CurString)
+        private void SelectCharSet(ref UcChars.Sets curTarget, String curString)
         {
-            switch (CurString)
+            switch (curString)
             {
                 case "B":
-                    CurTarget = uc_Chars.Sets.ASCII;
+                    curTarget = UcChars.Sets.ASCII;
                     break;
 
                 case "%5":
-                    CurTarget = uc_Chars.Sets.DECS;
+                    curTarget = UcChars.Sets.DECS;
                     break;
 
                 case "0":
-                    CurTarget = uc_Chars.Sets.DECSG;
+                    curTarget = UcChars.Sets.DECSG;
                     break;
 
                 case ">":
-                    CurTarget = uc_Chars.Sets.DECTECH;
+                    curTarget = UcChars.Sets.DECTECH;
                     break;
 
                 case "<":
-                    CurTarget = uc_Chars.Sets.DECSG;
+                    curTarget = UcChars.Sets.DECSG;
                     break;
 
                 case "A":
-                    if ((this.Modes.Flags & uc_Mode.National) == 0)
+                    if ((Modes.Flags & UcMode.National) == 0)
                     {
-                        CurTarget = uc_Chars.Sets.ISOLatin1S;
+                        curTarget = UcChars.Sets.ISOLatin1S;
                     }
                     else
                     {
-                        CurTarget = uc_Chars.Sets.NRCUK;
+                        curTarget = UcChars.Sets.NRCUK;
                     }
                     break;
 
@@ -3071,50 +3030,47 @@ namespace PacketSoftware
                     break;
 
                 case "5":
-                    CurTarget = uc_Chars.Sets.NRCFinnish;
+                    curTarget = UcChars.Sets.NRCFinnish;
                     break;
 
                 case "R":
-                    CurTarget = uc_Chars.Sets.NRCFrench;
+                    curTarget = UcChars.Sets.NRCFrench;
                     break;
 
                 case "9":
-                    CurTarget = uc_Chars.Sets.NRCFrenchCanadian;
+                    curTarget = UcChars.Sets.NRCFrenchCanadian;
                     break;
 
                 case "K":
-                    CurTarget = uc_Chars.Sets.NRCGerman;
+                    curTarget = UcChars.Sets.NRCGerman;
                     break;
 
                 case "Y":
-                    CurTarget = uc_Chars.Sets.NRCItalian;
+                    curTarget = UcChars.Sets.NRCItalian;
                     break;
 
                 case "6":
-                    CurTarget = uc_Chars.Sets.NRCNorDanish;
+                    curTarget = UcChars.Sets.NRCNorDanish;
                     break;
 
                 case "'":
-                    CurTarget = uc_Chars.Sets.NRCNorDanish;
+                    curTarget = UcChars.Sets.NRCNorDanish;
                     break;
 
                 case "%6":
-                    CurTarget = uc_Chars.Sets.NRCPortuguese;
+                    curTarget = UcChars.Sets.NRCPortuguese;
                     break;
 
                 case "Z":
-                    CurTarget = uc_Chars.Sets.NRCSpanish;
+                    curTarget = UcChars.Sets.NRCSpanish;
                     break;
 
                 case "7":
-                    CurTarget = uc_Chars.Sets.NRCSwedish;
+                    curTarget = UcChars.Sets.NRCSwedish;
                     break;
 
                 case "=":
-                    CurTarget = uc_Chars.Sets.NRCSwiss;
-                    break;
-
-                default:
+                    curTarget = UcChars.Sets.NRCSwiss;
                     break;
             }
         }
@@ -3123,63 +3079,60 @@ namespace PacketSoftware
 
         #region SetqmhMode
 
-        private void SetqmhMode(uc_Params CurParams) // set mode for ESC?h command
+        private void SetqmhMode(UcParams curParams) // set mode for ESC?h command
         {
-            System.Int32 OptInt = 0;
+            Int32 optInt = 0;
 
-            foreach (System.String CurOption in CurParams.Elements)
+            foreach (String curOption in curParams.Elements)
             {
                 try
                 {
-                    OptInt = System.Convert.ToInt32(CurOption);
+                    optInt = Convert.ToInt32(curOption);
                 }
-                catch (System.Exception CurException)
+                catch (Exception curException)
                 {
                     //System.Console.WriteLine (CurException.Message);
-                    MessageBox.Show(CurException.Message);
+                    MessageBox.Show(curException.Message);
                 }
 
-                switch (OptInt)
+                switch (optInt)
                 {
                     case 1: // set cursor keys to application mode
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.CursorAppln;
+                        Modes.Flags = Modes.Flags | UcMode.CursorAppln;
                         break;
 
                     case 2: // lock the keyboard
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.Locked;
+                        Modes.Flags = Modes.Flags | UcMode.Locked;
                         break;
 
                     case 3: // set terminal to 132 column mode
-                        this.SetSize(this._rows, 132);
+                        SetSize(_rows, 132);
                         break;
 
                     case 5: // Light Background Mode
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.LightBackground;
-                        this.RefreshEvent();
+                        Modes.Flags = Modes.Flags | UcMode.LightBackground;
+                        RefreshEvent();
                         break;
 
                     case 6: // Origin Mode Relative
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.OriginRelative;
-                        this.CaretToRel(0, 0);
+                        Modes.Flags = Modes.Flags | UcMode.OriginRelative;
+                        CaretToRel(0, 0);
                         break;
 
                     case 7: // Autowrap On
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.AutoWrap;
+                        Modes.Flags = Modes.Flags | UcMode.AutoWrap;
                         break;
 
                     case 8: // AutoRepeat On
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.Repeat;
+                        Modes.Flags = Modes.Flags | UcMode.Repeat;
                         break;
 
                     case 42: // DECNRCM Multinational Charset
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.National;
+                        Modes.Flags = Modes.Flags | UcMode.National;
                         break;
 
                     case 66: // Numeric Keypad Application Mode On
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.KeypadAppln;
-                        break;
-
-                    default:
+                        Modes.Flags = Modes.Flags | UcMode.KeypadAppln;
                         break;
                 }
             }
@@ -3189,63 +3142,60 @@ namespace PacketSoftware
 
         #region SetqmlMode
 
-        private void SetqmlMode(uc_Params CurParams) // set mode for ESC?l command
+        private void SetqmlMode(UcParams curParams) // set mode for ESC?l command
         {
-            System.Int32 OptInt = 0;
+            Int32 optInt = 0;
 
-            foreach (System.String CurOption in CurParams.Elements)
+            foreach (String curOption in curParams.Elements)
             {
                 try
                 {
-                    OptInt = System.Convert.ToInt32(CurOption);
+                    optInt = Convert.ToInt32(curOption);
                 }
-                catch (System.Exception CurException)
+                catch (Exception curException)
                 {
                     //System.Console.WriteLine (CurException.Message);
-                    MessageBox.Show(CurException.Message);
+                    MessageBox.Show(curException.Message);
                 }
 
-                switch (OptInt)
+                switch (optInt)
                 {
                     case 1: // set cursor keys to normal cursor mode
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.CursorAppln;
+                        Modes.Flags = Modes.Flags & ~UcMode.CursorAppln;
                         break;
 
                     case 2: // unlock the keyboard
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.Locked;
+                        Modes.Flags = Modes.Flags & ~UcMode.Locked;
                         break;
 
                     case 3: // set terminal to 80 column mode
-                        this.SetSize(this._rows, 80);
+                        SetSize(_rows, 80);
                         break;
 
                     case 5: // Dark Background Mode
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.LightBackground;
-                        this.RefreshEvent();
+                        Modes.Flags = Modes.Flags & ~UcMode.LightBackground;
+                        RefreshEvent();
                         break;
 
                     case 6: // Origin Mode Absolute
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.OriginRelative;
-                        this.CaretToAbs(0, 0);
+                        Modes.Flags = Modes.Flags & ~UcMode.OriginRelative;
+                        CaretToAbs(0, 0);
                         break;
 
                     case 7: // Autowrap Off
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.AutoWrap;
+                        Modes.Flags = Modes.Flags & ~UcMode.AutoWrap;
                         break;
 
                     case 8: // AutoRepeat Off
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.Repeat;
+                        Modes.Flags = Modes.Flags & ~UcMode.Repeat;
                         break;
 
                     case 42: // DECNRCM National Charset
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.National;
+                        Modes.Flags = Modes.Flags & ~UcMode.National;
                         break;
 
                     case 66: // Numeric Keypad Application Mode On
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.KeypadAppln;
-                        break;
-
-                    default:
+                        Modes.Flags = Modes.Flags & ~UcMode.KeypadAppln;
                         break;
                 }
             }
@@ -3255,29 +3205,26 @@ namespace PacketSoftware
 
         #region SethMode
 
-        private void SethMode(uc_Params CurParams) // set mode for ESC?h command
+        private void SethMode(UcParams curParams) // set mode for ESC?h command
         {
-            System.Int32 OptInt = 0;
+            Int32 optInt = 0;
 
-            foreach (System.String CurOption in CurParams.Elements)
+            foreach (String curOption in curParams.Elements)
             {
                 try
                 {
-                    OptInt = System.Convert.ToInt32(CurOption);
+                    optInt = Convert.ToInt32(curOption);
                 }
-                catch (System.Exception CurException)
+                catch (Exception curException)
                 {
                     //System.Console.WriteLine (CurException.Message);
-                    MessageBox.Show(CurException.Message);
+                    MessageBox.Show(curException.Message);
                 }
 
-                switch (OptInt)
+                switch (optInt)
                 {
                     case 1: // set local echo off
-                        this.Modes.Flags = this.Modes.Flags | uc_Mode.LocalEchoOff;
-                        break;
-
-                    default:
+                        Modes.Flags = Modes.Flags | UcMode.LocalEchoOff;
                         break;
                 }
             }
@@ -3287,29 +3234,26 @@ namespace PacketSoftware
 
         #region SetlMode
 
-        private void SetlMode(uc_Params CurParams) // set mode for ESC?l command
+        private void SetlMode(UcParams curParams) // set mode for ESC?l command
         {
-            System.Int32 OptInt = 0;
+            Int32 optInt = 0;
 
-            foreach (System.String CurOption in CurParams.Elements)
+            foreach (String curOption in curParams.Elements)
             {
                 try
                 {
-                    OptInt = System.Convert.ToInt32(CurOption);
+                    optInt = Convert.ToInt32(curOption);
                 }
-                catch (System.Exception CurException)
+                catch (Exception curException)
                 {
                     //System.Console.WriteLine (CurException.Message);
-                    MessageBox.Show(CurException.Message);
+                    MessageBox.Show(curException.Message);
                 }
 
-                switch (OptInt)
+                switch (optInt)
                 {
                     case 1: // set LocalEcho on
-                        this.Modes.Flags = this.Modes.Flags & ~uc_Mode.LocalEchoOff;
-                        break;
-
-                    default:
+                        Modes.Flags = Modes.Flags & ~UcMode.LocalEchoOff;
                         break;
                 }
             }
@@ -3319,26 +3263,26 @@ namespace PacketSoftware
 
         #region SetScrollRegion
 
-        private void SetScrollRegion(uc_Params CurParams)
+        private void SetScrollRegion(UcParams curParams)
         {
-            if (CurParams.Count() > 0)
+            if (curParams.Count() > 0)
             {
-                this.TopMargin = System.Convert.ToInt32(CurParams.Elements[0]) - 1;
+                TopMargin = Convert.ToInt32(curParams.Elements[0]) - 1;
             }
 
-            if (CurParams.Count() > 1)
+            if (curParams.Count() > 1)
             {
-                this.BottomMargin = System.Convert.ToInt32(CurParams.Elements[1]) - 1;
+                BottomMargin = Convert.ToInt32(curParams.Elements[1]) - 1;
             }
 
-            if (this.BottomMargin == 0)
+            if (BottomMargin == 0)
             {
-                this.BottomMargin = this._rows - 1;
+                BottomMargin = _rows - 1;
             }
 
-            if (this.TopMargin < 0)
+            if (TopMargin < 0)
             {
-                this.BottomMargin = 0;
+                BottomMargin = 0;
             }
         }
 
@@ -3348,152 +3292,149 @@ namespace PacketSoftware
 
         private void ClearCharAttribs()
         {
-            this.CharAttribs.IsBold = false;
-            this.CharAttribs.IsDim = false;
-            this.CharAttribs.IsUnderscored = false;
-            this.CharAttribs.IsBlinking = false;
-            this.CharAttribs.IsInverse = false;
-            this.CharAttribs.IsPrimaryFont = false;
-            this.CharAttribs.IsAlternateFont = false;
-            this.CharAttribs.UseAltBGColor = false;
-            this.CharAttribs.UseAltColor = false;
-            this.CharAttribs.AltColor = System.Drawing.Color.White;
-            this.CharAttribs.AltBGColor = System.Drawing.Color.Black;
+            _charAttribs.IsBold = false;
+            _charAttribs.IsDim = false;
+            _charAttribs.IsUnderscored = false;
+            _charAttribs.IsBlinking = false;
+            _charAttribs.IsInverse = false;
+            _charAttribs.IsPrimaryFont = false;
+            _charAttribs.IsAlternateFont = false;
+            _charAttribs.UseAltBGColor = false;
+            _charAttribs.UseAltColor = false;
+            _charAttribs.AltColor = Color.White;
+            _charAttribs.AltBGColor = Color.Black;
         }
 
         #endregion
 
         #region SetCharAttribs
 
-        private void SetCharAttribs(uc_Params CurParams)
+        private void SetCharAttribs(UcParams curParams)
         {
-            if (CurParams.Count() < 1)
+            if (curParams.Count() < 1)
             {
-                this.ClearCharAttribs();
+                ClearCharAttribs();
                 return;
             }
 
-            for (int i = 0; i < CurParams.Count(); i++)
+            for (int i = 0; i < curParams.Count(); i++)
             {
-                switch (System.Convert.ToInt32(CurParams.Elements[i]))
+                switch (Convert.ToInt32(curParams.Elements[i]))
                 {
                     case 0:
-                        this.ClearCharAttribs();
+                        ClearCharAttribs();
                         break;
 
                     case 1:
-                        this.CharAttribs.IsBold = true;
+                        _charAttribs.IsBold = true;
                         break;
 
                     case 4:
-                        this.CharAttribs.IsUnderscored = true;
+                        _charAttribs.IsUnderscored = true;
                         break;
 
                     case 5:
-                        this.CharAttribs.IsBlinking = true;
+                        _charAttribs.IsBlinking = true;
                         break;
 
                     case 7:
-                        this.CharAttribs.IsInverse = true;
+                        _charAttribs.IsInverse = true;
                         break;
 
                     case 22:
-                        this.CharAttribs.IsBold = false;
+                        _charAttribs.IsBold = false;
                         break;
 
                     case 24:
-                        this.CharAttribs.IsUnderscored = false;
+                        _charAttribs.IsUnderscored = false;
                         break;
 
                     case 25:
-                        this.CharAttribs.IsBlinking = false;
+                        _charAttribs.IsBlinking = false;
                         break;
 
                     case 27:
-                        this.CharAttribs.IsInverse = false;
+                        _charAttribs.IsInverse = false;
                         break;
 
                     case 30:
-                        this.CharAttribs.UseAltColor = true;
-                        this.CharAttribs.AltColor = System.Drawing.Color.Black;
+                        _charAttribs.UseAltColor = true;
+                        _charAttribs.AltColor = Color.Black;
                         break;
 
                     case 31:
-                        this.CharAttribs.UseAltColor = true;
-                        this.CharAttribs.AltColor = System.Drawing.Color.Red;
+                        _charAttribs.UseAltColor = true;
+                        _charAttribs.AltColor = Color.Red;
                         break;
 
                     case 32:
-                        this.CharAttribs.UseAltColor = true;
-                        this.CharAttribs.AltColor = System.Drawing.Color.Green;
+                        _charAttribs.UseAltColor = true;
+                        _charAttribs.AltColor = Color.Green;
                         break;
 
                     case 33:
-                        this.CharAttribs.UseAltColor = true;
-                        this.CharAttribs.AltColor = System.Drawing.Color.Yellow;
+                        _charAttribs.UseAltColor = true;
+                        _charAttribs.AltColor = Color.Yellow;
                         break;
 
                     case 34:
-                        this.CharAttribs.UseAltColor = true;
-                        this.CharAttribs.AltColor = System.Drawing.Color.Blue;
+                        _charAttribs.UseAltColor = true;
+                        _charAttribs.AltColor = Color.Blue;
                         break;
 
                     case 35:
-                        this.CharAttribs.UseAltColor = true;
-                        this.CharAttribs.AltColor = System.Drawing.Color.Magenta;
+                        _charAttribs.UseAltColor = true;
+                        _charAttribs.AltColor = Color.Magenta;
                         break;
 
                     case 36:
-                        this.CharAttribs.UseAltColor = true;
-                        this.CharAttribs.AltColor = System.Drawing.Color.Cyan;
+                        _charAttribs.UseAltColor = true;
+                        _charAttribs.AltColor = Color.Cyan;
                         break;
 
                     case 37:
-                        this.CharAttribs.UseAltColor = true;
-                        this.CharAttribs.AltColor = System.Drawing.Color.White;
+                        _charAttribs.UseAltColor = true;
+                        _charAttribs.AltColor = Color.White;
                         break;
 
                     case 40:
-                        this.CharAttribs.UseAltBGColor = true;
-                        this.CharAttribs.AltBGColor = System.Drawing.Color.Black;
+                        _charAttribs.UseAltBGColor = true;
+                        _charAttribs.AltBGColor = Color.Black;
                         break;
 
                     case 41:
-                        this.CharAttribs.UseAltBGColor = true;
-                        this.CharAttribs.AltBGColor = System.Drawing.Color.Red;
+                        _charAttribs.UseAltBGColor = true;
+                        _charAttribs.AltBGColor = Color.Red;
                         break;
 
                     case 42:
-                        this.CharAttribs.UseAltBGColor = true;
-                        this.CharAttribs.AltBGColor = System.Drawing.Color.Green;
+                        _charAttribs.UseAltBGColor = true;
+                        _charAttribs.AltBGColor = Color.Green;
                         break;
 
                     case 43:
-                        this.CharAttribs.UseAltBGColor = true;
-                        this.CharAttribs.AltBGColor = System.Drawing.Color.Yellow;
+                        _charAttribs.UseAltBGColor = true;
+                        _charAttribs.AltBGColor = Color.Yellow;
                         break;
 
                     case 44:
-                        this.CharAttribs.UseAltBGColor = true;
-                        this.CharAttribs.AltBGColor = System.Drawing.Color.Blue;
+                        _charAttribs.UseAltBGColor = true;
+                        _charAttribs.AltBGColor = Color.Blue;
                         break;
 
                     case 45:
-                        this.CharAttribs.UseAltBGColor = true;
-                        this.CharAttribs.AltBGColor = System.Drawing.Color.Magenta;
+                        _charAttribs.UseAltBGColor = true;
+                        _charAttribs.AltBGColor = Color.Magenta;
                         break;
 
                     case 46:
-                        this.CharAttribs.UseAltBGColor = true;
-                        this.CharAttribs.AltBGColor = System.Drawing.Color.Cyan;
+                        _charAttribs.UseAltBGColor = true;
+                        _charAttribs.AltBGColor = Color.Cyan;
                         break;
 
                     case 47:
-                        this.CharAttribs.UseAltBGColor = true;
-                        this.CharAttribs.AltBGColor = System.Drawing.Color.White;
-                        break;
-
-                    default:
+                        _charAttribs.UseAltBGColor = true;
+                        _charAttribs.AltBGColor = Color.White;
                         break;
                 }
             }
@@ -3503,17 +3444,17 @@ namespace PacketSoftware
 
         #region ExecuteChar
 
-        private void ExecuteChar(System.Char CurChar)
+        private void ExecuteChar(Char curChar)
         {
-            switch (CurChar)
+            switch (curChar)
             {
                 case '\x05': // ENQ request for the answerback message
-                    this.DispatchMessage(this, "vt220");
+                    DispatchMessage(this, "vt220");
                     break;
 
                 case '\x07': // BEL ring my bell
                     // this.BELL;
-                    if (this._beep == true)
+                    if (_beep)
                     {
                         if (count == 0)
                         {
@@ -3529,63 +3470,60 @@ namespace PacketSoftware
                     break;
 
                 case '\x08': // BS back space
-                    this.CaretLeft();
+                    CaretLeft();
                     break;
 
                 case '\x09': // HT Horizontal Tab
-                    this.Tab();
+                    Tab();
                     break;
 
                 case '\x0A': // LF  LineFeed
                 case '\x0B': // VT  VerticalTab
                 case '\x0C': // FF  FormFeed
                 case '\x84': // IND Index
-                    this.LineFeed();
+                    LineFeed();
                     break;
 
                 case '\x0D': // CR CarriageReturn
-                    this.CarriageReturn();
+                    CarriageReturn();
                     break;
 
                 case '\x0E': // SO maps G1 into GL
-                    this.CharAttribs.GL = this.G1;
+                    _charAttribs.GL = G1;
                     break;
 
                 case '\x0F': // SI maps G0 into GL
-                    this.CharAttribs.GL = this.G0;
+                    _charAttribs.GL = G0;
                     break;
 
                 case '\x11': // DC1/XON continue sending characters
-                    this.XOFF = false;
-                    this.DispatchMessage(this, "");
+                    XOFF = false;
+                    DispatchMessage(this, "");
                     break;
 
                 case '\x13': // DC3/XOFF stop sending characters
-                    this.XOFF = true;
+                    XOFF = true;
                     break;
 
                 case '\x85': // NEL Next line (same as line feed and carriage return)
-                    this.LineFeed();
-                    this.CaretToAbs(this.Caret.Pos.Y, 0);
+                    LineFeed();
+                    CaretToAbs(Caret.Pos.Y, 0);
                     break;
 
                 case '\x88': // HTS Horizontal tab set 
-                    this.TabSet();
+                    TabSet();
                     break;
 
                 case '\x8D': // RI Reverse Index 
-                    this.ReverseLineFeed();
+                    ReverseLineFeed();
                     break;
 
                 case '\x8E': // SS2 Single Shift (G2 -> GL)
-                    this.CharAttribs.GS = this.G2;
+                    _charAttribs.GS = G2;
                     break;
 
                 case '\x8F': // SS3 Single Shift (G3 -> GL)
-                    this.CharAttribs.GS = this.G3;
-                    break;
-
-                default:
+                    _charAttribs.GS = G3;
                     break;
             }
         }
@@ -3594,34 +3532,34 @@ namespace PacketSoftware
 
         #region SetSize
 
-        private void SetSize(System.Int32 Rows, System.Int32 Columns)
+        private void SetSize(Int32 rows, Int32 Columns)
         {
-            this._rows = Rows;
-            this._cols = Columns;
+            _rows = rows;
+            _cols = Columns;
 
-            this.TopMargin = 0;
-            this.BottomMargin = Rows - 1;
+            TopMargin = 0;
+            BottomMargin = rows - 1;
 
             //this.ClientSize = new System.Drawing.Size (
             //	System.Convert.ToInt32 (this.CharSize.Width  * this.Columns + 2) + this.VertScrollBar.Width,
             //	System.Convert.ToInt32 (this.CharSize.Height * this.Rows    + 2));
 
             // create the character grid (rows by columns) this is a shadow of what's displayed
-            this.CharGrid = new System.Char[Rows][];
+            CharGrid = new Char[rows][];
 
-            this.Caret.Pos.X = 0;
-            this.Caret.Pos.Y = 0;
+            Caret.Pos.X = 0;
+            Caret.Pos.Y = 0;
 
-            for (int i = 0; i < this.CharGrid.Length; i++)
+            for (int i = 0; i < CharGrid.Length; i++)
             {
-                this.CharGrid[i] = new System.Char[Columns];
+                CharGrid[i] = new Char[Columns];
             }
 
-            this.AttribGrid = new CharAttribStruct[Rows][];
+            AttribGrid = new CharAttribStruct[rows][];
 
-            for (int i = 0; i < this.AttribGrid.Length; i++)
+            for (int i = 0; i < AttribGrid.Length; i++)
             {
-                this.AttribGrid[i] = new CharAttribStruct[Columns];
+                AttribGrid[i] = new CharAttribStruct[Columns];
             }
         }
 
@@ -3631,16 +3569,16 @@ namespace PacketSoftware
 
         private void GetFontInfo()
         {
-            System.Drawing.Graphics tmpGraphics = this.CreateGraphics();
+            Graphics tmpGraphics = CreateGraphics();
 
             // get the offset that the moron Graphics.Drawstring method adds by default
-            this.DrawStringOffset = this.GetDrawStringOffset(tmpGraphics, 0, 0, 'A');
+            DrawStringOffset = GetDrawStringOffset(tmpGraphics, 0, 0, 'A');
 
             // get the size of the character using the same type of method
-            System.Drawing.Point tmpPoint = this.GetCharSize(tmpGraphics);
+            Point tmpPoint = GetCharSize(tmpGraphics);
 
-            this.CharSize.Width = tmpPoint.X; // make a little breathing room
-            this.CharSize.Height = tmpPoint.Y;
+            CharSize.Width = tmpPoint.X; // make a little breathing room
+            CharSize.Height = tmpPoint.Y;
 
             //Graphics g = this.CreateGraphics();
             //SizeF size = g.MeasureString("_", this.Font);
@@ -3649,53 +3587,31 @@ namespace PacketSoftware
 
             tmpGraphics.Dispose();
 
-            this.UnderlinePos = this.CharSize.Height - 2;
+            UnderlinePos = CharSize.Height - 2;
 
-            this.Caret.Bitmap = new System.Drawing.Bitmap(this.CharSize.Width, this.CharSize.Height);
-            this.Caret.Buffer = System.Drawing.Graphics.FromImage(this.Caret.Bitmap);
-            this.Caret.Buffer.Clear(System.Drawing.Color.FromArgb(255, 181, 106));
-            this.EraseBitmap = new System.Drawing.Bitmap(this.CharSize.Width, this.CharSize.Height);
-            this.EraseBuffer = System.Drawing.Graphics.FromImage(this.EraseBitmap);
+            Caret.Bitmap = new Bitmap(CharSize.Width, CharSize.Height);
+            Caret.Buffer = Graphics.FromImage(Caret.Bitmap);
+            Caret.Buffer.Clear(Color.FromArgb(255, 181, 106));
+            EraseBitmap = new Bitmap(CharSize.Width, CharSize.Height);
+            EraseBuffer = Graphics.FromImage(EraseBitmap);
         }
 
         #endregion
 
         #region OnClickFont
 
-        private void OnClickFont(System.Object Sender, System.EventArgs e)
-        {
-            System.Windows.Forms.FontDialog fontDialog = new System.Windows.Forms.FontDialog();
-
-            fontDialog.FixedPitchOnly = true;
-            fontDialog.ShowEffects = false;
-            fontDialog.Font = this.Font;
-
-            if (fontDialog.ShowDialog() != System.Windows.Forms.DialogResult.Cancel)
-            {
-                // Change the font
-                this.Font = fontDialog.Font;
-
-                this.GetFontInfo();
-
-                this.ClientSize = new System.Drawing.Size(
-                    System.Convert.ToInt32(this.CharSize.Width*this._cols + 2) + this.VertScrollBar.Width,
-                    System.Convert.ToInt32(this.CharSize.Height*this._rows + 2));
-            }
-            ;
-        }
-
         #endregion
 
         #region class uc_CommsStateObject
 
-        private class uc_CommsStateObject
+        private class UcCommsStateObject
         {
-            public System.Net.Sockets.Socket Socket;
-            public System.Byte[] Buffer;
+            public Socket Socket;
+            public Byte[] Buffer;
 
-            public uc_CommsStateObject()
+            public UcCommsStateObject()
             {
-                this.Buffer = new System.Byte[8192];
+                Buffer = new Byte[8192];
             }
         }
 
@@ -3703,13 +3619,13 @@ namespace PacketSoftware
 
         #region class uc_TabStops
 
-        private class uc_TabStops
+        private class UcTabStops
         {
-            public System.Boolean[] Columns;
+            public Boolean[] Columns;
 
-            public uc_TabStops()
+            public UcTabStops()
             {
-                Columns = new System.Boolean[256];
+                Columns = new Boolean[256];
 
                 Columns[8] = true;
                 Columns[16] = true;
@@ -3734,29 +3650,29 @@ namespace PacketSoftware
 
         #region class uc_CaretAttribs
 
-        private class uc_CaretAttribs
+        private class UcCaretAttribs
         {
-            public System.Drawing.Point Pos;
-            public uc_Chars.Sets G0Set;
-            public uc_Chars.Sets G1Set;
-            public uc_Chars.Sets G2Set;
-            public uc_Chars.Sets G3Set;
+            public Point Pos;
+            public UcChars.Sets G0Set;
+            public UcChars.Sets G1Set;
+            public UcChars.Sets G2Set;
+            public UcChars.Sets G3Set;
             public CharAttribStruct Attribs;
 
-            public uc_CaretAttribs(
-                System.Drawing.Point p1,
-                uc_Chars.Sets p2,
-                uc_Chars.Sets p3,
-                uc_Chars.Sets p4,
-                uc_Chars.Sets p5,
+            public UcCaretAttribs(
+                Point p1,
+                UcChars.Sets p2,
+                UcChars.Sets p3,
+                UcChars.Sets p4,
+                UcChars.Sets p5,
                 CharAttribStruct p6)
             {
-                this.Pos = p1;
-                this.G0Set = p2;
-                this.G1Set = p3;
-                this.G2Set = p4;
-                this.G3Set = p5;
-                this.Attribs = p6;
+                Pos = p1;
+                G0Set = p2;
+                G1Set = p3;
+                G2Set = p4;
+                G3Set = p5;
+                Attribs = p6;
             }
         }
 
@@ -3764,315 +3680,315 @@ namespace PacketSoftware
 
         #region calss uc_Chars
 
-        private class uc_Chars
+        private class UcChars
         {
-            public struct uc_CharSet
+            public struct UcCharSet
             {
-                public uc_CharSet(System.Int32 p1, System.Int16 p2)
+                public UcCharSet(Int32 p1, Int16 p2)
                 {
                     Location = p1;
                     UnicodeNo = p2;
                 }
 
-                public System.Int32 Location;
-                public System.Int16 UnicodeNo;
+                public Int32 Location;
+                public Int16 UnicodeNo;
             }
 
-            public uc_Chars.Sets Set;
+            public Sets Set;
 
-            public uc_Chars(uc_Chars.Sets p1)
+            public UcChars(Sets p1)
             {
-                this.Set = p1;
+                Set = p1;
             }
 
-            public static System.Char Get(System.Char CurChar, uc_Chars.Sets GL, uc_Chars.Sets GR)
+            public static Char Get(Char curChar, Sets gl, Sets gr)
             {
-                uc_CharSet[] CurSet;
+                UcCharSet[] curSet;
 
                 // I'm assuming the left hand in use table will always have a 00-7F char set in it
-                if (System.Convert.ToInt32(CurChar) < 128)
+                if (Convert.ToInt32(curChar) < 128)
                 {
-                    switch (GL)
+                    switch (gl)
                     {
-                        case uc_Chars.Sets.ASCII:
-                            CurSet = uc_Chars.ASCII;
+                        case Sets.ASCII:
+                            curSet = ASCII;
                             break;
 
-                        case uc_Chars.Sets.DECSG:
-                            CurSet = uc_Chars.DECSG;
+                        case Sets.DECSG:
+                            curSet = DECSG;
                             break;
 
-                        case uc_Chars.Sets.NRCUK:
-                            CurSet = uc_Chars.NRCUK;
+                        case Sets.NRCUK:
+                            curSet = NRCUK;
                             break;
 
-                        case uc_Chars.Sets.NRCFinnish:
-                            CurSet = uc_Chars.NRCFinnish;
+                        case Sets.NRCFinnish:
+                            curSet = NRCFinnish;
                             break;
 
-                        case uc_Chars.Sets.NRCFrench:
-                            CurSet = uc_Chars.NRCFrench;
+                        case Sets.NRCFrench:
+                            curSet = NRCFrench;
                             break;
 
-                        case uc_Chars.Sets.NRCFrenchCanadian:
-                            CurSet = uc_Chars.NRCFrenchCanadian;
+                        case Sets.NRCFrenchCanadian:
+                            curSet = NRCFrenchCanadian;
                             break;
 
-                        case uc_Chars.Sets.NRCGerman:
-                            CurSet = uc_Chars.NRCGerman;
+                        case Sets.NRCGerman:
+                            curSet = NRCGerman;
                             break;
 
-                        case uc_Chars.Sets.NRCItalian:
-                            CurSet = uc_Chars.NRCItalian;
+                        case Sets.NRCItalian:
+                            curSet = NRCItalian;
                             break;
 
-                        case uc_Chars.Sets.NRCNorDanish:
-                            CurSet = uc_Chars.NRCNorDanish;
+                        case Sets.NRCNorDanish:
+                            curSet = NRCNorDanish;
                             break;
 
-                        case uc_Chars.Sets.NRCPortuguese:
-                            CurSet = uc_Chars.NRCPortuguese;
+                        case Sets.NRCPortuguese:
+                            curSet = NRCPortuguese;
                             break;
 
-                        case uc_Chars.Sets.NRCSpanish:
-                            CurSet = uc_Chars.NRCSpanish;
+                        case Sets.NRCSpanish:
+                            curSet = NRCSpanish;
                             break;
 
-                        case uc_Chars.Sets.NRCSwedish:
-                            CurSet = uc_Chars.NRCSwedish;
+                        case Sets.NRCSwedish:
+                            curSet = NRCSwedish;
                             break;
 
-                        case uc_Chars.Sets.NRCSwiss:
-                            CurSet = uc_Chars.NRCSwiss;
+                        case Sets.NRCSwiss:
+                            curSet = NRCSwiss;
                             break;
 
                         default:
-                            CurSet = uc_Chars.ASCII;
+                            curSet = ASCII;
                             break;
                     }
                 }
                     // I'm assuming the right hand in use table will always have a 80-FF char set in it
                 else
                 {
-                    switch (GR)
+                    switch (gr)
                     {
-                        case uc_Chars.Sets.ISOLatin1S:
-                            CurSet = uc_Chars.ISOLatin1S;
+                        case Sets.ISOLatin1S:
+                            curSet = ISOLatin1S;
                             break;
 
-                        case uc_Chars.Sets.DECS:
-                            CurSet = uc_Chars.DECS;
+                        case Sets.DECS:
+                            curSet = DECS;
                             break;
 
                         default:
-                            CurSet = uc_Chars.DECS;
+                            curSet = DECS;
                             break;
                     }
                 }
 
-                for (System.Int32 i = 0; i < CurSet.Length; i++)
+                for (Int32 i = 0; i < curSet.Length; i++)
                 {
-                    if (CurSet[i].Location == System.Convert.ToInt32(CurChar))
+                    if (curSet[i].Location == Convert.ToInt32(curChar))
                     {
-                        System.Byte[] CurBytes = System.BitConverter.GetBytes(CurSet[i].UnicodeNo);
-                        System.Char[] NewChars = System.Text.Encoding.Unicode.GetChars(CurBytes);
+                        Byte[] curBytes = BitConverter.GetBytes(curSet[i].UnicodeNo);
+                        Char[] newChars = Encoding.Unicode.GetChars(curBytes);
 
-                        return NewChars[0];
+                        return newChars[0];
                     }
                 }
 
-                return CurChar;
+                return curChar;
             }
 
-            public static uc_CharSet[] DECSG =
+            public static UcCharSet[] DECSG =
             {
-                new uc_CharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
+                new UcCharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
                 //            new uc_CharSet (0x60, 0x25C6), // Filled Diamond 
-                new uc_CharSet(0x61, 0x0000), // Pi over upsidedown Pi ?  
-                new uc_CharSet(0x62, 0x2409), // HT symbol 
-                new uc_CharSet(0x63, 0x240C), // LF Symbol  
-                new uc_CharSet(0x64, 0x240D), // CR Symbol  
-                new uc_CharSet(0x65, 0x240A), // LF Symbol  
-                new uc_CharSet(0x66, 0x00B0), // Degree  
-                new uc_CharSet(0x67, 0x00B1), // Plus over Minus  
-                new uc_CharSet(0x68, 0x2424), // NL Symbol  
-                new uc_CharSet(0x69, 0x240B), // VT Symbol 
+                new UcCharSet(0x61, 0x0000), // Pi over upsidedown Pi ?  
+                new UcCharSet(0x62, 0x2409), // HT symbol 
+                new UcCharSet(0x63, 0x240C), // LF Symbol  
+                new UcCharSet(0x64, 0x240D), // CR Symbol  
+                new UcCharSet(0x65, 0x240A), // LF Symbol  
+                new UcCharSet(0x66, 0x00B0), // Degree  
+                new UcCharSet(0x67, 0x00B1), // Plus over Minus  
+                new UcCharSet(0x68, 0x2424), // NL Symbol  
+                new UcCharSet(0x69, 0x240B), // VT Symbol 
                 //            new uc_CharSet (0x6A, 0x2518), // Bottom Right Box 
                 //            new uc_CharSet (0x6B, 0x2510), // Top Right Box
                 //            new uc_CharSet (0x6C, 0x250C), // TopLeft Box
                 //            new uc_CharSet (0x6D, 0x2514), // Bottom Left Box
                 //            new uc_CharSet (0x6E, 0x253C), // Cross Piece
-                new uc_CharSet(0x6F, 0x23BA), // Scan Line 1
-                new uc_CharSet(0x70, 0x25BB), // Scan Line 3
+                new UcCharSet(0x6F, 0x23BA), // Scan Line 1
+                new UcCharSet(0x70, 0x25BB), // Scan Line 3
                 //            new uc_CharSet (0x71, 0x2500), // Horizontal Line (scan line 5 as well?)
-                new uc_CharSet(0x72, 0x23BC), // Scan Line 7 
-                new uc_CharSet(0x73, 0x23BD), // Scan Line 9 
+                new UcCharSet(0x72, 0x23BC), // Scan Line 7 
+                new UcCharSet(0x73, 0x23BD), // Scan Line 9 
                 //            new uc_CharSet (0x74, 0x251C), // Left Tee Piece
                 //            new uc_CharSet (0x75, 0x2524), // Right Tee Piece
                 //            new uc_CharSet (0x76, 0x2534), // Bottom Tee Piece
                 //            new uc_CharSet (0x77, 0x252C), // Top Tee Piece
                 //            new uc_CharSet (0x78, 0x2502), // Vertical Line
-                new uc_CharSet(0x79, 0x2264), // Less than or equal  
-                new uc_CharSet(0x7A, 0x2265), // Greater than or equal 
-                new uc_CharSet(0x7B, 0x03A0), // Capital Pi
-                new uc_CharSet(0x7C, 0x2260), // Not Equal 
-                new uc_CharSet(0x7D, 0x00A3), // Pound Sign 
-                new uc_CharSet(0x7E, 0x00B7), // Middle Dot 
+                new UcCharSet(0x79, 0x2264), // Less than or equal  
+                new UcCharSet(0x7A, 0x2265), // Greater than or equal 
+                new UcCharSet(0x7B, 0x03A0), // Capital Pi
+                new UcCharSet(0x7C, 0x2260), // Not Equal 
+                new UcCharSet(0x7D, 0x00A3), // Pound Sign 
+                new UcCharSet(0x7E, 0x00B7) // Middle Dot 
             };
 
-            public static uc_CharSet[] DECS =
+            public static UcCharSet[] DECS =
             {
-                new uc_CharSet(0xA8, 0x0020), // Currency Sign
-                new uc_CharSet(0xD7, 0x0152), // latin small ligature OE 
-                new uc_CharSet(0xDD, 0x0178), // Capital Y with diaeresis
-                new uc_CharSet(0xF7, 0x0153), // latin small ligature oe 
-                new uc_CharSet(0xFD, 0x00FF), // Lowercase y with diaeresis
+                new UcCharSet(0xA8, 0x0020), // Currency Sign
+                new UcCharSet(0xD7, 0x0152), // latin small ligature OE 
+                new UcCharSet(0xDD, 0x0178), // Capital Y with diaeresis
+                new UcCharSet(0xF7, 0x0153), // latin small ligature oe 
+                new UcCharSet(0xFD, 0x00FF) // Lowercase y with diaeresis
             };
 
-            public static uc_CharSet[] ASCII = // same as Basic Latin
+            public static UcCharSet[] ASCII = // same as Basic Latin
             {
-                new uc_CharSet(0x00, 0x0000), //
+                new UcCharSet(0x00, 0x0000) //
             };
 
-            public static uc_CharSet[] NRCUK = // UK National Replacement
+            public static UcCharSet[] NRCUK = // UK National Replacement
             {
-                new uc_CharSet(0x23, 0x00A3), //
+                new UcCharSet(0x23, 0x00A3) //
             };
 
-            public static uc_CharSet[] NRCFinnish = // Finnish National Replacement
+            public static UcCharSet[] NRCFinnish = // Finnish National Replacement
             {
-                new uc_CharSet(0x5B, 0x00C4), // A with diearesis
-                new uc_CharSet(0x5C, 0x00D6), // O with diearesis
-                new uc_CharSet(0x5D, 0x00C5), // A with hollow dot above
-                new uc_CharSet(0x5E, 0x00DC), // U with diearesis
-                new uc_CharSet(0x60, 0x00E9), // e with accute accent
-                new uc_CharSet(0x7B, 0x00E4), // a with diearesis
-                new uc_CharSet(0x7C, 0x00F6), // o with diearesis
-                new uc_CharSet(0x7D, 0x00E5), // a with hollow dot above
-                new uc_CharSet(0x7E, 0x00FC), // u with diearesis
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x5E, 0x00DC), // U with diearesis
+                new UcCharSet(0x60, 0x00E9), // e with accute accent
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
+                new UcCharSet(0x7E, 0x00FC) // u with diearesis
             };
 
-            public static uc_CharSet[] NRCFrench = // French National Replacement
+            public static UcCharSet[] NRCFrench = // French National Replacement
             {
-                new uc_CharSet(0x23, 0x00A3), // Pound Sign
-                new uc_CharSet(0x40, 0x00E0), // a with grav accent
-                new uc_CharSet(0x5B, 0x00B0), // Degree Symbol
-                new uc_CharSet(0x5C, 0x00E7), // little cedila
-                new uc_CharSet(0x5D, 0x00A7), // funny s (technical term)
-                new uc_CharSet(0x7B, 0x00E9), // e with accute accent
-                new uc_CharSet(0x7C, 0x00F9), // u with grav accent
-                new uc_CharSet(0x7D, 0x00E8), // e with grav accent
-                new uc_CharSet(0x7E, 0x00A8), // diearesis
+                new UcCharSet(0x23, 0x00A3), // Pound Sign
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00B0), // Degree Symbol
+                new UcCharSet(0x5C, 0x00E7), // little cedila
+                new UcCharSet(0x5D, 0x00A7), // funny s (technical term)
+                new UcCharSet(0x7B, 0x00E9), // e with accute accent
+                new UcCharSet(0x7C, 0x00F9), // u with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00A8) // diearesis
             };
 
-            public static uc_CharSet[] NRCFrenchCanadian = // French Canadian National Replacement
+            public static UcCharSet[] NRCFrenchCanadian = // French Canadian National Replacement
             {
-                new uc_CharSet(0x40, 0x00E0), // a with grav accent
-                new uc_CharSet(0x5B, 0x00E2), // a with circumflex
-                new uc_CharSet(0x5C, 0x00E7), // little cedila
-                new uc_CharSet(0x5D, 0x00EA), // e with circumflex
-                new uc_CharSet(0x5E, 0x00CE), // i with circumflex
-                new uc_CharSet(0x60, 0x00F4), // o with circumflex
-                new uc_CharSet(0x7B, 0x00E9), // e with accute accent
-                new uc_CharSet(0x7C, 0x00F9), // u with grav accent
-                new uc_CharSet(0x7D, 0x00E8), // e with grav accent
-                new uc_CharSet(0x7E, 0x00FB), // u with circumflex
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00E2), // a with circumflex
+                new UcCharSet(0x5C, 0x00E7), // little cedila
+                new UcCharSet(0x5D, 0x00EA), // e with circumflex
+                new UcCharSet(0x5E, 0x00CE), // i with circumflex
+                new UcCharSet(0x60, 0x00F4), // o with circumflex
+                new UcCharSet(0x7B, 0x00E9), // e with accute accent
+                new UcCharSet(0x7C, 0x00F9), // u with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00FB) // u with circumflex
             };
 
-            public static uc_CharSet[] NRCGerman = // German National Replacement
+            public static UcCharSet[] NRCGerman = // German National Replacement
             {
-                new uc_CharSet(0x40, 0x00A7), // funny s
-                new uc_CharSet(0x5B, 0x00C4), // A with diearesis
-                new uc_CharSet(0x5C, 0x00D6), // O with diearesis
-                new uc_CharSet(0x5D, 0x00DC), // U with diearesis
-                new uc_CharSet(0x7B, 0x00E4), // a with diearesis
-                new uc_CharSet(0x7C, 0x00F6), // o with diearesis
-                new uc_CharSet(0x7D, 0x00FC), // u with diearesis
-                new uc_CharSet(0x7E, 0x00DF), // funny B
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00DC), // U with diearesis
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00FC), // u with diearesis
+                new UcCharSet(0x7E, 0x00DF) // funny B
             };
 
-            public static uc_CharSet[] NRCItalian = // Italian National Replacement
+            public static UcCharSet[] NRCItalian = // Italian National Replacement
             {
-                new uc_CharSet(0x23, 0x00A3), // pound sign
-                new uc_CharSet(0x40, 0x00A7), // funny s
-                new uc_CharSet(0x5B, 0x00B0), // Degree Symbol
-                new uc_CharSet(0x5C, 0x00E7), // little cedilla
-                new uc_CharSet(0x5D, 0x00E9), // e with accute accent
-                new uc_CharSet(0x60, 0x00F9), // u with grav accent
-                new uc_CharSet(0x7B, 0x00E0), // a with grav accent
-                new uc_CharSet(0x7C, 0x00F2), // o with grav accent
-                new uc_CharSet(0x7D, 0x00E8), // e with grav accent
-                new uc_CharSet(0x7E, 0x00CC), // I with grav accent
+                new UcCharSet(0x23, 0x00A3), // pound sign
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00B0), // Degree Symbol
+                new UcCharSet(0x5C, 0x00E7), // little cedilla
+                new UcCharSet(0x5D, 0x00E9), // e with accute accent
+                new UcCharSet(0x60, 0x00F9), // u with grav accent
+                new UcCharSet(0x7B, 0x00E0), // a with grav accent
+                new UcCharSet(0x7C, 0x00F2), // o with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00CC) // I with grav accent
             };
 
-            public static uc_CharSet[] NRCNorDanish = // Norwegian Danish National Replacement
+            public static UcCharSet[] NRCNorDanish = // Norwegian Danish National Replacement
             {
-                new uc_CharSet(0x5B, 0x00C6), // AE ligature
-                new uc_CharSet(0x5C, 0x00D8), // O with strikethough
-                new uc_CharSet(0x5D, 0x00D8), // O with strikethough
-                new uc_CharSet(0x5D, 0x00C5), // A with hollow dot above
-                new uc_CharSet(0x7B, 0x00E6), // ae ligature
-                new uc_CharSet(0x7C, 0x00F8), // o with strikethough
-                new uc_CharSet(0x7D, 0x00F8), // o with strikethough
-                new uc_CharSet(0x7D, 0x00E5), // a with hollow dot above
+                new UcCharSet(0x5B, 0x00C6), // AE ligature
+                new UcCharSet(0x5C, 0x00D8), // O with strikethough
+                new UcCharSet(0x5D, 0x00D8), // O with strikethough
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x7B, 0x00E6), // ae ligature
+                new UcCharSet(0x7C, 0x00F8), // o with strikethough
+                new UcCharSet(0x7D, 0x00F8), // o with strikethough
+                new UcCharSet(0x7D, 0x00E5) // a with hollow dot above
             };
 
-            public static uc_CharSet[] NRCPortuguese = // Portuguese National Replacement
+            public static UcCharSet[] NRCPortuguese = // Portuguese National Replacement
             {
-                new uc_CharSet(0x5B, 0x00C3), // A with tilde
-                new uc_CharSet(0x5C, 0x00C7), // big cedilla
-                new uc_CharSet(0x5D, 0x00D5), // O with tilde
-                new uc_CharSet(0x7B, 0x00E3), // a with tilde
-                new uc_CharSet(0x7C, 0x00E7), // little cedilla
-                new uc_CharSet(0x7D, 0x00F6), // o with tilde
+                new UcCharSet(0x5B, 0x00C3), // A with tilde
+                new UcCharSet(0x5C, 0x00C7), // big cedilla
+                new UcCharSet(0x5D, 0x00D5), // O with tilde
+                new UcCharSet(0x7B, 0x00E3), // a with tilde
+                new UcCharSet(0x7C, 0x00E7), // little cedilla
+                new UcCharSet(0x7D, 0x00F6) // o with tilde
             };
 
-            public static uc_CharSet[] NRCSpanish = // Spanish National Replacement
+            public static UcCharSet[] NRCSpanish = // Spanish National Replacement
             {
-                new uc_CharSet(0x23, 0x00A3), // pound sign
-                new uc_CharSet(0x40, 0x00A7), // funny s
-                new uc_CharSet(0x5B, 0x00A1), // I with dot
-                new uc_CharSet(0x5C, 0x00D1), // N with tilde
-                new uc_CharSet(0x5D, 0x00BF), // Upside down question mark
-                new uc_CharSet(0x7B, 0x0060), // back single quote
-                new uc_CharSet(0x7C, 0x00B0), // Degree Symbol
-                new uc_CharSet(0x7D, 0x00F1), // n with tilde
-                new uc_CharSet(0x7E, 0x00E7), // small cedilla
+                new UcCharSet(0x23, 0x00A3), // pound sign
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00A1), // I with dot
+                new UcCharSet(0x5C, 0x00D1), // N with tilde
+                new UcCharSet(0x5D, 0x00BF), // Upside down question mark
+                new UcCharSet(0x7B, 0x0060), // back single quote
+                new UcCharSet(0x7C, 0x00B0), // Degree Symbol
+                new UcCharSet(0x7D, 0x00F1), // n with tilde
+                new UcCharSet(0x7E, 0x00E7) // small cedilla
             };
 
-            public static uc_CharSet[] NRCSwedish = // Swedish National Replacement
+            public static UcCharSet[] NRCSwedish = // Swedish National Replacement
             {
-                new uc_CharSet(0x40, 0x00C9), // E with acute
-                new uc_CharSet(0x5B, 0x00C4), // A with diearesis
-                new uc_CharSet(0x5C, 0x00D6), // O with diearesis
-                new uc_CharSet(0x5D, 0x00C5), // A with hollow dot above
-                new uc_CharSet(0x5E, 0x00DC), // U with diearesis
-                new uc_CharSet(0x60, 0x00E9), // e with accute accent
-                new uc_CharSet(0x7B, 0x00E4), // a with diearesis
-                new uc_CharSet(0x7C, 0x00F6), // o with diearesis
-                new uc_CharSet(0x7D, 0x00E5), // a with hollow dot above
-                new uc_CharSet(0x7E, 0x00FC), // u with diearesis
+                new UcCharSet(0x40, 0x00C9), // E with acute
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x5E, 0x00DC), // U with diearesis
+                new UcCharSet(0x60, 0x00E9), // e with accute accent
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
+                new UcCharSet(0x7E, 0x00FC) // u with diearesis
             };
 
-            public static uc_CharSet[] NRCSwiss = // Swiss National Replacement
+            public static UcCharSet[] NRCSwiss = // Swiss National Replacement
             {
-                new uc_CharSet(0x23, 0x00F9), // u with grav accent
-                new uc_CharSet(0x40, 0x00E0), // a with grav accent
-                new uc_CharSet(0x5B, 0x00E9), // e with accute accent
-                new uc_CharSet(0x5C, 0x00E7), // small cedilla
-                new uc_CharSet(0x5D, 0x00EA), // e with circumflex
-                new uc_CharSet(0x5E, 0x00CE), // i with circumflex
-                new uc_CharSet(0x5F, 0x00E8), // e with grav accent
-                new uc_CharSet(0x60, 0x00F4), // o with circumflex
-                new uc_CharSet(0x7B, 0x00E4), // a with diearesis
-                new uc_CharSet(0x7C, 0x00F6), // o with diearesis
-                new uc_CharSet(0x7D, 0x00FC), // u with diearesis
-                new uc_CharSet(0x7E, 0x00FB), // u with circumflex
+                new UcCharSet(0x23, 0x00F9), // u with grav accent
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00E9), // e with accute accent
+                new UcCharSet(0x5C, 0x00E7), // small cedilla
+                new UcCharSet(0x5D, 0x00EA), // e with circumflex
+                new UcCharSet(0x5E, 0x00CE), // i with circumflex
+                new UcCharSet(0x5F, 0x00E8), // e with grav accent
+                new UcCharSet(0x60, 0x00F4), // o with circumflex
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00FC), // u with diearesis
+                new UcCharSet(0x7E, 0x00FB) // u with circumflex
             };
 
-            public static uc_CharSet[] ISOLatin1S = // Same as Latin-1 Supplemental
+            public static UcCharSet[] ISOLatin1S = // Same as Latin-1 Supplemental
             {
-                new uc_CharSet(0x00, 0x0000) //
+                new UcCharSet(0x00, 0x0000) //
             };
 
             public enum Sets
@@ -4101,18 +4017,17 @@ namespace PacketSoftware
 
         #region class uc_Caret
 
-        private class uc_Caret
+        private class UcCaret
         {
-            public System.Drawing.Point Pos;
-            public System.Drawing.Color Color = System.Drawing.Color.FromArgb(255, 181, 106);
-            public System.Drawing.Bitmap Bitmap = null;
-            public System.Drawing.Graphics Buffer = null;
-            public System.Boolean IsOff = false;
-            public System.Boolean EOL = false;
+            public Point Pos;
+            public Bitmap Bitmap = null;
+            public Graphics Buffer = null;
+            public Boolean IsOff = false;
+            public Boolean EOL = false;
 
-            public uc_Caret()
+            public UcCaret()
             {
-                this.Pos = new System.Drawing.Point(0, 0);
+                Pos = new Point(0, 0);
             }
         }
 
@@ -4138,33 +4053,28 @@ namespace PacketSoftware
 
         #region class uc_Mode
 
-        private class uc_Mode
+        private class UcMode
         {
-            public static System.UInt32 Locked = 1; // Unlocked           = off 
-            public static System.UInt32 BackSpace = 2; // Delete             = off 
-            public static System.UInt32 NewLine = 4; // Line Feed          = off 
-            public static System.UInt32 Repeat = 8; // No Repeat          = off 
-            public static System.UInt32 AutoWrap = 16; // No AutoWrap        = off 
-            public static System.UInt32 CursorAppln = 32; // Std Cursor Codes   = off 
-            public static System.UInt32 KeypadAppln = 64; // Std Numeric Codes  = off 
-            public static System.UInt32 DataProcessing = 128; // Typewriter         = off 
-            public static System.UInt32 PositionReports = 256; // CharacterCodes     = off
-            public static System.UInt32 LocalEchoOff = 512; // LocalEchoOn        = off
-            public static System.UInt32 OriginRelative = 1024; // OriginAbsolute     = off
-            public static System.UInt32 LightBackground = 2048; // DarkBackground     = off
-            public static System.UInt32 National = 4096; // Multinational      = off
-            public static System.UInt32 Any = 0x80000000; // Any Flags
+            public static UInt32 Locked = 1; // Unlocked           = off 
+            public static UInt32 BackSpace = 2; // Delete             = off 
+            public static UInt32 NewLine = 4; // Line Feed          = off 
+            public static UInt32 Repeat = 8; // No Repeat          = off 
+            public static UInt32 AutoWrap = 16; // No AutoWrap        = off 
+            public static UInt32 CursorAppln = 32; // Std Cursor Codes   = off 
+            public static UInt32 KeypadAppln = 64; // Std Numeric Codes  = off 
+            public static UInt32 DataProcessing = 128; // Typewriter         = off 
+            public static UInt32 PositionReports = 256; // CharacterCodes     = off
+            public static UInt32 LocalEchoOff = 512; // LocalEchoOn        = off
+            public static UInt32 OriginRelative = 1024; // OriginAbsolute     = off
+            public static UInt32 LightBackground = 2048; // DarkBackground     = off
+            public static UInt32 National = 4096; // Multinational      = off
+            public static UInt32 Any = 0x80000000; // Any Flags
 
-            public System.UInt32 Flags;
+            public UInt32 Flags;
 
-            public uc_Mode(System.UInt32 InitialFlags)
+            public UcMode()
             {
-                this.Flags = InitialFlags;
-            }
-
-            public uc_Mode()
-            {
-                this.Flags = 0;
+                Flags = 0;
             }
         }
 
@@ -4172,139 +4082,134 @@ namespace PacketSoftware
 
         #region class uc_Keyboard
 
-        private class uc_Keyboard
+        private class UcKeyboard
         {
             public event KeyboardEventHandler KeyboardEvent;
 
-            private System.Boolean LastKeyDownSent = false; // next WM_CHAR ignored if true 
-            private bool AltIsDown = false;
-            private bool ShiftIsDown = false;
-            private bool CtrlIsDown = false;
+            private Boolean _lastKeyDownSent = false; // next WM_CHAR ignored if true 
+            private bool _altIsDown = false;
+            private bool _shiftIsDown = false;
+            private bool _ctrlIsDown = false;
 
             private TerminalEmulator Parent;
 
-            private uc_KeyMap KeyMap = new uc_KeyMap();
+            private UcKeyMap KeyMap = new UcKeyMap();
 
-            public uc_Keyboard(TerminalEmulator p1)
+            public UcKeyboard(TerminalEmulator p1)
             {
-                this.Parent = p1;
+                Parent = p1;
             }
 
-            public void KeyDown(System.Windows.Forms.Message KeyMess)
+            public void KeyDown(Message keyMess)
             {
-                System.Byte[] lBytes;
-                System.Byte[] wBytes;
-                System.UInt16 KeyValue = 0;
-                System.UInt16 RepeatCount = 0;
-                System.Byte ScanCode = 0;
-                System.Byte AnsiChar = 0;
-                System.UInt16 UniChar = 0;
-                System.Byte Flags = 0;
+                Byte[] lBytes;
+                Byte[] wBytes;
+                UInt16 keyValue = 0;
+                Byte scanCode = 0;
+                Byte AnsiChar = 0;
+                Byte flags = 0;
 
 
-                lBytes = System.BitConverter.GetBytes(KeyMess.LParam.ToInt32());
-                wBytes = System.BitConverter.GetBytes(KeyMess.WParam.ToInt32());
-                RepeatCount = System.BitConverter.ToUInt16(lBytes, 0);
-                ScanCode = lBytes[2];
-                Flags = lBytes[3];
-                KeyValue = System.BitConverter.ToUInt16(wBytes, 0);
+                lBytes = BitConverter.GetBytes(keyMess.LParam.ToInt32());
+                wBytes = BitConverter.GetBytes(keyMess.WParam.ToInt32());
+                BitConverter.ToUInt16(lBytes, 0);
+                scanCode = lBytes[2];
+                flags = lBytes[3];
+                keyValue = BitConverter.ToUInt16(wBytes, 0);
 
 
                 // key down messages send the scan code in wParam whereas
                 // key press messages send the char and unicode values in this word
-                if (KeyMess.Msg == WMCodes.WM_SYSKEYDOWN ||
-                    KeyMess.Msg == WMCodes.WM_KEYDOWN)
+                if (keyMess.Msg == WMCodes.WM_SYSKEYDOWN ||
+                    keyMess.Msg == WMCodes.WM_KEYDOWN)
                 {
-                    KeyValue = System.BitConverter.ToUInt16(wBytes, 0);
+                    keyValue = BitConverter.ToUInt16(wBytes, 0);
 
                     // set the key down flags. I know you can get alt from lparam flags
                     // but this feels more consistent
-                    switch (KeyValue)
+                    switch (keyValue)
                     {
                         case 16: // Shift Keys
                         case 160: // L Shift Key
                         case 161: // R Shift Keys
-                            this.ShiftIsDown = true;
+                            _shiftIsDown = true;
                             return;
 
                         case 17: // Ctrl Keys
                         case 162: // L Ctrl Key
                         case 163: // R Ctrl Key
-                            this.CtrlIsDown = true;
+                            _ctrlIsDown = true;
                             return;
 
                         case 18: // Alt Keys (Menu)
                         case 164: // L Alt Key
                         case 165: // R Ctrl Key
-                            this.AltIsDown = true;
+                            _altIsDown = true;
                             return;
-
-                        default:
-                            break;
                     }
 
-                    System.String Modifier = "Key";
+                    String modifier = "Key";
 
-                    if (this.ShiftIsDown)
+                    if (_shiftIsDown)
                     {
-                        Modifier = "Shift";
+                        modifier = "Shift";
                     }
-                    else if (this.CtrlIsDown)
+                    else if (_ctrlIsDown)
                     {
-                        Modifier = "Ctrl";
+                        modifier = "Ctrl";
                     }
-                    else if (this.AltIsDown)
+                    else if (_altIsDown)
                     {
-                        Modifier = "Alt";
+                        modifier = "Alt";
                     }
 
                     // the key pressed was not a modifier so check for an override string
-                    System.String OutString = KeyMap.Find(ScanCode, System.Convert.ToBoolean(Flags & 0x01), Modifier,
+                    String outString = KeyMap.Find(scanCode, Convert.ToBoolean(flags & 0x01), modifier,
                         Parent.Modes.Flags);
 
-                    this.LastKeyDownSent = false;
+                    _lastKeyDownSent = false;
 
-                    if (OutString != "")
+                    if (outString != "")
                     {
                         // Flag the event so that the associated WM_CHAR event (if any) is ignored
-                        this.LastKeyDownSent = true;
+                        _lastKeyDownSent = true;
 
 
                         //Parent.NvtParser.ParseString (OutString); 
                         //this.Parent.Invalidate ();
-                        OutString = System.Environment.NewLine;
+                        outString = Environment.NewLine;
 
-                        KeyboardEvent(this, OutString);
+                        KeyboardEvent(this, outString);
                     }
                 }
-                else if (KeyMess.Msg == WMCodes.WM_SYSKEYUP ||
-                         KeyMess.Msg == WMCodes.WM_KEYUP)
+                else if (keyMess.Msg == WMCodes.WM_SYSKEYUP ||
+                         keyMess.Msg == WMCodes.WM_KEYUP)
                 {
-                    KeyValue = System.BitConverter.ToUInt16(wBytes, 0);
+                    keyValue = BitConverter.ToUInt16(wBytes, 0);
 
-                    switch (KeyValue)
+                    switch (keyValue)
                     {
                         case 16: // Shift Keys
                         case 160: // L Shift Key
                         case 161: // R Shift Keys
-                            this.ShiftIsDown = false;
+                            _shiftIsDown = false;
                             break;
 
                         case 17: // Ctrl Keys
                         case 162: // L Ctrl Key
                         case 163: // R Ctrl Key
-                            this.CtrlIsDown = false;
+                            _ctrlIsDown = false;
                             break;
 
                         case 18: // Alt Keys (Menu)
                         case 164: // L Alt Key
                         case 165: // R Ctrl Key
-                            this.AltIsDown = false;
+                            _altIsDown = false;
                             break;
 
                         default:
                         {
-                            if (Parent.LocalEcho && KeyValue == 13)
+                            if (Parent.LocalEcho && keyValue == 13)
                             {
                                 Parent.RxdTextEvent(Environment.NewLine);
                                 Parent.Refresh();
@@ -4314,11 +4219,11 @@ namespace PacketSoftware
                     }
                 }
 
-                else if (KeyMess.Msg == WMCodes.WM_SYSCHAR ||
-                         KeyMess.Msg == WMCodes.WM_CHAR)
+                else if (keyMess.Msg == WMCodes.WM_SYSCHAR ||
+                         keyMess.Msg == WMCodes.WM_CHAR)
                 {
                     AnsiChar = wBytes[0];
-                    UniChar = System.BitConverter.ToUInt16(wBytes, 0);
+                    BitConverter.ToUInt16(wBytes, 0);
 
 
                     // if there's a string mapped to this key combo we want to ignore the character
@@ -4326,15 +4231,15 @@ namespace PacketSoftware
 
                     // only send the windows generated char if there was no custom
                     // string sent by the keydown event
-                    if (this.LastKeyDownSent == false)
+                    if (_lastKeyDownSent == false)
                     {
                         // send the character straight to the host if we haven't already handled the actual key press
-                        KeyboardEvent(this, System.Convert.ToChar(AnsiChar).ToString());
+                        KeyboardEvent(this, e: Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
 
                         {
                             if (Parent.LocalEcho)
                             {
-                                Parent.RxdTextEvent(Convert.ToString(System.Convert.ToChar(AnsiChar).ToString()));
+                                Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
                                 Parent.Refresh();
                             }
                         }
@@ -4345,22 +4250,22 @@ namespace PacketSoftware
                 //AnsiChar, KeyMess.Result, ScanCode, KeyValue, Flags, RepeatCount);
             }
 
-            private class uc_KeyInfo
+            private class UcKeyInfo
             {
-                public System.UInt16 ScanCode;
-                public System.Boolean ExtendFlag;
-                public System.String Modifier;
-                public System.String OutString;
-                public System.UInt32 Flag;
-                public System.UInt32 FlagValue;
+                public UInt16 ScanCode;
+                public Boolean ExtendFlag;
+                public String Modifier;
+                public String OutString;
+                public UInt32 Flag;
+                public UInt32 FlagValue;
 
-                public uc_KeyInfo(
-                    System.UInt16 p1,
-                    System.Boolean p2,
-                    System.String p3,
-                    System.String p4,
-                    System.UInt32 p5,
-                    System.UInt32 p6)
+                public UcKeyInfo(
+                    UInt16 p1,
+                    Boolean p2,
+                    String p3,
+                    String p4,
+                    UInt32 p5,
+                    UInt32 p6)
                 {
                     ScanCode = p1;
                     ExtendFlag = p2;
@@ -4371,13 +4276,13 @@ namespace PacketSoftware
                 }
             }
 
-            private class uc_KeyMap
+            private class UcKeyMap
             {
-                public System.Collections.ArrayList Elements = new System.Collections.ArrayList();
+                public ArrayList Elements = new ArrayList();
 
-                public uc_KeyMap()
+                public UcKeyMap()
                 {
-                    this.SetToDefault();
+                    SetToDefault();
                 }
 
                 // set the key mapping up to emulate most keys on a vt420
@@ -4409,94 +4314,94 @@ namespace PacketSoftware
 
 
                     // this is the initial list of keyboard codes
-                    Elements.Add(new uc_KeyInfo(15, false, "Shift", "\x1B[Z", uc_Mode.Any, 0)); //ShTab
-                    Elements.Add(new uc_KeyInfo(28, false, "Key", "\x0D", uc_Mode.Any, 0)); //Return
-                    Elements.Add(new uc_KeyInfo(59, false, "Key", "\x1BOP", uc_Mode.Any, 0)); //F1->PF1
-                    Elements.Add(new uc_KeyInfo(60, false, "Key", "\x1BOQ", uc_Mode.Any, 0)); //F2->PF2
-                    Elements.Add(new uc_KeyInfo(61, false, "Key", "\x1BOR", uc_Mode.Any, 0)); //F3->PF3
-                    Elements.Add(new uc_KeyInfo(62, false, "Key", "\x1BOS", uc_Mode.Any, 0)); //F4->PF4
-                    Elements.Add(new uc_KeyInfo(63, false, "Key", "\x1B[15~", uc_Mode.Any, 0)); //F5
-                    Elements.Add(new uc_KeyInfo(64, false, "Key", "\x1B[17~", uc_Mode.Any, 0)); //F6
-                    Elements.Add(new uc_KeyInfo(65, false, "Key", "\x1B[18~", uc_Mode.Any, 0)); //F7
-                    Elements.Add(new uc_KeyInfo(66, false, "Key", "\x1B[19~", uc_Mode.Any, 0)); //F8
-                    Elements.Add(new uc_KeyInfo(67, false, "Key", "\x1B[20~", uc_Mode.Any, 0)); //F9
-                    Elements.Add(new uc_KeyInfo(68, false, "Key", "\x1B[21~", uc_Mode.Any, 0)); //F10
-                    Elements.Add(new uc_KeyInfo(87, false, "Key", "\x1B[23~", uc_Mode.Any, 0)); //F11
-                    Elements.Add(new uc_KeyInfo(88, false, "Key", "\x1B[24~", uc_Mode.Any, 0)); //F12
-                    Elements.Add(new uc_KeyInfo(61, false, "Shift", "\x1B[25~", uc_Mode.Any, 0)); //ShF3 ->F13
-                    Elements.Add(new uc_KeyInfo(62, false, "Shift", "\x1B[26~", uc_Mode.Any, 0)); //ShF4 ->F14
-                    Elements.Add(new uc_KeyInfo(63, false, "Shift", "\x1B[28~", uc_Mode.Any, 0)); //ShF5 ->F15
-                    Elements.Add(new uc_KeyInfo(64, false, "Shift", "\x1B[29~", uc_Mode.Any, 0)); //ShF6 ->F16
-                    Elements.Add(new uc_KeyInfo(65, false, "Shift", "\x1B[31~", uc_Mode.Any, 0)); //ShF7 ->F17
-                    Elements.Add(new uc_KeyInfo(66, false, "Shift", "\x1B[32~", uc_Mode.Any, 0)); //ShF8 ->F18
-                    Elements.Add(new uc_KeyInfo(67, false, "Shift", "\x1B[33~", uc_Mode.Any, 0)); //ShF9 ->F19
-                    Elements.Add(new uc_KeyInfo(68, false, "Shift", "\x1B[34~", uc_Mode.Any, 0)); //ShF10->F20
-                    Elements.Add(new uc_KeyInfo(87, false, "Shift", "\x1B[28~", uc_Mode.Any, 0)); //ShF11->Help
-                    Elements.Add(new uc_KeyInfo(88, false, "Shift", "\x1B[29~", uc_Mode.Any, 0)); //ShF12->Do
-                    Elements.Add(new uc_KeyInfo(71, true, "Key", "\x1B[1~", uc_Mode.Any, 0)); //Home
-                    Elements.Add(new uc_KeyInfo(82, true, "Key", "\x1B[2~", uc_Mode.Any, 0)); //Insert
-                    Elements.Add(new uc_KeyInfo(83, true, "Key", "\x1B[3~", uc_Mode.Any, 0)); //Delete
-                    Elements.Add(new uc_KeyInfo(79, true, "Key", "\x1B[4~", uc_Mode.Any, 0)); //End
-                    Elements.Add(new uc_KeyInfo(73, true, "Key", "\x1B[5~", uc_Mode.Any, 0)); //PageUp
-                    Elements.Add(new uc_KeyInfo(81, true, "Key", "\x1B[6~", uc_Mode.Any, 0)); //PageDown
-                    Elements.Add(new uc_KeyInfo(72, true, "Key", "\x1B[A", uc_Mode.CursorAppln, 0)); //CursorUp
-                    Elements.Add(new uc_KeyInfo(80, true, "Key", "\x1B[B", uc_Mode.CursorAppln, 0)); //CursorDown
-                    Elements.Add(new uc_KeyInfo(77, true, "Key", "\x1B[C", uc_Mode.CursorAppln, 0)); //CursorKeyRight
-                    Elements.Add(new uc_KeyInfo(75, true, "Key", "\x1B[D", uc_Mode.CursorAppln, 0)); //CursorKeyLeft
-                    Elements.Add(new uc_KeyInfo(72, true, "Key", "\x1BOA", uc_Mode.CursorAppln, 1)); //CursorUp
-                    Elements.Add(new uc_KeyInfo(80, true, "Key", "\x1BOB", uc_Mode.CursorAppln, 1)); //CursorDown
-                    Elements.Add(new uc_KeyInfo(77, true, "Key", "\x1BOC", uc_Mode.CursorAppln, 1)); //CursorKeyRight
-                    Elements.Add(new uc_KeyInfo(75, true, "Key", "\x1BOD", uc_Mode.CursorAppln, 1)); //CursorKeyLeft
-                    Elements.Add(new uc_KeyInfo(82, false, "Key", "\x1BOp", uc_Mode.KeypadAppln, 1)); //Keypad0
-                    Elements.Add(new uc_KeyInfo(79, false, "Key", "\x1BOq", uc_Mode.KeypadAppln, 1)); //Keypad1
-                    Elements.Add(new uc_KeyInfo(80, false, "Key", "\x1BOr", uc_Mode.KeypadAppln, 1)); //Keypad2
-                    Elements.Add(new uc_KeyInfo(81, false, "Key", "\x1BOs", uc_Mode.KeypadAppln, 1)); //Keypad3
-                    Elements.Add(new uc_KeyInfo(75, false, "Key", "\x1BOt", uc_Mode.KeypadAppln, 1)); //Keypad4
-                    Elements.Add(new uc_KeyInfo(76, false, "Key", "\x1BOu", uc_Mode.KeypadAppln, 1)); //Keypad5
-                    Elements.Add(new uc_KeyInfo(77, false, "Key", "\x1BOv", uc_Mode.KeypadAppln, 1)); //Keypad6
-                    Elements.Add(new uc_KeyInfo(71, false, "Key", "\x1BOw", uc_Mode.KeypadAppln, 1)); //Keypad7
-                    Elements.Add(new uc_KeyInfo(72, false, "Key", "\x1BOx", uc_Mode.KeypadAppln, 1)); //Keypad8
-                    Elements.Add(new uc_KeyInfo(73, false, "Key", "\x1BOy", uc_Mode.KeypadAppln, 1)); //Keypad9
-                    Elements.Add(new uc_KeyInfo(74, false, "Key", "\x1BOm", uc_Mode.KeypadAppln, 1)); //Keypad-
-                    Elements.Add(new uc_KeyInfo(78, false, "Key", "\x1BOl", uc_Mode.KeypadAppln, 1));
+                    Elements.Add(new UcKeyInfo(15, false, "Shift", "\x1B[Z", UcMode.Any, 0)); //ShTab
+                    Elements.Add(new UcKeyInfo(28, false, "Key", "\x0D", UcMode.Any, 0)); //Return
+                    Elements.Add(new UcKeyInfo(59, false, "Key", "\x1BOP", UcMode.Any, 0)); //F1->PF1
+                    Elements.Add(new UcKeyInfo(60, false, "Key", "\x1BOQ", UcMode.Any, 0)); //F2->PF2
+                    Elements.Add(new UcKeyInfo(61, false, "Key", "\x1BOR", UcMode.Any, 0)); //F3->PF3
+                    Elements.Add(new UcKeyInfo(62, false, "Key", "\x1BOS", UcMode.Any, 0)); //F4->PF4
+                    Elements.Add(new UcKeyInfo(63, false, "Key", "\x1B[15~", UcMode.Any, 0)); //F5
+                    Elements.Add(new UcKeyInfo(64, false, "Key", "\x1B[17~", UcMode.Any, 0)); //F6
+                    Elements.Add(new UcKeyInfo(65, false, "Key", "\x1B[18~", UcMode.Any, 0)); //F7
+                    Elements.Add(new UcKeyInfo(66, false, "Key", "\x1B[19~", UcMode.Any, 0)); //F8
+                    Elements.Add(new UcKeyInfo(67, false, "Key", "\x1B[20~", UcMode.Any, 0)); //F9
+                    Elements.Add(new UcKeyInfo(68, false, "Key", "\x1B[21~", UcMode.Any, 0)); //F10
+                    Elements.Add(new UcKeyInfo(87, false, "Key", "\x1B[23~", UcMode.Any, 0)); //F11
+                    Elements.Add(new UcKeyInfo(88, false, "Key", "\x1B[24~", UcMode.Any, 0)); //F12
+                    Elements.Add(new UcKeyInfo(61, false, "Shift", "\x1B[25~", UcMode.Any, 0)); //ShF3 ->F13
+                    Elements.Add(new UcKeyInfo(62, false, "Shift", "\x1B[26~", UcMode.Any, 0)); //ShF4 ->F14
+                    Elements.Add(new UcKeyInfo(63, false, "Shift", "\x1B[28~", UcMode.Any, 0)); //ShF5 ->F15
+                    Elements.Add(new UcKeyInfo(64, false, "Shift", "\x1B[29~", UcMode.Any, 0)); //ShF6 ->F16
+                    Elements.Add(new UcKeyInfo(65, false, "Shift", "\x1B[31~", UcMode.Any, 0)); //ShF7 ->F17
+                    Elements.Add(new UcKeyInfo(66, false, "Shift", "\x1B[32~", UcMode.Any, 0)); //ShF8 ->F18
+                    Elements.Add(new UcKeyInfo(67, false, "Shift", "\x1B[33~", UcMode.Any, 0)); //ShF9 ->F19
+                    Elements.Add(new UcKeyInfo(68, false, "Shift", "\x1B[34~", UcMode.Any, 0)); //ShF10->F20
+                    Elements.Add(new UcKeyInfo(87, false, "Shift", "\x1B[28~", UcMode.Any, 0)); //ShF11->Help
+                    Elements.Add(new UcKeyInfo(88, false, "Shift", "\x1B[29~", UcMode.Any, 0)); //ShF12->Do
+                    Elements.Add(new UcKeyInfo(71, true, "Key", "\x1B[1~", UcMode.Any, 0)); //Home
+                    Elements.Add(new UcKeyInfo(82, true, "Key", "\x1B[2~", UcMode.Any, 0)); //Insert
+                    Elements.Add(new UcKeyInfo(83, true, "Key", "\x1B[3~", UcMode.Any, 0)); //Delete
+                    Elements.Add(new UcKeyInfo(79, true, "Key", "\x1B[4~", UcMode.Any, 0)); //End
+                    Elements.Add(new UcKeyInfo(73, true, "Key", "\x1B[5~", UcMode.Any, 0)); //PageUp
+                    Elements.Add(new UcKeyInfo(81, true, "Key", "\x1B[6~", UcMode.Any, 0)); //PageDown
+                    Elements.Add(new UcKeyInfo(72, true, "Key", "\x1B[A", UcMode.CursorAppln, 0)); //CursorUp
+                    Elements.Add(new UcKeyInfo(80, true, "Key", "\x1B[B", UcMode.CursorAppln, 0)); //CursorDown
+                    Elements.Add(new UcKeyInfo(77, true, "Key", "\x1B[C", UcMode.CursorAppln, 0)); //CursorKeyRight
+                    Elements.Add(new UcKeyInfo(75, true, "Key", "\x1B[D", UcMode.CursorAppln, 0)); //CursorKeyLeft
+                    Elements.Add(new UcKeyInfo(72, true, "Key", "\x1BOA", UcMode.CursorAppln, 1)); //CursorUp
+                    Elements.Add(new UcKeyInfo(80, true, "Key", "\x1BOB", UcMode.CursorAppln, 1)); //CursorDown
+                    Elements.Add(new UcKeyInfo(77, true, "Key", "\x1BOC", UcMode.CursorAppln, 1)); //CursorKeyRight
+                    Elements.Add(new UcKeyInfo(75, true, "Key", "\x1BOD", UcMode.CursorAppln, 1)); //CursorKeyLeft
+                    Elements.Add(new UcKeyInfo(82, false, "Key", "\x1BOp", UcMode.KeypadAppln, 1)); //Keypad0
+                    Elements.Add(new UcKeyInfo(79, false, "Key", "\x1BOq", UcMode.KeypadAppln, 1)); //Keypad1
+                    Elements.Add(new UcKeyInfo(80, false, "Key", "\x1BOr", UcMode.KeypadAppln, 1)); //Keypad2
+                    Elements.Add(new UcKeyInfo(81, false, "Key", "\x1BOs", UcMode.KeypadAppln, 1)); //Keypad3
+                    Elements.Add(new UcKeyInfo(75, false, "Key", "\x1BOt", UcMode.KeypadAppln, 1)); //Keypad4
+                    Elements.Add(new UcKeyInfo(76, false, "Key", "\x1BOu", UcMode.KeypadAppln, 1)); //Keypad5
+                    Elements.Add(new UcKeyInfo(77, false, "Key", "\x1BOv", UcMode.KeypadAppln, 1)); //Keypad6
+                    Elements.Add(new UcKeyInfo(71, false, "Key", "\x1BOw", UcMode.KeypadAppln, 1)); //Keypad7
+                    Elements.Add(new UcKeyInfo(72, false, "Key", "\x1BOx", UcMode.KeypadAppln, 1)); //Keypad8
+                    Elements.Add(new UcKeyInfo(73, false, "Key", "\x1BOy", UcMode.KeypadAppln, 1)); //Keypad9
+                    Elements.Add(new UcKeyInfo(74, false, "Key", "\x1BOm", UcMode.KeypadAppln, 1)); //Keypad-
+                    Elements.Add(new UcKeyInfo(78, false, "Key", "\x1BOl", UcMode.KeypadAppln, 1));
                         //Keypad+ (use instead of comma)
-                    Elements.Add(new uc_KeyInfo(83, false, "Key", "\x1BOn", uc_Mode.KeypadAppln, 1)); //Keypad.
-                    Elements.Add(new uc_KeyInfo(28, true, "Key", "\x1BOM", uc_Mode.KeypadAppln, 1)); //Keypad Enter
-                    Elements.Add(new uc_KeyInfo(03, false, "Ctrl", "\x00", uc_Mode.Any, 0)); //Ctrl2->Null
-                    Elements.Add(new uc_KeyInfo(57, false, "Ctrl", "\x00", uc_Mode.Any, 0)); //CtrlSpaceBar->Null
-                    Elements.Add(new uc_KeyInfo(04, false, "Ctrl", "\x1B", uc_Mode.Any, 0)); //Ctrl3->Escape
-                    Elements.Add(new uc_KeyInfo(05, false, "Ctrl", "\x1C", uc_Mode.Any, 0)); //Ctrl4->FS
-                    Elements.Add(new uc_KeyInfo(06, false, "Ctrl", "\x1D", uc_Mode.Any, 0)); //Ctrl5->GS
-                    Elements.Add(new uc_KeyInfo(07, false, "Ctrl", "\x1E", uc_Mode.Any, 0)); //Ctrl6->RS
-                    Elements.Add(new uc_KeyInfo(08, false, "Ctrl", "\x1F", uc_Mode.Any, 0)); //Ctrl7->US
-                    Elements.Add(new uc_KeyInfo(09, false, "Ctrl", "\x7F", uc_Mode.Any, 0)); //Ctrl8->DEL
+                    Elements.Add(new UcKeyInfo(83, false, "Key", "\x1BOn", UcMode.KeypadAppln, 1)); //Keypad.
+                    Elements.Add(new UcKeyInfo(28, true, "Key", "\x1BOM", UcMode.KeypadAppln, 1)); //Keypad Enter
+                    Elements.Add(new UcKeyInfo(03, false, "Ctrl", "\x00", UcMode.Any, 0)); //Ctrl2->Null
+                    Elements.Add(new UcKeyInfo(57, false, "Ctrl", "\x00", UcMode.Any, 0)); //CtrlSpaceBar->Null
+                    Elements.Add(new UcKeyInfo(04, false, "Ctrl", "\x1B", UcMode.Any, 0)); //Ctrl3->Escape
+                    Elements.Add(new UcKeyInfo(05, false, "Ctrl", "\x1C", UcMode.Any, 0)); //Ctrl4->FS
+                    Elements.Add(new UcKeyInfo(06, false, "Ctrl", "\x1D", UcMode.Any, 0)); //Ctrl5->GS
+                    Elements.Add(new UcKeyInfo(07, false, "Ctrl", "\x1E", UcMode.Any, 0)); //Ctrl6->RS
+                    Elements.Add(new UcKeyInfo(08, false, "Ctrl", "\x1F", UcMode.Any, 0)); //Ctrl7->US
+                    Elements.Add(new UcKeyInfo(09, false, "Ctrl", "\x7F", UcMode.Any, 0)); //Ctrl8->DEL
                 }
 
-                public System.String Find(
-                    System.UInt16 ScanCode,
-                    System.Boolean ExtendFlag,
-                    System.String Modifier,
-                    System.UInt32 ModeFlags)
+                public String Find(
+                    UInt16 scanCode,
+                    Boolean extendFlag,
+                    String modifier,
+                    UInt32 modeFlags)
                 {
-                    System.String OutString = "";
+                    String outString = "";
 
                     for (int i = 0; i < Elements.Count; i++)
                     {
-                        uc_KeyInfo Element = (uc_KeyInfo) Elements[i];
+                        UcKeyInfo element = (UcKeyInfo) Elements[i];
 
-                        if (Element.ScanCode == ScanCode &&
-                            Element.ExtendFlag == ExtendFlag &&
-                            Element.Modifier == Modifier &&
-                            (Element.Flag == uc_Mode.Any ||
-                             ((Element.Flag & ModeFlags) == Element.Flag && Element.FlagValue == 1) ||
-                             ((Element.Flag & ModeFlags) == 0 && Element.FlagValue == 0)))
+                        if (element.ScanCode == scanCode &&
+                            element.ExtendFlag == extendFlag &&
+                            element.Modifier == modifier &&
+                            (element.Flag == UcMode.Any ||
+                             ((element.Flag & modeFlags) == element.Flag && element.FlagValue == 1) ||
+                             ((element.Flag & modeFlags) == 0 && element.FlagValue == 0)))
                         {
-                            OutString = Element.OutString;
-                            return OutString;
+                            outString = element.OutString;
+                            return outString;
                         }
                     }
 
-                    return OutString;
+                    return outString;
                 }
             }
         }
@@ -4505,12 +4410,12 @@ namespace PacketSoftware
 
         #region class uc_VertScrollBar
 
-        private class uc_VertScrollBar : System.Windows.Forms.VScrollBar
+        private class UcVertScrollBar : VScrollBar
         {
-            public uc_VertScrollBar()
+            public UcVertScrollBar()
             {
-                this.SetStyle(System.Windows.Forms.ControlStyles.Selectable, false);
-                this.Maximum = 0;
+                SetStyle(ControlStyles.Selectable, false);
+                Maximum = 0;
             }
         }
 
@@ -4518,39 +4423,35 @@ namespace PacketSoftware
 
         #region class uc_Params
 
-        private class uc_Params
+        private class UcParams
         {
-            public System.Collections.ArrayList Elements = new System.Collections.ArrayList();
+            public ArrayList Elements = new ArrayList();
 
-            public uc_Params()
+            public Int32 Count()
             {
-            }
-
-            public System.Int32 Count()
-            {
-                return this.Elements.Count;
+                return Elements.Count;
             }
 
             public void Clear()
             {
-                this.Elements.Clear();
+                Elements.Clear();
             }
 
-            public void Add(System.Char CurChar)
+            public void Add(Char curChar)
             {
-                if (this.Count() < 1)
+                if (Count() < 1)
                 {
-                    this.Elements.Add("0");
+                    Elements.Add("0");
                 }
 
-                if (CurChar == ';')
+                if (curChar == ';')
                 {
-                    this.Elements.Add("0");
+                    Elements.Add("0");
                 }
                 else
                 {
-                    int i = this.Elements.Count - 1;
-                    this.Elements[i] = ((System.String) this.Elements[i] + CurChar.ToString());
+                    int i = Elements.Count - 1;
+                    Elements[i] = string.Format("{0}{1}", arg0: Elements[i], arg1: curChar);
                 }
             }
         }
@@ -4559,22 +4460,18 @@ namespace PacketSoftware
 
         #region class uc_Parser
 
-        private class uc_Parser
+        private class UcParser
         {
             public event ParserEventHandler ParserEvent;
 
-            private States State = States.Ground;
-            private System.Char CurChar = '\0';
-            private System.String CurSequence = "";
+            private States _state = States.Ground;
+            private Char _curChar = '\0';
+            private String _curSequence = "";
 
-            private System.Collections.ArrayList ParamList = new System.Collections.ArrayList();
-            private uc_CharEvents CharEvents = new uc_CharEvents();
-            private uc_StateChangeEvents StateChangeEvents = new uc_StateChangeEvents();
-            private uc_Params CurParams = new uc_Params();
-
-            public uc_Parser()
-            {
-            }
+            private ArrayList _paramList = new ArrayList();
+            private UcCharEvents CharEvents = new UcCharEvents();
+            private UcStateChangeEvents StateChangeEvents = new UcStateChangeEvents();
+            private UcParams CurParams = new UcParams();
 
             // Every character received is treated as an event which could change the state of
             // the parser. The following section finds out which event or state change this character
@@ -4582,42 +4479,42 @@ namespace PacketSoftware
             // The character may be a command, part of a sequence or a parameter; or it might just need
             // binning.
             // The sequence is: state change, store character, do action.
-            public void ParseString(System.String InString)
+            public void ParseString(String inString)
             {
-                States NextState = States.None;
-                Actions NextAction = Actions.None;
-                Actions StateExitAction = Actions.None;
+                States nextState = States.None;
+                Actions nextAction = Actions.None;
+                Actions stateExitAction = Actions.None;
                 Actions StateEntryAction = Actions.None;
 
-                foreach (System.Char C in InString)
+                foreach (Char c in inString)
                 {
-                    this.CurChar = C;
+                    _curChar = c;
 
                     // Get the next state and associated action based 
                     // on the current state and char event
-                    CharEvents.GetStateEventAction(State, CurChar, ref NextState, ref NextAction);
+                    CharEvents.GetStateEventAction(_state, _curChar, ref nextState, ref nextAction);
 
                     // execute any actions arising from leaving the current state
-                    if (NextState != States.None && NextState != this.State)
+                    if (nextState != States.None && nextState != _state)
                     {
                         // check for state exit actions
-                        StateChangeEvents.GetStateChangeAction(this.State, Transitions.Exit, ref StateExitAction);
+                        StateChangeEvents.GetStateChangeAction(_state, Transitions.Exit, ref stateExitAction);
 
                         // Process the exit action
-                        if (StateExitAction != Actions.None) DoAction(StateExitAction);
+                        if (stateExitAction != Actions.None) DoAction(stateExitAction);
                     }
 
                     // process the action specified
-                    if (NextAction != Actions.None) DoAction(NextAction);
+                    if (nextAction != Actions.None) DoAction(nextAction);
 
                     // set the new parser state and execute any actions arising entering the new state
-                    if (NextState != States.None && NextState != this.State)
+                    if (nextState != States.None && nextState != _state)
                     {
                         // change the parsers state attribute
-                        this.State = NextState;
+                        _state = nextState;
 
                         // check for state entry actions
-                        StateChangeEvents.GetStateChangeAction(this.State, Transitions.Entry, ref StateExitAction);
+                        StateChangeEvents.GetStateChangeAction(_state, Transitions.Entry, ref stateExitAction);
 
                         // Process the entry action
                         if (StateEntryAction != Actions.None) DoAction(StateEntryAction);
@@ -4625,31 +4522,28 @@ namespace PacketSoftware
                 }
             }
 
-            private void DoAction(Actions NextAction)
+            private void DoAction(Actions nextAction)
             {
                 // Manage the contents of the Sequence and Param Variables
-                switch (NextAction)
+                switch (nextAction)
                 {
                     case Actions.Dispatch:
                     case Actions.Collect:
-                        this.CurSequence += CurChar.ToString();
+                        _curSequence += _curChar.ToString(CultureInfo.InvariantCulture);
                         break;
 
                     case Actions.NewCollect:
-                        this.CurSequence = CurChar.ToString();
-                        this.CurParams.Clear();
+                        _curSequence = _curChar.ToString(CultureInfo.InvariantCulture);
+                        CurParams.Clear();
                         break;
 
                     case Actions.Param:
-                        this.CurParams.Add(CurChar);
-                        break;
-
-                    default:
+                        CurParams.Add(_curChar);
                         break;
                 }
 
                 // send the external event requests
-                switch (NextAction)
+                switch (nextAction)
                 {
                     case Actions.Dispatch:
                     case Actions.Execute:
@@ -4665,21 +4559,16 @@ namespace PacketSoftware
                         //                        this.CurSequence, this.CurChar.ToString (), this.CurParams.Count ().ToString (), 
                         //                        this.State.ToString (), NextAction.ToString ());
 
-                        ParserEvent(this, new ParserEventArgs(NextAction, CurChar, CurSequence, CurParams));
-                        break;
-
-                    default:
+                        ParserEvent(this, new ParserEventArgs(nextAction, _curChar, _curSequence, CurParams));
                         break;
                 }
 
 
-                switch (NextAction)
+                switch (nextAction)
                 {
                     case Actions.Dispatch:
-                        this.CurSequence = "";
-                        this.CurParams.Clear();
-                        break;
-                    default:
+                        _curSequence = "";
+                        CurParams.Clear();
                         break;
                 }
             }
@@ -4711,52 +4600,48 @@ namespace PacketSoftware
                 Exit = 2
             }
 
-            private struct uc_StateChangeInfo
+            private struct UcStateChangeInfo
             {
                 public States State;
                 public Transitions Transition; // the next state we are going to 
                 public Actions NextAction;
 
-                public uc_StateChangeInfo(
+                public UcStateChangeInfo(
                     States p1,
                     Transitions p2,
                     Actions p3)
                 {
-                    this.State = p1;
-                    this.Transition = p2;
-                    this.NextAction = p3;
+                    State = p1;
+                    Transition = p2;
+                    NextAction = p3;
                 }
             }
 
-            private class uc_StateChangeEvents
+            private class UcStateChangeEvents
             {
-                private uc_StateChangeInfo[] Elements =
+                private UcStateChangeInfo[] Elements =
                 {
-                    new uc_StateChangeInfo(States.OscString, Transitions.Entry, Actions.OscStart),
-                    new uc_StateChangeInfo(States.OscString, Transitions.Exit, Actions.OscEnd),
-                    new uc_StateChangeInfo(States.DcsPassthrough, Transitions.Entry, Actions.Hook),
-                    new uc_StateChangeInfo(States.DcsPassthrough, Transitions.Exit, Actions.Unhook)
+                    new UcStateChangeInfo(States.OscString, Transitions.Entry, Actions.OscStart),
+                    new UcStateChangeInfo(States.OscString, Transitions.Exit, Actions.OscEnd),
+                    new UcStateChangeInfo(States.DcsPassthrough, Transitions.Entry, Actions.Hook),
+                    new UcStateChangeInfo(States.DcsPassthrough, Transitions.Exit, Actions.Unhook)
                 };
 
-                public uc_StateChangeEvents()
+                public Boolean GetStateChangeAction(
+                    States state,
+                    Transitions transition,
+                    ref Actions nextAction)
                 {
-                }
+                    UcStateChangeInfo Element;
 
-                public System.Boolean GetStateChangeAction(
-                    States State,
-                    Transitions Transition,
-                    ref Actions NextAction)
-                {
-                    uc_StateChangeInfo Element;
-
-                    for (System.Int32 i = 0; i < Elements.Length; i++)
+                    for (Int32 i = 0; i < Elements.Length; i++)
                     {
                         Element = Elements[i];
 
-                        if (State == Element.State &&
-                            Transition == Element.Transition)
+                        if (state == Element.State &&
+                            transition == Element.Transition)
                         {
-                            NextAction = Element.NextAction;
+                            nextAction = Element.NextAction;
                             return true;
                         }
                     }
@@ -4765,61 +4650,61 @@ namespace PacketSoftware
                 }
             }
 
-            private struct uc_CharEventInfo
+            private struct UcCharEventInfo
             {
                 public States CurState;
-                public System.Char CharFrom;
-                public System.Char CharTo;
+                public Char CharFrom;
+                public Char CharTo;
                 public Actions NextAction;
                 public States NextState; // the next state we are going to 
 
-                public uc_CharEventInfo(
+                public UcCharEventInfo(
                     States p1,
-                    System.Char p2,
-                    System.Char p3,
+                    Char p2,
+                    Char p3,
                     Actions p4,
                     States p5)
                 {
-                    this.CurState = p1;
-                    this.CharFrom = p2;
-                    this.CharTo = p3;
-                    this.NextAction = p4;
-                    this.NextState = p5;
+                    CurState = p1;
+                    CharFrom = p2;
+                    CharTo = p3;
+                    NextAction = p4;
+                    NextState = p5;
                 }
             }
 
             #region uc_CharEvents
 
-            private class uc_CharEvents
+            private class UcCharEvents
             {
-                public System.Boolean GetStateEventAction(
-                    States CurState,
-                    System.Char CurChar,
-                    ref States NextState,
-                    ref Actions NextAction)
+                public Boolean GetStateEventAction(
+                    States curState,
+                    Char curChar,
+                    ref States nextState,
+                    ref Actions nextAction)
                 {
-                    uc_CharEventInfo Element;
+                    UcCharEventInfo Element;
 
                     // Codes A0-FF are treated exactly the same way as 20-7F
                     // so we can keep are state table smaller by converting before we look
                     // up the event associated with the character
 
-                    if (CurChar >= '\xA0' &&
-                        CurChar <= '\xFF')
+                    if (curChar >= '\xA0' &&
+                        curChar <= '\xFF')
                     {
-                        CurChar -= '\x80';
+                        curChar -= '\x80';
                     }
 
-                    for (System.Int32 i = 0; i < uc_CharEvents.Elements.Length; i++)
+                    for (Int32 i = 0; i < Elements.Length; i++)
                     {
-                        Element = uc_CharEvents.Elements[i];
+                        Element = Elements[i];
 
-                        if (CurChar >= Element.CharFrom &&
-                            CurChar <= Element.CharTo &&
-                            (CurState == Element.CurState || Element.CurState == States.Anywhere))
+                        if (curChar >= Element.CharFrom &&
+                            curChar <= Element.CharTo &&
+                            (curState == Element.CurState || Element.CurState == States.Anywhere))
                         {
-                            NextState = Element.NextState;
-                            NextAction = Element.NextAction;
+                            nextState = Element.NextState;
+                            nextAction = Element.NextAction;
                             return true;
                         }
                     }
@@ -4829,107 +4714,103 @@ namespace PacketSoftware
 
                 #endregion
 
-                public uc_CharEvents()
-                {
-                }
-
                 #region  uc_CharEventInfo
 
-                public static uc_CharEventInfo[] Elements =
+                public static UcCharEventInfo[] Elements =
                 {
-                    new uc_CharEventInfo(States.Anywhere, '\x1B', '\x1B', Actions.NewCollect, States.Escape),
-                    new uc_CharEventInfo(States.Anywhere, '\x18', '\x18', Actions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Anywhere, '\x1A', '\x1A', Actions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Anywhere, '\x1A', '\x1A', Actions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Anywhere, '\x80', '\x8F', Actions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Anywhere, '\x91', '\x97', Actions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Anywhere, '\x99', '\x99', Actions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Anywhere, '\x9A', '\x9A', Actions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Anywhere, '\x9C', '\x9C', Actions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Anywhere, '\x98', '\x98', Actions.None, States.SosPmApcString),
-                    new uc_CharEventInfo(States.Anywhere, '\x9E', '\x9F', Actions.None, States.SosPmApcString),
-                    new uc_CharEventInfo(States.Anywhere, '\x90', '\x90', Actions.NewCollect, States.DcsEntry),
-                    new uc_CharEventInfo(States.Anywhere, '\x9D', '\x9D', Actions.None, States.OscString),
-                    new uc_CharEventInfo(States.Anywhere, '\x9B', '\x9B', Actions.NewCollect, States.CsiEntry),
-                    new uc_CharEventInfo(States.Ground, '\x00', '\x17', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Ground, '\x00', '\x17', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Ground, '\x19', '\x19', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Ground, '\x1C', '\x1F', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Ground, '\x20', '\x7F', Actions.Print, States.None),
-                    new uc_CharEventInfo(States.Ground, '\x80', '\x8F', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Ground, '\x91', '\x9A', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Ground, '\x9C', '\x9C', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.EscapeIntrmdt, '\x00', '\x17', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.EscapeIntrmdt, '\x19', '\x19', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.EscapeIntrmdt, '\x1C', '\x1F', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.EscapeIntrmdt, '\x20', '\x2F', Actions.Collect, States.None),
-                    new uc_CharEventInfo(States.EscapeIntrmdt, '\x30', '\x7E', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.Escape, '\x00', '\x17', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Escape, '\x19', '\x19', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Escape, '\x1C', '\x1F', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.Escape, '\x58', '\x58', Actions.None, States.SosPmApcString),
-                    new uc_CharEventInfo(States.Escape, '\x5E', '\x5F', Actions.None, States.SosPmApcString),
-                    new uc_CharEventInfo(States.Escape, '\x50', '\x50', Actions.Collect, States.DcsEntry),
-                    new uc_CharEventInfo(States.Escape, '\x5D', '\x5D', Actions.None, States.OscString),
-                    new uc_CharEventInfo(States.Escape, '\x5B', '\x5B', Actions.Collect, States.CsiEntry),
-                    new uc_CharEventInfo(States.Escape, '\x30', '\x4F', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.Escape, '\x51', '\x57', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.Escape, '\x59', '\x5A', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.Escape, '\x5C', '\x5C', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.Escape, '\x60', '\x7E', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.Escape, '\x20', '\x2F', Actions.Collect, States.EscapeIntrmdt),
-                    new uc_CharEventInfo(States.CsiEntry, '\x00', '\x17', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiEntry, '\x19', '\x19', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiEntry, '\x1C', '\x1F', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiEntry, '\x20', '\x2F', Actions.Collect, States.CsiIntrmdt),
-                    new uc_CharEventInfo(States.CsiEntry, '\x3A', '\x3A', Actions.None, States.CsiIgnore),
-                    new uc_CharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
-                    new uc_CharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
-                    new uc_CharEventInfo(States.CsiEntry, '\x30', '\x39', Actions.Param, States.CsiParam),
-                    new uc_CharEventInfo(States.CsiEntry, '\x3B', '\x3B', Actions.Param, States.CsiParam),
-                    new uc_CharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
-                    new uc_CharEventInfo(States.CsiEntry, '\x40', '\x7E', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.CsiParam, '\x00', '\x17', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiParam, '\x19', '\x19', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiParam, '\x1C', '\x1F', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiParam, '\x30', '\x39', Actions.Param, States.None),
-                    new uc_CharEventInfo(States.CsiParam, '\x3B', '\x3B', Actions.Param, States.None),
-                    new uc_CharEventInfo(States.CsiParam, '\x3A', '\x3A', Actions.None, States.CsiIgnore),
-                    new uc_CharEventInfo(States.CsiParam, '\x3C', '\x3F', Actions.None, States.CsiIgnore),
-                    new uc_CharEventInfo(States.CsiParam, '\x20', '\x2F', Actions.Collect, States.CsiIntrmdt),
-                    new uc_CharEventInfo(States.CsiParam, '\x40', '\x7E', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.CsiIgnore, '\x00', '\x17', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiIgnore, '\x19', '\x19', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiIgnore, '\x1C', '\x1F', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiIgnore, '\x40', '\x7E', Actions.None, States.Ground),
-                    new uc_CharEventInfo(States.CsiIntrmdt, '\x00', '\x17', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiIntrmdt, '\x19', '\x19', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiIntrmdt, '\x1C', '\x1F', Actions.Execute, States.None),
-                    new uc_CharEventInfo(States.CsiIntrmdt, '\x20', '\x2F', Actions.Collect, States.None),
-                    new uc_CharEventInfo(States.CsiIntrmdt, '\x30', '\x3F', Actions.None, States.CsiIgnore),
-                    new uc_CharEventInfo(States.CsiIntrmdt, '\x40', '\x7E', Actions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.SosPmApcString, '\x9C', '\x9C', Actions.None, States.Ground),
-                    new uc_CharEventInfo(States.DcsEntry, '\x20', '\x2F', Actions.Collect, States.DcsIntrmdt),
-                    new uc_CharEventInfo(States.DcsEntry, '\x3A', '\x3A', Actions.None, States.DcsIgnore),
-                    new uc_CharEventInfo(States.DcsEntry, '\x30', '\x39', Actions.Param, States.DcsParam),
-                    new uc_CharEventInfo(States.DcsEntry, '\x3B', '\x3B', Actions.Param, States.DcsParam),
-                    new uc_CharEventInfo(States.DcsEntry, '\x3C', '\x3F', Actions.Collect, States.DcsParam),
-                    new uc_CharEventInfo(States.DcsEntry, '\x40', '\x7E', Actions.None, States.DcsPassthrough),
-                    new uc_CharEventInfo(States.DcsIntrmdt, '\x30', '\x3F', Actions.None, States.DcsIgnore),
-                    new uc_CharEventInfo(States.DcsIntrmdt, '\x40', '\x7E', Actions.None, States.DcsPassthrough),
-                    new uc_CharEventInfo(States.DcsIgnore, '\x9C', '\x9C', Actions.None, States.Ground),
-                    new uc_CharEventInfo(States.DcsParam, '\x30', '\x39', Actions.Param, States.None),
-                    new uc_CharEventInfo(States.DcsParam, '\x3B', '\x3B', Actions.Param, States.None),
-                    new uc_CharEventInfo(States.DcsParam, '\x20', '\x2F', Actions.Collect, States.DcsIntrmdt),
-                    new uc_CharEventInfo(States.DcsParam, '\x3A', '\x3A', Actions.None, States.DcsIgnore),
-                    new uc_CharEventInfo(States.DcsParam, '\x3C', '\x3F', Actions.None, States.DcsIgnore),
-                    new uc_CharEventInfo(States.DcsPassthrough, '\x00', '\x17', Actions.Put, States.None),
-                    new uc_CharEventInfo(States.DcsPassthrough, '\x19', '\x19', Actions.Put, States.None),
-                    new uc_CharEventInfo(States.DcsPassthrough, '\x1C', '\x1F', Actions.Put, States.None),
-                    new uc_CharEventInfo(States.DcsPassthrough, '\x20', '\x7E', Actions.Put, States.None),
-                    new uc_CharEventInfo(States.DcsPassthrough, '\x9C', '\x9C', Actions.None, States.Ground),
-                    new uc_CharEventInfo(States.OscString, '\x20', '\x7F', Actions.OscPut, States.None),
-                    new uc_CharEventInfo(States.OscString, '\x9C', '\x9C', Actions.None, States.Ground)
+                    new UcCharEventInfo(States.Anywhere, '\x1B', '\x1B', Actions.NewCollect, States.Escape),
+                    new UcCharEventInfo(States.Anywhere, '\x18', '\x18', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x1A', '\x1A', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x1A', '\x1A', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x80', '\x8F', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x91', '\x97', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x99', '\x99', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x9A', '\x9A', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x9C', '\x9C', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x98', '\x98', Actions.None, States.SosPmApcString),
+                    new UcCharEventInfo(States.Anywhere, '\x9E', '\x9F', Actions.None, States.SosPmApcString),
+                    new UcCharEventInfo(States.Anywhere, '\x90', '\x90', Actions.NewCollect, States.DcsEntry),
+                    new UcCharEventInfo(States.Anywhere, '\x9D', '\x9D', Actions.None, States.OscString),
+                    new UcCharEventInfo(States.Anywhere, '\x9B', '\x9B', Actions.NewCollect, States.CsiEntry),
+                    new UcCharEventInfo(States.Ground, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x20', '\x7F', Actions.Print, States.None),
+                    new UcCharEventInfo(States.Ground, '\x80', '\x8F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x91', '\x9A', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x9C', '\x9C', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x20', '\x2F', Actions.Collect, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x30', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Escape, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Escape, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Escape, '\x58', '\x58', Actions.None, States.SosPmApcString),
+                    new UcCharEventInfo(States.Escape, '\x5E', '\x5F', Actions.None, States.SosPmApcString),
+                    new UcCharEventInfo(States.Escape, '\x50', '\x50', Actions.Collect, States.DcsEntry),
+                    new UcCharEventInfo(States.Escape, '\x5D', '\x5D', Actions.None, States.OscString),
+                    new UcCharEventInfo(States.Escape, '\x5B', '\x5B', Actions.Collect, States.CsiEntry),
+                    new UcCharEventInfo(States.Escape, '\x30', '\x4F', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x51', '\x57', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x59', '\x5A', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x5C', '\x5C', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x60', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x20', '\x2F', Actions.Collect, States.EscapeIntrmdt),
+                    new UcCharEventInfo(States.CsiEntry, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiEntry, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiEntry, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiEntry, '\x20', '\x2F', Actions.Collect, States.CsiIntrmdt),
+                    new UcCharEventInfo(States.CsiEntry, '\x3A', '\x3A', Actions.None, States.CsiIgnore),
+                    new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x30', '\x39', Actions.Param, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x3B', '\x3B', Actions.Param, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x40', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.CsiParam, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x30', '\x39', Actions.Param, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x3B', '\x3B', Actions.Param, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x3A', '\x3A', Actions.None, States.CsiIgnore),
+                    new UcCharEventInfo(States.CsiParam, '\x3C', '\x3F', Actions.None, States.CsiIgnore),
+                    new UcCharEventInfo(States.CsiParam, '\x20', '\x2F', Actions.Collect, States.CsiIntrmdt),
+                    new UcCharEventInfo(States.CsiParam, '\x40', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.CsiIgnore, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIgnore, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIgnore, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIgnore, '\x40', '\x7E', Actions.None, States.Ground),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x20', '\x2F', Actions.Collect, States.None),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x30', '\x3F', Actions.None, States.CsiIgnore),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x40', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.SosPmApcString, '\x9C', '\x9C', Actions.None, States.Ground),
+                    new UcCharEventInfo(States.DcsEntry, '\x20', '\x2F', Actions.Collect, States.DcsIntrmdt),
+                    new UcCharEventInfo(States.DcsEntry, '\x3A', '\x3A', Actions.None, States.DcsIgnore),
+                    new UcCharEventInfo(States.DcsEntry, '\x30', '\x39', Actions.Param, States.DcsParam),
+                    new UcCharEventInfo(States.DcsEntry, '\x3B', '\x3B', Actions.Param, States.DcsParam),
+                    new UcCharEventInfo(States.DcsEntry, '\x3C', '\x3F', Actions.Collect, States.DcsParam),
+                    new UcCharEventInfo(States.DcsEntry, '\x40', '\x7E', Actions.None, States.DcsPassthrough),
+                    new UcCharEventInfo(States.DcsIntrmdt, '\x30', '\x3F', Actions.None, States.DcsIgnore),
+                    new UcCharEventInfo(States.DcsIntrmdt, '\x40', '\x7E', Actions.None, States.DcsPassthrough),
+                    new UcCharEventInfo(States.DcsIgnore, '\x9C', '\x9C', Actions.None, States.Ground),
+                    new UcCharEventInfo(States.DcsParam, '\x30', '\x39', Actions.Param, States.None),
+                    new UcCharEventInfo(States.DcsParam, '\x3B', '\x3B', Actions.Param, States.None),
+                    new UcCharEventInfo(States.DcsParam, '\x20', '\x2F', Actions.Collect, States.DcsIntrmdt),
+                    new UcCharEventInfo(States.DcsParam, '\x3A', '\x3A', Actions.None, States.DcsIgnore),
+                    new UcCharEventInfo(States.DcsParam, '\x3C', '\x3F', Actions.None, States.DcsIgnore),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x00', '\x17', Actions.Put, States.None),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x19', '\x19', Actions.Put, States.None),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x1C', '\x1F', Actions.Put, States.None),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x20', '\x7E', Actions.Put, States.None),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x9C', '\x9C', Actions.None, States.Ground),
+                    new UcCharEventInfo(States.OscString, '\x20', '\x7F', Actions.OscPut, States.None),
+                    new UcCharEventInfo(States.OscString, '\x9C', '\x9C', Actions.None, States.Ground)
                 };
             }
         }
@@ -4940,59 +4821,55 @@ namespace PacketSoftware
 
         #region Class uc_TelnetParser
 
-        private class uc_TelnetParser
+        private class UcTelnetParser
         {
             public event NvtParserEventHandler NvtParserEvent;
-            private States State = States.Ground;
-            private System.Char CurChar = '\0';
-            private System.String CurSequence = "";
+            private States _state = States.Ground;
+            private Char _curChar = '\0';
+            private String _curSequence = "";
 
-            private System.Collections.ArrayList ParamList = new System.Collections.ArrayList();
-            private uc_CharEvents CharEvents = new uc_CharEvents();
-            private uc_StateChangeEvents StateChangeEvents = new uc_StateChangeEvents();
-            private uc_Params CurParams = new uc_Params();
+            private ArrayList _paramList = new ArrayList();
+            private UcCharEvents CharEvents = new UcCharEvents();
+            private UcStateChangeEvents StateChangeEvents = new UcStateChangeEvents();
+            private UcParams CurParams = new UcParams();
 
-            public uc_TelnetParser()
+
+            public void ParseString(String inString)
             {
-            }
-
-
-            public void ParseString(System.String InString)
-            {
-                States NextState = States.None;
-                NvtActions NextAction = NvtActions.None;
-                NvtActions StateExitAction = NvtActions.None;
+                States nextState = States.None;
+                NvtActions nextAction = NvtActions.None;
+                NvtActions stateExitAction = NvtActions.None;
                 NvtActions StateEntryAction = NvtActions.None;
 
-                foreach (System.Char C in InString)
+                foreach (Char c in inString)
                 {
-                    this.CurChar = C;
+                    _curChar = c;
 
                     // Get the next state and associated action based 
                     // on the current state and char event
-                    CharEvents.GetStateEventAction(State, CurChar, ref NextState, ref NextAction);
+                    CharEvents.GetStateEventAction(_state, _curChar, ref nextState, ref nextAction);
 
                     // execute any actions arising from leaving the current state
-                    if (NextState != States.None && NextState != this.State)
+                    if (nextState != States.None && nextState != _state)
                     {
                         // check for state exit actions
-                        StateChangeEvents.GetStateChangeAction(this.State, Transitions.Exit, ref StateExitAction);
+                        StateChangeEvents.GetStateChangeAction(_state, Transitions.Exit, ref stateExitAction);
 
                         // Process the exit action
-                        if (StateExitAction != NvtActions.None) DoAction(StateExitAction);
+                        if (stateExitAction != NvtActions.None) DoAction(stateExitAction);
                     }
 
                     // process the action specified
-                    if (NextAction != NvtActions.None) DoAction(NextAction);
+                    if (nextAction != NvtActions.None) DoAction(nextAction);
 
                     // set the new parser state and execute any actions arising entering the new state
-                    if (NextState != States.None && NextState != this.State)
+                    if (nextState != States.None && nextState != _state)
                     {
                         // change the parsers state attribute
-                        this.State = NextState;
+                        _state = nextState;
 
                         // check for state entry actions
-                        StateChangeEvents.GetStateChangeAction(this.State, Transitions.Entry, ref StateExitAction);
+                        StateChangeEvents.GetStateChangeAction(_state, Transitions.Entry, ref stateExitAction);
 
                         // Process the entry action
                         if (StateEntryAction != NvtActions.None) DoAction(StateEntryAction);
@@ -5002,31 +4879,28 @@ namespace PacketSoftware
 
             #region DoAction
 
-            private void DoAction(NvtActions NextAction)
+            private void DoAction(NvtActions nextAction)
             {
                 // Manage the contents of the Sequence and Param Variables
-                switch (NextAction)
+                switch (nextAction)
                 {
                     case NvtActions.Dispatch:
                     case NvtActions.Collect:
-                        this.CurSequence += CurChar.ToString();
+                        _curSequence += _curChar.ToString(CultureInfo.InvariantCulture);
                         break;
 
                     case NvtActions.NewCollect:
-                        this.CurSequence = CurChar.ToString();
-                        this.CurParams.Clear();
+                        _curSequence = _curChar.ToString(CultureInfo.InvariantCulture);
+                        CurParams.Clear();
                         break;
 
                     case NvtActions.Param:
-                        this.CurParams.Add(CurChar);
-                        break;
-
-                    default:
+                        CurParams.Add(_curChar);
                         break;
                 }
 
                 // send the external event requests
-                switch (NextAction)
+                switch (nextAction)
                 {
                     case NvtActions.Dispatch:
 
@@ -5034,29 +4908,24 @@ namespace PacketSoftware
                         //                        this.CurSequence, (int) this.CurChar, this.CurParams.Count (), 
                         //                        this.State, NextAction);
 
-                        NvtParserEvent(this, new NvtParserEventArgs(NextAction, CurChar, CurSequence, CurParams));
+                        NvtParserEvent(this, new NvtParserEventArgs(nextAction, _curChar, _curSequence, CurParams));
                         break;
 
                     case NvtActions.Execute:
                     case NvtActions.SendUp:
-                        NvtParserEvent(this, new NvtParserEventArgs(NextAction, CurChar, CurSequence, CurParams));
+                        NvtParserEvent(this, new NvtParserEventArgs(nextAction, _curChar, _curSequence, CurParams));
 
                         //                    System.Console.Write ("Sequence = {0}, Char = {1}, PrmCount = {2}, State = {3}, NextAction = {4}\n",
                         //                        this.CurSequence, (int) this.CurChar, this.CurParams.Count (), 
                         //                        this.State, NextAction);
                         break;
-                    default:
-                        break;
                 }
 
-                switch (NextAction)
+                switch (nextAction)
                 {
                     case NvtActions.Dispatch:
-                        this.CurSequence = "";
-                        this.CurParams.Clear();
-                        break;
-
-                    default:
+                        _curSequence = "";
+                        CurParams.Clear();
                         break;
                 }
             }
@@ -5086,50 +4955,46 @@ namespace PacketSoftware
                 Exit = 2,
             }
 
-            private struct uc_StateChangeInfo
+            private struct UcStateChangeInfo
             {
                 public States State;
                 public Transitions Transition; // the next state we are going to 
                 public NvtActions NextAction;
 
-                public uc_StateChangeInfo(
+                public UcStateChangeInfo(
                     States p1,
                     Transitions p2,
                     NvtActions p3)
                 {
-                    this.State = p1;
-                    this.Transition = p2;
-                    this.NextAction = p3;
+                    State = p1;
+                    Transition = p2;
+                    NextAction = p3;
                 }
             }
 
 
-            private class uc_StateChangeEvents
+            private class UcStateChangeEvents
             {
-                private uc_StateChangeInfo[] Elements =
+                private UcStateChangeInfo[] Elements =
                 {
-                    new uc_StateChangeInfo(States.None, Transitions.None, NvtActions.None),
+                    new UcStateChangeInfo(States.None, Transitions.None, NvtActions.None)
                 };
 
-                public uc_StateChangeEvents()
+                public Boolean GetStateChangeAction(
+                    States state,
+                    Transitions transition,
+                    ref NvtActions nextAction)
                 {
-                }
+                    UcStateChangeInfo Element;
 
-                public System.Boolean GetStateChangeAction(
-                    States State,
-                    Transitions Transition,
-                    ref NvtActions NextAction)
-                {
-                    uc_StateChangeInfo Element;
-
-                    for (System.Int32 i = 0; i < Elements.Length; i++)
+                    for (Int32 i = 0; i < Elements.Length; i++)
                     {
                         Element = Elements[i];
 
-                        if (State == Element.State &&
-                            Transition == Element.Transition)
+                        if (state == Element.State &&
+                            transition == Element.Transition)
                         {
-                            NextAction = Element.NextAction;
+                            nextAction = Element.NextAction;
                             return true;
                         }
                     }
@@ -5138,50 +5003,50 @@ namespace PacketSoftware
                 }
             }
 
-            private struct uc_CharEventInfo
+            private struct UcCharEventInfo
             {
                 public States CurState;
-                public System.Char CharFrom;
-                public System.Char CharTo;
+                public Char CharFrom;
+                public Char CharTo;
                 public NvtActions NextAction;
                 public States NextState; // the next state we are going to 
 
-                public uc_CharEventInfo(
+                public UcCharEventInfo(
                     States p1,
-                    System.Char p2,
-                    System.Char p3,
+                    Char p2,
+                    Char p3,
                     NvtActions p4,
                     States p5)
                 {
-                    this.CurState = p1;
-                    this.CharFrom = p2;
-                    this.CharTo = p3;
-                    this.NextAction = p4;
-                    this.NextState = p5;
+                    CurState = p1;
+                    CharFrom = p2;
+                    CharTo = p3;
+                    NextAction = p4;
+                    NextState = p5;
                 }
             }
 
-            private class uc_CharEvents
+            private class UcCharEvents
             {
-                public System.Boolean GetStateEventAction(
-                    States CurState,
-                    System.Char CurChar,
-                    ref States NextState,
-                    ref NvtActions NextAction)
+                public Boolean GetStateEventAction(
+                    States curState,
+                    Char curChar,
+                    ref States nextState,
+                    ref NvtActions nextAction)
                 {
-                    uc_CharEventInfo Element;
+                    UcCharEventInfo Element;
 
 
-                    for (System.Int32 i = 0; i < uc_CharEvents.Elements.Length; i++)
+                    for (Int32 i = 0; i < Elements.Length; i++)
                     {
-                        Element = uc_CharEvents.Elements[i];
+                        Element = Elements[i];
 
-                        if (CurChar >= Element.CharFrom &&
-                            CurChar <= Element.CharTo &&
-                            (CurState == Element.CurState || Element.CurState == States.Anywhere))
+                        if (curChar >= Element.CharFrom &&
+                            curChar <= Element.CharTo &&
+                            (curState == Element.CurState || Element.CurState == States.Anywhere))
                         {
-                            NextState = Element.NextState;
-                            NextAction = Element.NextAction;
+                            nextState = Element.NextState;
+                            nextAction = Element.NextAction;
                             return true;
                         }
                     }
@@ -5189,33 +5054,29 @@ namespace PacketSoftware
                     return false;
                 }
 
-                public uc_CharEvents()
+                public static UcCharEventInfo[] Elements =
                 {
-                }
-
-                public static uc_CharEventInfo[] Elements =
-                {
-                    new uc_CharEventInfo(States.Ground, (char) 000, (char) 254, NvtActions.SendUp, States.None),
-                    new uc_CharEventInfo(States.Ground, (char) 255, (char) 255, NvtActions.None, States.Command),
-                    new uc_CharEventInfo(States.Command, (char) 000, (char) 239, NvtActions.SendUp, States.Ground),
-                    new uc_CharEventInfo(States.Command, (char) 240, (char) 241, NvtActions.None, States.Ground),
-                    new uc_CharEventInfo(States.Command, (char) 242, (char) 249, NvtActions.Execute, States.Ground),
-                    new uc_CharEventInfo(States.Command, (char) 250, (char) 250, NvtActions.NewCollect,
+                    new UcCharEventInfo(States.Ground, (char) 000, (char) 254, NvtActions.SendUp, States.None),
+                    new UcCharEventInfo(States.Ground, (char) 255, (char) 255, NvtActions.None, States.Command),
+                    new UcCharEventInfo(States.Command, (char) 000, (char) 239, NvtActions.SendUp, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 240, (char) 241, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 242, (char) 249, NvtActions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 250, (char) 250, NvtActions.NewCollect,
                         States.SubNegotiate),
-                    new uc_CharEventInfo(States.Command, (char) 251, (char) 254, NvtActions.NewCollect, States.Negotiate),
-                    new uc_CharEventInfo(States.Command, (char) 255, (char) 255, NvtActions.SendUp, States.Ground),
-                    new uc_CharEventInfo(States.SubNegotiate, (char) 000, (char) 255, NvtActions.Collect,
+                    new UcCharEventInfo(States.Command, (char) 251, (char) 254, NvtActions.NewCollect, States.Negotiate),
+                    new UcCharEventInfo(States.Command, (char) 255, (char) 255, NvtActions.SendUp, States.Ground),
+                    new UcCharEventInfo(States.SubNegotiate, (char) 000, (char) 255, NvtActions.Collect,
                         States.SubNegValue),
-                    new uc_CharEventInfo(States.SubNegValue, (char) 000, (char) 001, NvtActions.Collect,
+                    new UcCharEventInfo(States.SubNegValue, (char) 000, (char) 001, NvtActions.Collect,
                         States.SubNegParam),
-                    new uc_CharEventInfo(States.SubNegValue, (char) 002, (char) 255, NvtActions.None, States.Ground),
-                    new uc_CharEventInfo(States.SubNegParam, (char) 000, (char) 254, NvtActions.Param, States.None),
-                    new uc_CharEventInfo(States.SubNegParam, (char) 255, (char) 255, NvtActions.None, States.SubNegEnd),
-                    new uc_CharEventInfo(States.SubNegEnd, (char) 000, (char) 239, NvtActions.None, States.Ground),
-                    new uc_CharEventInfo(States.SubNegEnd, (char) 240, (char) 240, NvtActions.Dispatch, States.Ground),
-                    new uc_CharEventInfo(States.SubNegEnd, (char) 241, (char) 254, NvtActions.None, States.Ground),
-                    new uc_CharEventInfo(States.SubNegEnd, (char) 255, (char) 255, NvtActions.Param, States.SubNegParam),
-                    new uc_CharEventInfo(States.Negotiate, (char) 000, (char) 255, NvtActions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.SubNegValue, (char) 002, (char) 255, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegParam, (char) 000, (char) 254, NvtActions.Param, States.None),
+                    new UcCharEventInfo(States.SubNegParam, (char) 255, (char) 255, NvtActions.None, States.SubNegEnd),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 000, (char) 239, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 240, (char) 240, NvtActions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 241, (char) 254, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 255, (char) 255, NvtActions.Param, States.SubNegParam),
+                    new UcCharEventInfo(States.Negotiate, (char) 000, (char) 255, NvtActions.Dispatch, States.Ground)
                 };
             }
         }
@@ -5229,15 +5090,15 @@ namespace PacketSoftware
         private struct ParserEventArgs
         {
             public Actions Action;
-            public System.Char CurChar;
-            public System.String CurSequence;
-            public uc_Params CurParams;
+            public Char CurChar;
+            public String CurSequence;
+            public UcParams CurParams;
 
             public ParserEventArgs(
                 Actions p1,
-                System.Char p2,
-                System.String p3,
-                uc_Params p4)
+                Char p2,
+                String p3,
+                UcParams p4)
             {
                 Action = p1;
                 CurChar = p2;
@@ -5252,55 +5113,21 @@ namespace PacketSoftware
 
         private struct CharAttribStruct
         {
-            public System.Boolean IsBold;
-            public System.Boolean IsDim;
-            public System.Boolean IsUnderscored;
-            public System.Boolean IsBlinking;
-            public System.Boolean IsInverse;
-            public System.Boolean IsPrimaryFont;
-            public System.Boolean IsAlternateFont;
-            public System.Boolean UseAltColor;
-            public System.Drawing.Color AltColor;
-            public System.Boolean UseAltBGColor;
-            public System.Drawing.Color AltBGColor;
-            public uc_Chars GL;
-            public uc_Chars GR;
-            public uc_Chars GS;
-            public System.Boolean IsDECSG;
-
-            public CharAttribStruct(
-                System.Boolean p1,
-                System.Boolean p2,
-                System.Boolean p3,
-                System.Boolean p4,
-                System.Boolean p5,
-                System.Boolean p6,
-                System.Boolean p7,
-                System.Boolean p12,
-                System.Drawing.Color p13,
-                System.Boolean p14,
-                System.Drawing.Color p15,
-                uc_Chars p16,
-                uc_Chars p17,
-                uc_Chars p18,
-                System.Boolean p19)
-            {
-                IsBold = p1;
-                IsDim = p2;
-                IsUnderscored = p3;
-                IsBlinking = p4;
-                IsInverse = p5;
-                IsPrimaryFont = p6;
-                IsAlternateFont = p7;
-                UseAltColor = p12;
-                AltColor = p13;
-                UseAltBGColor = p14;
-                AltBGColor = p15;
-                GL = p16;
-                GR = p17;
-                GS = p18;
-                IsDECSG = p19;
-            }
+            public Boolean IsBold;
+            public Boolean IsDim;
+            public Boolean IsUnderscored;
+            public Boolean IsBlinking;
+            public Boolean IsInverse;
+            public Boolean IsPrimaryFont;
+            public Boolean IsAlternateFont;
+            public Boolean UseAltColor;
+            public Color AltColor;
+            public Boolean UseAltBGColor;
+            public Color AltBGColor;
+            public UcChars GL;
+            public UcChars GR;
+            public UcChars GS;
+            public Boolean IsDECSG;
         }
 
         #endregion
@@ -5310,15 +5137,15 @@ namespace PacketSoftware
         private struct NvtParserEventArgs
         {
             public NvtActions Action;
-            public System.Char CurChar;
-            public System.String CurSequence;
-            public uc_Params CurParams;
+            public Char CurChar;
+            public String CurSequence;
+            public UcParams CurParams;
 
             public NvtParserEventArgs(
                 NvtActions p1,
-                System.Char p2,
-                System.String p3,
-                uc_Params p4)
+                Char p2,
+                String p3,
+                UcParams p4)
             {
                 Action = p1;
                 CurChar = p2;
@@ -5332,40 +5159,6 @@ namespace PacketSoftware
         #endregion
 
         #region Private Enums
-
-        private enum NvtCommand
-        {
-            SE = 240,
-            NOP = 241,
-            DM = 242,
-            BREAK = 243,
-            IP = 244,
-            AO = 245,
-            AYT = 246,
-            EC = 247,
-            EL = 248,
-            GA = 249,
-            SB = 250,
-            WILL = 251,
-            WONT = 252,
-            DO = 253,
-            DONT = 254,
-            IAC = 255,
-        }
-
-        private enum NvtOption
-        {
-            ECHO = 1, // echo
-            SGA = 3, // suppress go ahead
-            STATUS = 5, // status
-            TM = 6, // timing mark
-            TTYPE = 24, // terminal type
-            NAWS = 31, // window size
-            TSPEED = 32, // terminal speed
-            LFLOW = 33, // remote flow control
-            LINEMODE = 34, // linemode
-            ENVIRON = 36, // environment variables
-        }
 
         private enum NvtActions
         {
@@ -5400,16 +5193,6 @@ namespace PacketSoftware
 
         #region InitializeComponent
 
-        private void InitializeComponent()
-        {
-            this.components = new System.ComponentModel.Container();
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.SuspendLayout();
-            this.serialPort1.Handshake = System.IO.Ports.Handshake.RequestToSendXOnXOff;
-            this.serialPort1.StopBits = System.IO.Ports.StopBits.OnePointFive;
-            this.ResumeLayout(false);
-        }
-
         #endregion
 
         #region Disconnect
@@ -5418,25 +5201,25 @@ namespace PacketSoftware
         {
             try
             {
-                if (C_Type == "Com")
+                if (_cType == "Com")
                 {
-                    this.port.Close();
+                    port.Close();
                 }
-                else if (C_Type == "SSH")
+                else if (_cType == "SSH")
                 {
-                    reader.OnChannelClosed();
+                    _reader.OnChannelClosed();
                 }
                 else
                 {
-                    this.Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
-                    this.Parser.ParseString(System.Environment.NewLine);
-                    this.Invoke(this.RefreshEvent);
+                    Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
+                    Parser.ParseString(Environment.NewLine);
+                    Invoke(RefreshEvent);
 
-                    CurSocket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
-                    CurSocket.Close();
+                    _curSocket.Shutdown(SocketShutdown.Both);
+                    _curSocket.Close();
                 }
             }
-            catch
+            catch (Exception)
             {
             }
         }

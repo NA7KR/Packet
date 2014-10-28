@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using PacketComs;
 
 #endregion
 

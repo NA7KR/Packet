@@ -3,6 +3,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using PacketComs;
 using PacketSoftware;
 
 #endregion
@@ -329,7 +330,7 @@ namespace Packet
             forward_button.Enabled = false;
             forward_button.Text = "Forward active";
             terminalEmulator1.LastNumber = _myRegistryBbs.Read("Start Number");
-            terminalEmulator1.startforward();
+            terminalEmulator1.Startforward();
         }
 
         #endregion
@@ -681,7 +682,7 @@ namespace Packet
             node_button.Enabled = true;
             disconnect_button.Enabled = false;
             ssh_button.Enabled = true;
-            terminalEmulator1.closeconnection();
+            terminalEmulator1.Closeconnection();
             terminalEmulator1.FileActive = false;
             forward_button.Enabled = false;
             forward_button.Text = "Forward";
