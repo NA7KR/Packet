@@ -2,13 +2,11 @@
 
 using System;
 using System.IO;
-using Microsoft.Win32;
 using System.Windows.Forms;
-using System.Linq;
 
 #endregion
 
-namespace Utility.ModifyFile
+namespace PacketComs
 {
     public class ModifyFile
     {
@@ -18,11 +16,11 @@ namespace Utility.ModifyFile
         {
             try
             {
-                string path = System.IO.Directory.GetCurrentDirectory() + @"\Data";
+                string path = Directory.GetCurrentDirectory() + @"\Data";
                 if (!Directory.Exists(path))
                 {
                     // Try to create the directory.
-                    DirectoryInfo di = Directory.CreateDirectory(path);
+                    Directory.CreateDirectory(path);
                 }
                 path = path + @"\myMailList.txt";
 
