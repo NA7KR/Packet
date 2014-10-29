@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using Rijndael = PacketComs.Rijndael;
 
 namespace PacketComs
 {

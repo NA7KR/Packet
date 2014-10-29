@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Threading;
-using Routrek.SSHC;
 using Routrek.SSHCV2;
 
 namespace PacketComs

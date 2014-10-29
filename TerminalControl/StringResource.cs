@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
-using System.Resources;
 using System.Reflection;
+using System.Resources;
 
-namespace Routrek.SSHC
+namespace PacketComs
 {
     /// <summary>
     /// StringResource �̊T�v�̐���ł��B

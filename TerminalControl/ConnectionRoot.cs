@@ -3,7 +3,6 @@ using System.Collections;
 using System.Net.Sockets;
 using System.Text;
 using Routrek.SSHC;
-using Routrek.SSHCV1;
 
 namespace PacketComs
 {
