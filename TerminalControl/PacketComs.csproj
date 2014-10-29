@@ -120,6 +120,7 @@
     <Compile Include="DSA.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DsaPublicKey.cs" />
     <Compile Include="LibraryClient.cs">
       <SubType>Code</SubType>
     </Compile>

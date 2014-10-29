@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using Routrek.Crypto;
-using DES = Routrek.Crypto.DES;
 using Rijndael = Routrek.Crypto.Rijndael;
 
 namespace PacketComs
@@ -20,17 +19,17 @@ namespace PacketComs
         public BlowfishCipher1(byte[] key)
         {
             _bf = new Blowfish();
-            _bf.initializeKey(key);
+            _bf.InitializeKey(key);
         }
 
         public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _bf.encryptSSH1Style(data, offset, len, result, resultOffset);
+            _bf.EncryptSsh1Style(data, offset, len, result, resultOffset);
         }
 
         public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _bf.decryptSSH1Style(data, offset, len, result, resultOffset);
+            _bf.DecryptSsh1Style(data, offset, len, result, resultOffset);
         }
 
         public int BlockSize
@@ -46,24 +45,24 @@ namespace PacketComs
         public BlowfishCipher2(byte[] key)
         {
             _bf = new Blowfish();
-            _bf.initializeKey(key);
+            _bf.InitializeKey(key);
         }
 
         public BlowfishCipher2(byte[] key, byte[] iv)
         {
             _bf = new Blowfish();
-            _bf.SetIV(iv);
-            _bf.initializeKey(key);
+            _bf.SetIv(iv);
+            _bf.InitializeKey(key);
         }
 
         public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _bf.encryptCBC(data, offset, len, result, resultOffset);
+            _bf.EncryptCbc(data, offset, len, result, resultOffset);
         }
 
         public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _bf.decryptCBC(data, offset, len, result, resultOffset);
+            _bf.DecryptCbc(data, offset, len, result, resultOffset);
         }
 
         public int BlockSize
@@ -74,15 +73,15 @@ namespace PacketComs
 
     internal class TripleDesCipher1 : ICipher
     {
-        private DES _DESCipher1;
-        private DES _DESCipher2;
-        private DES _DESCipher3;
+        private Des _DESCipher1;
+        private Des _DESCipher2;
+        private Des _DESCipher3;
 
         public TripleDesCipher1(byte[] key)
         {
-            _DESCipher1 = new DES();
-            _DESCipher2 = new DES();
-            _DESCipher3 = new DES();
+            _DESCipher1 = new Des();
+            _DESCipher2 = new Des();
+            _DESCipher3 = new Des();
 
             _DESCipher1.InitializeKey(key, 0);
             _DESCipher2.InitializeKey(key, 8);
@@ -92,17 +91,17 @@ namespace PacketComs
         public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
             byte[] buf1 = new byte[len];
-            _DESCipher1.EncryptCBC(data, offset, len, result, resultOffset);
-            _DESCipher2.DecryptCBC(result, resultOffset, buf1.Length, buf1, 0);
-            _DESCipher3.EncryptCBC(buf1, 0, buf1.Length, result, resultOffset);
+            _DESCipher1.EncryptCbc(data, offset, len, result, resultOffset);
+            _DESCipher2.DecryptCbc(result, resultOffset, buf1.Length, buf1, 0);
+            _DESCipher3.EncryptCbc(buf1, 0, buf1.Length, result, resultOffset);
         }
 
         public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
             byte[] buf1 = new byte[len];
-            _DESCipher3.DecryptCBC(data, offset, len, result, resultOffset);
-            _DESCipher2.EncryptCBC(result, resultOffset, buf1.Length, buf1, 0);
-            _DESCipher1.DecryptCBC(buf1, 0, buf1.Length, result, resultOffset);
+            _DESCipher3.DecryptCbc(data, offset, len, result, resultOffset);
+            _DESCipher2.EncryptCbc(result, resultOffset, buf1.Length, buf1, 0);
+            _DESCipher1.DecryptCbc(buf1, 0, buf1.Length, result, resultOffset);
         }
 
         public int BlockSize
@@ -113,15 +112,15 @@ namespace PacketComs
 
     internal class TripleDesCipher2 : ICipher
     {
-        private DES _DESCipher1;
-        private DES _DESCipher2;
-        private DES _DESCipher3;
+        private Des _DESCipher1;
+        private Des _DESCipher2;
+        private Des _DESCipher3;
 
         public TripleDesCipher2(byte[] key)
         {
-            _DESCipher1 = new DES();
-            _DESCipher2 = new DES();
-            _DESCipher3 = new DES();
+            _DESCipher1 = new Des();
+            _DESCipher2 = new Des();
+            _DESCipher3 = new Des();
 
             _DESCipher1.InitializeKey(key, 0);
             _DESCipher2.InitializeKey(key, 8);
@@ -130,12 +129,12 @@ namespace PacketComs
 
         public TripleDesCipher2(byte[] key, byte[] iv)
         {
-            _DESCipher1 = new DES();
-            _DESCipher1.SetIV(iv);
-            _DESCipher2 = new DES();
-            _DESCipher2.SetIV(iv);
-            _DESCipher3 = new DES();
-            _DESCipher3.SetIV(iv);
+            _DESCipher1 = new Des();
+            _DESCipher1.SetIv(iv);
+            _DESCipher2 = new Des();
+            _DESCipher2.SetIv(iv);
+            _DESCipher3 = new Des();
+            _DESCipher3.SetIv(iv);
 
             _DESCipher1.InitializeKey(key, 0);
             _DESCipher2.InitializeKey(key, 8);
@@ -148,12 +147,12 @@ namespace PacketComs
             int n = 0;
             while (n < len)
             {
-                _DESCipher1.EncryptCBC(data, offset + n, 8, result, resultOffset + n);
-                _DESCipher2.DecryptCBC(result, resultOffset + n, 8, buf1, 0);
-                _DESCipher3.EncryptCBC(buf1, 0, 8, result, resultOffset + n);
-                _DESCipher1.SetIV(result, resultOffset + n);
-                _DESCipher2.SetIV(result, resultOffset + n);
-                _DESCipher3.SetIV(result, resultOffset + n);
+                _DESCipher1.EncryptCbc(data, offset + n, 8, result, resultOffset + n);
+                _DESCipher2.DecryptCbc(result, resultOffset + n, 8, buf1, 0);
+                _DESCipher3.EncryptCbc(buf1, 0, 8, result, resultOffset + n);
+                _DESCipher1.SetIv(result, resultOffset + n);
+                _DESCipher2.SetIv(result, resultOffset + n);
+                _DESCipher3.SetIv(result, resultOffset + n);
                 n += 8;
             }
         }
@@ -164,12 +163,12 @@ namespace PacketComs
             int n = 0;
             while (n < len)
             {
-                _DESCipher3.DecryptCBC(data, offset + n, 8, result, resultOffset + n);
-                _DESCipher2.EncryptCBC(result, resultOffset + n, 8, buf1, 0);
-                _DESCipher1.DecryptCBC(buf1, 0, 8, result, resultOffset + n);
-                _DESCipher3.SetIV(data, offset + n);
-                _DESCipher2.SetIV(data, offset + n);
-                _DESCipher1.SetIV(data, offset + n);
+                _DESCipher3.DecryptCbc(data, offset + n, 8, result, resultOffset + n);
+                _DESCipher2.EncryptCbc(result, resultOffset + n, 8, buf1, 0);
+                _DESCipher1.DecryptCbc(buf1, 0, 8, result, resultOffset + n);
+                _DESCipher3.SetIv(data, offset + n);
+                _DESCipher2.SetIv(data, offset + n);
+                _DESCipher1.SetIv(data, offset + n);
                 n += 8;
             }
         }

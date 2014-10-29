@@ -29,7 +29,7 @@ namespace Routrek.SSHCV1
             _CRC = (uint) SSHUtil.ReadInt32(buf, buf.Length - 4);
             if (check_crc)
             {
-                uint c = CRC.Calc(buf, 0, buf.Length - 4);
+                uint c = Crc.Calc(buf, 0, buf.Length - 4);
                 if (_CRC != c)
                     throw new SSHException("CRC Error", buf);
             }
@@ -80,7 +80,7 @@ namespace Routrek.SSHCV1
             if (_data != null)
                 Array.Copy(_data, 0, image, 4 + padding_length + 1, _data.Length);
 
-            _CRC = CRC.Calc(image, 4, image.Length - 8);
+            _CRC = Crc.Calc(image, 4, image.Length - 8);
             SSHUtil.WriteIntToByteArray(image, image.Length - 4, (int) _CRC);
 
             return image;

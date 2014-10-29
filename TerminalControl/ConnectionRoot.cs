@@ -2,38 +2,38 @@ using System;
 using System.Collections;
 using System.Net.Sockets;
 using System.Text;
-using PacketComs;
+using Routrek.SSHC;
 using Routrek.SSHCV1;
 
-namespace Routrek.SSHC
+namespace PacketComs
 {
-    public abstract class SSHConnection
+    public abstract class SshConnection
     {
-        internal AbstractSocket _stream;
+        internal AbstractSocket Stream;
         internal ISSHConnectionEventReceiver _eventReceiver;
 
-        protected byte[] _sessionID;
-        internal ICipher _tCipher; //transmission
+        protected byte[] SessionId;
+        internal ICipher Cipher; //transmission
         //internal Cipher _rCipher; //reception
-        protected SSHConnectionParameter _param;
+        protected SshConnectionParameter _param;
 
-        protected object _tLockObject = new Object();
+        protected object LockObject = new Object();
 
-        protected bool _closed;
+        protected bool Closed;
 
         protected bool _autoDisconnect;
 
         protected AuthenticationResult _authenticationResult;
 
-        protected SSHConnection(SSHConnectionParameter param, ISSHConnectionEventReceiver receiver)
+        protected SshConnection(SshConnectionParameter param, ISSHConnectionEventReceiver receiver)
         {
-            _param = (SSHConnectionParameter) param.Clone();
+            _param = (SshConnectionParameter) param.Clone();
             _eventReceiver = receiver;
-            _channel_entries = new ArrayList(16);
+            ChannelEntries = new ArrayList(16);
             _autoDisconnect = true;
         }
 
-        public abstract SSHConnectionInfo ConnectionInfo { get; }
+        public abstract SshConnectionInfo ConnectionInfo { get; }
 
         /**
 		* returns true if any data from server is available
@@ -43,14 +43,14 @@ namespace Routrek.SSHC
         {
             get
             {
-                if (_closed)
+                if (Closed)
                     return false;
                 else
-                    return _stream.DataAvailable;
+                    return Stream.DataAvailable;
             }
         }
 
-        public SSHConnectionParameter Param
+        public SshConnectionParameter Param
         {
             get { return _param; }
         }
@@ -69,7 +69,7 @@ namespace Routrek.SSHC
 
         public bool IsClosed
         {
-            get { return _closed; }
+            get { return Closed; }
         }
 
         public bool AutoDisconnect
@@ -89,19 +89,19 @@ namespace Routrek.SSHC
         /**
 		* opens a pseudo terminal
 		*/
-        public abstract SSHChannel OpenShell(ISSHChannelEventReceiver receiver);
+        public abstract SshChannel OpenShell(ISSHChannelEventReceiver receiver);
 
         /**
 		 * forwards the remote end to another host
 		 */
 
-        public abstract SSHChannel ForwardPort(ISSHChannelEventReceiver receiver, string remote_host, int remote_port,
-            string originator_host, int originator_port);
+        public abstract SshChannel ForwardPort(ISSHChannelEventReceiver receiver, string remoteHost, int remotePort,
+            string originatorHost, int originatorPort);
 
         /**
 		 * listens a connection on the remote end
 		 */
-        public abstract void ListenForwardedPort(string allowed_host, int bind_port);
+        public abstract void ListenForwardedPort(string allowedHost, int bindPort);
 
         /**
 		 * cancels binded port
@@ -121,78 +121,78 @@ namespace Routrek.SSHC
 		 * opens another SSH connection via port-forwarded connection
 		 */
 
-        public SSHConnection OpenPortForwardedAnotherConnection(SSHConnectionParameter param,
+        public SshConnection OpenPortForwardedAnotherConnection(SshConnectionParameter param,
             ISSHConnectionEventReceiver receiver, string host, int port)
         {
             ProtocolNegotiationHandler pnh = new ProtocolNegotiationHandler(param);
             ChannelSocket s = new ChannelSocket(pnh);
 
-            SSHChannel ch = ForwardPort(s, host, port, "localhost", 0);
+            SshChannel ch = ForwardPort(s, host, port, "localhost", 0);
             s.SSHChennal = ch;
-            return SSHConnection.Connect(param, receiver, pnh, s);
+            return Connect(param, receiver, pnh, s);
         }
 
         //channel id support
         protected class ChannelEntry
         {
-            public int _localID;
-            public ISSHChannelEventReceiver _receiver;
-            public SSHChannel _channel;
+            public int LocalId;
+            public ISSHChannelEventReceiver Receiver;
+            public SshChannel Channel;
         }
 
-        protected ArrayList _channel_entries;
-        protected int _channel_sequence;
+        protected ArrayList ChannelEntries;
+        protected int ChannelSequence;
 
         protected ChannelEntry FindChannelEntry(int id)
         {
-            for (int i = 0; i < _channel_entries.Count; i++)
+            for (int i = 0; i < ChannelEntries.Count; i++)
             {
-                ChannelEntry e = (ChannelEntry) _channel_entries[i];
-                if (e._localID == id) return e;
+                ChannelEntry e = (ChannelEntry) ChannelEntries[i];
+                if (e.LocalId == id) return e;
             }
             return null;
         }
 
-        protected ChannelEntry RegisterChannelEventReceiver(SSHChannel ch, ISSHChannelEventReceiver r)
+        protected ChannelEntry RegisterChannelEventReceiver(SshChannel ch, ISSHChannelEventReceiver r)
         {
             lock (this)
             {
                 ChannelEntry e = new ChannelEntry();
-                e._channel = ch;
-                e._receiver = r;
-                e._localID = _channel_sequence++;
+                e.Channel = ch;
+                e.Receiver = r;
+                e.LocalId = ChannelSequence++;
 
-                for (int i = 0; i < _channel_entries.Count; i++)
+                for (int i = 0; i < ChannelEntries.Count; i++)
                 {
-                    if (_channel_entries[i] == null)
+                    if (ChannelEntries[i] == null)
                     {
-                        _channel_entries[i] = e;
+                        ChannelEntries[i] = e;
                         return e;
                     }
                 }
-                _channel_entries.Add(e);
+                ChannelEntries.Add(e);
                 return e;
             }
         }
 
-        internal void RegisterChannel(int local_id, SSHChannel ch)
+        internal void RegisterChannel(int localId, SshChannel ch)
         {
-            FindChannelEntry(local_id)._channel = ch;
+            FindChannelEntry(localId).Channel = ch;
         }
 
         internal void UnregisterChannelEventReceiver(int id)
         {
             lock (this)
             {
-                foreach (ChannelEntry e in _channel_entries)
+                foreach (ChannelEntry e in ChannelEntries)
                 {
-                    if (e._localID == id)
+                    if (e.LocalId == id)
                     {
-                        _channel_entries.Remove(e);
+                        ChannelEntries.Remove(e);
                         break;
                     }
                 }
-                if (this.ChannelCount == 0 && _autoDisconnect) Disconnect(""); //auto close
+                if (ChannelCount == 0 && _autoDisconnect) Disconnect(""); //auto close
             }
         }
 
@@ -201,9 +201,9 @@ namespace Routrek.SSHC
             get
             {
                 int r = 0;
-                for (int i = 0; i < _channel_entries.Count; i++)
+                for (int i = 0; i < ChannelEntries.Count; i++)
                 {
-                    if (_channel_entries[i] != null) r++;
+                    if (ChannelEntries[i] != null) r++;
                 }
                 return r;
             }
@@ -211,19 +211,19 @@ namespace Routrek.SSHC
 
 
         //establishes a SSH connection in subject to ConnectionParameter
-        public static SSHConnection Connect(SSHConnectionParameter param, ISSHConnectionEventReceiver receiver,
-            Socket underlying_socket)
+        public static SshConnection Connect(SshConnectionParameter param, ISSHConnectionEventReceiver receiver,
+            Socket underlyingSocket)
         {
             if (param.UserName == null) throw new InvalidOperationException("UserName property is not set");
             if (param.Password == null) throw new InvalidOperationException("Password property is not set");
 
             ProtocolNegotiationHandler pnh = new ProtocolNegotiationHandler(param);
-            PlainSocket s = new PlainSocket(underlying_socket, pnh);
+            PlainSocket s = new PlainSocket(underlyingSocket, pnh);
             s.RepeatAsyncRead();
             return ConnectMain(param, receiver, pnh, s);
         }
 
-        internal static SSHConnection Connect(SSHConnectionParameter param, ISSHConnectionEventReceiver receiver,
+        internal static SshConnection Connect(SshConnectionParameter param, ISSHConnectionEventReceiver receiver,
             ProtocolNegotiationHandler pnh, AbstractSocket s)
         {
             if (param.UserName == null) throw new InvalidOperationException("UserName property is not set");
@@ -232,7 +232,7 @@ namespace Routrek.SSHC
             return ConnectMain(param, receiver, pnh, s);
         }
 
-        private static SSHConnection ConnectMain(SSHConnectionParameter param, ISSHConnectionEventReceiver receiver,
+        private static SshConnection ConnectMain(SshConnectionParameter param, ISSHConnectionEventReceiver receiver,
             ProtocolNegotiationHandler pnh, AbstractSocket s)
         {
             pnh.Wait();
@@ -241,7 +241,7 @@ namespace Routrek.SSHC
 
             string sv = pnh.ServerVersion;
 
-            SSHConnection con = null;
+            SshConnection con;
             if (param.Protocol == SSHProtocol.SSH1)
                 con = new SSH1Connection(param, receiver, sv, SSHUtil.ClientVersionString(param.Protocol));
             else
@@ -251,7 +251,9 @@ namespace Routrek.SSHC
             SendMyVersion(s, param);
 
             if (con.Connect(s) != AuthenticationResult.Failure)
+            {
                 return con;
+            }
             else
             {
                 s.Close();
@@ -259,11 +261,11 @@ namespace Routrek.SSHC
             }
         }
 
-        private static void SendMyVersion(AbstractSocket stream, SSHConnectionParameter param)
+        private static void SendMyVersion(AbstractSocket stream, SshConnectionParameter param)
         {
             string cv = SSHUtil.ClientVersionString(param.Protocol);
             if (param.Protocol == SSHProtocol.SSH1)
-                cv += param.SSH1VersionEOL;
+                cv += param.Ssh1VersionEol;
             else
                 cv += "\r\n";
             byte[] data = Encoding.ASCII.GetBytes(cv);
@@ -279,32 +281,32 @@ namespace Routrek.SSHC
         ForwardedRemoteToLocal
     }
 
-    public abstract class SSHChannel
+    public abstract class SshChannel
     {
         protected ChannelType _type;
-        protected int _localID;
-        protected int _remoteID;
-        protected SSHConnection _connection;
+        protected int LocalId;
+        protected int RemoteId;
+        protected SshConnection _connection;
 
-        protected SSHChannel(SSHConnection con, ChannelType type, int local_id)
+        protected SshChannel(SshConnection con, ChannelType type, int localId)
         {
-            con.RegisterChannel(local_id, this);
+            con.RegisterChannel(localId, this);
             _connection = con;
             _type = type;
-            _localID = local_id;
+            LocalId = localId;
         }
 
-        public int LocalChannelID
+        public int LocalChannelId
         {
-            get { return _localID; }
+            get { return LocalId; }
         }
 
-        public int RemoteChannelID
+        public int RemoteChannelId
         {
-            get { return _remoteID; }
+            get { return RemoteId; }
         }
 
-        public SSHConnection Connection
+        public SshConnection Connection
         {
             get { return _connection; }
         }
@@ -317,7 +319,7 @@ namespace Routrek.SSHC
         /**
 		 * resizes the size of terminal
 		 */
-        public abstract void ResizeTerminal(int width, int height, int pixel_width, int pixel_height);
+        public abstract void ResizeTerminal(int width, int height, int pixelWidth, int pixelHeight);
 
         /**
 		* transmits channel data 
@@ -332,7 +334,7 @@ namespace Routrek.SSHC
         /**
 		 * sends EOF(SSH2 only)
 		 */
-        public abstract void SendEOF();
+        public abstract void SendEof();
 
         /**
 		 * closes this channel

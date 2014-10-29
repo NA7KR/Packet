@@ -1,16 +1,16 @@
 using System;
-using PacketComs;
+using Routrek.PKI;
 
-namespace Routrek.PKI
+namespace PacketComs
 {
-    public class DSAKeyPair : KeyPair, ISigner, IVerifier
+    public class DsaKeyPair : KeyPair, ISigner, IVerifier
     {
-        private DSAPublicKey _publickey;
+        private DsaPublicKey _publickey;
         private BigInteger _x;
 
-        public DSAKeyPair(BigInteger p, BigInteger g, BigInteger q, BigInteger y, BigInteger x)
+        public DsaKeyPair(BigInteger p, BigInteger g, BigInteger q, BigInteger y, BigInteger x)
         {
-            _publickey = new DSAPublicKey(p, g, q, y);
+            _publickey = new DsaPublicKey(p, g, q, y);
             _x = x;
         }
 
@@ -48,12 +48,12 @@ namespace Routrek.PKI
             _publickey.Verify(data, expecteddata);
         }
 
-        public static DSAKeyPair GenerateNew(int bits, Random random)
+        public static DsaKeyPair GenerateNew(int bits, Random random)
         {
             BigInteger one = new BigInteger(1);
-            BigInteger[] pq = findRandomStrongPrime((uint) bits, 160, random);
+            BigInteger[] pq = FindRandomStrongPrime((uint) bits, 160, random);
             BigInteger p = pq[0], q = pq[1];
-            BigInteger g = findRandomGenerator(q, p, random);
+            BigInteger g = FindRandomGenerator(q, p, random);
 
             BigInteger x;
             do
@@ -64,37 +64,37 @@ namespace Routrek.PKI
 
             BigInteger y = g.modPow(x, p);
 
-            return new DSAKeyPair(p, g, q, y, x);
+            return new DsaKeyPair(p, g, q, y, x);
         }
 
-        private static BigInteger[] findRandomStrongPrime(uint primeBits, int orderBits, Random random)
+        private static BigInteger[] FindRandomStrongPrime(uint primeBits, int orderBits, Random random)
         {
             BigInteger one = new BigInteger(1);
             BigInteger u, aux, aux2;
             long[] table_q, table_u, prime_table;
             PrimeSieve sieve = new PrimeSieve(16000);
-            uint table_count = sieve.AvailablePrimes() - 1;
+            uint tableCount = sieve.AvailablePrimes() - 1;
             int i, j;
             bool flag;
-            BigInteger prime = null, order = null;
+            BigInteger prime = null, order;
 
             order = BigInteger.genPseudoPrime(orderBits, 20, random);
 
-            prime_table = new long[table_count];
-            table_q = new long[table_count];
-            table_u = new long[table_count];
+            prime_table = new long[tableCount];
+            table_q = new long[tableCount];
+            table_u = new long[tableCount];
 
             i = 0;
             for (int pN = 2; pN != 0; pN = sieve.getNextPrime(pN), i++)
             {
-                prime_table[i] = (long) pN;
+                prime_table[i] = pN;
             }
 
-            for (i = 0; i < table_count; i++)
+            for (i = 0; i < tableCount; i++)
             {
                 table_q[i] =
                     (((order%new BigInteger(prime_table[i])).LongValue())*
-                     (long) 2)%prime_table[i];
+                     2)%prime_table[i];
             }
 
             while (true)
@@ -110,7 +110,7 @@ namespace Routrek.PKI
                 if (u.bitCount() <= (primeBits - 1))
                     continue;
 
-                for (j = 0; j < table_count; j++)
+                for (j = 0; j < tableCount; j++)
                 {
                     table_u[j] =
                         (u%new BigInteger(prime_table[j])).LongValue();
@@ -124,7 +124,7 @@ namespace Routrek.PKI
                     long value;
 
                     flag = true;
-                    for (j = 1; j < table_count; j++)
+                    for (j = 1; j < tableCount; j++)
                     {
                         cur_p = prime_table[j];
                         value = table_u[j];
@@ -151,10 +151,10 @@ namespace Routrek.PKI
                     break;
             }
 
-            return new BigInteger[] {prime, order};
+            return new[] {prime, order};
         }
 
-        private static BigInteger findRandomGenerator(BigInteger order, BigInteger modulo, Random random)
+        private static BigInteger FindRandomGenerator(BigInteger order, BigInteger modulo, Random random)
         {
             BigInteger one = new BigInteger(1);
             BigInteger aux = modulo - new BigInteger(1);
@@ -186,73 +186,6 @@ namespace Routrek.PKI
             }
 
             return generator;
-        }
-    }
-
-    public class DSAPublicKey : PublicKey, IVerifier
-    {
-        internal BigInteger _p;
-        internal BigInteger _g;
-        internal BigInteger _q;
-        internal BigInteger _y;
-
-        public DSAPublicKey(BigInteger p, BigInteger g, BigInteger q, BigInteger y)
-        {
-            _p = p;
-            _g = g;
-            _q = q;
-            _y = y;
-        }
-
-        public override PublicKeyAlgorithm Algorithm
-        {
-            get { return PublicKeyAlgorithm.DSA; }
-        }
-
-        public BigInteger P
-        {
-            get { return _p; }
-        }
-
-        public BigInteger Q
-        {
-            get { return _q; }
-        }
-
-        public BigInteger G
-        {
-            get { return _g; }
-        }
-
-        public BigInteger Y
-        {
-            get { return _y; }
-        }
-
-        public override void WriteTo(IKeyWriter writer)
-        {
-            writer.Write(_p);
-            writer.Write(_q);
-            writer.Write(_g);
-            writer.Write(_y);
-        }
-
-        public void Verify(byte[] data, byte[] expecteddata)
-        {
-            byte[] first = new byte[data.Length/2];
-            byte[] second = new byte[data.Length/2];
-            Array.Copy(data, 0, first, 0, first.Length);
-            Array.Copy(data, first.Length, second, 0, second.Length);
-            BigInteger r = new BigInteger(first);
-            BigInteger s = new BigInteger(second);
-
-            BigInteger w = s.modInverse(_q);
-            BigInteger u1 = (new BigInteger(expecteddata)*w)%_q;
-            BigInteger u2 = (r*w)%_q;
-            BigInteger v = ((_g.modPow(u1, _p)*_y.modPow(u2, _p))%_p)%_q;
-            //Debug.WriteLine(DebugUtil.DumpByteArray(v.GetBytes()));
-            //Debug.WriteLine(DebugUtil.DumpByteArray(r.GetBytes()));
-            if (v != r) throw new VerifyException("Failed to verify");
         }
     }
 }

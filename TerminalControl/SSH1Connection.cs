@@ -7,29 +7,29 @@ using Routrek.SSHC;
 
 namespace Routrek.SSHCV1
 {
-    public sealed class SSH1Connection : SSHConnection
+    public sealed class SSH1Connection : SshConnection
     {
         private const int AUTH_NOT_REQUIRED = 0;
         private const int AUTH_REQUIRED = 1;
 
-        private SSH1ConnectionInfo _cInfo;
+        private Ssh1ConnectionInfo _cInfo;
         private int _shellID;
 
         private SSH1PacketBuilder _packetBuilder;
         private bool _executingShell;
 
 
-        public SSH1Connection(SSHConnectionParameter param, ISSHConnectionEventReceiver er, string serverversion,
+        public SSH1Connection(SshConnectionParameter param, ISSHConnectionEventReceiver er, string serverversion,
             string clientversion) : base(param, er)
         {
-            _cInfo = new SSH1ConnectionInfo();
+            _cInfo = new Ssh1ConnectionInfo();
             _cInfo._serverVersionString = serverversion;
-            _cInfo._clientVersionString = clientversion;
+            _cInfo.ClientVersionString = clientversion;
             _shellID = -1;
             _packetBuilder = new SSH1PacketBuilder(new SynchronizedSSH1PacketHandler());
         }
 
-        public override SSHConnectionInfo ConnectionInfo
+        public override SshConnectionInfo ConnectionInfo
         {
             get { return _cInfo; }
         }
@@ -49,13 +49,13 @@ namespace Routrek.SSHCV1
 
         internal override AuthenticationResult Connect(AbstractSocket s)
         {
-            _stream = s;
+            Stream = s;
 
             // Phase2 receives server keys
             ReceiveServerKeys();
             if (_param.KeyCheck != null && !_param.KeyCheck(_cInfo))
             {
-                _stream.Close();
+                Stream.Close();
                 return AuthenticationResult.Failure;
             }
 
@@ -99,27 +99,27 @@ namespace Routrek.SSHCV1
         {
             lock (this)
             {
-                p.WriteTo(_stream, _tCipher);
+                p.WriteTo(Stream, Cipher);
             }
         }
 
         public override void Disconnect(string msg)
         {
-            if (_closed) return;
+            if (Closed) return;
             SSH1DataWriter w = new SSH1DataWriter();
             w.Write(msg);
             SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_MSG_DISCONNECT, w.ToByteArray());
-            p.WriteTo(_stream, _tCipher);
-            _stream.Flush();
-            _closed = true;
-            _stream.Close();
+            p.WriteTo(Stream, Cipher);
+            Stream.Flush();
+            Closed = true;
+            Stream.Close();
         }
 
         public override void Close()
         {
-            if (_closed) return;
-            _closed = true;
-            _stream.Close();
+            if (Closed) return;
+            Closed = true;
+            Stream.Close();
         }
 
         public override void SendIgnorableData(string msg)
@@ -138,9 +138,9 @@ namespace Routrek.SSHCV1
                 throw new SSHException("unexpected SSH SSH1Packet type " + SSH1Packet.Type, SSH1Packet.Data);
 
             SSH1DataReader reader = new SSH1DataReader(SSH1Packet.Data);
-            _cInfo._serverinfo = new SSHServerInfo(reader);
-            _cInfo._hostkey = new RSAPublicKey(_cInfo._serverinfo.host_key_public_exponent,
-                _cInfo._serverinfo.host_key_public_modulus);
+            _cInfo.Serverinfo = new SSHServerInfo(reader);
+            _cInfo.Hostkey = new RSAPublicKey(_cInfo.Serverinfo.host_key_public_exponent,
+                _cInfo.Serverinfo.host_key_public_modulus);
 
             //read protocol support parameters
             int protocol_flags = reader.ReadInt32();
@@ -209,7 +209,7 @@ namespace Routrek.SSHCV1
                 //step2 decrypts with RSA
                 RSAPublicKey first_encryption;
                 RSAPublicKey second_encryption;
-                SSHServerInfo si = _cInfo._serverinfo;
+                SSHServerInfo si = _cInfo.Serverinfo;
                 int first_key_bytelen, second_key_bytelen;
                 if (si.server_key_bits < si.host_key_bits)
                 {
@@ -243,9 +243,9 @@ namespace Routrek.SSHCV1
                 //send
                 SSH1Packet SSH1Packet = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_SESSION_KEY,
                     writer.ToByteArray());
-                SSH1Packet.WriteTo(_stream);
+                SSH1Packet.WriteTo(Stream);
 
-                _sessionID = session_id;
+                SessionId = session_id;
             }
             catch (Exception e)
             {
@@ -283,7 +283,7 @@ namespace Routrek.SSHCV1
             SSH1DataWriter writer = new SSH1DataWriter();
             writer.Write(username);
             SSH1Packet SSH1Packet = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_USER, writer.ToByteArray());
-            SSH1Packet.WriteTo(_stream, _tCipher);
+            SSH1Packet.WriteTo(Stream, Cipher);
         }
 
         private void SendPlainPassword()
@@ -291,7 +291,7 @@ namespace Routrek.SSHCV1
             SSH1DataWriter writer = new SSH1DataWriter();
             writer.Write(_param.Password);
             SSH1Packet SSH1Packet = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_AUTH_PASSWORD, writer.ToByteArray());
-            SSH1Packet.WriteTo(_stream, _tCipher);
+            SSH1Packet.WriteTo(Stream, Cipher);
         }
 
         //RSA authentication
@@ -302,7 +302,7 @@ namespace Routrek.SSHCV1
             SSH1DataWriter w = new SSH1DataWriter();
             w.Write(key.PublicModulus);
             SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_AUTH_RSA, w.ToByteArray());
-            p.WriteTo(_stream, _tCipher);
+            p.WriteTo(Stream, Cipher);
 
             p = ReceivePacket();
             if (p.Type == PacketType.SSH_SMSG_FAILURE)
@@ -318,13 +318,13 @@ namespace Routrek.SSHCV1
             //building response
             MemoryStream bos = new MemoryStream();
             bos.Write(rawchallenge, 0, rawchallenge.Length); //!!mindterm�ł͓����O���ǂ����ŕςȃn���h�����O��������
-            bos.Write(_sessionID, 0, _sessionID.Length);
+            bos.Write(SessionId, 0, SessionId.Length);
             byte[] response = new MD5CryptoServiceProvider().ComputeHash(bos.ToArray());
 
             w = new SSH1DataWriter();
             w.Write(response);
             p = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_AUTH_RSA_RESPONSE, w.ToByteArray());
-            p.WriteTo(_stream, _tCipher);
+            p.WriteTo(Stream, Cipher);
         }
 
         private bool ReceiveAuthenticationResult()
@@ -345,11 +345,11 @@ namespace Routrek.SSHCV1
                 throw new SSHException("type: " + type, SSH1Packet.Data);
         }
 
-        public override SSHChannel OpenShell(ISSHChannelEventReceiver receiver)
+        public override SshChannel OpenShell(ISSHChannelEventReceiver receiver)
         {
             if (_shellID != -1)
                 throw new SSHException("A shell is opened already");
-            _shellID = RegisterChannelEventReceiver(null, receiver)._localID;
+            _shellID = RegisterChannelEventReceiver(null, receiver).LocalId;
             SendRequestPTY();
             _executingShell = true;
             return new SSH1Channel(this, ChannelType.Shell, _shellID);
@@ -365,52 +365,52 @@ namespace Routrek.SSHCV1
             writer.Write(_param.TerminalPixelHeight);
             writer.Write(new byte[1]); //TTY_OP_END
             SSH1Packet SSH1Packet = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_REQUEST_PTY, writer.ToByteArray());
-            SSH1Packet.WriteTo(_stream, _tCipher);
+            SSH1Packet.WriteTo(Stream, Cipher);
         }
 
         private void ExecShell()
         {
             //System.out.println("EXEC SHELL");
             SSH1Packet SSH1Packet = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_EXEC_SHELL);
-            SSH1Packet.WriteTo(_stream, _tCipher);
+            SSH1Packet.WriteTo(Stream, Cipher);
         }
 
-        public override SSHChannel ForwardPort(ISSHChannelEventReceiver receiver, string remote_host, int remote_port,
-            string originator_host, int originator_port)
+        public override SshChannel ForwardPort(ISSHChannelEventReceiver receiver, string remoteHost, int remotePort,
+            string originatorHost, int originatorPort)
         {
             if (_shellID == -1)
             {
                 ExecShell();
-                _shellID = RegisterChannelEventReceiver(null, new SSH1DummyReceiver())._localID;
+                _shellID = RegisterChannelEventReceiver(null, new SSH1DummyReceiver()).LocalId;
             }
 
-            int local_id = this.RegisterChannelEventReceiver(null, receiver)._localID;
+            int local_id = this.RegisterChannelEventReceiver(null, receiver).LocalId;
 
             SSH1DataWriter writer = new SSH1DataWriter();
             writer.Write(local_id); //channel id is fixed to 0
-            writer.Write(remote_host);
-            writer.Write(remote_port);
+            writer.Write(remoteHost);
+            writer.Write(remotePort);
             //originator is specified only if SSH_PROTOFLAG_HOST_IN_FWD_OPEN is specified
             //writer.Write(originator_host);
             SSH1Packet SSH1Packet = SSH1Packet.FromPlainPayload(PacketType.SSH_MSG_PORT_OPEN, writer.ToByteArray());
-            SSH1Packet.WriteTo(_stream, _tCipher);
+            SSH1Packet.WriteTo(Stream, Cipher);
 
             return new SSH1Channel(this, ChannelType.ForwardedLocalToRemote, local_id);
         }
 
-        public override void ListenForwardedPort(string allowed_host, int bind_port)
+        public override void ListenForwardedPort(string allowedHost, int bindPort)
         {
             SSH1DataWriter writer = new SSH1DataWriter();
-            writer.Write(bind_port);
-            writer.Write(allowed_host);
+            writer.Write(bindPort);
+            writer.Write(allowedHost);
             writer.Write(0);
             SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_PORT_FORWARD_REQUEST, writer.ToByteArray());
-            p.WriteTo(_stream, _tCipher);
+            p.WriteTo(Stream, Cipher);
 
             if (_shellID == -1)
             {
                 ExecShell();
-                _shellID = RegisterChannelEventReceiver(null, new SSH1DummyReceiver())._localID;
+                _shellID = RegisterChannelEventReceiver(null, new SSH1DummyReceiver()).LocalId;
             }
         }
 
@@ -430,7 +430,7 @@ namespace Routrek.SSHCV1
             PortForwardingCheckResult result = receiver.CheckPortForwardingRequest(host, port, "", 0);
             if (result.allowed)
             {
-                int local_id = this.RegisterChannelEventReceiver(null, result.channel)._localID;
+                int local_id = this.RegisterChannelEventReceiver(null, result.channel).LocalId;
                 _eventReceiver.EstablishPortforwarding(result.channel,
                     new SSH1Channel(this, ChannelType.ForwardedRemoteToLocal, local_id, server_channel));
 
@@ -438,20 +438,20 @@ namespace Routrek.SSHCV1
                 writer.Write(local_id);
                 SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_MSG_CHANNEL_OPEN_CONFIRMATION,
                     writer.ToByteArray());
-                p.WriteTo(_stream, _tCipher);
+                p.WriteTo(Stream, Cipher);
             }
             else
             {
                 writer.Write(server_channel);
                 SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_MSG_CHANNEL_OPEN_FAILURE, writer.ToByteArray());
-                p.WriteTo(_stream, _tCipher);
+                p.WriteTo(Stream, Cipher);
             }
         }
 
         private byte[] CalcSessionID()
         {
             MemoryStream bos = new MemoryStream();
-            SSHServerInfo si = _cInfo._serverinfo;
+            SSHServerInfo si = _cInfo.Serverinfo;
             byte[] h = si.host_key_public_modulus.getBytes();
             byte[] s = si.server_key_public_modulus.getBytes();
             //System.out.println("len h="+h.Length);
@@ -471,9 +471,9 @@ namespace Routrek.SSHCV1
         //init ciphers
         private void InitCipher(byte[] session_key)
         {
-            _tCipher = CipherFactory.CreateCipher(SSHProtocol.SSH1, _cInfo._algorithmForTransmittion, session_key);
+            Cipher = CipherFactory.CreateCipher(SSHProtocol.SSH1, _cInfo._algorithmForTransmittion, session_key);
             ICipher rc = CipherFactory.CreateCipher(SSHProtocol.SSH1, _cInfo._algorithmForReception, session_key);
-            _packetBuilder.SetCipher(rc, _param.CheckMACError);
+            _packetBuilder.SetCipher(rc, _param.CheckMacError);
         }
 
         private SSH1Packet ReceivePacket()
@@ -516,19 +516,19 @@ namespace Routrek.SSHCV1
                 {
                     case PacketType.SSH_SMSG_STDOUT_DATA:
                         len = SSHUtil.ReadInt32(p.Data, 0);
-                        FindChannelEntry(_shellID)._receiver.OnData(p.Data, 4, len);
+                        FindChannelEntry(_shellID).Receiver.OnData(p.Data, 4, len);
                         break;
                     case PacketType.SSH_SMSG_STDERR_DATA:
                     {
                         SSH1DataReader re = new SSH1DataReader(p.Data);
                         FindChannelEntry(_shellID)
-                            ._receiver.OnExtendedData((int) PacketType.SSH_SMSG_STDERR_DATA, re.ReadString());
+                            .Receiver.OnExtendedData((int) PacketType.SSH_SMSG_STDERR_DATA, re.ReadString());
                     }
                         break;
                     case PacketType.SSH_MSG_CHANNEL_DATA:
                         channel = SSHUtil.ReadInt32(p.Data, 0);
                         len = SSHUtil.ReadInt32(p.Data, 4);
-                        FindChannelEntry(channel)._receiver.OnData(p.Data, 8, len);
+                        FindChannelEntry(channel).Receiver.OnData(p.Data, 8, len);
                         break;
                     case PacketType.SSH_MSG_PORT_OPEN:
                         this.ProcessPortforwardingRequest(_eventReceiver, p);
@@ -536,7 +536,7 @@ namespace Routrek.SSHCV1
                     case PacketType.SSH_MSG_CHANNEL_CLOSE:
                     {
                         channel = SSHUtil.ReadInt32(p.Data, 0);
-                        ISSHChannelEventReceiver r = FindChannelEntry(channel)._receiver;
+                        ISSHChannelEventReceiver r = FindChannelEntry(channel).Receiver;
                         UnregisterChannelEventReceiver(channel);
                         r.OnChannelClosed();
                     }
@@ -548,7 +548,7 @@ namespace Routrek.SSHCV1
                         _eventReceiver.OnConnectionClosed();
                         break;
                     case PacketType.SSH_SMSG_EXITSTATUS:
-                        FindChannelEntry(_shellID)._receiver.OnChannelClosed();
+                        FindChannelEntry(_shellID).Receiver.OnChannelClosed();
                         break;
                     case PacketType.SSH_MSG_DEBUG:
                     {
@@ -566,14 +566,14 @@ namespace Routrek.SSHCV1
                     {
                         int local = SSHUtil.ReadInt32(p.Data, 0);
                         int remote = SSHUtil.ReadInt32(p.Data, 4);
-                        FindChannelEntry(local)._receiver.OnChannelReady();
+                        FindChannelEntry(local).Receiver.OnChannelReady();
                     }
                         break;
                     case PacketType.SSH_SMSG_SUCCESS:
                         if (_executingShell)
                         {
                             ExecShell();
-                            this.FindChannelEntry(_shellID)._receiver.OnChannelReady();
+                            this.FindChannelEntry(_shellID).Receiver.OnChannelReady();
                             _executingShell = false;
                         }
                         break;
@@ -584,34 +584,34 @@ namespace Routrek.SSHCV1
             }
             catch (Exception ex)
             {
-                if (!_closed)
+                if (!Closed)
                     _eventReceiver.OnError(ex, ex.Message);
             }
         }
     }
 
-    public class SSH1Channel : SSHChannel
+    public class SSH1Channel : SshChannel
     {
-        public SSH1Channel(SSHConnection con, ChannelType type, int local_id) : base(con, type, local_id)
+        public SSH1Channel(SshConnection con, ChannelType type, int local_id) : base(con, type, local_id)
         {
         }
 
-        public SSH1Channel(SSHConnection con, ChannelType type, int local_id, int remote_id) : base(con, type, local_id)
+        public SSH1Channel(SshConnection con, ChannelType type, int local_id, int remote_id) : base(con, type, local_id)
         {
-            _remoteID = remote_id;
+            RemoteId = remote_id;
         }
 
         /**
 		 * resizes the size of terminal
 		 */
 
-        public override void ResizeTerminal(int width, int height, int pixel_width, int pixel_height)
+        public override void ResizeTerminal(int width, int height, int pixelWidth, int pixelHeight)
         {
             SSH1DataWriter writer = new SSH1DataWriter();
             writer.Write(height);
             writer.Write(width);
-            writer.Write(pixel_width);
-            writer.Write(pixel_height);
+            writer.Write(pixelWidth);
+            writer.Write(pixelHeight);
             SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_WINDOW_SIZE, writer.ToByteArray());
             Transmit(p);
         }
@@ -631,7 +631,7 @@ namespace Routrek.SSHCV1
             }
             else
             {
-                wr.Write(_remoteID);
+                wr.Write(RemoteId);
                 wr.WriteAsString(data);
                 SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_MSG_CHANNEL_DATA, wr.ToByteArray());
                 Transmit(p);
@@ -653,14 +653,14 @@ namespace Routrek.SSHCV1
             }
             else
             {
-                wr.Write(_remoteID);
+                wr.Write(RemoteId);
                 wr.WriteAsString(data, offset, length);
                 SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_MSG_CHANNEL_DATA, wr.ToByteArray());
                 Transmit(p);
             }
         }
 
-        public override void SendEOF()
+        public override void SendEof()
         {
         }
 
@@ -676,13 +676,13 @@ namespace Routrek.SSHCV1
             if (_type == ChannelType.Shell)
             {
                 SSH1DataWriter wr2 = new SSH1DataWriter();
-                wr2.Write(_remoteID);
+                wr2.Write(RemoteId);
                 SSH1Packet p2 = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_EOF, wr2.ToByteArray());
                 Transmit(p2);
             }
 
             SSH1DataWriter wr = new SSH1DataWriter();
-            wr.Write(_remoteID);
+            wr.Write(RemoteId);
             SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_MSG_CHANNEL_CLOSE, wr.ToByteArray());
             Transmit(p);
         }

@@ -8,12 +8,12 @@ namespace Routrek.SSHC
     /// ConnectionInfo describes the attributes of the host or the connection.
     /// It is available after the connection is established without any errors.
     /// </summary>
-    public abstract class SSHConnectionInfo
+    public abstract class SshConnectionInfo
     {
         internal string _serverVersionString;
-        internal string _clientVersionString;
+        internal string ClientVersionString;
         internal string _supportedCipherAlgorithms;
-        internal PublicKey _hostkey;
+        internal PublicKey Hostkey;
 
         internal CipherAlgorithm _algorithmForTransmittion;
         internal CipherAlgorithm _algorithmForReception;
@@ -25,7 +25,7 @@ namespace Routrek.SSHC
 
         public string ClientVerisonString
         {
-            get { return _clientVersionString; }
+            get { return ClientVersionString; }
         }
 
         public string SupportedCipherAlgorithms
@@ -45,7 +45,7 @@ namespace Routrek.SSHC
 
         public PublicKey HostKey
         {
-            get { return _hostkey; }
+            get { return Hostkey; }
         }
 
         public abstract string DumpHostKeyInKnownHostsStyle();
@@ -54,11 +54,11 @@ namespace Routrek.SSHC
 
 namespace Routrek.SSHCV1
 {
-    using Routrek.SSHC;
+    using SSHC;
 
-    public class SSH1ConnectionInfo : SSHConnectionInfo
+    public class Ssh1ConnectionInfo : SshConnectionInfo
     {
-        internal SSHServerInfo _serverinfo;
+        internal SSHServerInfo Serverinfo;
 
         public override string DumpHostKeyInKnownHostsStyle()
         {
@@ -66,7 +66,7 @@ namespace Routrek.SSHCV1
             bld.Append("ssh1 ");
             SSH1DataWriter wr = new SSH1DataWriter();
             //RSA only for SSH1
-            RSAPublicKey rsa = (RSAPublicKey) _hostkey;
+            RSAPublicKey rsa = (RSAPublicKey) Hostkey;
             wr.Write(rsa.Exponent);
             wr.Write(rsa.Modulus);
             bld.Append(Encoding.ASCII.GetString(Base64.Encode(wr.ToByteArray())));
@@ -96,14 +96,13 @@ namespace Routrek.SSHCV1
 
 namespace Routrek.SSHCV2
 {
-    using Routrek.SSHC;
-    using Routrek.PKI;
+    using SSHC;
+    using PKI;
 
-    public class SSH2ConnectionInfo : SSHConnectionInfo
+    public class Ssh2ConnectionInfo : SshConnectionInfo
     {
         internal string _supportedHostKeyAlgorithms;
         internal PublicKeyAlgorithm _algorithmForHostKeyVerification;
-        internal string _supportedKEXAlgorithms;
 
         public string SupportedHostKeyAlgorithms
         {
@@ -115,27 +114,24 @@ namespace Routrek.SSHCV2
             get { return _algorithmForHostKeyVerification; }
         }
 
-        public string SupportedKEXAlgorithms
-        {
-            get { return _supportedKEXAlgorithms; }
-        }
+        public string SupportedKexAlgorithms { get; internal set; }
 
         public override string DumpHostKeyInKnownHostsStyle()
         {
             StringBuilder bld = new StringBuilder();
-            bld.Append(SSH2Util.PublicKeyAlgorithmName(_hostkey.Algorithm));
+            bld.Append(SSH2Util.PublicKeyAlgorithmName(Hostkey.Algorithm));
             bld.Append(' ');
             SSH2DataWriter wr = new SSH2DataWriter();
-            wr.Write(SSH2Util.PublicKeyAlgorithmName(_hostkey.Algorithm));
-            if (_hostkey.Algorithm == PublicKeyAlgorithm.RSA)
+            wr.Write(SSH2Util.PublicKeyAlgorithmName(Hostkey.Algorithm));
+            if (Hostkey.Algorithm == PublicKeyAlgorithm.RSA)
             {
-                RSAPublicKey rsa = (RSAPublicKey) _hostkey;
+                RSAPublicKey rsa = (RSAPublicKey) Hostkey;
                 wr.Write(rsa.Exponent);
                 wr.Write(rsa.Modulus);
             }
-            else if (_hostkey.Algorithm == PublicKeyAlgorithm.DSA)
+            else if (Hostkey.Algorithm == PublicKeyAlgorithm.DSA)
             {
-                DSAPublicKey dsa = (DSAPublicKey) _hostkey;
+                DsaPublicKey dsa = (DsaPublicKey) Hostkey;
                 wr.Write(dsa.P);
                 wr.Write(dsa.Q);
                 wr.Write(dsa.G);

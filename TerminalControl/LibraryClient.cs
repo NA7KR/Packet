@@ -1,9 +1,10 @@
 using System;
+using PacketComs;
 
 namespace Routrek.SSHC
 {
     //param connectionInfo is identical to the ConnectionInfo property of the connection 
-    public delegate bool HostKeyCheckCallback(SSHConnectionInfo connectionInfo);
+    public delegate bool HostKeyCheckCallback(SshConnectionInfo connectionInfo);
 
     //port forwarding check result
     public struct PortForwardingCheckResult
@@ -50,7 +51,7 @@ namespace Routrek.SSHC
         PortForwardingCheckResult CheckPortForwardingRequest(string remote_host, int remote_port, string originatorHost,
             int originatorPort);
 
-        void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SSHChannel channel);
+        void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SshChannel channel);
     }
 
     /// <summary>

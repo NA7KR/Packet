@@ -1,6 +1,7 @@
 using System;
+using Routrek.Crypto;
 
-namespace Routrek.Crypto
+namespace PacketComs
 {
     public class Blowfish
     {
@@ -8,7 +9,7 @@ namespace Routrek.Crypto
         private byte[] enc;
         private byte[] dec;
 
-        private const int BLOCK_SIZE = 8; // bytes in a data-block
+        private const int BlockSize = 8; // bytes in a data-block
 
         protected uint[] S0;
         protected uint[] S1;
@@ -28,74 +29,74 @@ namespace Routrek.Crypto
             dec = new byte[8];
         }
 
-        public void SetIV(byte[] newiv)
+        public void SetIv(byte[] newiv)
         {
             Array.Copy(newiv, 0, IV, 0, IV.Length);
         }
 
-        public void initializeKey(byte[] key)
+        public void InitializeKey(byte[] key)
         {
             int i, j, len = key.Length;
             uint temp;
 
-            Array.Copy(blowfish_pbox, 0, P, 0, 18);
-            Array.Copy(blowfish_sbox, 0, S0, 0, 256);
-            Array.Copy(blowfish_sbox, 256, S1, 0, 256);
-            Array.Copy(blowfish_sbox, 512, S2, 0, 256);
-            Array.Copy(blowfish_sbox, 768, S3, 0, 256);
+            Array.Copy(BlowfishPbox, 0, P, 0, 18);
+            Array.Copy(BlowfishSbox, 0, S0, 0, 256);
+            Array.Copy(BlowfishSbox, 256, S1, 0, 256);
+            Array.Copy(BlowfishSbox, 512, S2, 0, 256);
+            Array.Copy(BlowfishSbox, 768, S3, 0, 256);
 
             for (j = 0, i = 0; i < 16 + 2; i++)
             {
                 temp = (((uint) (key[j]) << 24) |
                         ((uint) (key[(j + 1)%len]) << 16) |
                         ((uint) (key[(j + 2)%len]) << 8) |
-                        ((uint) (key[(j + 3)%len])));
+                        key[(j + 3)%len]);
                 P[i] = P[i] ^ temp;
                 j = (j + 4)%len;
             }
 
-            byte[] LR = new byte[8];
+            byte[] lr = new byte[8];
 
             for (i = 0; i < 16 + 2; i += 2)
             {
-                blockEncrypt(LR, 0, LR, 0);
-                P[i] = CipherUtil.GetIntBE(LR, 0);
-                P[i + 1] = CipherUtil.GetIntBE(LR, 4);
+                BlockEncrypt(lr, 0, lr, 0);
+                P[i] = CipherUtil.GetIntBe(lr, 0);
+                P[i + 1] = CipherUtil.GetIntBe(lr, 4);
             }
 
             for (j = 0; j < 256; j += 2)
             {
-                blockEncrypt(LR, 0, LR, 0);
-                S0[j] = CipherUtil.GetIntBE(LR, 0);
-                S0[j + 1] = CipherUtil.GetIntBE(LR, 4);
+                BlockEncrypt(lr, 0, lr, 0);
+                S0[j] = CipherUtil.GetIntBe(lr, 0);
+                S0[j + 1] = CipherUtil.GetIntBe(lr, 4);
             }
             for (j = 0; j < 256; j += 2)
             {
-                blockEncrypt(LR, 0, LR, 0);
-                S1[j] = CipherUtil.GetIntBE(LR, 0);
-                S1[j + 1] = CipherUtil.GetIntBE(LR, 4);
+                BlockEncrypt(lr, 0, lr, 0);
+                S1[j] = CipherUtil.GetIntBe(lr, 0);
+                S1[j + 1] = CipherUtil.GetIntBe(lr, 4);
             }
             for (j = 0; j < 256; j += 2)
             {
-                blockEncrypt(LR, 0, LR, 0);
-                S2[j] = CipherUtil.GetIntBE(LR, 0);
-                S2[j + 1] = CipherUtil.GetIntBE(LR, 4);
+                BlockEncrypt(lr, 0, lr, 0);
+                S2[j] = CipherUtil.GetIntBe(lr, 0);
+                S2[j + 1] = CipherUtil.GetIntBe(lr, 4);
             }
             for (j = 0; j < 256; j += 2)
             {
-                blockEncrypt(LR, 0, LR, 0);
-                S3[j] = CipherUtil.GetIntBE(LR, 0);
-                S3[j + 1] = CipherUtil.GetIntBE(LR, 4);
+                BlockEncrypt(lr, 0, lr, 0);
+                S3[j] = CipherUtil.GetIntBe(lr, 0);
+                S3[j + 1] = CipherUtil.GetIntBe(lr, 4);
             }
         }
 
 
-        public void blockEncrypt(byte[] input, int inOffset, byte[] output, int outOffset)
+        public void BlockEncrypt(byte[] input, int inOffset, byte[] output, int outOffset)
         {
             uint L, R;
 
-            L = CipherUtil.GetIntBE(input, inOffset);
-            R = CipherUtil.GetIntBE(input, inOffset + 4);
+            L = CipherUtil.GetIntBe(input, inOffset);
+            R = CipherUtil.GetIntBe(input, inOffset + 4);
 
             L ^= P[0];
             R ^= ((((S0[(int) ((L >> 24) & 0xff)] + S1[(int) ((L >> 16) & 0xff)]) ^
@@ -132,16 +133,16 @@ namespace Routrek.Crypto
                     S2[(int) ((R >> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[16]);
             R ^= P[17];
 
-            CipherUtil.PutIntBE(R, output, outOffset);
-            CipherUtil.PutIntBE(L, output, outOffset + 4);
+            CipherUtil.PutIntBe(R, output, outOffset);
+            CipherUtil.PutIntBe(L, output, outOffset + 4);
         }
 
-        public void blockDecrypt(byte[] input, int inOffset, byte[] output, int outOffset)
+        public void BlockDecrypt(byte[] input, int inOffset, byte[] output, int outOffset)
         {
             uint L, R;
 
-            L = CipherUtil.GetIntBE(input, inOffset);
-            R = CipherUtil.GetIntBE(input, inOffset + 4);
+            L = CipherUtil.GetIntBe(input, inOffset);
+            R = CipherUtil.GetIntBe(input, inOffset + 4);
 
             L ^= P[17];
             R ^= ((((S0[(int) ((L >> 24) & 0xff)] + S1[(int) ((L >> 16) & 0xff)]) ^
@@ -178,11 +179,11 @@ namespace Routrek.Crypto
                     S2[(int) ((R >> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[1]);
             R ^= P[0];
 
-            CipherUtil.PutIntBE(R, output, outOffset);
-            CipherUtil.PutIntBE(L, output, outOffset + 4);
+            CipherUtil.PutIntBe(R, output, outOffset);
+            CipherUtil.PutIntBe(L, output, outOffset + 4);
         }
 
-        public void encryptSSH1Style(byte[] src, int srcOff, int len, byte[] dest, int destOff)
+        public void EncryptSsh1Style(byte[] src, int srcOff, int len, byte[] dest, int destOff)
         {
             int end = srcOff + len;
             int i, j;
@@ -195,7 +196,7 @@ namespace Routrek.Crypto
                     IV[i] ^= src[si + j];
                     IV[i + 4] ^= src[si + 4 + j];
                 }
-                blockEncrypt(IV, 0, IV, 0);
+                BlockEncrypt(IV, 0, IV, 0);
                 for (i = 0; i < 4; i++)
                 {
                     j = 3 - i;
@@ -205,7 +206,7 @@ namespace Routrek.Crypto
             }
         }
 
-        public void decryptSSH1Style(byte[] src, int srcOff, int len, byte[] dest, int destOff)
+        public void DecryptSsh1Style(byte[] src, int srcOff, int len, byte[] dest, int destOff)
         {
             int end = srcOff + len;
             int i, j;
@@ -218,7 +219,7 @@ namespace Routrek.Crypto
                     enc[i] = src[si + j];
                     enc[i + 4] = src[si + 4 + j];
                 }
-                blockDecrypt(enc, 0, dec, 0);
+                BlockDecrypt(enc, 0, dec, 0);
                 for (i = 0; i < 4; i++)
                 {
                     j = 3 - i;
@@ -230,39 +231,39 @@ namespace Routrek.Crypto
             }
         }
 
-        public void encryptCBC(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
+        public void EncryptCbc(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
         {
-            int nBlocks = inputLen/BLOCK_SIZE;
+            int nBlocks = inputLen/BlockSize;
             for (int bc = 0; bc < nBlocks; bc++)
             {
-                CipherUtil.BlockXor(input, inputOffset, BLOCK_SIZE, IV, 0);
-                blockEncrypt(IV, 0, output, outputOffset);
-                Array.Copy(output, outputOffset, IV, 0, BLOCK_SIZE);
-                inputOffset += BLOCK_SIZE;
-                outputOffset += BLOCK_SIZE;
+                CipherUtil.BlockXor(input, inputOffset, BlockSize, IV, 0);
+                BlockEncrypt(IV, 0, output, outputOffset);
+                Array.Copy(output, outputOffset, IV, 0, BlockSize);
+                inputOffset += BlockSize;
+                outputOffset += BlockSize;
             }
         }
 
-        public void decryptCBC(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
+        public void DecryptCbc(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
         {
-            byte[] tmpBlk = new byte[BLOCK_SIZE];
-            int nBlocks = inputLen/BLOCK_SIZE;
+            byte[] tmpBlk = new byte[BlockSize];
+            int nBlocks = inputLen/BlockSize;
             for (int bc = 0; bc < nBlocks; bc++)
             {
-                blockDecrypt(input, inputOffset, tmpBlk, 0);
-                for (int i = 0; i < BLOCK_SIZE; i++)
+                BlockDecrypt(input, inputOffset, tmpBlk, 0);
+                for (int i = 0; i < BlockSize; i++)
                 {
                     tmpBlk[i] ^= IV[i];
                     IV[i] = input[inputOffset + i];
                     output[outputOffset + i] = tmpBlk[i];
                 }
-                inputOffset += BLOCK_SIZE;
-                outputOffset += BLOCK_SIZE;
+                inputOffset += BlockSize;
+                outputOffset += BlockSize;
             }
         }
 
 
-        private static readonly uint[] blowfish_pbox = new uint[]
+        private static readonly uint[] BlowfishPbox =
         {
             0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
             0xa4093822, 0x299f31d0, 0x082efa98, 0xec4e6c89,
@@ -271,7 +272,7 @@ namespace Routrek.Crypto
             0x9216d5d9, 0x8979fb1b
         };
 
-        private static readonly uint[] blowfish_sbox = new uint[]
+        private static readonly uint[] BlowfishSbox =
         {
             0xd1310ba6, 0x98dfb5ac, 0x2ffd72db, 0xd01adfb7,
             0xb8e1afed, 0x6a267e96, 0xba7c9045, 0xf12c7f99,

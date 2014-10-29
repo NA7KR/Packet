@@ -18,7 +18,7 @@ namespace PacketComs
             Terminal = (TerminalEmulator) obj;
         }
 
-        public Routrek.SSHC.SSHConnection Conn;
+        public SshConnection Conn;
         public bool Ready;
 
         public void OnData(byte[] data, int offset, int length)
@@ -100,12 +100,12 @@ namespace PacketComs
             return r;
         }
 
-        public void EstablishPortforwarding(Routrek.SSHC.ISSHChannelEventReceiver rec, Routrek.SSHC.SSHChannel channel)
+        public void EstablishPortforwarding(Routrek.SSHC.ISSHChannelEventReceiver rec, SshChannel channel)
         {
             Pf = channel;
         }
 
-        public Routrek.SSHC.SSHChannel Pf;
+        public SshChannel Pf;
     }
 
     #endregion

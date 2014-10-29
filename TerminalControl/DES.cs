@@ -1,28 +1,26 @@
 using System;
 
-namespace Routrek.Crypto
+namespace PacketComs
 {
-    public class DES
+    public class Des
     {
-        private const int BLOCK_SIZE = 8; // bytes in a data-block
-
         private uint[] _key;
         private byte[] _iv;
         private byte[] _temp;
 
-        public DES()
+        public Des()
         {
             _key = new uint[32];
             _iv = new byte[8];
             _temp = new byte[8];
         }
 
-        public void SetIV(byte[] newiv)
+        public void SetIv(byte[] newiv)
         {
             Array.Copy(newiv, 0, _iv, 0, _iv.Length);
         }
 
-        public void SetIV(byte[] newiv, int offset)
+        public void SetIv(byte[] newiv, int offset)
         {
             Array.Copy(newiv, offset, _iv, 0, _iv.Length);
         }
@@ -31,8 +29,8 @@ namespace Routrek.Crypto
         {
             uint i, c, d, t, s, shifts;
 
-            c = CipherUtil.GetIntLE(key, offset + 0);
-            d = CipherUtil.GetIntLE(key, offset + 4);
+            c = CipherUtil.GetIntLe(key, offset + 0);
+            d = CipherUtil.GetIntLe(key, offset + 4);
 
             t = ((d >> 4) ^ c) & 0x0f0f0f0f;
             c ^= t;
@@ -72,15 +70,15 @@ namespace Routrek.Crypto
                 c &= 0x0fffffff;
                 d &= 0x0fffffff;
 
-                s = SKB[0, (c) & 0x3f] |
-                    SKB[1, ((c >> 6) & 0x03) | ((c >> 7) & 0x3c)] |
-                    SKB[2, ((c >> 13) & 0x0f) | ((c >> 14) & 0x30)] |
-                    SKB[3, ((c >> 20) & 0x01) | ((c >> 21) & 0x06) | ((c >> 22) & 0x38)];
+                s = Skb[0, (c) & 0x3f] |
+                    Skb[1, ((c >> 6) & 0x03) | ((c >> 7) & 0x3c)] |
+                    Skb[2, ((c >> 13) & 0x0f) | ((c >> 14) & 0x30)] |
+                    Skb[3, ((c >> 20) & 0x01) | ((c >> 21) & 0x06) | ((c >> 22) & 0x38)];
 
-                t = SKB[4, (d) & 0x3f] |
-                    SKB[5, ((d >> 7) & 0x03) | ((d >> 8) & 0x3c)] |
-                    SKB[6, (d >> 15) & 0x3f] |
-                    SKB[7, ((d >> 21) & 0x0f) | ((d >> 22) & 0x30)];
+                t = Skb[4, (d) & 0x3f] |
+                    Skb[5, ((d >> 7) & 0x03) | ((d >> 8) & 0x3c)] |
+                    Skb[6, (d >> 15) & 0x3f] |
+                    Skb[7, ((d >> 21) & 0x0f) | ((d >> 22) & 0x30)];
 
                 _key[i*2] = ((t << 16) | (s & 0xffff));
                 s = ((s >> 16) | (t & 0xffff0000));
@@ -94,10 +92,10 @@ namespace Routrek.Crypto
             int i;
             uint[] lr = new uint[2];
 
-            lr[0] = CipherUtil.GetIntLE(input, inOffset);
-            lr[1] = CipherUtil.GetIntLE(input, inOffset + 4);
+            lr[0] = CipherUtil.GetIntLe(input, inOffset);
+            lr[1] = CipherUtil.GetIntLe(input, inOffset + 4);
 
-            initPerm(lr);
+            InitPerm(lr);
 
             t = (lr[1] << 1) | (lr[1] >> 31);
             lr[1] = (lr[0] << 1) | (lr[0] >> 31);
@@ -105,17 +103,17 @@ namespace Routrek.Crypto
 
             for (i = 0; i < 32; i += 4)
             {
-                desCipher1(lr, i);
-                desCipher2(lr, i + 2);
+                DesCipher1(lr, i);
+                DesCipher2(lr, i + 2);
             }
 
             lr[0] = (lr[0] >> 1) | (lr[0] << 31);
             lr[1] = (lr[1] >> 1) | (lr[1] << 31);
 
-            finalPerm(lr);
+            FinalPerm(lr);
 
-            CipherUtil.PutIntLE(lr[0], output, outOffset);
-            CipherUtil.PutIntLE(lr[1], output, outOffset + 4);
+            CipherUtil.PutIntLe(lr[0], output, outOffset);
+            CipherUtil.PutIntLe(lr[1], output, outOffset + 4);
         }
 
         public void BlockDecrypt(byte[] input, int inOffset, byte[] output, int outOffset)
@@ -124,10 +122,10 @@ namespace Routrek.Crypto
             int i;
             uint[] lr = new uint[2];
 
-            lr[0] = CipherUtil.GetIntLE(input, inOffset);
-            lr[1] = CipherUtil.GetIntLE(input, inOffset + 4);
+            lr[0] = CipherUtil.GetIntLe(input, inOffset);
+            lr[1] = CipherUtil.GetIntLe(input, inOffset + 4);
 
-            initPerm(lr);
+            InitPerm(lr);
 
             t = (lr[1] << 1) | (lr[1] >> 31);
             lr[1] = (lr[0] << 1) | (lr[0] >> 31);
@@ -135,20 +133,20 @@ namespace Routrek.Crypto
 
             for (i = 30; i > 0; i -= 4)
             {
-                desCipher1(lr, i);
-                desCipher2(lr, i - 2);
+                DesCipher1(lr, i);
+                DesCipher2(lr, i - 2);
             }
 
             lr[0] = (lr[0] >> 1) | (lr[0] << 31);
             lr[1] = (lr[1] >> 1) | (lr[1] << 31);
 
-            finalPerm(lr);
+            FinalPerm(lr);
 
-            CipherUtil.PutIntLE(lr[0], output, outOffset);
-            CipherUtil.PutIntLE(lr[1], output, outOffset + 4);
+            CipherUtil.PutIntLe(lr[0], output, outOffset);
+            CipherUtil.PutIntLe(lr[1], output, outOffset + 4);
         }
 
-        private void desCipher1(uint[] lr, int i)
+        private void DesCipher1(uint[] lr, int i)
         {
             uint u = lr[1] ^ _key[i];
             uint t = lr[1] ^ _key[i + 1];
@@ -163,7 +161,7 @@ namespace Routrek.Crypto
                       SPTRANS[6, (u >> 24) & 0x3f]);
         }
 
-        private void desCipher2(uint[] lr, int i)
+        private void DesCipher2(uint[] lr, int i)
         {
             uint u = lr[0] ^ _key[i];
             uint t = lr[0] ^ _key[i + 1];
@@ -178,7 +176,7 @@ namespace Routrek.Crypto
                       SPTRANS[6, (u >> 24) & 0x3f]);
         }
 
-        private static void initPerm(uint[] lr)
+        private static void InitPerm(uint[] lr)
         {
             uint t = ((lr[1] >> 4) ^ lr[0]) & 0x0f0f0f0f;
             lr[0] ^= t;
@@ -197,7 +195,7 @@ namespace Routrek.Crypto
             lr[1] ^= t << 1;
         }
 
-        private static void finalPerm(uint[] lr)
+        private static void FinalPerm(uint[] lr)
         {
             uint t = ((lr[1] >> 1) ^ lr[0]) & 0x55555555;
             lr[0] ^= t;
@@ -216,7 +214,7 @@ namespace Routrek.Crypto
             lr[1] ^= t << 4;
         }
 
-        public void EncryptCBC(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
+        public void EncryptCbc(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
         {
             int nBlocks = inputLen/8;
             for (int bc = 0; bc < nBlocks; bc++)
@@ -229,7 +227,7 @@ namespace Routrek.Crypto
             }
         }
 
-        public void DecryptCBC(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
+        public void DecryptCbc(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
         {
             int nBlocks = inputLen/8;
             for (int bc = 0; bc < nBlocks; bc++)
@@ -246,11 +244,8 @@ namespace Routrek.Crypto
             }
         }
 
-        /* 
-		* Copyright (C) 1993 Eric Young
-		*/
 
-        private static readonly uint[,] SKB = new uint[,]
+        private static readonly uint[,] Skb =
         {
             /* for C bits (numbered as per FIPS 46) 1 2 3 4 5 6 */
             {
@@ -406,7 +401,7 @@ namespace Routrek.Crypto
             }
         };
 
-        private static uint[,] SPTRANS = new uint[,]
+        private static uint[,] SPTRANS =
         {
             /* nibble 0 */
             {

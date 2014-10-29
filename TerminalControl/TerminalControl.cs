@@ -1107,8 +1107,8 @@ namespace PacketComs
         {
             // connect ssh
             Focus();
-            SSHConnection _conn;
-            SSHConnectionParameter f = new SSHConnectionParameter();
+            SshConnection _conn;
+            SshConnectionParameter f = new SshConnectionParameter();
             f.UserName = username;
             f.Password = password;
             f.Protocol = SSHProtocol.SSH2;
@@ -1134,9 +1134,9 @@ namespace PacketComs
 
             //s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
             s.Connect(new IPEndPoint(ip, Port));
-            _conn = SSHConnection.Connect(f, _reader, s);
+            _conn = SshConnection.Connect(f, _reader, s);
             _reader.Conn = _conn;
-            SSHChannel ch = _conn.OpenShell(_reader);
+            SshChannel ch = _conn.OpenShell(_reader);
             _reader.Pf = ch;
         }
 

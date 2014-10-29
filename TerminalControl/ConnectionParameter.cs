@@ -1,13 +1,13 @@
 using System;
-using PacketComs;
 using Routrek.PKI;
+using Routrek.SSHC;
 
-namespace Routrek.SSHC
+namespace PacketComs
 {
     /// <summary>
     /// Fill the properties of ConnectionParameter object before you start the connection.
     /// </summary>
-    public class SSHConnectionParameter : ICloneable
+    public class SshConnectionParameter : ICloneable
     {
         //protocol
         private SSHProtocol _protocol;
@@ -129,12 +129,12 @@ namespace Routrek.SSHC
             set { _random = value; }
         }
 
-        private bool _checkMACError;
+        private bool _checkMacError;
 
-        public bool CheckMACError
+        public bool CheckMacError
         {
-            get { return _checkMACError; }
-            set { _checkMACError = value; }
+            get { return _checkMacError; }
+            set { _checkMacError = value; }
         }
 
         //SSH2 only property
@@ -155,16 +155,10 @@ namespace Routrek.SSHC
             set { _maxpacketsize = value; }
         }
 
-        private string _ssh1VersionEOL;
-
-        public string SSH1VersionEOL
-        {
-            get { return _ssh1VersionEOL; }
-            set { _ssh1VersionEOL = value; }
-        }
+        public string Ssh1VersionEol { get; set; }
 
 
-        public SSHConnectionParameter()
+        public SshConnectionParameter()
         {
             _random = new Random();
             _authtype = AuthenticationType.Password;
@@ -172,18 +166,18 @@ namespace Routrek.SSHC
             _width = 80;
             _height = 25;
             _protocol = SSHProtocol.SSH2;
-            _cipherAlgorithms = new CipherAlgorithm[]
+            _cipherAlgorithms = new[]
             {CipherAlgorithm.Aes128, CipherAlgorithm.Blowfish, CipherAlgorithm.TripleDes};
-            _hostkeyAlgorithms = new PublicKeyAlgorithm[] {PublicKeyAlgorithm.DSA, PublicKeyAlgorithm.RSA};
+            _hostkeyAlgorithms = new[] {PublicKeyAlgorithm.DSA, PublicKeyAlgorithm.RSA};
             _windowsize = 0x1000;
             _maxpacketsize = 0x10000;
-            _checkMACError = true;
-            _ssh1VersionEOL = "\n";
+            _checkMacError = true;
+            Ssh1VersionEol = "\n";
         }
 
         public object Clone()
         {
-            SSHConnectionParameter n = new SSHConnectionParameter();
+            SshConnectionParameter n = new SshConnectionParameter();
             n._authtype = _authtype;
             n._cipherAlgorithms = _cipherAlgorithms;
             n._height = _height;
@@ -198,7 +192,7 @@ namespace Routrek.SSHC
             n._username = _username;
             n._width = _width;
             n._windowsize = _windowsize;
-            n._checkMACError = _checkMACError;
+            n._checkMacError = _checkMacError;
             return n;
         }
     }

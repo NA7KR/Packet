@@ -36,7 +36,7 @@ namespace PacketComs
             if (a == PublicKeyAlgorithm.RSA)
                 return ((RSAKeyPair) _keypair).SignWithSHA1(data);
             else
-                return ((DSAKeyPair) _keypair).Sign(new SHA1CryptoServiceProvider().ComputeHash(data));
+                return ((DsaKeyPair) _keypair).Sign(new SHA1CryptoServiceProvider().ComputeHash(data));
         }
 
         public byte[] GetPublicKeyBlob()
@@ -154,7 +154,7 @@ namespace PacketComs
                 BigInteger q = re.ReadBigIntWithBits();
                 BigInteger y = re.ReadBigIntWithBits();
                 BigInteger x = re.ReadBigIntWithBits();
-                return new SSH2UserAuthKey(new DSAKeyPair(p, g, q, y, x));
+                return new SSH2UserAuthKey(new DsaKeyPair(p, g, q, y, x));
             }
             else
                 throw new SSHException("unknown authentication method " + type);
@@ -183,8 +183,8 @@ namespace PacketComs
             }
             else
             {
-                DSAKeyPair dsa = (DSAKeyPair) _keypair;
-                DSAPublicKey pub = (DSAPublicKey) _keypair.PublicKey;
+                DsaKeyPair dsa = (DsaKeyPair) _keypair;
+                DsaPublicKey pub = (DsaPublicKey) _keypair.PublicKey;
                 wr.Write(0);
                 wr.WriteBigIntWithBits(pub.P);
                 wr.WriteBigIntWithBits(pub.G);

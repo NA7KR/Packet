@@ -84,10 +84,10 @@ namespace Routrek.SSHC
     internal class ProtocolNegotiationHandler : SynchronizedHandlerBase, IByteArrayHandler
     {
         protected string _serverVersion;
-        protected SSHConnectionParameter _param;
+        protected SshConnectionParameter _param;
         protected string _endOfLine;
 
-        public ProtocolNegotiationHandler(SSHConnectionParameter param)
+        public ProtocolNegotiationHandler(SshConnectionParameter param)
         {
             _param = param;
             _errorMessage = Strings.GetString("NotSSHServer");
@@ -259,7 +259,7 @@ namespace Routrek.SSHC
 
     internal class ChannelSocket : AbstractSocket, ISSHChannelEventReceiver
     {
-        private SSHChannel _channel;
+        private SshChannel _channel;
         private bool _ready;
 
         internal ChannelSocket(IByteArrayHandler h) : base(h)
@@ -267,7 +267,7 @@ namespace Routrek.SSHC
             _ready = false;
         }
 
-        internal SSHChannel SSHChennal
+        internal SshChannel SSHChennal
         {
             get { return _channel; }
             set { _channel = value; }

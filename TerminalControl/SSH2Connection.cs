@@ -9,7 +9,7 @@ using Routrek.SSHCV2;
 
 namespace PacketComs
 {
-    public sealed class SSH2Connection : SSHConnection
+    public sealed class SSH2Connection : SshConnection
     {
         //packet count for transmission and reception
         private int _tSequence;
@@ -19,18 +19,18 @@ namespace PacketComs
         private SSH2PacketBuilder _packetBuilder;
 
         //server info
-        private SSH2ConnectionInfo _cInfo;
+        private Ssh2ConnectionInfo _cInfo;
 
         private bool _waitingForPortForwardingResponse;
 
         private KeyExchanger _asyncKeyExchanger;
 
-        public SSH2Connection(SSHConnectionParameter param, ISSHConnectionEventReceiver r, string serverversion,
+        public SSH2Connection(SshConnectionParameter param, ISSHConnectionEventReceiver r, string serverversion,
             string clientversion) : base(param, r)
         {
-            _cInfo = new SSH2ConnectionInfo();
+            _cInfo = new Ssh2ConnectionInfo();
             _cInfo._serverVersionString = serverversion;
-            _cInfo._clientVersionString = clientversion;
+            _cInfo.ClientVersionString = clientversion;
 
             _packetBuilder = new SSH2PacketBuilder(new SynchronizedSSH2PacketHandler());
         }
@@ -40,19 +40,19 @@ namespace PacketComs
             get { return _packetBuilder; }
         }
 
-        public override SSHConnectionInfo ConnectionInfo
+        public override SshConnectionInfo ConnectionInfo
         {
             get { return _cInfo; }
         }
 
         internal override AuthenticationResult Connect(AbstractSocket s)
         {
-            _stream = s;
+            Stream = s;
 
             KeyExchanger kex = new KeyExchanger(this, null);
             if (!kex.SynchronousKexExchange())
             {
-                _stream.Close();
+                Stream.Close();
                 return AuthenticationResult.Failure;
             }
             //Step3 user authentication
@@ -109,7 +109,7 @@ namespace PacketComs
                 //public key authentication
                 SSH2UserAuthKey kp = SSH2UserAuthKey.FromSECSHStyleFile(_param.IdentityFile, _param.Password);
                 SSH2DataWriter signsource = new SSH2DataWriter();
-                signsource.WriteAsString(_sessionID);
+                signsource.WriteAsString(SessionId);
                 signsource.WritePacketType(PacketType.SSH_MSG_USERAUTH_REQUEST);
                 signsource.Write(_param.UserName);
                 signsource.Write(sn);
@@ -206,13 +206,13 @@ namespace PacketComs
             return _authenticationResult;
         }
 
-        public override SSHChannel OpenShell(ISSHChannelEventReceiver receiver)
+        public override SshChannel OpenShell(ISSHChannelEventReceiver receiver)
         {
             //open channel
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_OPEN);
             wr.Write("session");
-            int local_channel = this.RegisterChannelEventReceiver(null, receiver)._localID;
+            int local_channel = this.RegisterChannelEventReceiver(null, receiver).LocalId;
 
             wr.Write(local_channel);
             wr.Write(_param.WindowSize); //initial window size
@@ -224,21 +224,21 @@ namespace PacketComs
             return channel;
         }
 
-        public override SSHChannel ForwardPort(ISSHChannelEventReceiver receiver, string remote_host, int remote_port,
-            string originator_host, int originator_port)
+        public override SshChannel ForwardPort(ISSHChannelEventReceiver receiver, string remoteHost, int remotePort,
+            string originatorHost, int originatorPort)
         {
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_OPEN);
             wr.Write("direct-tcpip");
-            int local_id = RegisterChannelEventReceiver(null, receiver)._localID;
+            int local_id = RegisterChannelEventReceiver(null, receiver).LocalId;
             wr.Write(local_id);
             wr.Write(_param.WindowSize); //initial window size
             int windowsize = _param.WindowSize;
             wr.Write(_param.MaxPacketSize); //max packet size
-            wr.Write(remote_host);
-            wr.Write(remote_port);
-            wr.Write(originator_host);
-            wr.Write(originator_port);
+            wr.Write(remoteHost);
+            wr.Write(remotePort);
+            wr.Write(originatorHost);
+            wr.Write(originatorPort);
 
             SSH2Channel channel = new SSH2Channel(this, ChannelType.ForwardedLocalToRemote, local_id);
 
@@ -247,14 +247,14 @@ namespace PacketComs
             return channel;
         }
 
-        public override void ListenForwardedPort(string allowed_host, int bind_port)
+        public override void ListenForwardedPort(string allowedHost, int bindPort)
         {
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_GLOBAL_REQUEST);
             wr.Write("tcpip-forward");
             wr.Write(true);
-            wr.Write(allowed_host);
-            wr.Write(bind_port);
+            wr.Write(allowedHost);
+            wr.Write(bindPort);
 
             _waitingForPortForwardingResponse = true;
             TransmitPacket(wr.ToByteArray());
@@ -289,10 +289,10 @@ namespace PacketComs
             {
                 //send OPEN_CONFIRMATION
                 SSH2Channel channel = new SSH2Channel(this, ChannelType.ForwardedRemoteToLocal,
-                    RegisterChannelEventReceiver(null, r.channel)._localID, remote_channel, servermaxpacketsize);
+                    RegisterChannelEventReceiver(null, r.channel).LocalId, remote_channel, servermaxpacketsize);
                 wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_OPEN_CONFIRMATION);
                 wr.Write(remote_channel);
-                wr.Write(channel.LocalChannelID);
+                wr.Write(channel.LocalChannelId);
                 wr.Write(_param.WindowSize); //initial window size
                 wr.Write(_param.MaxPacketSize); //max packet size
                 receiver.EstablishPortforwarding(r.channel, channel);
@@ -310,14 +310,14 @@ namespace PacketComs
 
         internal SSH2Packet TransmitPacket(byte[] payload)
         {
-            lock (_tLockObject)
+            lock (LockObject)
             {
-                SSH2Packet p = SSH2Packet.FromPlainPayload(payload, _tCipher == null ? 8 : _tCipher.BlockSize,
+                SSH2Packet p = SSH2Packet.FromPlainPayload(payload, Cipher == null ? 8 : Cipher.BlockSize,
                     _param.Random);
                 if (_tMAC != null) p.CalcHash(_tMAC, _tSequence);
 
                 _tSequence++;
-                p.WriteTo(_stream, _tCipher);
+                p.WriteTo(Stream, Cipher);
                 return p;
             }
         }
@@ -364,7 +364,7 @@ namespace PacketComs
             catch (Exception ex)
             {
                 //Debug.WriteLine(ex.StackTrace);
-                if (!_closed)
+                if (!Closed)
                     _eventReceiver.OnError(ex, ex.Message);
             }
         }
@@ -399,7 +399,7 @@ namespace PacketComs
                 int local_channel = r.ReadInt32();
                 ChannelEntry e = FindChannelEntry(local_channel);
                 if (e != null) //throw new SSHException("Unknown channel "+local_channel);
-                    ((SSH2Channel) e._channel).ProcessPacket(e._receiver, pt, 5 + r.Rest, r);
+                    ((SSH2Channel) e.Channel).ProcessPacket(e.Receiver, pt, 5 + r.Rest, r);
                 else
                     Debug.WriteLine("unexpected channel pt=" + pt + " local_channel=" + local_channel.ToString());
                 return true;
@@ -417,7 +417,7 @@ namespace PacketComs
             else if (pt == PacketType.SSH_MSG_KEXINIT)
             {
                 Debug.WriteLine("Host sent KEXINIT");
-                _asyncKeyExchanger = new KeyExchanger(this, _sessionID);
+                _asyncKeyExchanger = new KeyExchanger(this, SessionId);
                 _asyncKeyExchanger.AsyncProcessPacket(packet);
                 return true;
             }
@@ -430,23 +430,23 @@ namespace PacketComs
 
         public override void Disconnect(string msg)
         {
-            if (_closed) return;
+            if (Closed) return;
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_DISCONNECT);
             wr.Write(0);
             wr.Write(msg);
             wr.Write(""); //language
             TransmitPacket(wr.ToByteArray());
-            _stream.Flush();
-            _closed = true;
-            _stream.Close();
+            Stream.Flush();
+            Closed = true;
+            Stream.Close();
         }
 
         public override void Close()
         {
-            if (_closed) return;
-            _closed = true;
-            _stream.Close();
+            if (Closed) return;
+            Closed = true;
+            Stream.Close();
         }
 
         public override void SendIgnorableData(string msg)
@@ -459,7 +459,7 @@ namespace PacketComs
 
         public void ReexchangeKeys()
         {
-            _asyncKeyExchanger = new KeyExchanger(this, _sessionID);
+            _asyncKeyExchanger = new KeyExchanger(this, SessionId);
             _asyncKeyExchanger.AsyncStartReexchange();
         }
 
@@ -475,15 +475,15 @@ namespace PacketComs
 
         internal void RefreshKeys(byte[] sessionID, ICipher tc, ICipher rc, IMac tm, IMac rm)
         {
-            _sessionID = sessionID;
-            _tCipher = tc;
+            SessionId = sessionID;
+            Cipher = tc;
             _tMAC = tm;
-            _packetBuilder.SetCipher(rc, _param.CheckMACError ? rm : null);
+            _packetBuilder.SetCipher(rc, _param.CheckMacError ? rm : null);
             _asyncKeyExchanger = null;
         }
     }
 
-    public class SSH2Channel : SSHChannel
+    public class SSH2Channel : SshChannel
     {
         //channel property
         protected int _windowSize;
@@ -493,7 +493,7 @@ namespace PacketComs
         //negotiation status
         protected int _negotiationStatus;
 
-        public SSH2Channel(SSHConnection con, ChannelType type, int local_id) : base(con, type, local_id)
+        public SSH2Channel(SshConnection con, ChannelType type, int local_id) : base(con, type, local_id)
         {
             _windowSize = _leftWindowSize = con.Param.WindowSize;
             _negotiationStatus = type == ChannelType.Shell
@@ -501,27 +501,27 @@ namespace PacketComs
                 : type == ChannelType.ForwardedLocalToRemote ? 1 : type == ChannelType.Session ? 1 : 0;
         }
 
-        public SSH2Channel(SSHConnection con, ChannelType type, int local_id, int remote_id, int maxpacketsize)
+        public SSH2Channel(SshConnection con, ChannelType type, int local_id, int remote_id, int maxpacketsize)
             : base(con, type, local_id)
         {
             _windowSize = _leftWindowSize = con.Param.WindowSize;
             Debug.Assert(type == ChannelType.ForwardedRemoteToLocal);
-            _remoteID = remote_id;
+            RemoteId = remote_id;
             _serverMaxPacketSize = maxpacketsize;
             _negotiationStatus = 0;
         }
 
-        public override void ResizeTerminal(int width, int height, int pixel_width, int pixel_height)
+        public override void ResizeTerminal(int width, int height, int pixelWidth, int pixelHeight)
         {
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_REQUEST);
-            wr.Write(_remoteID);
+            wr.Write(RemoteId);
             wr.Write("window-change");
             wr.Write(false);
             wr.Write(width);
             wr.Write(height);
-            wr.Write(pixel_width); //no graphics
-            wr.Write(pixel_height);
+            wr.Write(pixelWidth); //no graphics
+            wr.Write(pixelHeight);
             TransmitPacket(wr.ToByteArray());
         }
 
@@ -530,7 +530,7 @@ namespace PacketComs
             //!!it is better idea that we wait a WINDOW_ADJUST if the left size is lack
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_DATA);
-            wr.Write(_remoteID);
+            wr.Write(RemoteId);
             wr.WriteAsString(data);
 
             TransmitPacket(wr.ToByteArray());
@@ -540,18 +540,18 @@ namespace PacketComs
         {
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_DATA);
-            wr.Write(_remoteID);
+            wr.Write(RemoteId);
             wr.WriteAsString(data, offset, length);
 
             TransmitPacket(wr.ToByteArray());
         }
 
-        public override void SendEOF()
+        public override void SendEof()
         {
             if (_connection.IsClosed) return;
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_EOF);
-            wr.Write(_remoteID);
+            wr.Write(RemoteId);
             TransmitPacket(wr.ToByteArray());
         }
 
@@ -561,7 +561,7 @@ namespace PacketComs
             if (_connection.IsClosed) return;
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_CLOSE);
-            wr.Write(_remoteID);
+            wr.Write(RemoteId);
             TransmitPacket(wr.ToByteArray());
         }
 
@@ -570,7 +570,7 @@ namespace PacketComs
         {
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_REQUEST);
-            wr.Write(_remoteID);
+            wr.Write(RemoteId);
             wr.Write("env");
             wr.Write(false);
             wr.Write(name);
@@ -582,7 +582,7 @@ namespace PacketComs
         {
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_REQUEST);
-            wr.Write(_remoteID);
+            wr.Write(RemoteId);
             wr.Write("break");
             wr.Write(true);
             wr.Write(time);
@@ -597,7 +597,7 @@ namespace PacketComs
             {
                 SSH2DataWriter adj = new SSH2DataWriter();
                 adj.WritePacketType(PacketType.SSH_MSG_CHANNEL_WINDOW_ADJUST);
-                adj.Write(_remoteID);
+                adj.Write(RemoteId);
                 adj.Write(_windowSize);
                 TransmitPacket(adj.ToByteArray());
                 _leftWindowSize += _windowSize;
@@ -649,7 +649,7 @@ namespace PacketComs
                             //we reject unknown requests including keep-alive check
                             SSH2DataWriter wr = new SSH2DataWriter();
                             wr.Write((byte) PacketType.SSH_MSG_CHANNEL_FAILURE);
-                            wr.Write(_remoteID);
+                            wr.Write(RemoteId);
                             TransmitPacket(wr.ToByteArray());
                         }
                     }
@@ -658,7 +658,7 @@ namespace PacketComs
                         receiver.OnChannelEOF();
                         break;
                     case PacketType.SSH_MSG_CHANNEL_CLOSE:
-                        _connection.UnregisterChannelEventReceiver(_localID);
+                        _connection.UnregisterChannelEventReceiver(LocalId);
                         receiver.OnChannelClosed();
                         break;
                     case PacketType.SSH_MSG_CHANNEL_FAILURE:
@@ -696,13 +696,13 @@ namespace PacketComs
                 }
                 else
                 {
-                    _remoteID = reader.ReadInt32();
+                    RemoteId = reader.ReadInt32();
                     _serverMaxPacketSize = reader.ReadInt32();
 
                     //open pty
                     SSH2DataWriter wr = new SSH2DataWriter();
                     wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_REQUEST);
-                    wr.Write(_remoteID);
+                    wr.Write(RemoteId);
                     wr.Write("pty-req");
                     wr.Write(true);
                     wr.Write(_connection.Param.TerminalName);
@@ -728,7 +728,7 @@ namespace PacketComs
                     //open shell
                     SSH2DataWriter wr = new SSH2DataWriter();
                     wr.Write((byte) PacketType.SSH_MSG_CHANNEL_REQUEST);
-                    wr.Write(_remoteID);
+                    wr.Write(RemoteId);
                     wr.Write("shell");
                     wr.Write(true);
                     TransmitPacket(wr.ToByteArray());
@@ -772,7 +772,7 @@ namespace PacketComs
                 }
                 else
                 {
-                    _remoteID = reader.ReadInt32();
+                    RemoteId = reader.ReadInt32();
                     _serverMaxPacketSize = reader.ReadInt32();
                     _negotiationStatus = 0;
                     receiver.OnChannelReady();
@@ -801,7 +801,7 @@ namespace PacketComs
                 }
                 else
                 {
-                    _remoteID = reader.ReadInt32();
+                    RemoteId = reader.ReadInt32();
                     _serverMaxPacketSize = reader.ReadInt32();
                     _negotiationStatus = 0;
                     receiver.OnChannelReady();
@@ -815,8 +815,8 @@ namespace PacketComs
     internal class KeyExchanger
     {
         private SSH2Connection _con;
-        private SSHConnectionParameter _param;
-        private SSH2ConnectionInfo _cInfo;
+        private SshConnectionParameter _param;
+        private Ssh2ConnectionInfo _cInfo;
         //payload of KEXINIT message
         private byte[] _serverKEXINITPayload;
         private byte[] _clientKEXINITPayload;
@@ -859,7 +859,7 @@ namespace PacketComs
         {
             _con = con;
             _param = con.Param;
-            _cInfo = (SSH2ConnectionInfo) con.ConnectionInfo;
+            _cInfo = (Ssh2ConnectionInfo) con.ConnectionInfo;
             _sessionID = sessionID;
             _status = Status.INITIAL;
         }
@@ -942,7 +942,7 @@ namespace PacketComs
             Encoding enc = Encoding.ASCII;
 
             string kex = enc.GetString(re.ReadString());
-            _cInfo._supportedKEXAlgorithms = kex;
+            _cInfo.SupportedKexAlgorithms = kex;
             CheckAlgorithmSupport("keyexchange", kex, "diffie-hellman-group1-sha1");
 
             string host_key = enc.GetString(re.ReadString());
@@ -1006,7 +1006,7 @@ namespace PacketComs
             SSH2DataWriter wr = new SSH2DataWriter();
             _k = f.modPow(_x, DH_PRIME);
             wr = new SSH2DataWriter();
-            wr.Write(_cInfo._clientVersionString);
+            wr.Write(_cInfo.ClientVersionString);
             wr.Write(_cInfo._serverVersionString);
             wr.WriteAsString(_clientKEXINITPayload);
             wr.WriteAsString(_serverKEXINITPayload);
@@ -1104,7 +1104,7 @@ namespace PacketComs
 
             RSAPublicKey pk = new RSAPublicKey(exp, mod);
             pk.VerifyWithSHA1(sigbody, new SHA1CryptoServiceProvider().ComputeHash(hash));
-            _cInfo._hostkey = pk;
+            _cInfo.Hostkey = pk;
         }
 
         private void VerifyHostKeyByDSS(SSH2DataReader pubkey, byte[] sigbody, byte[] hash)
@@ -1121,9 +1121,9 @@ namespace PacketComs
             //Debug.WriteLine(y.ToHexString());
 
 
-            DSAPublicKey pk = new DSAPublicKey(p, g, q, y);
+            DsaPublicKey pk = new DsaPublicKey(p, g, q, y);
             pk.Verify(sigbody, new SHA1CryptoServiceProvider().ComputeHash(hash));
-            _cInfo._hostkey = pk;
+            _cInfo.Hostkey = pk;
         }
 
         private byte[] DeriveKey(BigInteger key, byte[] hash, char ch, int length)

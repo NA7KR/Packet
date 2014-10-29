@@ -1,8 +1,8 @@
-namespace Routrek.SSHCV1
+namespace PacketComs
 {
-    public class CRC
+    public class Crc
     {
-        private static readonly uint[] table = new uint[]
+        private static readonly uint[] Table =
         {
             0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419,
             0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,
@@ -62,7 +62,7 @@ namespace Routrek.SSHCV1
         {
             uint val = 0;
             for (int i = 0; i < len; i ++)
-                val = table[(int) ((val ^ buf[off + i]) & 0xff)] ^ (val >> 8);
+                val = Table[(int) ((val ^ buf[off + i]) & 0xff)] ^ (val >> 8);
 
             return val;
         }
