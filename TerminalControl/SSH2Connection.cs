@@ -211,7 +211,7 @@ namespace PacketComs
             SSH2DataWriter wr = new SSH2DataWriter();
             wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_OPEN);
             wr.Write("session");
-            int local_channel = this.RegisterChannelEventReceiver(null, receiver).LocalId;
+            int local_channel = RegisterChannelEventReceiver(null, receiver).LocalId;
 
             wr.Write(local_channel);
             wr.Write(_param.WindowSize); //initial window size

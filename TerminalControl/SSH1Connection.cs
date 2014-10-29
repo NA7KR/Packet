@@ -108,7 +108,7 @@ namespace PacketComs
             if (Closed) return;
             SSH1DataWriter w = new SSH1DataWriter();
             w.Write(msg);
-            SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_MSG_DISCONNECT, w.ToByteArray());
+            SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_MSG_DISCONNECT, w.ToByteArray());
             p.WriteTo(Stream, Cipher);
             Stream.Flush();
             Closed = true;
@@ -126,7 +126,7 @@ namespace PacketComs
         {
             SSH1DataWriter w = new SSH1DataWriter();
             w.Write(msg);
-            SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_MSG_IGNORE, w.ToByteArray());
+            SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_MSG_IGNORE, w.ToByteArray());
             Transmit(p);
         }
 
@@ -134,7 +134,7 @@ namespace PacketComs
         private void ReceiveServerKeys()
         {
             SSH1Packet ssh1Packet = ReceivePacket();
-            if (ssh1Packet.Type != PacketComs.SSHCV1.PacketType.SSH_SMSG_PUBLIC_KEY)
+            if (ssh1Packet.Type != SSHCV1.PacketType.SSH_SMSG_PUBLIC_KEY)
                 throw new SSHException("unexpected SSH SSH1Packet type " + ssh1Packet.Type, ssh1Packet.Data);
 
             SSH1DataReader reader = new SSH1DataReader(ssh1Packet.Data);
@@ -143,7 +143,7 @@ namespace PacketComs
                 _cInfo.Serverinfo.host_key_public_modulus);
 
             //read protocol support parameters
-            int protocolFlags = reader.ReadInt32();
+            reader.ReadInt32();
             int supportedCiphersMask = reader.ReadInt32();
             _cInfo.SetSupportedCipherAlgorithms(supportedCiphersMask);
             int supportedAuthenticationsMask = reader.ReadInt32();
@@ -241,7 +241,7 @@ namespace PacketComs
                 writer.Write(0); //protocol flags
 
                 //send
-                SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_SESSION_KEY,
+                SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_SESSION_KEY,
                     writer.ToByteArray());
                 ssh1Packet.WriteTo(Stream);
 
@@ -253,7 +253,7 @@ namespace PacketComs
                     throw;
                 else
                 {
-                    throw new SSHException(e.Message); //IOException�ȊO�݂͂�SSHException�ɂ��Ă��܂�
+                    throw new SSHException(e.Message); 
                 }
             }
         }
@@ -261,7 +261,7 @@ namespace PacketComs
         private void ReceiveKeyConfirmation()
         {
             SSH1Packet ssh1Packet = ReceivePacket();
-            if (ssh1Packet.Type != PacketComs.SSHCV1.PacketType.SSH_SMSG_SUCCESS)
+            if (ssh1Packet.Type != SSHCV1.PacketType.SSH_SMSG_SUCCESS)
                 throw new SSHException("unexpected packet type [" + ssh1Packet.Type + "] at ReceiveKeyConfirmation()",
                     ssh1Packet.Data);
         }
@@ -269,9 +269,9 @@ namespace PacketComs
         private int ReceiveAuthenticationRequirement()
         {
             SSH1Packet ssh1Packet = ReceivePacket();
-            if (ssh1Packet.Type == PacketComs.SSHCV1.PacketType.SSH_SMSG_SUCCESS)
+            if (ssh1Packet.Type == SSHCV1.PacketType.SSH_SMSG_SUCCESS)
                 return AuthNotRequired;
-            else if (ssh1Packet.Type == PacketComs.SSHCV1.PacketType.SSH_SMSG_FAILURE)
+            else if (ssh1Packet.Type == SSHCV1.PacketType.SSH_SMSG_FAILURE)
                 return AuthRequired;
             else
                 throw new SSHException("type " + ssh1Packet.Type, ssh1Packet.Data);
@@ -281,7 +281,7 @@ namespace PacketComs
         {
             SSH1DataWriter writer = new SSH1DataWriter();
             writer.Write(username);
-            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_USER, writer.ToByteArray());
+            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_USER, writer.ToByteArray());
             ssh1Packet.WriteTo(Stream, Cipher);
         }
 
@@ -289,7 +289,7 @@ namespace PacketComs
         {
             SSH1DataWriter writer = new SSH1DataWriter();
             writer.Write(_param.Password);
-            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_AUTH_PASSWORD, writer.ToByteArray());
+            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_AUTH_PASSWORD, writer.ToByteArray());
             ssh1Packet.WriteTo(Stream, Cipher);
         }
 
@@ -300,13 +300,13 @@ namespace PacketComs
             SSH1UserAuthKey key = new SSH1UserAuthKey(_param.IdentityFile, _param.Password);
             SSH1DataWriter w = new SSH1DataWriter();
             w.Write(key.PublicModulus);
-            SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_AUTH_RSA, w.ToByteArray());
+            SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_AUTH_RSA, w.ToByteArray());
             p.WriteTo(Stream, Cipher);
 
             p = ReceivePacket();
-            if (p.Type == PacketComs.SSHCV1.PacketType.SSH_SMSG_FAILURE)
+            if (p.Type == SSHCV1.PacketType.SSH_SMSG_FAILURE)
                 throw new SSHException(Strings.GetString("ServerRefusedRSA"));
-            else if (p.Type != PacketComs.SSHCV1.PacketType.SSH_SMSG_AUTH_RSA_CHALLENGE)
+            else if (p.Type != SSHCV1.PacketType.SSH_SMSG_AUTH_RSA_CHALLENGE)
                 throw new SSHException(String.Format(Strings.GetString("UnexpectedResponse"), p.Type));
 
             //creating challenge
@@ -322,23 +322,23 @@ namespace PacketComs
 
             w = new SSH1DataWriter();
             w.Write(response);
-            p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_AUTH_RSA_RESPONSE, w.ToByteArray());
+            p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_AUTH_RSA_RESPONSE, w.ToByteArray());
             p.WriteTo(Stream, Cipher);
         }
 
         private bool ReceiveAuthenticationResult()
         {
             SSH1Packet ssh1Packet = ReceivePacket();
-            PacketComs.SSHCV1.PacketType type = ssh1Packet.Type;
-            if (type == PacketComs.SSHCV1.PacketType.SSH_MSG_DEBUG)
+            SSHCV1.PacketType type = ssh1Packet.Type;
+            if (type == SSHCV1.PacketType.SSH_MSG_DEBUG)
             {
                 new SSH1DataReader(ssh1Packet.Data);
                 //Debug.WriteLine("receivedd debug message:"+Encoding.ASCII.GetString(r.ReadString()));
                 return ReceiveAuthenticationResult();
             }
-            else if (type == PacketComs.SSHCV1.PacketType.SSH_SMSG_SUCCESS)
+            else if (type == SSHCV1.PacketType.SSH_SMSG_SUCCESS)
                 return true;
-            else if (type == PacketComs.SSHCV1.PacketType.SSH_SMSG_FAILURE)
+            else if (type == SSHCV1.PacketType.SSH_SMSG_FAILURE)
                 return false;
             else
                 throw new SSHException("type: " + type, ssh1Packet.Data);
@@ -363,14 +363,14 @@ namespace PacketComs
             writer.Write(_param.TerminalPixelWidth);
             writer.Write(_param.TerminalPixelHeight);
             writer.Write(new byte[1]); //TTY_OP_END
-            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_REQUEST_PTY, writer.ToByteArray());
+            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_REQUEST_PTY, writer.ToByteArray());
             ssh1Packet.WriteTo(Stream, Cipher);
         }
 
         private void ExecShell()
         {
             //System.out.println("EXEC SHELL");
-            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_EXEC_SHELL);
+            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_EXEC_SHELL);
             ssh1Packet.WriteTo(Stream, Cipher);
         }
 
@@ -391,7 +391,7 @@ namespace PacketComs
             writer.Write(remotePort);
             //originator is specified only if SSH_PROTOFLAG_HOST_IN_FWD_OPEN is specified
             //writer.Write(originator_host);
-            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_MSG_PORT_OPEN, writer.ToByteArray());
+            SSH1Packet ssh1Packet = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_MSG_PORT_OPEN, writer.ToByteArray());
             ssh1Packet.WriteTo(Stream, Cipher);
 
             return new SSH1Channel(this, ChannelType.ForwardedLocalToRemote, localId);
@@ -403,7 +403,7 @@ namespace PacketComs
             writer.Write(bindPort);
             writer.Write(allowedHost);
             writer.Write(0);
-            SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_PORT_FORWARD_REQUEST, writer.ToByteArray());
+            SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_PORT_FORWARD_REQUEST, writer.ToByteArray());
             p.WriteTo(Stream, Cipher);
 
             if (_shellId == -1)
@@ -435,14 +435,14 @@ namespace PacketComs
 
                 writer.Write(serverChannel);
                 writer.Write(localId);
-                SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_OPEN_CONFIRMATION,
+                SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_MSG_CHANNEL_OPEN_CONFIRMATION,
                     writer.ToByteArray());
                 p.WriteTo(Stream, Cipher);
             }
             else
             {
                 writer.Write(serverChannel);
-                SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_OPEN_FAILURE, writer.ToByteArray());
+                SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_MSG_CHANNEL_OPEN_FAILURE, writer.ToByteArray());
                 p.WriteTo(Stream, Cipher);
             }
         }
@@ -492,12 +492,12 @@ namespace PacketComs
                 p = handler.PopPacket();
 
                 SSH1DataReader r = new SSH1DataReader(p.Data);
-                PacketComs.SSHCV1.PacketType pt = p.Type;
-                if (pt == PacketComs.SSHCV1.PacketType.SSH_MSG_IGNORE)
+                SSHCV1.PacketType pt = p.Type;
+                if (pt == SSHCV1.PacketType.SSH_MSG_IGNORE)
                 {
                     if (_eventReceiver != null) _eventReceiver.OnIgnoreMessage(r.ReadString());
                 }
-                else if (pt == PacketComs.SSHCV1.PacketType.SSH_MSG_DEBUG)
+                else if (pt == SSHCV1.PacketType.SSH_MSG_DEBUG)
                 {
                     if (_eventReceiver != null) _eventReceiver.OnDebugMessage(false, r.ReadString());
                 }
@@ -513,26 +513,26 @@ namespace PacketComs
                 int len = 0, channel = 0;
                 switch (p.Type)
                 {
-                    case PacketComs.SSHCV1.PacketType.SSH_SMSG_STDOUT_DATA:
+                    case SSHCV1.PacketType.SSH_SMSG_STDOUT_DATA:
                         len = SSHUtil.ReadInt32(p.Data, 0);
                         FindChannelEntry(_shellId).Receiver.OnData(p.Data, 4, len);
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_SMSG_STDERR_DATA:
+                    case SSHCV1.PacketType.SSH_SMSG_STDERR_DATA:
                     {
                         SSH1DataReader re = new SSH1DataReader(p.Data);
                         FindChannelEntry(_shellId)
-                            .Receiver.OnExtendedData((int) PacketComs.SSHCV1.PacketType.SSH_SMSG_STDERR_DATA, re.ReadString());
+                            .Receiver.OnExtendedData((int) SSHCV1.PacketType.SSH_SMSG_STDERR_DATA, re.ReadString());
                     }
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_DATA:
+                    case SSHCV1.PacketType.SSH_MSG_CHANNEL_DATA:
                         channel = SSHUtil.ReadInt32(p.Data, 0);
                         len = SSHUtil.ReadInt32(p.Data, 4);
                         FindChannelEntry(channel).Receiver.OnData(p.Data, 8, len);
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_MSG_PORT_OPEN:
+                    case SSHCV1.PacketType.SSH_MSG_PORT_OPEN:
                         ProcessPortforwardingRequest(_eventReceiver, p);
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_CLOSE:
+                    case SSHCV1.PacketType.SSH_MSG_CHANNEL_CLOSE:
                     {
                         channel = SSHUtil.ReadInt32(p.Data, 0);
                         ISshChannelEventReceiver r = FindChannelEntry(channel).Receiver;
@@ -540,39 +540,39 @@ namespace PacketComs
                         r.OnChannelClosed();
                     }
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_CLOSE_CONFIRMATION:
+                    case SSHCV1.PacketType.SSH_MSG_CHANNEL_CLOSE_CONFIRMATION:
                         channel = SSHUtil.ReadInt32(p.Data, 0);
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_MSG_DISCONNECT:
+                    case SSHCV1.PacketType.SSH_MSG_DISCONNECT:
                         _eventReceiver.OnConnectionClosed();
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_SMSG_EXITSTATUS:
+                    case SSHCV1.PacketType.SSH_SMSG_EXITSTATUS:
                         FindChannelEntry(_shellId).Receiver.OnChannelClosed();
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_MSG_DEBUG:
+                    case SSHCV1.PacketType.SSH_MSG_DEBUG:
                     {
                         SSH1DataReader re = new SSH1DataReader(p.Data);
                         _eventReceiver.OnDebugMessage(false, re.ReadString());
                     }
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_MSG_IGNORE:
+                    case SSHCV1.PacketType.SSH_MSG_IGNORE:
                     {
                         SSH1DataReader re = new SSH1DataReader(p.Data);
                         _eventReceiver.OnIgnoreMessage(re.ReadString());
                     }
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_OPEN_CONFIRMATION:
+                    case SSHCV1.PacketType.SSH_MSG_CHANNEL_OPEN_CONFIRMATION:
                     {
                         int local = SSHUtil.ReadInt32(p.Data, 0);
                         int remote = SSHUtil.ReadInt32(p.Data, 4);
                         FindChannelEntry(local).Receiver.OnChannelReady();
                     }
                         break;
-                    case PacketComs.SSHCV1.PacketType.SSH_SMSG_SUCCESS:
+                    case SSHCV1.PacketType.SSH_SMSG_SUCCESS:
                         if (_executingShell)
                         {
                             ExecShell();
-                            this.FindChannelEntry(_shellId).Receiver.OnChannelReady();
+                            FindChannelEntry(_shellId).Receiver.OnChannelReady();
                             _executingShell = false;
                         }
                         break;
@@ -611,7 +611,7 @@ namespace PacketComs
             writer.Write(width);
             writer.Write(pixelWidth);
             writer.Write(pixelHeight);
-            SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_WINDOW_SIZE, writer.ToByteArray());
+            SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_WINDOW_SIZE, writer.ToByteArray());
             Transmit(p);
         }
 
@@ -625,14 +625,14 @@ namespace PacketComs
             if (_type == ChannelType.Shell)
             {
                 wr.WriteAsString(data);
-                SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_STDIN_DATA, wr.ToByteArray());
+                SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_STDIN_DATA, wr.ToByteArray());
                 Transmit(p);
             }
             else
             {
                 wr.Write(RemoteId);
                 wr.WriteAsString(data);
-                SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_DATA, wr.ToByteArray());
+                SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_MSG_CHANNEL_DATA, wr.ToByteArray());
                 Transmit(p);
             }
         }
@@ -647,14 +647,14 @@ namespace PacketComs
             if (_type == ChannelType.Shell)
             {
                 wr.WriteAsString(data, offset, length);
-                SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_STDIN_DATA, wr.ToByteArray());
+                SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_STDIN_DATA, wr.ToByteArray());
                 Transmit(p);
             }
             else
             {
                 wr.Write(RemoteId);
                 wr.WriteAsString(data, offset, length);
-                SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_DATA, wr.ToByteArray());
+                SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_MSG_CHANNEL_DATA, wr.ToByteArray());
                 Transmit(p);
             }
         }
@@ -676,13 +676,13 @@ namespace PacketComs
             {
                 SSH1DataWriter wr2 = new SSH1DataWriter();
                 wr2.Write(RemoteId);
-                SSH1Packet p2 = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_EOF, wr2.ToByteArray());
+                SSH1Packet p2 = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_CMSG_EOF, wr2.ToByteArray());
                 Transmit(p2);
             }
 
             SSH1DataWriter wr = new SSH1DataWriter();
             wr.Write(RemoteId);
-            SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_MSG_CHANNEL_CLOSE, wr.ToByteArray());
+            SSH1Packet p = SSH1Packet.FromPlainPayload(SSHCV1.PacketType.SSH_MSG_CHANNEL_CLOSE, wr.ToByteArray());
             Transmit(p);
         }
 

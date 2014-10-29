@@ -835,7 +835,7 @@ namespace PacketComs
 
         public static bool operator ==(BigInteger bi1, BigInteger bi2)
         {
-            if (Object.Equals(bi1, bi2))
+            if (Equals(bi1, bi2))
                 return true;
             else
                 return bi1.Equals(bi2);
@@ -844,7 +844,7 @@ namespace PacketComs
 
         public static bool operator !=(BigInteger bi1, BigInteger bi2)
         {
-            if (Object.Equals(bi1, bi2))
+            if (Equals(bi1, bi2))
                 return false;
             else
                 return !(bi1.Equals(bi2));
@@ -856,12 +856,12 @@ namespace PacketComs
             if (o == null || !(o is BigInteger)) return false;
             BigInteger bi = (BigInteger) o;
 
-            if (this.DataLength != bi.DataLength)
+            if (DataLength != bi.DataLength)
                 return false;
 
-            for (int i = 0; i < this.DataLength; i++)
+            for (int i = 0; i < DataLength; i++)
             {
-                if (this.data[i] != bi.data[i])
+                if (data[i] != bi.data[i])
                     return false;
             }
             return true;
@@ -870,7 +870,7 @@ namespace PacketComs
 
         public override int GetHashCode()
         {
-            return this.ToString().GetHashCode();
+            return ToString().GetHashCode();
         }
 
 
@@ -1331,7 +1331,7 @@ namespace PacketComs
 
         public BigInteger abs()
         {
-            if ((this.data[MaxLength - 1] & 0x80000000) != 0)
+            if ((data[MaxLength - 1] & 0x80000000) != 0)
                 return (-this);
             else
                 return (new BigInteger(this));
@@ -1449,7 +1449,7 @@ namespace PacketComs
             BigInteger tempNum;
             bool thisNegative = false;
 
-            if ((this.data[MaxLength - 1] & 0x80000000) != 0) // negative this
+            if ((data[MaxLength - 1] & 0x80000000) != 0) // negative this
             {
                 tempNum = -this%n;
                 thisNegative = true;
@@ -1718,7 +1718,7 @@ namespace PacketComs
         public bool FermatLittleTest(int confidence)
         {
             BigInteger thisVal;
-            if ((this.data[MaxLength - 1] & 0x80000000) != 0) // negative
+            if ((data[MaxLength - 1] & 0x80000000) != 0) // negative
                 thisVal = -this;
             else
                 thisVal = this;
@@ -1808,7 +1808,7 @@ namespace PacketComs
         public bool RabinMillerTest(int confidence)
         {
             BigInteger thisVal;
-            if ((this.data[MaxLength - 1] & 0x80000000) != 0) // negative
+            if ((data[MaxLength - 1] & 0x80000000) != 0) // negative
                 thisVal = -this;
             else
                 thisVal = this;
@@ -1933,7 +1933,7 @@ namespace PacketComs
         public bool SolovayStrassenTest(int confidence)
         {
             BigInteger thisVal;
-            if ((this.data[MaxLength - 1] & 0x80000000) != 0) // negative
+            if ((data[MaxLength - 1] & 0x80000000) != 0) // negative
                 thisVal = -this;
             else
                 thisVal = this;
@@ -2022,7 +2022,7 @@ namespace PacketComs
         public bool LucasStrongTest()
         {
             BigInteger thisVal;
-            if ((this.data[MaxLength - 1] & 0x80000000) != 0) // negative
+            if ((data[MaxLength - 1] & 0x80000000) != 0) // negative
                 thisVal = -this;
             else
                 thisVal = this;
@@ -2055,7 +2055,7 @@ namespace PacketComs
 
             while (!done)
             {
-                int Jresult = BigInteger.Jacobi(D, thisVal);
+                int Jresult = Jacobi(D, thisVal);
 
                 if (Jresult == -1)
                     done = true; // J(D, this) = 1
@@ -2159,7 +2159,7 @@ namespace PacketComs
                     if ((lucas[2].data[MaxLength - 1] & 0x80000000) != 0)
                         lucas[2] += thisVal;
 
-                    BigInteger temp = (Q*BigInteger.Jacobi(Q, thisVal))%thisVal;
+                    BigInteger temp = (Q*Jacobi(Q, thisVal))%thisVal;
                     if ((temp.data[MaxLength - 1] & 0x80000000) != 0)
                         temp += thisVal;
 
@@ -2183,7 +2183,7 @@ namespace PacketComs
         public bool isProbablePrime(int confidence)
         {
             BigInteger thisVal;
-            if ((this.data[MaxLength - 1] & 0x80000000) != 0) // negative
+            if ((data[MaxLength - 1] & 0x80000000) != 0) // negative
                 thisVal = -this;
             else
                 thisVal = this;
@@ -2243,7 +2243,7 @@ namespace PacketComs
         public bool isProbablePrime()
         {
             BigInteger thisVal;
-            if ((this.data[MaxLength - 1] & 0x80000000) != 0) // negative
+            if ((data[MaxLength - 1] & 0x80000000) != 0) // negative
                 thisVal = -this;
             else
                 thisVal = this;
@@ -2588,10 +2588,10 @@ namespace PacketComs
             byte bitPos = (byte) (bitNum & 0x1F); // get the lowest 5 bits
 
             uint mask = (uint) 1 << bitPos;
-            this.data[bytePos] |= mask;
+            data[bytePos] |= mask;
 
-            if (bytePos >= this.DataLength)
-                this.DataLength = (int) bytePos + 1;
+            if (bytePos >= DataLength)
+                DataLength = (int) bytePos + 1;
         }
 
 
@@ -2604,17 +2604,17 @@ namespace PacketComs
         {
             uint bytePos = bitNum >> 5;
 
-            if (bytePos < this.DataLength)
+            if (bytePos < DataLength)
             {
                 byte bitPos = (byte) (bitNum & 0x1F);
 
                 uint mask = (uint) 1 << bitPos;
                 uint mask2 = 0xFFFFFFFF ^ mask;
 
-                this.data[bytePos] &= mask2;
+                data[bytePos] &= mask2;
 
-                if (this.DataLength > 1 && this.data[this.DataLength - 1] == 0)
-                    this.DataLength--;
+                if (DataLength > 1 && data[DataLength - 1] == 0)
+                    DataLength--;
             }
         }
 
@@ -2630,7 +2630,7 @@ namespace PacketComs
 
         public BigInteger sqrt()
         {
-            uint numBits = (uint) this.bitCount();
+            uint numBits = (uint) bitCount();
 
             if ((numBits & 0x1) != 0) // odd number of bits
                 numBits = (numBits >> 1) + 1;
@@ -3222,7 +3222,7 @@ namespace PacketComs
 
             Console.Write("\nGenerating 512-bits random pseudoprime. . .");
             Random rand = new Random();
-            BigInteger prime = BigInteger.genPseudoPrime(512, 5, rand);
+            BigInteger prime = genPseudoPrime(512, 5, rand);
             Console.WriteLine("\n" + prime);
 
             //int dwStart = System.Environment.TickCount;

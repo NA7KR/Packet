@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using System.Resources;
+using System.Threading;
 
 namespace PacketComs
 {
@@ -30,7 +31,7 @@ namespace PacketComs
 
         private void LoadResourceManager(string name, Assembly asm)
         {
-            CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentUICulture;
+            CultureInfo ci = Thread.CurrentThread.CurrentUICulture;
             _resMan = new ResourceManager(name, asm);
         }
     }

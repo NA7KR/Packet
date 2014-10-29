@@ -1,6 +1,7 @@
 using System.Text;
 using System.IO;
 using PacketComs;
+using PacketComs.SSHC;
 
 namespace PacketComs.SSHC
 {
@@ -105,7 +106,7 @@ namespace PacketComs.SSHCV1
         }
     }
 
-    internal class SSH1DataWriter : PacketComs.SSHC.SSHDataWriter
+    internal class SSH1DataWriter : SSHDataWriter
     {
         public override void Write(BigInteger data)
         {
@@ -153,7 +154,7 @@ namespace PacketComs.SSHCV2
         }
     }
 
-    internal class SSH2DataWriter : PacketComs.SSHC.SSHDataWriter
+    internal class SSH2DataWriter : SSHDataWriter
     {
         //writes mpint in SSH2 format
         public override void Write(BigInteger data)
