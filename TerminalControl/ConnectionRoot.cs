@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Net.Sockets;
 using System.Text;
-using Routrek.SSHC;
+using PacketComs.SSHC;
 
 namespace PacketComs
 {

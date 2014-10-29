@@ -41,7 +41,7 @@ namespace PacketComs
     }
 }
 
-namespace Routrek.SSHCV1
+namespace PacketComs.SSHCV1
 {
     public enum PacketType
     {

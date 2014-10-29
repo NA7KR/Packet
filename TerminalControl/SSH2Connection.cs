@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using Routrek.SSHC;
-using Routrek.SSHCV2;
+using PacketComs.SSHC;
+using PacketComs.SSHCV2;
 
 namespace PacketComs
 {

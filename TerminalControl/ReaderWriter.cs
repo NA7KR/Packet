@@ -2,7 +2,7 @@ using System.Text;
 using System.IO;
 using PacketComs;
 
-namespace Routrek.SSHC
+namespace PacketComs.SSHC
 {
     ////////////////////////////////////////////////////////////
 
@@ -87,7 +87,7 @@ namespace Routrek.SSHC
     }
 }
 
-namespace Routrek.SSHCV1
+namespace PacketComs.SSHCV1
 {
     internal class SSH1DataReader : SshDataReader
     {
@@ -105,7 +105,7 @@ namespace Routrek.SSHCV1
         }
     }
 
-    internal class SSH1DataWriter : Routrek.SSHC.SSHDataWriter
+    internal class SSH1DataWriter : PacketComs.SSHC.SSHDataWriter
     {
         public override void Write(BigInteger data)
         {
@@ -126,7 +126,7 @@ namespace Routrek.SSHCV1
 
 }
 
-namespace Routrek.SSHCV2
+namespace PacketComs.SSHCV2
 {
     internal class SSH2DataReader : SshDataReader
     {
@@ -153,7 +153,7 @@ namespace Routrek.SSHCV2
         }
     }
 
-    internal class SSH2DataWriter : Routrek.SSHC.SSHDataWriter
+    internal class SSH2DataWriter : PacketComs.SSHC.SSHDataWriter
     {
         //writes mpint in SSH2 format
         public override void Write(BigInteger data)

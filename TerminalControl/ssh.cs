@@ -7,7 +7,7 @@ using System;
 namespace PacketComs
 {
 
-    #region Routrek SSH Reader Class
+    #region PacketComs SSH Reader Class
 
     internal class Reader : ISshConnectionEventReceiver, ISshChannelEventReceiver
     {

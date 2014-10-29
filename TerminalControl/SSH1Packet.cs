@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading;
-using Routrek.SSHCV1;
+using PacketComs.SSHCV1;
 
 namespace PacketComs
 {
@@ -38,7 +38,7 @@ namespace PacketComs
 		* constructs from the packet type and the body
 		*/
 
-        public static SSH1Packet FromPlainPayload(Routrek.SSHCV1.PacketType type, byte[] data)
+        public static SSH1Packet FromPlainPayload(PacketComs.SSHCV1.PacketType type, byte[] data)
         {
             SSH1Packet p = new SSH1Packet();
             p._type = (byte) type;
@@ -46,7 +46,7 @@ namespace PacketComs
             return p;
         }
 
-        public static SSH1Packet FromPlainPayload(Routrek.SSHCV1.PacketType type)
+        public static SSH1Packet FromPlainPayload(PacketComs.SSHCV1.PacketType type)
         {
             SSH1Packet p = new SSH1Packet();
             p._type = (byte) type;
@@ -62,7 +62,7 @@ namespace PacketComs
         {
             SSH1DataWriter w = new SSH1DataWriter();
             w.WriteAsString(input);
-            SSH1Packet p = SSH1Packet.FromPlainPayload(Routrek.SSHCV1.PacketType.SSH_CMSG_STDIN_DATA, w.ToByteArray());
+            SSH1Packet p = SSH1Packet.FromPlainPayload(PacketComs.SSHCV1.PacketType.SSH_CMSG_STDIN_DATA, w.ToByteArray());
             return p;
         }
 
@@ -110,9 +110,9 @@ namespace PacketComs
             output.Write(image, 0, image.Length);
         }
 
-        public Routrek.SSHCV1.PacketType Type
+        public PacketComs.SSHCV1.PacketType Type
         {
-            get { return (Routrek.SSHCV1.PacketType) _type; }
+            get { return (PacketComs.SSHCV1.PacketType) _type; }
         }
 
         public byte[] Data

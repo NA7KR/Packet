@@ -1,7 +1,7 @@
 using System.Text;
 using PacketComs;
 
-namespace Routrek.SSHC
+namespace PacketComs.SSHC
 {
     /// <summary>
     /// ConnectionInfo describes the attributes of the host or the connection.
@@ -51,7 +51,7 @@ namespace Routrek.SSHC
     }
 }
 
-namespace Routrek.SSHCV1
+namespace PacketComs.SSHCV1
 {
     using SSHC;
 
@@ -93,7 +93,7 @@ namespace Routrek.SSHCV1
     }
 }
 
-namespace Routrek.SSHCV2
+namespace PacketComs.SSHCV2
 {
     using SSHC;
 
