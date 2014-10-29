@@ -1,7 +1,6 @@
 using System;
-using PacketComs;
 
-namespace Routrek.PKI
+namespace PacketComs
 {
     public interface ISigner
     {

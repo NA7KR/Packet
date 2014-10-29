@@ -1,5 +1,4 @@
 using System;
-using Routrek.PKI;
 
 namespace PacketComs
 {
@@ -85,7 +84,7 @@ namespace PacketComs
             table_u = new long[tableCount];
 
             i = 0;
-            for (int pN = 2; pN != 0; pN = sieve.getNextPrime(pN), i++)
+            for (int pN = 2; pN != 0; pN = sieve.GetNextPrime(pN), i++)
             {
                 prime_table[i] = pN;
             }

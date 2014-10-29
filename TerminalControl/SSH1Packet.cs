@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Threading;
-using PacketComs;
-using Routrek.SSHC;
+using Routrek.SSHCV1;
 
-namespace Routrek.SSHCV1
+namespace PacketComs
 {
     internal class SSH1Packet
     {
@@ -39,7 +38,7 @@ namespace Routrek.SSHCV1
 		* constructs from the packet type and the body
 		*/
 
-        public static SSH1Packet FromPlainPayload(PacketType type, byte[] data)
+        public static SSH1Packet FromPlainPayload(Routrek.SSHCV1.PacketType type, byte[] data)
         {
             SSH1Packet p = new SSH1Packet();
             p._type = (byte) type;
@@ -47,7 +46,7 @@ namespace Routrek.SSHCV1
             return p;
         }
 
-        public static SSH1Packet FromPlainPayload(PacketType type)
+        public static SSH1Packet FromPlainPayload(Routrek.SSHCV1.PacketType type)
         {
             SSH1Packet p = new SSH1Packet();
             p._type = (byte) type;
@@ -63,7 +62,7 @@ namespace Routrek.SSHCV1
         {
             SSH1DataWriter w = new SSH1DataWriter();
             w.WriteAsString(input);
-            SSH1Packet p = SSH1Packet.FromPlainPayload(PacketType.SSH_CMSG_STDIN_DATA, w.ToByteArray());
+            SSH1Packet p = SSH1Packet.FromPlainPayload(Routrek.SSHCV1.PacketType.SSH_CMSG_STDIN_DATA, w.ToByteArray());
             return p;
         }
 
@@ -111,9 +110,9 @@ namespace Routrek.SSHCV1
             output.Write(image, 0, image.Length);
         }
 
-        public PacketType Type
+        public Routrek.SSHCV1.PacketType Type
         {
-            get { return (PacketType) _type; }
+            get { return (Routrek.SSHCV1.PacketType) _type; }
         }
 
         public byte[] Data
@@ -177,7 +176,7 @@ namespace Routrek.SSHCV1
                     SSH1Packet p = null;
                     p = (SSH1Packet) _packets[0];
                     _packets.RemoveAt(0);
-                    if (_packets.Count == 0) _event.Reset();
+                    if (_packets.Count == 0) Event.Reset();
                     return p;
                 }
             }
@@ -186,9 +185,9 @@ namespace Routrek.SSHCV1
 
     internal class CallbackSSH1PacketHandler : ISSH1PacketHandler
     {
-        internal SSH1Connection _connection;
+        internal Ssh1Connection _connection;
 
-        internal CallbackSSH1PacketHandler(SSH1Connection con)
+        internal CallbackSSH1PacketHandler(Ssh1Connection con)
         {
             _connection = con;
         }

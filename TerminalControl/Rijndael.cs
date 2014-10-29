@@ -1,13 +1,12 @@
 using System;
-using PacketComs;
 
-namespace Routrek.Crypto
+namespace PacketComs
 {
     public class Rijndael
     {
         private byte[] _IV;
-        private int[][] _Ke; // encryption round keys
-        private int[][] _Kd; // decryption round keys
+        private int[][] _ke; // encryption round keys
+        private int[][] _kd; // decryption round keys
         private int _rounds;
 
         public Rijndael()
@@ -17,13 +16,13 @@ namespace Routrek.Crypto
 
         public int GetBlockSize()
         {
-            return BLOCK_SIZE;
+            return BlockSize;
         }
 
         ///////////////////////////////////////////////
         // set _IV
         ///////////////////////////////////////////////
-        public void SetIV(byte[] newiv)
+        public void SetIv(byte[] newiv)
         {
             Array.Copy(newiv, 0, _IV, 0, _IV.Length);
         }
@@ -39,21 +38,21 @@ namespace Routrek.Crypto
             if (!(key.Length == 16 || key.Length == 24 || key.Length == 32))
                 throw new Exception("Incorrect key length");
 
-            _rounds = getRounds(key.Length, GetBlockSize());
-            _Ke = new int[_rounds + 1][];
-            _Kd = new int[_rounds + 1][];
+            _rounds = GetRounds(key.Length, GetBlockSize());
+            _ke = new int[_rounds + 1][];
+            _kd = new int[_rounds + 1][];
             int i, j;
             for (i = 0; i < _rounds + 1; i++)
             {
-                _Ke[i] = new int[BC];
-                _Kd[i] = new int[BC];
+                _ke[i] = new int[Bc];
+                _kd[i] = new int[Bc];
             }
 
-            int ROUND_KEY_COUNT = (_rounds + 1)*BC;
-            int KC = key.Length/4;
-            int[] tk = new int[KC];
+            int roundKeyCount = (_rounds + 1)*Bc;
+            int kc = key.Length/4;
+            int[] tk = new int[kc];
 
-            for (i = 0, j = 0; i < KC;)
+            for (i = 0, j = 0; i < kc;)
             {
                 tk[i++] = (key[j++] & 0xFF) << 24 |
                           (key[j++] & 0xFF) << 16 |
@@ -62,50 +61,50 @@ namespace Routrek.Crypto
             }
 
             int t = 0;
-            for (j = 0; (j < KC) && (t < ROUND_KEY_COUNT); j++, t++)
+            for (j = 0; (j < kc) && (t < roundKeyCount); j++, t++)
             {
-                _Ke[t/BC][t%BC] = tk[j];
-                _Kd[_rounds - (t/BC)][t%BC] = tk[j];
+                _ke[t/Bc][t%Bc] = tk[j];
+                _kd[_rounds - (t/Bc)][t%Bc] = tk[j];
             }
             int tt, rconpointer = 0;
-            while (t < ROUND_KEY_COUNT)
+            while (t < roundKeyCount)
             {
-                tt = tk[KC - 1];
+                tt = tk[kc - 1];
                 tk[0] ^= (S[(tt >> 16) & 0xFF] & 0xFF) << 24 ^
                          (S[(tt >> 8) & 0xFF] & 0xFF) << 16 ^
                          (S[tt & 0xFF] & 0xFF) << 8 ^
                          (S[(tt >> 24) & 0xFF] & 0xFF) ^
-                         (rcon[rconpointer++] & 0xFF) << 24;
+                         (Rcon[rconpointer++] & 0xFF) << 24;
 
-                if (KC != 8)
+                if (kc != 8)
                 {
-                    for (i = 1, j = 0; i < KC;)
+                    for (i = 1, j = 0; i < kc;)
                         tk[i++] ^= tk[j++];
                 }
                 else
                 {
-                    for (i = 1, j = 0; i < KC/2;)
+                    for (i = 1, j = 0; i < kc/2;)
                         tk[i++] ^= tk[j++];
-                    tt = tk[KC/2 - 1];
-                    tk[KC/2] ^= (S[tt & 0xFF] & 0xFF) ^
+                    tt = tk[kc/2 - 1];
+                    tk[kc/2] ^= (S[tt & 0xFF] & 0xFF) ^
                                 (S[(tt >> 8) & 0xFF] & 0xFF) << 8 ^
                                 (S[(tt >> 16) & 0xFF] & 0xFF) << 16 ^
                                 (S[(tt >> 24) & 0xFF] & 0xFF) << 24;
-                    for (j = KC/2, i = j + 1; i < KC;)
+                    for (j = kc/2, i = j + 1; i < kc;)
                         tk[i++] ^= tk[j++];
                 }
-                for (j = 0; (j < KC) && (t < ROUND_KEY_COUNT); j++, t++)
+                for (j = 0; (j < kc) && (t < roundKeyCount); j++, t++)
                 {
-                    _Ke[t/BC][t%BC] = tk[j];
-                    _Kd[_rounds - (t/BC)][t%BC] = tk[j];
+                    _ke[t/Bc][t%Bc] = tk[j];
+                    _kd[_rounds - (t/Bc)][t%Bc] = tk[j];
                 }
             }
             for (int r = 1; r < _rounds; r++)
             {
-                for (j = 0; j < BC; j++)
+                for (j = 0; j < Bc; j++)
                 {
-                    tt = _Kd[r][j];
-                    _Kd[r][j] = U1[(tt >> 24) & 0xFF] ^
+                    tt = _kd[r][j];
+                    _kd[r][j] = U1[(tt >> 24) & 0xFF] ^
                                 U2[(tt >> 16) & 0xFF] ^
                                 U3[(tt >> 8) & 0xFF] ^
                                 U4[tt & 0xFF];
@@ -113,7 +112,7 @@ namespace Routrek.Crypto
             }
         }
 
-        public static int getRounds(int keySize, int blockSize)
+        public static int GetRounds(int keySize, int blockSize)
         {
             switch (keySize)
             {
@@ -126,173 +125,173 @@ namespace Routrek.Crypto
             }
         }
 
-        public void encryptCBC(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
+        public void EncryptCbc(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
         {
-            int block_size = GetBlockSize();
-            int nBlocks = inputLen/block_size;
+            int blockSize = GetBlockSize();
+            int nBlocks = inputLen/blockSize;
             for (int bc = 0; bc < nBlocks; bc++)
             {
-                CipherUtil.BlockXor(input, inputOffset, block_size, _IV, 0);
-                blockEncrypt(_IV, 0, output, outputOffset);
-                Array.Copy(output, outputOffset, _IV, 0, block_size);
-                inputOffset += block_size;
-                outputOffset += block_size;
+                CipherUtil.BlockXor(input, inputOffset, blockSize, _IV, 0);
+                BlockEncrypt(_IV, 0, output, outputOffset);
+                Array.Copy(output, outputOffset, _IV, 0, blockSize);
+                inputOffset += blockSize;
+                outputOffset += blockSize;
             }
         }
 
-        public void decryptCBC(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
+        public void DecryptCbc(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset)
         {
-            int block_size = GetBlockSize();
-            byte[] tmpBlk = new byte[block_size];
-            int nBlocks = inputLen/block_size;
+            int blockSize = GetBlockSize();
+            byte[] tmpBlk = new byte[blockSize];
+            int nBlocks = inputLen/blockSize;
             for (int bc = 0; bc < nBlocks; bc++)
             {
-                blockDecrypt(input, inputOffset, tmpBlk, 0);
-                for (int i = 0; i < block_size; i++)
+                BlockDecrypt(input, inputOffset, tmpBlk, 0);
+                for (int i = 0; i < blockSize; i++)
                 {
                     tmpBlk[i] ^= _IV[i];
                     _IV[i] = input[inputOffset + i];
                     output[outputOffset + i] = tmpBlk[i];
                 }
-                inputOffset += block_size;
-                outputOffset += block_size;
+                inputOffset += blockSize;
+                outputOffset += blockSize;
             }
         }
 
-        public void blockEncrypt(byte[] src, int inOffset, byte[] dst, int outOffset)
+        public void BlockEncrypt(byte[] src, int inOffset, byte[] dst, int outOffset)
         {
-            int[] Ker = _Ke[0];
+            int[] ker = _ke[0];
 
             int t0 = ((src[inOffset++] & 0xFF) << 24 |
                       (src[inOffset++] & 0xFF) << 16 |
                       (src[inOffset++] & 0xFF) << 8 |
-                      (src[inOffset++] & 0xFF)) ^ Ker[0];
+                      (src[inOffset++] & 0xFF)) ^ ker[0];
             int t1 = ((src[inOffset++] & 0xFF) << 24 |
                       (src[inOffset++] & 0xFF) << 16 |
                       (src[inOffset++] & 0xFF) << 8 |
-                      (src[inOffset++] & 0xFF)) ^ Ker[1];
+                      (src[inOffset++] & 0xFF)) ^ ker[1];
             int t2 = ((src[inOffset++] & 0xFF) << 24 |
                       (src[inOffset++] & 0xFF) << 16 |
                       (src[inOffset++] & 0xFF) << 8 |
-                      (src[inOffset++] & 0xFF)) ^ Ker[2];
+                      (src[inOffset++] & 0xFF)) ^ ker[2];
             int t3 = ((src[inOffset++] & 0xFF) << 24 |
                       (src[inOffset++] & 0xFF) << 16 |
                       (src[inOffset++] & 0xFF) << 8 |
-                      (src[inOffset++] & 0xFF)) ^ Ker[3];
+                      (src[inOffset++] & 0xFF)) ^ ker[3];
 
             int a0, a1, a2, a3;
             for (int r = 1; r < _rounds; r++)
             {
-                Ker = _Ke[r];
+                ker = _ke[r];
                 a0 = (T1[(t0 >> 24) & 0xFF] ^
                       T2[(t1 >> 16) & 0xFF] ^
                       T3[(t2 >> 8) & 0xFF] ^
-                      T4[t3 & 0xFF]) ^ Ker[0];
+                      T4[t3 & 0xFF]) ^ ker[0];
                 a1 = (T1[(t1 >> 24) & 0xFF] ^
                       T2[(t2 >> 16) & 0xFF] ^
                       T3[(t3 >> 8) & 0xFF] ^
-                      T4[t0 & 0xFF]) ^ Ker[1];
+                      T4[t0 & 0xFF]) ^ ker[1];
                 a2 = (T1[(t2 >> 24) & 0xFF] ^
                       T2[(t3 >> 16) & 0xFF] ^
                       T3[(t0 >> 8) & 0xFF] ^
-                      T4[t1 & 0xFF]) ^ Ker[2];
+                      T4[t1 & 0xFF]) ^ ker[2];
                 a3 = (T1[(t3 >> 24) & 0xFF] ^
                       T2[(t0 >> 16) & 0xFF] ^
                       T3[(t1 >> 8) & 0xFF] ^
-                      T4[t2 & 0xFF]) ^ Ker[3];
+                      T4[t2 & 0xFF]) ^ ker[3];
                 t0 = a0;
                 t1 = a1;
                 t2 = a2;
                 t3 = a3;
             }
 
-            Ker = _Ke[_rounds];
-            int tt = Ker[0];
+            ker = _ke[_rounds];
+            int tt = ker[0];
             dst[outOffset + 0] = (byte) (S[(t0 >> 24) & 0xFF] ^ (tt >> 24));
             dst[outOffset + 1] = (byte) (S[(t1 >> 16) & 0xFF] ^ (tt >> 16));
             dst[outOffset + 2] = (byte) (S[(t2 >> 8) & 0xFF] ^ (tt >> 8));
             dst[outOffset + 3] = (byte) (S[t3 & 0xFF] ^ tt);
-            tt = Ker[1];
+            tt = ker[1];
             dst[outOffset + 4] = (byte) (S[(t1 >> 24) & 0xFF] ^ (tt >> 24));
             dst[outOffset + 5] = (byte) (S[(t2 >> 16) & 0xFF] ^ (tt >> 16));
             dst[outOffset + 6] = (byte) (S[(t3 >> 8) & 0xFF] ^ (tt >> 8));
             dst[outOffset + 7] = (byte) (S[t0 & 0xFF] ^ tt);
-            tt = Ker[2];
+            tt = ker[2];
             dst[outOffset + 8] = (byte) (S[(t2 >> 24) & 0xFF] ^ (tt >> 24));
             dst[outOffset + 9] = (byte) (S[(t3 >> 16) & 0xFF] ^ (tt >> 16));
             dst[outOffset + 10] = (byte) (S[(t0 >> 8) & 0xFF] ^ (tt >> 8));
             dst[outOffset + 11] = (byte) (S[t1 & 0xFF] ^ tt);
-            tt = Ker[3];
+            tt = ker[3];
             dst[outOffset + 12] = (byte) (S[(t3 >> 24) & 0xFF] ^ (tt >> 24));
             dst[outOffset + 13] = (byte) (S[(t0 >> 16) & 0xFF] ^ (tt >> 16));
             dst[outOffset + 14] = (byte) (S[(t1 >> 8) & 0xFF] ^ (tt >> 8));
             dst[outOffset + 15] = (byte) (S[t2 & 0xFF] ^ tt);
         }
 
-        public void blockDecrypt(byte[] src, int inOffset, byte[] dst, int outOffset)
+        public void BlockDecrypt(byte[] src, int inOffset, byte[] dst, int outOffset)
         {
-            int[] Kdr = _Kd[0];
+            int[] kdr = _kd[0];
 
             int t0 = ((src[inOffset++] & 0xFF) << 24 |
                       (src[inOffset++] & 0xFF) << 16 |
                       (src[inOffset++] & 0xFF) << 8 |
-                      (src[inOffset++] & 0xFF)) ^ Kdr[0];
+                      (src[inOffset++] & 0xFF)) ^ kdr[0];
             int t1 = ((src[inOffset++] & 0xFF) << 24 |
                       (src[inOffset++] & 0xFF) << 16 |
                       (src[inOffset++] & 0xFF) << 8 |
-                      (src[inOffset++] & 0xFF)) ^ Kdr[1];
+                      (src[inOffset++] & 0xFF)) ^ kdr[1];
             int t2 = ((src[inOffset++] & 0xFF) << 24 |
                       (src[inOffset++] & 0xFF) << 16 |
                       (src[inOffset++] & 0xFF) << 8 |
-                      (src[inOffset++] & 0xFF)) ^ Kdr[2];
+                      (src[inOffset++] & 0xFF)) ^ kdr[2];
             int t3 = ((src[inOffset++] & 0xFF) << 24 |
                       (src[inOffset++] & 0xFF) << 16 |
                       (src[inOffset++] & 0xFF) << 8 |
-                      (src[inOffset++] & 0xFF)) ^ Kdr[3];
+                      (src[inOffset++] & 0xFF)) ^ kdr[3];
 
             int a0, a1, a2, a3;
             for (int r = 1; r < _rounds; r++)
             {
-                Kdr = _Kd[r];
+                kdr = _kd[r];
                 a0 = (T5[(t0 >> 24) & 0xFF] ^
                       T6[(t3 >> 16) & 0xFF] ^
                       T7[(t2 >> 8) & 0xFF] ^
-                      T8[t1 & 0xFF]) ^ Kdr[0];
+                      T8[t1 & 0xFF]) ^ kdr[0];
                 a1 = (T5[(t1 >> 24) & 0xFF] ^
                       T6[(t0 >> 16) & 0xFF] ^
                       T7[(t3 >> 8) & 0xFF] ^
-                      T8[t2 & 0xFF]) ^ Kdr[1];
+                      T8[t2 & 0xFF]) ^ kdr[1];
                 a2 = (T5[(t2 >> 24) & 0xFF] ^
                       T6[(t1 >> 16) & 0xFF] ^
                       T7[(t0 >> 8) & 0xFF] ^
-                      T8[t3 & 0xFF]) ^ Kdr[2];
+                      T8[t3 & 0xFF]) ^ kdr[2];
                 a3 = (T5[(t3 >> 24) & 0xFF] ^
                       T6[(t2 >> 16) & 0xFF] ^
                       T7[(t1 >> 8) & 0xFF] ^
-                      T8[t0 & 0xFF]) ^ Kdr[3];
+                      T8[t0 & 0xFF]) ^ kdr[3];
                 t0 = a0;
                 t1 = a1;
                 t2 = a2;
                 t3 = a3;
             }
 
-            Kdr = _Kd[_rounds];
-            int tt = Kdr[0];
+            kdr = _kd[_rounds];
+            int tt = kdr[0];
             dst[outOffset + 0] = (byte) (Si[(t0 >> 24) & 0xFF] ^ (tt >> 24));
             dst[outOffset + 1] = (byte) (Si[(t3 >> 16) & 0xFF] ^ (tt >> 16));
             dst[outOffset + 2] = (byte) (Si[(t2 >> 8) & 0xFF] ^ (tt >> 8));
             dst[outOffset + 3] = (byte) (Si[t1 & 0xFF] ^ tt);
-            tt = Kdr[1];
+            tt = kdr[1];
             dst[outOffset + 4] = (byte) (Si[(t1 >> 24) & 0xFF] ^ (tt >> 24));
             dst[outOffset + 5] = (byte) (Si[(t0 >> 16) & 0xFF] ^ (tt >> 16));
             dst[outOffset + 6] = (byte) (Si[(t3 >> 8) & 0xFF] ^ (tt >> 8));
             dst[outOffset + 7] = (byte) (Si[t2 & 0xFF] ^ tt);
-            tt = Kdr[2];
+            tt = kdr[2];
             dst[outOffset + 8] = (byte) (Si[(t2 >> 24) & 0xFF] ^ (tt >> 24));
             dst[outOffset + 9] = (byte) (Si[(t1 >> 16) & 0xFF] ^ (tt >> 16));
             dst[outOffset + 10] = (byte) (Si[(t0 >> 8) & 0xFF] ^ (tt >> 8));
             dst[outOffset + 11] = (byte) (Si[t3 & 0xFF] ^ tt);
-            tt = Kdr[3];
+            tt = kdr[3];
             dst[outOffset + 12] = (byte) (Si[(t3 >> 24) & 0xFF] ^ (tt >> 24));
             dst[outOffset + 13] = (byte) (Si[(t2 >> 16) & 0xFF] ^ (tt >> 16));
             dst[outOffset + 14] = (byte) (Si[(t1 >> 8) & 0xFF] ^ (tt >> 8));
@@ -302,12 +301,12 @@ namespace Routrek.Crypto
         /// <summary>
         /// constants
         /// </summary>
-        private const int BLOCK_SIZE = 16;
+        private const int BlockSize = 16;
 
-        private const int BC = 4;
+        private const int Bc = 4;
 
-        private static readonly int[] alog = new int[256];
-        private static readonly int[] log = new int[256];
+        private static readonly int[] Alog = new int[256];
+        private static readonly int[] Log = new int[256];
 
         private static readonly byte[] S = new byte[256];
         private static readonly byte[] Si = new byte[256];
@@ -323,14 +322,7 @@ namespace Routrek.Crypto
         private static readonly int[] U2 = new int[256];
         private static readonly int[] U3 = new int[256];
         private static readonly int[] U4 = new int[256];
-        private static readonly byte[] rcon = new byte[30];
-
-        private static readonly int[,,] shifts = new int[,,]
-        {
-            {{0, 0}, {1, 3}, {2, 2}, {3, 1}},
-            {{0, 0}, {1, 5}, {2, 4}, {3, 3}},
-            {{0, 0}, {1, 7}, {3, 5}, {4, 4}}
-        };
+        private static readonly byte[] Rcon = new byte[30];
 
         ///////////////////////////////////
         //class initialization
@@ -340,15 +332,15 @@ namespace Routrek.Crypto
             int ROOT = 0x11B;
             int i, j = 0;
 
-            alog[0] = 1;
+            Alog[0] = 1;
             for (i = 1; i < 256; i++)
             {
-                j = (alog[i - 1] << 1) ^ alog[i - 1];
+                j = (Alog[i - 1] << 1) ^ Alog[i - 1];
                 if ((j & 0x100) != 0) j ^= ROOT;
-                alog[i] = j;
+                Alog[i] = j;
             }
-            for (i = 1; i < 255; i++) log[alog[i]] = i;
-            byte[,] A = new byte[,]
+            for (i = 1; i < 255; i++) Log[Alog[i]] = i;
+            byte[,] a =
             {
                 {1, 1, 1, 1, 1, 0, 0, 0},
                 {0, 1, 1, 1, 1, 1, 0, 0},
@@ -359,14 +351,14 @@ namespace Routrek.Crypto
                 {1, 1, 1, 0, 0, 0, 1, 1},
                 {1, 1, 1, 1, 0, 0, 0, 1}
             };
-            byte[] B = new byte[] {0, 1, 1, 0, 0, 0, 1, 1};
+            byte[] b = {0, 1, 1, 0, 0, 0, 1, 1};
 
             int t;
             byte[,] box = new byte[256, 8];
             box[1, 7] = 1;
             for (i = 2; i < 256; i++)
             {
-                j = alog[255 - log[i]];
+                j = Alog[255 - Log[i]];
                 for (t = 0; t < 8; t++)
                 {
                     box[i, t] = (byte) ((j >> (7 - t)) & 0x01);
@@ -378,9 +370,9 @@ namespace Routrek.Crypto
             {
                 for (t = 0; t < 8; t++)
                 {
-                    cox[i, t] = B[t];
+                    cox[i, t] = b[t];
                     for (j = 0; j < 8; j++)
-                        cox[i, t] ^= (byte) (A[t, j]*box[i, j]);
+                        cox[i, t] ^= (byte) (a[t, j]*box[i, j]);
                 }
             }
 
@@ -391,17 +383,17 @@ namespace Routrek.Crypto
                     S[i] ^= (byte) (cox[i, t] << (7 - t));
                 Si[S[i] & 0xFF] = (byte) i;
             }
-            byte[][] G = new byte[4][];
-            G[0] = new byte[] {2, 1, 1, 3};
-            G[1] = new byte[] {3, 2, 1, 1};
-            G[2] = new byte[] {1, 3, 2, 1};
-            G[3] = new byte[] {1, 1, 3, 2};
+            byte[][] g = new byte[4][];
+            g[0] = new byte[] {2, 1, 1, 3};
+            g[1] = new byte[] {3, 2, 1, 1};
+            g[2] = new byte[] {1, 3, 2, 1};
+            g[3] = new byte[] {1, 1, 3, 2};
 
-            byte[,] AA = new byte[4, 8];
+            byte[,] aa = new byte[4, 8];
             for (i = 0; i < 4; i++)
             {
-                for (j = 0; j < 4; j++) AA[i, j] = G[i][j];
-                AA[i, i + 4] = 1;
+                for (j = 0; j < 4; j++) aa[i, j] = g[i][j];
+                aa[i, i + 4] = 1;
             }
             byte pivot, tmp;
             byte[][] iG = new byte[4][];
@@ -410,80 +402,80 @@ namespace Routrek.Crypto
 
             for (i = 0; i < 4; i++)
             {
-                pivot = AA[i, i];
+                pivot = aa[i, i];
                 if (pivot == 0)
                 {
                     t = i + 1;
-                    while ((AA[t, i] == 0) && (t < 4))
+                    while ((aa[t, i] == 0) && (t < 4))
                         t++;
                     if (t != 4)
                     {
                         for (j = 0; j < 8; j++)
                         {
-                            tmp = AA[i, j];
-                            AA[i, j] = AA[t, j];
-                            AA[t, j] = (byte) tmp;
+                            tmp = aa[i, j];
+                            aa[i, j] = aa[t, j];
+                            aa[t, j] = tmp;
                         }
-                        pivot = AA[i, i];
+                        pivot = aa[i, i];
                     }
                 }
                 for (j = 0; j < 8; j++)
-                    if (AA[i, j] != 0)
-                        AA[i, j] = (byte)
-                            alog[(255 + log[AA[i, j] & 0xFF] - log[pivot & 0xFF])%255];
+                    if (aa[i, j] != 0)
+                        aa[i, j] = (byte)
+                            Alog[(255 + Log[aa[i, j] & 0xFF] - Log[pivot & 0xFF])%255];
                 for (t = 0; t < 4; t++)
                     if (i != t)
                     {
                         for (j = i + 1; j < 8; j++)
-                            AA[t, j] ^= (byte) mul(AA[i, j], AA[t, i]);
-                        AA[t, i] = 0;
+                            aa[t, j] ^= (byte) Mul(aa[i, j], aa[t, i]);
+                        aa[t, i] = 0;
                     }
             }
 
             for (i = 0; i < 4; i++)
-                for (j = 0; j < 4; j++) iG[i][j] = AA[i, j + 4];
+                for (j = 0; j < 4; j++) iG[i][j] = aa[i, j + 4];
 
             int s;
             for (t = 0; t < 256; t++)
             {
                 s = S[t];
-                T1[t] = mul4(s, G[0]);
-                T2[t] = mul4(s, G[1]);
-                T3[t] = mul4(s, G[2]);
-                T4[t] = mul4(s, G[3]);
+                T1[t] = Mul4(s, g[0]);
+                T2[t] = Mul4(s, g[1]);
+                T3[t] = Mul4(s, g[2]);
+                T4[t] = Mul4(s, g[3]);
 
                 s = Si[t];
-                T5[t] = mul4(s, iG[0]);
-                T6[t] = mul4(s, iG[1]);
-                T7[t] = mul4(s, iG[2]);
-                T8[t] = mul4(s, iG[3]);
+                T5[t] = Mul4(s, iG[0]);
+                T6[t] = Mul4(s, iG[1]);
+                T7[t] = Mul4(s, iG[2]);
+                T8[t] = Mul4(s, iG[3]);
 
-                U1[t] = mul4(t, iG[0]);
-                U2[t] = mul4(t, iG[1]);
-                U3[t] = mul4(t, iG[2]);
-                U4[t] = mul4(t, iG[3]);
+                U1[t] = Mul4(t, iG[0]);
+                U2[t] = Mul4(t, iG[1]);
+                U3[t] = Mul4(t, iG[2]);
+                U4[t] = Mul4(t, iG[3]);
             }
 
-            rcon[0] = 1;
+            Rcon[0] = 1;
             int r = 1;
-            for (t = 1; t < 30;) rcon[t++] = (byte) (r = mul(2, r));
+            for (t = 1; t < 30;) Rcon[t++] = (byte) (r = Mul(2, r));
         }
 
-        private static int mul(int a, int b)
+        private static int Mul(int a, int b)
         {
             return (a != 0 && b != 0)
-                ? alog[(log[a & 0xFF] + log[b & 0xFF])%255]
+                ? Alog[(Log[a & 0xFF] + Log[b & 0xFF])%255]
                 : 0;
         }
 
-        private static int mul4(int a, byte[] b)
+        private static int Mul4(int a, byte[] b)
         {
             if (a == 0) return 0;
-            a = log[a & 0xFF];
-            int a0 = (b[0] != 0) ? alog[(a + log[b[0] & 0xFF])%255] & 0xFF : 0;
-            int a1 = (b[1] != 0) ? alog[(a + log[b[1] & 0xFF])%255] & 0xFF : 0;
-            int a2 = (b[2] != 0) ? alog[(a + log[b[2] & 0xFF])%255] & 0xFF : 0;
-            int a3 = (b[3] != 0) ? alog[(a + log[b[3] & 0xFF])%255] & 0xFF : 0;
+            a = Log[a & 0xFF];
+            int a0 = (b[0] != 0) ? Alog[(a + Log[b[0] & 0xFF])%255] & 0xFF : 0;
+            int a1 = (b[1] != 0) ? Alog[(a + Log[b[1] & 0xFF])%255] & 0xFF : 0;
+            int a2 = (b[2] != 0) ? Alog[(a + Log[b[2] & 0xFF])%255] & 0xFF : 0;
+            int a3 = (b[3] != 0) ? Alog[(a + Log[b[3] & 0xFF])%255] & 0xFF : 0;
             return a0 << 24 | a1 << 16 | a2 << 8 | a3;
         }
     }

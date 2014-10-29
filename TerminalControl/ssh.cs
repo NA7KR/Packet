@@ -9,7 +9,7 @@ namespace PacketComs
 
     #region Routrek SSH Reader Class
 
-    internal class Reader : Routrek.SSHC.ISSHConnectionEventReceiver, Routrek.SSHC.ISSHChannelEventReceiver
+    internal class Reader : ISshConnectionEventReceiver, ISshChannelEventReceiver
     {
         private TerminalEmulator Terminal;
 
@@ -56,7 +56,7 @@ namespace PacketComs
             Terminal.Disconnectby();
         }
 
-        public void OnChannelEOF()
+        public void OnChannelEof()
         {
             Pf.Close();
             //Debug.WriteLine("Channel EOF");
@@ -87,20 +87,20 @@ namespace PacketComs
             //Debug.WriteLine("Channel ERROR: "+ msg);
         }
 
-        public void OnMiscPacket(byte type, byte[] data, int offset, int length)
+        public void OnMiscPacket(byte packetType, byte[] data, int offset, int length)
         {
         }
 
-        public Routrek.SSHC.PortForwardingCheckResult CheckPortForwardingRequest(string host, int port,
+        public PortForwardingCheckResult CheckPortForwardingRequest(string remoteHost, int remotePort,
             string originatorHost, int originatorPort)
         {
-            Routrek.SSHC.PortForwardingCheckResult r = new Routrek.SSHC.PortForwardingCheckResult();
-            r.allowed = true;
-            r.channel = this;
+            PortForwardingCheckResult r = new PortForwardingCheckResult();
+            r.Allowed = true;
+            r.Channel = this;
             return r;
         }
 
-        public void EstablishPortforwarding(Routrek.SSHC.ISSHChannelEventReceiver rec, SshChannel channel)
+        public void EstablishPortforwarding(ISshChannelEventReceiver rec, SshChannel channel)
         {
             Pf = channel;
         }

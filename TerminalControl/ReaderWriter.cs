@@ -1,92 +1,10 @@
-using System;
 using System.Text;
 using System.IO;
 using PacketComs;
-using Routrek.PKI;
 
 namespace Routrek.SSHC
 {
     ////////////////////////////////////////////////////////////
-    /// read/write primitive types
-    /// 
-    internal abstract class SSHDataReader
-    {
-        protected byte[] _data;
-        protected int _offset;
-
-        public SSHDataReader(byte[] image)
-        {
-            _data = image;
-            _offset = 0;
-        }
-
-        public byte[] Image
-        {
-            get { return _data; }
-        }
-
-        public int Offset
-        {
-            get { return _offset; }
-        }
-
-        public int ReadInt32()
-        {
-            if (_offset + 3 >= _data.Length) throw new IOException(Strings.GetString("UnexpectedEOF"));
-
-            int ret = (((int) _data[_offset]) << 24) + (((int) _data[_offset + 1]) << 16) +
-                      (((int) _data[_offset + 2]) << 8) + _data[_offset + 3];
-
-            _offset += 4;
-            return ret;
-        }
-
-        public byte ReadByte()
-        {
-            if (_offset >= _data.Length) throw new IOException(Strings.GetString("UnexpectedEOF"));
-            return _data[_offset++];
-        }
-
-        public bool ReadBool()
-        {
-            if (_offset >= _data.Length) throw new IOException(Strings.GetString("UnexpectedEOF"));
-            return _data[_offset++] == 0 ? false : true;
-        }
-
-        /**
-		* multi-precise integer
-		*/
-        public abstract BigInteger ReadMPInt();
-
-        public byte[] ReadString()
-        {
-            int length = ReadInt32();
-            return Read(length);
-        }
-
-        public byte[] Read(int length)
-        {
-            byte[] image = new byte[length];
-            for (int i = 0; i < image.Length; i++)
-            {
-                if (_offset == _data.Length) throw new IOException(Strings.GetString("UnexpectedEOF"));
-                image[i] = _data[_offset++];
-            }
-            return image;
-        }
-
-        public byte[] ReadAll()
-        {
-            byte[] t = new byte[_data.Length - _offset];
-            Array.Copy(_data, _offset, t, 0, t.Length);
-            return t;
-        }
-
-        public int Rest
-        {
-            get { return _data.Length - _offset; }
-        }
-    }
 
 
     internal abstract class SSHDataWriter : IKeyWriter
@@ -171,16 +89,16 @@ namespace Routrek.SSHC
 
 namespace Routrek.SSHCV1
 {
-    internal class SSH1DataReader : Routrek.SSHC.SSHDataReader
+    internal class SSH1DataReader : SshDataReader
     {
         public SSH1DataReader(byte[] image) : base(image)
         {
         }
 
-        public override BigInteger ReadMPInt()
+        public override BigInteger ReadMpInt()
         {
             //first 2 bytes describes the bit count
-            int bits = (((int) _data[_offset]) << 8) + _data[_offset + 1];
+            int bits = (((int) Data[_offset]) << 8) + Data[_offset + 1];
             _offset += 2;
 
             return new BigInteger(Read((bits + 7)/8));
@@ -209,7 +127,7 @@ namespace Routrek.SSHCV1
 
 namespace Routrek.SSHCV2
 {
-    internal class SSH2DataReader : Routrek.SSHC.SSHDataReader
+    internal class SSH2DataReader : SshDataReader
     {
         public SSH2DataReader(byte[] image) : base(image)
         {
@@ -223,7 +141,7 @@ namespace Routrek.SSHCV2
             return new BigInteger(Read(bytes));
         }
 
-        public override BigInteger ReadMPInt()
+        public override BigInteger ReadMpInt()
         {
             return new BigInteger(ReadString());
         }

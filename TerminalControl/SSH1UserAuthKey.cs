@@ -1,11 +1,10 @@
 using System;
 using System.IO;
-using System.Text;
 using System.Security.Cryptography;
-using PacketComs;
-using Routrek.SSHC;
+using System.Text;
+using Routrek.SSHCV1;
 
-namespace Routrek.SSHCV1
+namespace PacketComs
 {
     /// <summary>
     /// private key for user authentication
@@ -48,8 +47,8 @@ namespace Routrek.SSHCV1
             byte[] cipher = reader.Read(2); //first 2 bytes indicates algorithm and next 8 bytes is space
             reader.Read(8);
 
-            _modulus = reader.ReadMPInt();
-            _publicExponent = reader.ReadMPInt();
+            _modulus = reader.ReadMpInt();
+            _publicExponent = reader.ReadMpInt();
             byte[] comment = reader.ReadString();
             byte[] prvt = reader.ReadAll();
             //ïKóvÇ»ÇÁïúçÜ
@@ -67,10 +66,10 @@ namespace Routrek.SSHCV1
             if (mark[0] != mark[2] || mark[1] != mark[3])
                 throw new SSHException(Strings.GetString("WrongPassphrase"));
 
-            _privateExponent = prvtreader.ReadMPInt();
-            _crtCoefficient = prvtreader.ReadMPInt();
-            _primeP = prvtreader.ReadMPInt();
-            _primeQ = prvtreader.ReadMPInt();
+            _privateExponent = prvtreader.ReadMpInt();
+            _crtCoefficient = prvtreader.ReadMpInt();
+            _primeP = prvtreader.ReadMpInt();
+            _primeQ = prvtreader.ReadMpInt();
         }
 
         public BigInteger decryptChallenge(BigInteger encryptedchallenge)

@@ -1,5 +1,3 @@
-using Routrek.PKI;
-
 namespace PacketComs
 {
     public enum DisconnectReason

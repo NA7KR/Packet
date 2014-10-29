@@ -170,7 +170,7 @@ namespace PacketComs
                     SSH2Packet p = null;
                     p = (SSH2Packet) _packets[0];
                     _packets.RemoveAt(0);
-                    if (_packets.Count == 0) _event.Reset();
+                    if (_packets.Count == 0) Event.Reset();
                     return p;
                 }
             }

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using Routrek.PKI;
 using Routrek.SSHC;
 using Routrek.SSHCV2;
 
@@ -25,7 +24,7 @@ namespace PacketComs
 
         private KeyExchanger _asyncKeyExchanger;
 
-        public SSH2Connection(SshConnectionParameter param, ISSHConnectionEventReceiver r, string serverversion,
+        public SSH2Connection(SshConnectionParameter param, ISshConnectionEventReceiver r, string serverversion,
             string clientversion) : base(param, r)
         {
             _cInfo = new Ssh2ConnectionInfo();
@@ -206,7 +205,7 @@ namespace PacketComs
             return _authenticationResult;
         }
 
-        public override SshChannel OpenShell(ISSHChannelEventReceiver receiver)
+        public override SshChannel OpenShell(ISshChannelEventReceiver receiver)
         {
             //open channel
             SSH2DataWriter wr = new SSH2DataWriter();
@@ -224,7 +223,7 @@ namespace PacketComs
             return channel;
         }
 
-        public override SshChannel ForwardPort(ISSHChannelEventReceiver receiver, string remoteHost, int remotePort,
+        public override SshChannel ForwardPort(ISshChannelEventReceiver receiver, string remoteHost, int remotePort,
             string originatorHost, int originatorPort)
         {
             SSH2DataWriter wr = new SSH2DataWriter();
@@ -271,7 +270,7 @@ namespace PacketComs
             TransmitPacket(wr.ToByteArray());
         }
 
-        private void ProcessPortforwardingRequest(ISSHConnectionEventReceiver receiver, SSH2DataReader reader)
+        private void ProcessPortforwardingRequest(ISshConnectionEventReceiver receiver, SSH2DataReader reader)
         {
             string method = Encoding.ASCII.GetString(reader.ReadString());
 
@@ -285,24 +284,24 @@ namespace PacketComs
 
             PortForwardingCheckResult r = receiver.CheckPortForwardingRequest(host, port, originator_ip, originator_port);
             SSH2DataWriter wr = new SSH2DataWriter();
-            if (r.allowed)
+            if (r.Allowed)
             {
                 //send OPEN_CONFIRMATION
                 SSH2Channel channel = new SSH2Channel(this, ChannelType.ForwardedRemoteToLocal,
-                    RegisterChannelEventReceiver(null, r.channel).LocalId, remote_channel, servermaxpacketsize);
+                    RegisterChannelEventReceiver(null, r.Channel).LocalId, remote_channel, servermaxpacketsize);
                 wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_OPEN_CONFIRMATION);
                 wr.Write(remote_channel);
                 wr.Write(channel.LocalChannelId);
                 wr.Write(_param.WindowSize); //initial window size
                 wr.Write(_param.MaxPacketSize); //max packet size
-                receiver.EstablishPortforwarding(r.channel, channel);
+                receiver.EstablishPortforwarding(r.Channel, channel);
             }
             else
             {
                 wr.WritePacketType(PacketType.SSH_MSG_CHANNEL_OPEN_FAILURE);
                 wr.Write(remote_channel);
-                wr.Write(r.reason_code);
-                wr.Write(r.reason_message);
+                wr.Write(r.ReasonCode);
+                wr.Write(r.ReasonMessage);
                 wr.Write(""); //lang tag
             }
             TransmitPacket(wr.ToByteArray());
@@ -589,7 +588,7 @@ namespace PacketComs
             TransmitPacket(wr.ToByteArray());
         }
 
-        internal void ProcessPacket(ISSHChannelEventReceiver receiver, PacketType pt, int data_length, SSH2DataReader re)
+        internal void ProcessPacket(ISshChannelEventReceiver receiver, PacketType pt, int data_length, SSH2DataReader re)
         {
             //NOTE: the offset of 're' is next to 'receipiant channel' field
             _leftWindowSize -= data_length;
@@ -655,7 +654,7 @@ namespace PacketComs
                     }
                         break;
                     case PacketType.SSH_MSG_CHANNEL_EOF:
-                        receiver.OnChannelEOF();
+                        receiver.OnChannelEof();
                         break;
                     case PacketType.SSH_MSG_CHANNEL_CLOSE:
                         _connection.UnregisterChannelEventReceiver(LocalId);
@@ -678,7 +677,7 @@ namespace PacketComs
             ((SSH2Connection) _connection).TransmitPacket(data);
         }
 
-        private void OpenShell(ISSHChannelEventReceiver receiver, PacketType pt, SSH2DataReader reader)
+        private void OpenShell(ISshChannelEventReceiver receiver, PacketType pt, SSH2DataReader reader)
         {
             if (_negotiationStatus == 3)
             {
@@ -753,7 +752,7 @@ namespace PacketComs
                 Debug.Assert(false);
         }
 
-        private void ReceivePortForwardingResponse(ISSHChannelEventReceiver receiver, PacketType pt,
+        private void ReceivePortForwardingResponse(ISshChannelEventReceiver receiver, PacketType pt,
             SSH2DataReader reader)
         {
             if (_negotiationStatus == 1)
@@ -782,7 +781,7 @@ namespace PacketComs
                 Debug.Assert(false);
         }
 
-        private void EstablishSession(ISSHChannelEventReceiver receiver, PacketType pt, SSH2DataReader reader)
+        private void EstablishSession(ISshChannelEventReceiver receiver, PacketType pt, SSH2DataReader reader)
         {
             if (_negotiationStatus == 1)
             {
@@ -998,7 +997,7 @@ namespace PacketComs
             if (h != PacketType.SSH_MSG_KEXDH_REPLY)
                 throw new SSHException(String.Format("KeyExchange response is not KEXDH_REPLY but {0}", h));
             byte[] key_and_cert = re.ReadString();
-            BigInteger f = re.ReadMPInt();
+            BigInteger f = re.ReadMpInt();
             byte[] signature = re.ReadString();
             Debug.Assert(re.Rest == 0);
 
@@ -1095,8 +1094,8 @@ namespace PacketComs
 
         private void VerifyHostKeyByRSA(SSH2DataReader pubkey, byte[] sigbody, byte[] hash)
         {
-            BigInteger exp = pubkey.ReadMPInt();
-            BigInteger mod = pubkey.ReadMPInt();
+            BigInteger exp = pubkey.ReadMpInt();
+            BigInteger mod = pubkey.ReadMpInt();
             Debug.Assert(pubkey.Rest == 0);
 
             //Debug.WriteLine(exp.ToHexString());
@@ -1109,10 +1108,10 @@ namespace PacketComs
 
         private void VerifyHostKeyByDSS(SSH2DataReader pubkey, byte[] sigbody, byte[] hash)
         {
-            BigInteger p = pubkey.ReadMPInt();
-            BigInteger q = pubkey.ReadMPInt();
-            BigInteger g = pubkey.ReadMPInt();
-            BigInteger y = pubkey.ReadMPInt();
+            BigInteger p = pubkey.ReadMpInt();
+            BigInteger q = pubkey.ReadMpInt();
+            BigInteger g = pubkey.ReadMpInt();
+            BigInteger y = pubkey.ReadMpInt();
             Debug.Assert(pubkey.Rest == 0);
 
             //Debug.WriteLine(p.ToHexString());

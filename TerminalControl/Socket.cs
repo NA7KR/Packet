@@ -1,10 +1,9 @@
 using System;
-using System.Text;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
-using PacketComs;
 
-namespace Routrek.SSHC
+namespace PacketComs
 {
     internal enum ReceiverState
     {
@@ -34,29 +33,29 @@ namespace Routrek.SSHC
         public virtual void SetClosed()
         {
             _state = ReceiverState.Closed;
-            _event.Set();
+            Event.Set();
         }
 
         public virtual void SetError(string msg)
         {
             _errorMessage = msg;
             _state = ReceiverState.Error;
-            _event.Set();
+            Event.Set();
         }
 
         public virtual void SetReady()
         {
             _state = ReceiverState.Ready;
-            _event.Set();
+            Event.Set();
         }
 
-        protected ManualResetEvent _event;
+        protected ManualResetEvent Event;
         protected ReceiverState _state;
         protected string _errorMessage;
 
         public WaitHandle WaitHandle
         {
-            get { return _event; }
+            get { return Event; }
         }
 
         public ReceiverState State
@@ -71,25 +70,25 @@ namespace Routrek.SSHC
 
         public void Wait()
         {
-            _event.WaitOne();
-            _event.Reset();
+            Event.WaitOne();
+            Event.Reset();
         }
 
         protected SynchronizedHandlerBase()
         {
-            _event = new ManualResetEvent(false);
+            Event = new ManualResetEvent(false);
         }
     }
 
     internal class ProtocolNegotiationHandler : SynchronizedHandlerBase, IByteArrayHandler
     {
         protected string _serverVersion;
-        protected SshConnectionParameter _param;
-        protected string _endOfLine;
+        protected SshConnectionParameter Param;
+        protected string EndOfLine;
 
         public ProtocolNegotiationHandler(SshConnectionParameter param)
         {
-            _param = param;
+            Param = param;
             _errorMessage = Strings.GetString("NotSSHServer");
         }
 
@@ -98,9 +97,9 @@ namespace Routrek.SSHC
             get { return _serverVersion; }
         }
 
-        public string EOL
+        public string Eol
         {
-            get { return _endOfLine; }
+            get { return EndOfLine; }
         }
 
         public void OnData(byte[] buf, int offset, int length)
@@ -113,7 +112,7 @@ namespace Routrek.SSHC
                 //Debug.WriteLine(String.Format("receiveServerVersion len={0}",len));
                 string sv = Encoding.ASCII.GetString(buf, offset, length);
                 _serverVersion = sv.Trim();
-                _endOfLine = sv.EndsWith("\r\n") ? "\r\n" : "\n"; //quick hack
+                EndOfLine = sv.EndsWith("\r\n") ? "\r\n" : "\n"; //quick hack
 
                 //check compatibility
                 int a = _serverVersion.IndexOf('-');
@@ -126,7 +125,7 @@ namespace Routrek.SSHC
                 int major = Int32.Parse(_serverVersion.Substring(a + 1, comma - a - 1));
                 int minor = Int32.Parse(_serverVersion.Substring(comma + 1, b - comma - 1));
 
-                if (_param.Protocol == SSHProtocol.SSH1)
+                if (Param.Protocol == SSHProtocol.SSH1)
                 {
                     if (major != 1) throw new SSHException("The protocol version of server is not compatible for SSH1");
                 }
@@ -136,7 +135,7 @@ namespace Routrek.SSHC
                         throw new SSHException("The protocol version of server is not compatible with SSH2");
                 }
 
-                this.SetReady();
+                SetReady();
             }
             catch (Exception ex)
             {
@@ -158,16 +157,16 @@ namespace Routrek.SSHC
     //System.IO.Socket‚ÆIChannelEventReceiver‚ð’ŠÛ‰»‚·‚é
     internal abstract class AbstractSocket
     {
-        protected IByteArrayHandler _handler;
+        protected IByteArrayHandler Handler;
 
         protected AbstractSocket(IByteArrayHandler h)
         {
-            _handler = h;
+            Handler = h;
         }
 
         public void SetHandler(IByteArrayHandler h)
         {
-            _handler = h;
+            Handler = h;
         }
 
         internal abstract void Write(byte[] data, int offset, int length);
@@ -214,7 +213,7 @@ namespace Routrek.SSHC
 
         internal void RepeatAsyncRead()
         {
-            _socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
+            _socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, RepeatCallback, null);
         }
 
         internal override bool DataAvailable
@@ -231,33 +230,33 @@ namespace Routrek.SSHC
                 //Debug.WriteLine(String.Format("r={0}, n={1} cr={2} cw={3}", result.IsCompleted, n, _socket.CanRead, _socket.CanWrite));
                 if (n > 0)
                 {
-                    _handler.OnData(_buf, 0, n);
-                    _socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
+                    Handler.OnData(_buf, 0, n);
+                    _socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, RepeatCallback, null);
                 }
                 else if (n < 0)
                 {
                     //in case of Win9x, EndReceive() returns 0 every 288 seconds even if no data is available
-                    _socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
+                    _socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, RepeatCallback, null);
                 }
                 else
-                    _handler.OnClosed();
+                    Handler.OnClosed();
             }
             catch (Exception ex)
             {
                 if ((ex is SocketException) && ((SocketException) ex).ErrorCode == 995)
                 {
                     //in case of .NET1.1 on Win9x, EndReceive() changes the behavior. it throws SocketException with an error code 995. 
-                    _socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
+                    _socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, RepeatCallback, null);
                 }
                 else if (!_closed)
-                    _handler.OnError(ex, ex.Message);
+                    Handler.OnError(ex, ex.Message);
                 else
-                    _handler.OnClosed();
+                    Handler.OnClosed();
             }
         }
     }
 
-    internal class ChannelSocket : AbstractSocket, ISSHChannelEventReceiver
+    internal class ChannelSocket : AbstractSocket, ISshChannelEventReceiver
     {
         private SshChannel _channel;
         private bool _ready;
@@ -267,7 +266,7 @@ namespace Routrek.SSHC
             _ready = false;
         }
 
-        internal SshChannel SSHChennal
+        internal SshChannel SshChennal
         {
             get { return _channel; }
             set { _channel = value; }
@@ -307,22 +306,22 @@ namespace Routrek.SSHC
 
         public void OnData(byte[] data, int offset, int length)
         {
-            _handler.OnData(data, offset, length);
+            Handler.OnData(data, offset, length);
         }
 
-        public void OnChannelEOF()
+        public void OnChannelEof()
         {
-            _handler.OnClosed();
+            Handler.OnClosed();
         }
 
         public void OnChannelError(Exception error, string msg)
         {
-            _handler.OnError(error, msg);
+            Handler.OnError(error, msg);
         }
 
         public void OnChannelClosed()
         {
-            _handler.OnClosed();
+            Handler.OnClosed();
         }
 
         public void OnChannelReady()
@@ -335,7 +334,7 @@ namespace Routrek.SSHC
             //!!handle data
         }
 
-        public void OnMiscPacket(byte type, byte[] data, int offset, int length)
+        public void OnMiscPacket(byte packetType, byte[] data, int offset, int length)
         {
         }
     }

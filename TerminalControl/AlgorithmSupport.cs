@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
-using Routrek.Crypto;
-using Rijndael = Routrek.Crypto.Rijndael;
+using Rijndael = PacketComs.Rijndael;
 
 namespace PacketComs
 {
@@ -186,18 +185,18 @@ namespace PacketComs
         public RijindaelCipher2(byte[] key, byte[] iv)
         {
             _rijindael = new Rijndael();
-            _rijindael.SetIV(iv);
+            _rijindael.SetIv(iv);
             _rijindael.InitializeKey(key);
         }
 
         public void Encrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _rijindael.encryptCBC(data, offset, len, result, resultOffset);
+            _rijindael.EncryptCbc(data, offset, len, result, resultOffset);
         }
 
         public void Decrypt(byte[] data, int offset, int len, byte[] result, int resultOffset)
         {
-            _rijindael.decryptCBC(data, offset, len, result, resultOffset);
+            _rijindael.DecryptCbc(data, offset, len, result, resultOffset);
         }
 
         public int BlockSize

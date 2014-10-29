@@ -1,6 +1,5 @@
 using System.Text;
 using PacketComs;
-using Routrek.PKI;
 
 namespace Routrek.SSHC
 {
@@ -97,7 +96,6 @@ namespace Routrek.SSHCV1
 namespace Routrek.SSHCV2
 {
     using SSHC;
-    using PKI;
 
     public class Ssh2ConnectionInfo : SshConnectionInfo
     {

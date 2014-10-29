@@ -1,45 +1,19 @@
 using System;
-using PacketComs;
+using Routrek.SSHC;
 
-namespace Routrek.SSHC
-{
-    //param connectionInfo is identical to the ConnectionInfo property of the connection 
+namespace PacketComs
+{ 
     public delegate bool HostKeyCheckCallback(SshConnectionInfo connectionInfo);
 
-    //port forwarding check result
     public struct PortForwardingCheckResult
     {
-        /**
-		 * if you allow this request, set 'allowed' to true.
-		 */
-        public bool allowed;
-
-        /**
-		 * if you allow this request, you must set 'channel' for this request. otherwise, 'channel' is ignored
-		 */
-        public ISSHChannelEventReceiver channel;
-
-        /**
-		 * if you disallow this request, you can set 'reason_code'.
-			The following reason codes are defined:
-
-			#define SSH_OPEN_ADMINISTRATIVELY_PROHIBITED    1
-			#define SSH_OPEN_CONNECT_FAILED                 2
-			#define SSH_OPEN_UNKNOWN_CHANNEL_TYPE           3
-			#define SSH_OPEN_RESOURCE_SHORTAGE              4
-		 */
-        public int reason_code;
-
-        /**
-		 * if you disallow this request, you can set 'reason_message'. this message can contain only ASCII characters.
-		 */
-        public string reason_message;
+        public bool Allowed;
+        public ISshChannelEventReceiver Channel;
+        public int ReasonCode;
+        public string ReasonMessage;
     }
 
-    /// <summary>
-    /// Connection specific receiver
-    /// </summary>
-    public interface ISSHConnectionEventReceiver
+    public interface ISshConnectionEventReceiver
     {
         void OnDebugMessage(bool alwaysDisplay, byte[] msg);
         void OnIgnoreMessage(byte[] msg);
@@ -48,23 +22,20 @@ namespace Routrek.SSHC
         void OnConnectionClosed();
         void OnAuthenticationPrompt(string[] prompts); //keyboard-interactive only
 
-        PortForwardingCheckResult CheckPortForwardingRequest(string remote_host, int remote_port, string originatorHost,
+        PortForwardingCheckResult CheckPortForwardingRequest(string remoteHost, int remotePort, string originatorHost,
             int originatorPort);
 
-        void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SshChannel channel);
+        void EstablishPortforwarding(ISshChannelEventReceiver receiver, SshChannel channel);
     }
 
-    /// <summary>
-    /// Channel specific receiver 
-    /// </summary>
-    public interface ISSHChannelEventReceiver
+    public interface ISshChannelEventReceiver
     {
         void OnData(byte[] data, int offset, int length);
         void OnExtendedData(int type, byte[] data);
         void OnChannelClosed();
-        void OnChannelEOF();
+        void OnChannelEof();
         void OnChannelError(Exception error, string msg);
         void OnChannelReady();
-        void OnMiscPacket(byte packet_type, byte[] data, int offset, int length);
+        void OnMiscPacket(byte packetType, byte[] data, int offset, int length);
     }
 }

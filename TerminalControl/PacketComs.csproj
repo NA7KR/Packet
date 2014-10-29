@@ -141,6 +141,7 @@
     <Compile Include="RSA.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RsaKeyPair.cs" />
     <Compile Include="Socket.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -169,6 +170,7 @@
     <Compile Include="SSH2Util.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SshDataReader.cs" />
     <Compile Include="SSHUtil.cs">
       <SubType>Code</SubType>
     </Compile>

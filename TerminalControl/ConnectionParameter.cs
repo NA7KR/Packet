@@ -1,5 +1,4 @@
 using System;
-using Routrek.PKI;
 using Routrek.SSHC;
 
 namespace PacketComs

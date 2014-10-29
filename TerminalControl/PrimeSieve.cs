@@ -1,10 +1,10 @@
 using System;
 
-namespace Routrek.PKI
+namespace PacketComs
 {
     public class PrimeSieve
     {
-        public static readonly byte[] bitCounts =
+        public static readonly byte[] BitCounts =
         {
             0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1,
             2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 1, 2,
@@ -27,7 +27,7 @@ namespace Routrek.PKI
             table = new uint[len];
 
             int max = len*32;
-            int stop = (int) Math.Sqrt((double) max) + 1;
+            int stop = (int) Math.Sqrt(max) + 1;
             for (int i = 0; i < stop; i++)
             {
                 if ((table[i/32] & (1 << (i & (32 - 1)))) == 0)
@@ -48,13 +48,13 @@ namespace Routrek.PKI
             {
                 w = table[i];
                 for (bits = 0; w != 0; w >>= 8)
-                    bits += (uint) bitCounts[w & 0xff];
+                    bits += BitCounts[w & 0xff];
                 primes += (32 - bits);
             }
             return primes;
         }
 
-        public int getNextPrime(int x)
+        public int GetNextPrime(int x)
         {
             int p = ((x - 3)/2) + 1;
             switch (x)

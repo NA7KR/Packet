@@ -10,7 +10,7 @@ namespace PacketComs
     public abstract class SshConnection
     {
         internal AbstractSocket Stream;
-        internal ISSHConnectionEventReceiver _eventReceiver;
+        internal ISshConnectionEventReceiver _eventReceiver;
 
         protected byte[] SessionId;
         internal ICipher Cipher; //transmission
@@ -25,7 +25,7 @@ namespace PacketComs
 
         protected AuthenticationResult _authenticationResult;
 
-        protected SshConnection(SshConnectionParameter param, ISSHConnectionEventReceiver receiver)
+        protected SshConnection(SshConnectionParameter param, ISshConnectionEventReceiver receiver)
         {
             _param = (SshConnectionParameter) param.Clone();
             _eventReceiver = receiver;
@@ -62,7 +62,7 @@ namespace PacketComs
 
         internal abstract IByteArrayHandler PacketBuilder { get; }
 
-        public ISSHConnectionEventReceiver EventReceiver
+        public ISshConnectionEventReceiver EventReceiver
         {
             get { return _eventReceiver; }
         }
@@ -89,13 +89,13 @@ namespace PacketComs
         /**
 		* opens a pseudo terminal
 		*/
-        public abstract SshChannel OpenShell(ISSHChannelEventReceiver receiver);
+        public abstract SshChannel OpenShell(ISshChannelEventReceiver receiver);
 
         /**
 		 * forwards the remote end to another host
 		 */
 
-        public abstract SshChannel ForwardPort(ISSHChannelEventReceiver receiver, string remoteHost, int remotePort,
+        public abstract SshChannel ForwardPort(ISshChannelEventReceiver receiver, string remoteHost, int remotePort,
             string originatorHost, int originatorPort);
 
         /**
@@ -122,13 +122,13 @@ namespace PacketComs
 		 */
 
         public SshConnection OpenPortForwardedAnotherConnection(SshConnectionParameter param,
-            ISSHConnectionEventReceiver receiver, string host, int port)
+            ISshConnectionEventReceiver receiver, string host, int port)
         {
             ProtocolNegotiationHandler pnh = new ProtocolNegotiationHandler(param);
             ChannelSocket s = new ChannelSocket(pnh);
 
             SshChannel ch = ForwardPort(s, host, port, "localhost", 0);
-            s.SSHChennal = ch;
+            s.SshChennal = ch;
             return Connect(param, receiver, pnh, s);
         }
 
@@ -136,7 +136,7 @@ namespace PacketComs
         protected class ChannelEntry
         {
             public int LocalId;
-            public ISSHChannelEventReceiver Receiver;
+            public ISshChannelEventReceiver Receiver;
             public SshChannel Channel;
         }
 
@@ -153,7 +153,7 @@ namespace PacketComs
             return null;
         }
 
-        protected ChannelEntry RegisterChannelEventReceiver(SshChannel ch, ISSHChannelEventReceiver r)
+        protected ChannelEntry RegisterChannelEventReceiver(SshChannel ch, ISshChannelEventReceiver r)
         {
             lock (this)
             {
@@ -211,7 +211,7 @@ namespace PacketComs
 
 
         //establishes a SSH connection in subject to ConnectionParameter
-        public static SshConnection Connect(SshConnectionParameter param, ISSHConnectionEventReceiver receiver,
+        public static SshConnection Connect(SshConnectionParameter param, ISshConnectionEventReceiver receiver,
             Socket underlyingSocket)
         {
             if (param.UserName == null) throw new InvalidOperationException("UserName property is not set");
@@ -223,7 +223,7 @@ namespace PacketComs
             return ConnectMain(param, receiver, pnh, s);
         }
 
-        internal static SshConnection Connect(SshConnectionParameter param, ISSHConnectionEventReceiver receiver,
+        internal static SshConnection Connect(SshConnectionParameter param, ISshConnectionEventReceiver receiver,
             ProtocolNegotiationHandler pnh, AbstractSocket s)
         {
             if (param.UserName == null) throw new InvalidOperationException("UserName property is not set");
@@ -232,7 +232,7 @@ namespace PacketComs
             return ConnectMain(param, receiver, pnh, s);
         }
 
-        private static SshConnection ConnectMain(SshConnectionParameter param, ISSHConnectionEventReceiver receiver,
+        private static SshConnection ConnectMain(SshConnectionParameter param, ISshConnectionEventReceiver receiver,
             ProtocolNegotiationHandler pnh, AbstractSocket s)
         {
             pnh.Wait();
@@ -243,7 +243,7 @@ namespace PacketComs
 
             SshConnection con;
             if (param.Protocol == SSHProtocol.SSH1)
-                con = new SSH1Connection(param, receiver, sv, SSHUtil.ClientVersionString(param.Protocol));
+                con = new Ssh1Connection(param, receiver, sv, SSHUtil.ClientVersionString(param.Protocol));
             else
                 con = new SSH2Connection(param, receiver, sv, SSHUtil.ClientVersionString(param.Protocol));
 

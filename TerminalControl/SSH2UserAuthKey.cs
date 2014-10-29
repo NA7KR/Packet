@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Routrek.PKI;
 using Routrek.SSHC;
 using Routrek.SSHCV2;
 
@@ -34,7 +33,7 @@ namespace PacketComs
         {
             PublicKeyAlgorithm a = _keypair.Algorithm;
             if (a == PublicKeyAlgorithm.RSA)
-                return ((RSAKeyPair) _keypair).SignWithSHA1(data);
+                return ((RsaKeyPair) _keypair).SignWithSha1(data);
             else
                 return ((DsaKeyPair) _keypair).Sign(new SHA1CryptoServiceProvider().ComputeHash(data));
         }
@@ -144,7 +143,7 @@ namespace PacketComs
                 BigInteger u = re.ReadBigIntWithBits();
                 BigInteger p = re.ReadBigIntWithBits();
                 BigInteger q = re.ReadBigIntWithBits();
-                return new SSH2UserAuthKey(new RSAKeyPair(e, d, n, u, p, q));
+                return new SSH2UserAuthKey(new RsaKeyPair(e, d, n, u, p, q));
             }
             else if (type.IndexOf("dl-modp") != -1)
             {
@@ -172,7 +171,7 @@ namespace PacketComs
             wr.Write(0); //this field is filled later
             if (_keypair.Algorithm == PublicKeyAlgorithm.RSA)
             {
-                RSAKeyPair rsa = (RSAKeyPair) _keypair;
+                RsaKeyPair rsa = (RsaKeyPair) _keypair;
                 RSAPublicKey pub = (RSAPublicKey) _keypair.PublicKey;
                 wr.WriteBigIntWithBits(pub.Exponent);
                 wr.WriteBigIntWithBits(rsa.D);
