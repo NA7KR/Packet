@@ -395,7 +395,6 @@ namespace Packet
                 toolStripComboBoxBeep.SelectedIndex = 1;
             }
             string myReg = _myRegistry.Read("Color Text");
-            if (myReg == null) throw new ArgumentNullException("myReg");
             switch (myReg)
             {
                 case "Black":
