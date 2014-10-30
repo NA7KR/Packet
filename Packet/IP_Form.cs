@@ -247,7 +247,7 @@ namespace Packet
                 textBox_ip.Text = _myRegistry.Read("IP");
                 textBox_port.Text = _myRegistry.Read("Port");
                 textBox_mycall.Text = _myRegistry.Read("UserName");
-                textBox_password.Text = _myRegistry.Read("Password");
+                textBox_password.Text = _myEncrypt.Decrypt(_myRegistry.Read("Password"));
 
                 textBox_ip.Width = 120;
                 textBox_port.Width = 120;
