@@ -23,15 +23,15 @@ namespace PacketComs
 
     public sealed class TerminalEmulator : Control
     {
-        private SerialPort port = new SerialPort();
-        private ModifyFile myFiles = new ModifyFile();
+        private readonly ModifyFile myFiles = new ModifyFile();
+        private readonly SerialPort port = new SerialPort();
 
         #region Public Properties of Comonent
 
         public int Rows
         {
             get { return _rows; }
-             set { }
+            set { }
         }
 
         public int Columns
@@ -40,60 +40,24 @@ namespace PacketComs
             set { }
         }
 
-        public String LastNumber
-        {
-            get { return _lastnumber; }
-            set { _lastnumber = value; }
-        }
+        public string LastNumber { get; set; }
 
-        public ConnectionTypes ConnectionType
-        {
-            get { return _connectionType; }
-            set { _connectionType = value; }
-        }
+        public ConnectionTypes ConnectionType { get; set; }
 
-        public DataBitsTypes DataBitsType
-        {
-            get { return _dataBitsType; }
-            set { _dataBitsType = value; }
-        }
+        public DataBitsTypes DataBitsType { get; set; }
 
-        public StopBitsTypes StopBitsType
-        {
-            get { return _stopBitsType; }
-            set { _stopBitsType = value; }
-        }
+        public StopBitsTypes StopBitsType { get; set; }
 
-        public ParityTypes ParityType
-        {
-            get { return _parityType; }
-            set { _parityType = value; }
-        }
+        public ParityTypes ParityType { get; set; }
 
 
-        public FlowTypes FlowType
-        {
-            get { return _flowType; }
-            set { _flowType = value; }
-        }
+        public FlowTypes FlowType { get; set; }
 
-        public BaudRateTypes BaudRateType
-        {
-            get { return _baudRateType; }
-            set { _baudRateType = value; }
-        }
+        public BaudRateTypes BaudRateType { get; set; }
 
-        public string Hostname
-        {
-            get { return _hostname; }
-            set { _hostname = value; }
-        }
+        public string Hostname { get; set; }
 
-        public Int32 Port
-        {
-            get { return _port; }
-            set { _port = value; }
-        }
+        public int Port { get; set; }
 
         public Boolean Beep
         {
@@ -101,65 +65,25 @@ namespace PacketComs
             set { _beep = value; }
         }
 
-        public Boolean LocalEcho
-        {
-            get { return _localecho; }
-            set { _localecho = value; }
-        }
+        public bool LocalEcho { get; set; }
 
-        public Boolean FileActive
-        {
-            get { return _fileactive; }
-            set { _fileactive = value; }
-        }
+        public bool FileActive { get; set; }
 
-        public Boolean Close
-        {
-            get { return _close; }
-            set { _close = value; }
-        }
+        public bool Close { get; set; }
 
-        public string Username
-        {
-            get { return _username; }
-            set { _username = value; }
-        }
+        public string Username { get; set; }
 
-        public string Password
-        {
-            get { return _password; }
-            set { _password = value; }
-        }
+        public string Password { get; set; }
 
-        public string SerialPort
-        {
-            get { return _serialport; }
-            set { _serialport = value; }
-        }
+        public string SerialPort { get; set; }
 
-        public String BBSPrompt
-        {
-            get { return _bbsprompt; }
-            set { _bbsprompt = value; }
-        }
+        public string BBSPrompt { get; set; }
 
-        public String UernamePrompt
-        {
-            get { return _usernameprompt; }
-            set { _usernameprompt = value; }
-        }
+        public string UernamePrompt { get; set; }
 
-        public String passwordPrompt
-        {
-            get { return _passwordprompt; }
-            set { _passwordprompt = value; }
-        }
+        public string passwordPrompt { get; set; }
 
-        public String Header
-        {
-            get { return _header; }
-            set { _header = value; }
-        }
+        public string Header { get; set; }
 
         #endregion
 
@@ -177,7 +101,7 @@ namespace PacketComs
 
         public StringCollection ScreenScrape()
         {
-            StringCollection scrapedText = new StringCollection();
+            var scrapedText = new StringCollection();
             return scrapedText;
         }
 
@@ -219,7 +143,7 @@ namespace PacketComs
                 case ConnectionTypes.SSH2:
                 {
                     _cType = "SSH";
-                    ConnectSsh2(Hostname, Username, Password, Port);
+                    //ConnectSsh2(Hostname, Username, Password, Port);
                     break;
                 }
                 default:
@@ -247,14 +171,6 @@ namespace PacketComs
 
         #region public enums
 
-        public enum ConnectionTypes
-        {
-            Telnet,
-            COM,
-            SSH1,
-            SSH2,
-        }
-
         public enum BaudRateTypes
         {
             Baud_110 = 110,
@@ -270,6 +186,14 @@ namespace PacketComs
             //Baud_115200 = 115200,
         }
 
+        public enum ConnectionTypes
+        {
+            Telnet,
+            COM,
+            SSH1,
+            SSH2,
+        }
+
         public enum DataBitsTypes
         {
             Data_Bits_5 = 5,
@@ -278,12 +202,12 @@ namespace PacketComs
             Data_Bits_8 = 8,
         }
 
-        public enum StopBitsTypes
+        public enum FlowTypes
         {
+            XOnXOff,
+            RequestToSend,
+            RequestToSendXOnXOff,
             None,
-            One,
-            OnePointFive,
-            Two,
         }
 
         public enum ParityTypes
@@ -295,98 +219,79 @@ namespace PacketComs
             Space,
         }
 
-        public enum FlowTypes
+        public enum StopBitsTypes
         {
-            XOnXOff,
-            RequestToSend,
-            RequestToSendXOnXOff,
             None,
+            One,
+            OnePointFive,
+            Two,
         }
 
         #endregion
 
         #region Fields
 
-        private ConnectionTypes _connectionType;
-        private BaudRateTypes _baudRateType;
-        private DataBitsTypes _dataBitsType;
-        private StopBitsTypes _stopBitsType;
-        private ParityTypes _parityType;
-        private FlowTypes _flowType;
-        private Reader _reader;
-        private string _hostname; // used for connecting to SSH
-        private string _username; // maybe
-        private string _password;
-        private string _header;
-        private string _serialport;
-        private string _bbsprompt;
-        private string _usernameprompt;
-        private string _passwordprompt;
-        private string _dataFile = "";
-        private string _cType;
-        private string _lastnumber;
-        private string _textAtCursor; // used to store Cursortext while scrolling
-        private string _inputData = String.Empty;
-        private int _lastVisibleLine; // used for scrolling
-        private int ScrollbackBufferSize;
-        private StringCollection ScrollbackBuffer;
-        private UcParser Parser;
-        private UcKeyboard Keyboard = null;
-        private UcTabStops TabStops = null;
-        private CharAttribStruct[][] _attribGrid = null;
-        private CharAttribStruct _charAttribs;
-        private Boolean _fileactive;
-        private Int32 _port;
-        private Boolean _beep;
-        private Boolean _localecho;
-        private Boolean _close;
-        private Boolean _xoff = false;
-        private AsyncCallback _callbackProc;
-        private AsyncCallback _callbackEndDispatch;
-        private String _outBuff = "";
-        private Int16 _count;
-        private Int32 _cols;
-        private Int32 _rows;
-        private Int32 _topMargin;
-        private Int32 _bottomMargin;
+        private readonly Color BlinkColor;
+        private readonly Color BoldColor;
+        private readonly UcCaret Caret;
+        private readonly Color FGColor;
+        private readonly UcChars G0;
+        private readonly UcChars G1;
+        private readonly UcChars G2;
+        private readonly UcChars G3;
+        private readonly UcKeyboard Keyboard;
+        private readonly UcMode Modes;
+        private readonly UcParser Parser;
+        private readonly ArrayList SavedCarets;
+        private readonly StringCollection ScrollbackBuffer;
+        private readonly int ScrollbackBufferSize;
+        private readonly UcTabStops TabStops;
+        private readonly String TypeFace = FontFamily.GenericMonospace.GetName(0);
+        private readonly UcVertScrollBar VertScrollBar;
         private Int32 TypeSize = 8;
-        private Int32 _underlinePos;
-        private String TypeFace = FontFamily.GenericMonospace.GetName(0);
-        private Char[][] _charGrid = null;
-        private Bitmap _eraseBitmap = null;
-        private Graphics _eraseBuffer = null;
-        private ArrayList SavedCarets;
-        private Point _drawStringOffset;
-        private Color FGColor;
-        private Color BoldColor;
-        private Color BlinkColor;
         private FontStyle TypeStyle = FontStyle.Regular;
-        private Size _charSize;
+        private CharAttribStruct[][] _attribGrid;
+        private Boolean _beep;
         private Point _beginDrag; // used in Mouse Selecting Text
-        private Point _endDrag; // used in mouse selecting text
+        private Int32 _bottomMargin;
+        private string _cType;
+        private AsyncCallback _callbackEndDispatch;
+        private AsyncCallback _callbackProc;
+        private CharAttribStruct _charAttribs;
+        private Char[][] _charGrid;
+        private Size _charSize;
+        private Int32 _cols;
+        private Int16 _count;
         private Socket _curSocket;
-        private UcCaret Caret;
-        private UcChars G0;
-        private UcChars G1;
-        private UcChars G2;
-        private UcChars G3;
-        private UcMode Modes;
-        private UcVertScrollBar VertScrollBar;
-        private IAsyncResult _lastAr;
+        private string _dataFile = "";
+        private Point _drawStringOffset;
+        private Point _endDrag; // used in mouse selecting text
+        private Bitmap _eraseBitmap;
+        private Graphics _eraseBuffer;
+        private string _inputData = String.Empty;
+   //     private IAsyncResult _lastAr;
+        private int _lastVisibleLine; // used for scrolling
+        private String _outBuff = "";
+        //private Reader _reader;
+        private Int32 _rows;
+        private string _textAtCursor; // used to store Cursortext while scrolling
+        private Int32 _topMargin;
+        private Int32 _underlinePos;
+        private Boolean _xoff;
 
         #endregion
 
         #region Delegates
 
+        private delegate void KeyboardEventHandler(object sender, String e);
+
         private delegate void NvtParserEventHandler(object sender, NvtParserEventArgs e);
 
-        private delegate void KeyboardEventHandler(object sender, String e);
+        private delegate void ParserEventHandler(object sender, ParserEventArgs e);
 
         private delegate void RefreshEventHandler();
 
         private delegate void RxdTextEventHandler(String sReceived);
-
-        private delegate void ParserEventHandler(object sender, ParserEventArgs e);
 
         #endregion
 
@@ -419,7 +324,7 @@ namespace PacketComs
                 true);
             Keyboard = new UcKeyboard(this);
             Parser = new UcParser();
-            UcTelnetParser nvtParser = new UcTelnetParser();
+            var nvtParser = new UcTelnetParser();
             Caret = new UcCaret();
             Modes = new UcMode();
             TabStops = new UcTabStops();
@@ -445,10 +350,10 @@ namespace PacketComs
             _charAttribs.GS = null;
             GetFontInfo();
             // Create and initialize contextmenu
-            ContextMenu contextMenu1 = new ContextMenu();
-            MenuItem mnuCopy = new MenuItem("Copy");
-            MenuItem mnuPaste = new MenuItem("Paste");
-            MenuItem mnuCopyPaste = new MenuItem("Copy and Paste");
+            var contextMenu1 = new ContextMenu();
+            var mnuCopy = new MenuItem("Copy");
+            var mnuPaste = new MenuItem("Paste");
+            var mnuCopyPaste = new MenuItem("Copy and Paste");
             contextMenu1.MenuItems.AddRange(new[]
             {
                 mnuCopyPaste,
@@ -547,7 +452,7 @@ namespace PacketComs
             // parse through ScrollbackBuffer from the end
             // ScrollbackBuffer[0] is the "oldest" string
             // chargrid[0] is the top row on the display
-            StringCollection visiblebuffer = new StringCollection();
+            var visiblebuffer = new StringCollection();
             for (int i = ScrollbackBuffer.Count - 1; i >= 0; i--)
             {
                 visiblebuffer.Insert(0, ScrollbackBuffer[i]);
@@ -1084,7 +989,7 @@ namespace PacketComs
                     ProtocolType.Tcp);
 
                 // Create New EndPoint
-                IPEndPoint iep = new IPEndPoint(addr[0], Port);
+                var iep = new IPEndPoint(addr[0], Port);
 
                 // This is a non blocking IO
                 _curSocket.Blocking = false;
@@ -1100,53 +1005,12 @@ namespace PacketComs
 
         #endregion
 
-        #region SSH Connect
-
-        private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
-        {
-            // connect ssh
-            Focus();
-            SshConnection _conn;
-            SshConnectionParameter f = new SshConnectionParameter();
-            f.UserName = username;
-            f.Password = password;
-            f.Protocol = SSHProtocol.SSH2;
-
-            f.AuthenticationType = AuthenticationType.Password;
-            f.WindowSize = 0x1000;
-            _reader = new Reader(this);
-            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //s.Blocking = false;
-            IPAddress ip;
-            try
-            {
-                IPHostEntry ipHost = Dns.GetHostEntry(hostname);
-                //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
-                IPAddress[] addr = ipHost.AddressList;
-                ip = addr[0];
-            }
-            catch
-            {
-                MessageBox.Show("Unable to resolve HostName");
-                return;
-            }
-
-            //s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
-            s.Connect(new IPEndPoint(ip, Port));
-            _conn = SshConnection.Connect(f, _reader, s);
-            _reader.Conn = _conn;
-            SshChannel ch = _conn.OpenShell(_reader);
-            _reader.Pf = ch;
-        }
-
-        #endregion
-
         #region mnuCopy
 
         private void mnuCopy_Click(object sender, EventArgs e)
         {
-            Point start = new Point();
-            Point stop = new Point();
+            var start = new Point();
+            var stop = new Point();
             bool foundStart = false;
             bool foundStop = false;
 
@@ -1294,7 +1158,7 @@ namespace PacketComs
 
             SetSize(rows, columns);
 
-            StringCollection visiblebuffer = new StringCollection();
+            var visiblebuffer = new StringCollection();
             for (int i = ScrollbackBuffer.Count - 1 + _lastVisibleLine; i >= 0; i--)
             {
                 visiblebuffer.Insert(0, ScrollbackBuffer[i]);
@@ -1392,7 +1256,7 @@ namespace PacketComs
             try
             {
                 // Get The connection socket from the callback
-                Socket sock1 = (Socket) ar.AsyncState;
+                var sock1 = (Socket) ar.AsyncState;
                 if (_cType == "Com")
                 {
                     Refresh();
@@ -1400,7 +1264,7 @@ namespace PacketComs
 
                 if (sock1.Connected)
                 {
-                    UcCommsStateObject stateObject = new UcCommsStateObject();
+                    var stateObject = new UcCommsStateObject();
 
                     stateObject.Socket = sock1;
 
@@ -1429,7 +1293,7 @@ namespace PacketComs
             try
             {
                 // Get The connection socket from the callback
-                UcCommsStateObject stateObject = (UcCommsStateObject) ar.AsyncState;
+                var stateObject = (UcCommsStateObject) ar.AsyncState;
 
                 // Get The data , if any
                 int nBytesRec = stateObject.Socket.EndReceive(ar);
@@ -1517,7 +1381,7 @@ namespace PacketComs
 
             try
             {
-                Byte[] smk = new Byte[strText.Length];
+                var smk = new Byte[strText.Length];
 
                 if (_outBuff != "")
                 {
@@ -1540,6 +1404,7 @@ namespace PacketComs
                 {
                     port.Write(strText);
                 }
+                    /*
                 else
                 {
                     if (_curSocket == null)
@@ -1572,6 +1437,8 @@ namespace PacketComs
                         }
                     }
                 }
+                     * 
+                */
             }
             catch (Exception curException)
             {
@@ -1589,7 +1456,7 @@ namespace PacketComs
         {
             try
             {
-                Socket sock = (Socket) ar.AsyncState;
+                var sock = (Socket) ar.AsyncState;
                 sock.EndSend(ar);
             }
             catch (Exception curException)
@@ -1650,9 +1517,9 @@ namespace PacketComs
                 new CharacterRange(0, 1)
             };
 
-            RectangleF layoutRect = new RectangleF(x, y, 100, 100);
+            var layoutRect = new RectangleF(x, y, 100, 100);
 
-            StringFormat stringFormat = new StringFormat();
+            var stringFormat = new StringFormat();
 
             stringFormat.SetMeasurableCharacterRanges(characterRanges);
 
@@ -1684,9 +1551,9 @@ namespace PacketComs
                 new CharacterRange(0, 1)
             };
 
-            RectangleF layoutRect = new RectangleF(0, 0, 100, 100);
+            var layoutRect = new RectangleF(0, 0, 100, 100);
 
-            StringFormat stringFormat = new StringFormat();
+            var stringFormat = new StringFormat();
 
             stringFormat.SetMeasurableCharacterRanges(characterRanges);
 
@@ -1824,6 +1691,49 @@ namespace PacketComs
 
         #endregion
 
+/*
+        #region SSH Connect
+
+        private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
+        {
+            // connect ssh
+            Focus();
+            SshConnection _conn;
+            SshConnectionParameter f = new SshConnectionParameter();
+            f.UserName = username;
+            f.Password = password;
+            f.Protocol = SSHProtocol.SSH2;
+
+            f.AuthenticationType = AuthenticationType.Password;
+            f.WindowSize = 0x1000;
+            _reader = new Reader(this);
+            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //s.Blocking = false;
+            IPAddress ip;
+            try
+            {
+                IPHostEntry ipHost = Dns.GetHostEntry(hostname);
+                //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
+                IPAddress[] addr = ipHost.AddressList;
+                ip = addr[0];
+            }
+            catch
+            {
+                MessageBox.Show("Unable to resolve HostName");
+                return;
+            }
+
+            //s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
+            s.Connect(new IPEndPoint(ip, Port));
+            _conn = SshConnection.Connect(f, _reader, s);
+            _reader.Conn = _conn;
+            SshChannel ch = _conn.OpenShell(_reader);
+            _reader.Pf = ch;
+        }
+
+        #endregion
+        */
+
         private void ShowSpecialChar(Graphics curGraphics, Char curChar, Int32 y,
             Int32 x, Color curFgColor)
         {
@@ -1832,7 +1742,7 @@ namespace PacketComs
                 return;
             }
 
-            Point[] curPoints = new Point[4];
+            var curPoints = new Point[4];
             switch (curChar)
             {
                 case '`': // diamond
@@ -2084,7 +1994,7 @@ namespace PacketComs
 
         private void NvtSendWill(Char curChar)
         {
-            DispatchMessage(this, strText: string.Format("\xFF\xFB{0}", curChar));
+            DispatchMessage(this, string.Format("\xFF\xFB{0}", curChar));
         }
 
         #endregion
@@ -2093,7 +2003,7 @@ namespace PacketComs
 
         private void NvtSendWont(Char curChar)
         {
-            DispatchMessage(this, strText: string.Format("\xFF\xFC{0}", curChar));
+            DispatchMessage(this, string.Format("\xFF\xFC{0}", curChar));
         }
 
         #endregion
@@ -2102,7 +2012,7 @@ namespace PacketComs
 
         private void NvtSendDont(Char curChar)
         {
-            DispatchMessage(this, strText: string.Format("\xFF\xFE{0}", curChar));
+            DispatchMessage(this, string.Format("\xFF\xFE{0}", curChar));
         }
 
         #endregion
@@ -2111,7 +2021,7 @@ namespace PacketComs
 
         private void NvtSendDo(Char curChar)
         {
-            DispatchMessage(this, strText: string.Format("\xFF\xFD{0}", curChar));
+            DispatchMessage(this, string.Format("\xFF\xFD{0}", curChar));
         }
 
         #endregion
@@ -2120,7 +2030,7 @@ namespace PacketComs
 
         private void NvtSendSubNeg(Char curChar, String curString)
         {
-            DispatchMessage(this, strText: string.Format("\xFF\xFA{0}\x00{1}\xFF\xF0", curChar, curString));
+            DispatchMessage(this, string.Format("\xFF\xFA{0}\x00{1}\xFF\xF0", curChar, curString));
         }
 
         #endregion
@@ -2129,7 +2039,6 @@ namespace PacketComs
 
         private void NvtExecuteChar()
         {
-            
         }
 
         #endregion
@@ -2141,7 +2050,7 @@ namespace PacketComs
             switch (e.Action)
             {
                 case NvtActions.SendUp:
-                    Parser.ParseString(inString: e.CurChar.ToString(CultureInfo.InvariantCulture));
+                    Parser.ParseString(e.CurChar.ToString(CultureInfo.InvariantCulture));
                     break;
                 case NvtActions.Execute:
                     NvtExecuteChar();
@@ -2506,7 +2415,7 @@ namespace PacketComs
                 return;
             }
 
-            CharAttribStruct curAttribs = new CharAttribStruct();
+            var curAttribs = new CharAttribStruct();
 
             curAttribs.UseAltColor = true;
 
@@ -2761,7 +2670,7 @@ namespace PacketComs
 
                 case "\x1b#8": //DECALN
                     e.CurParams.Elements.Add("1");
-                    e.CurParams.Elements.Add(value: _rows.ToString(CultureInfo.InvariantCulture));
+                    e.CurParams.Elements.Add(_rows.ToString(CultureInfo.InvariantCulture));
                     SetScrollRegion(e.CurParams);
 
                     // put E's on the entire screen
@@ -3604,8 +3513,8 @@ namespace PacketComs
 
         private class UcCommsStateObject
         {
+            public readonly Byte[] Buffer;
             public Socket Socket;
-            public Byte[] Buffer;
 
             public UcCommsStateObject()
             {
@@ -3619,7 +3528,7 @@ namespace PacketComs
 
         private class UcTabStops
         {
-            public Boolean[] Columns;
+            public readonly Boolean[] Columns;
 
             public UcTabStops()
             {
@@ -3650,12 +3559,12 @@ namespace PacketComs
 
         private class UcCaretAttribs
         {
-            public Point Pos;
-            public UcChars.Sets G0Set;
-            public UcChars.Sets G1Set;
-            public UcChars.Sets G2Set;
-            public UcChars.Sets G3Set;
-            public CharAttribStruct Attribs;
+            public readonly CharAttribStruct Attribs;
+            public readonly UcChars.Sets G0Set;
+            public readonly UcChars.Sets G1Set;
+            public readonly UcChars.Sets G2Set;
+            public readonly UcChars.Sets G3Set;
+            public readonly Point Pos;
 
             public UcCaretAttribs(
                 Point p1,
@@ -3680,17 +3589,217 @@ namespace PacketComs
 
         private class UcChars
         {
-            public struct UcCharSet
+            public enum Sets
             {
-                public UcCharSet(Int32 p1, Int16 p2)
-                {
-                    Location = p1;
-                    UnicodeNo = p2;
-                }
-
-                public Int32 Location;
-                public Int16 UnicodeNo;
+                None,
+                DECSG,
+                DECTECH,
+                DECS,
+                ASCII,
+                ISOLatin1S,
+                NRCUK,
+                NRCFinnish,
+                NRCFrench,
+                NRCFrenchCanadian,
+                NRCGerman,
+                NRCItalian,
+                NRCNorDanish,
+                NRCPortuguese,
+                NRCSpanish,
+                NRCSwedish,
+                NRCSwiss
             }
+
+            public static readonly UcCharSet[] DECSG =
+            {
+                new UcCharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
+                //            new uc_CharSet (0x60, 0x25C6), // Filled Diamond 
+                new UcCharSet(0x61, 0x0000), // Pi over upsidedown Pi ?  
+                new UcCharSet(0x62, 0x2409), // HT symbol 
+                new UcCharSet(0x63, 0x240C), // LF Symbol  
+                new UcCharSet(0x64, 0x240D), // CR Symbol  
+                new UcCharSet(0x65, 0x240A), // LF Symbol  
+                new UcCharSet(0x66, 0x00B0), // Degree  
+                new UcCharSet(0x67, 0x00B1), // Plus over Minus  
+                new UcCharSet(0x68, 0x2424), // NL Symbol  
+                new UcCharSet(0x69, 0x240B), // VT Symbol 
+                //            new uc_CharSet (0x6A, 0x2518), // Bottom Right Box 
+                //            new uc_CharSet (0x6B, 0x2510), // Top Right Box
+                //            new uc_CharSet (0x6C, 0x250C), // TopLeft Box
+                //            new uc_CharSet (0x6D, 0x2514), // Bottom Left Box
+                //            new uc_CharSet (0x6E, 0x253C), // Cross Piece
+                new UcCharSet(0x6F, 0x23BA), // Scan Line 1
+                new UcCharSet(0x70, 0x25BB), // Scan Line 3
+                //            new uc_CharSet (0x71, 0x2500), // Horizontal Line (scan line 5 as well?)
+                new UcCharSet(0x72, 0x23BC), // Scan Line 7 
+                new UcCharSet(0x73, 0x23BD), // Scan Line 9 
+                //            new uc_CharSet (0x74, 0x251C), // Left Tee Piece
+                //            new uc_CharSet (0x75, 0x2524), // Right Tee Piece
+                //            new uc_CharSet (0x76, 0x2534), // Bottom Tee Piece
+                //            new uc_CharSet (0x77, 0x252C), // Top Tee Piece
+                //            new uc_CharSet (0x78, 0x2502), // Vertical Line
+                new UcCharSet(0x79, 0x2264), // Less than or equal  
+                new UcCharSet(0x7A, 0x2265), // Greater than or equal 
+                new UcCharSet(0x7B, 0x03A0), // Capital Pi
+                new UcCharSet(0x7C, 0x2260), // Not Equal 
+                new UcCharSet(0x7D, 0x00A3), // Pound Sign 
+                new UcCharSet(0x7E, 0x00B7) // Middle Dot 
+            };
+
+            public static readonly UcCharSet[] DECS =
+            {
+                new UcCharSet(0xA8, 0x0020), // Currency Sign
+                new UcCharSet(0xD7, 0x0152), // latin small ligature OE 
+                new UcCharSet(0xDD, 0x0178), // Capital Y with diaeresis
+                new UcCharSet(0xF7, 0x0153), // latin small ligature oe 
+                new UcCharSet(0xFD, 0x00FF) // Lowercase y with diaeresis
+            };
+
+            public static readonly UcCharSet[] ASCII = // same as Basic Latin
+            {
+                new UcCharSet(0x00, 0x0000) //
+            };
+
+            public static readonly UcCharSet[] NRCUK = // UK National Replacement
+            {
+                new UcCharSet(0x23, 0x00A3) //
+            };
+
+            public static readonly UcCharSet[] NRCFinnish = // Finnish National Replacement
+            {
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x5E, 0x00DC), // U with diearesis
+                new UcCharSet(0x60, 0x00E9), // e with accute accent
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
+                new UcCharSet(0x7E, 0x00FC) // u with diearesis
+            };
+
+            public static readonly UcCharSet[] NRCFrench = // French National Replacement
+            {
+                new UcCharSet(0x23, 0x00A3), // Pound Sign
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00B0), // Degree Symbol
+                new UcCharSet(0x5C, 0x00E7), // little cedila
+                new UcCharSet(0x5D, 0x00A7), // funny s (technical term)
+                new UcCharSet(0x7B, 0x00E9), // e with accute accent
+                new UcCharSet(0x7C, 0x00F9), // u with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00A8) // diearesis
+            };
+
+            public static readonly UcCharSet[] NRCFrenchCanadian = // French Canadian National Replacement
+            {
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00E2), // a with circumflex
+                new UcCharSet(0x5C, 0x00E7), // little cedila
+                new UcCharSet(0x5D, 0x00EA), // e with circumflex
+                new UcCharSet(0x5E, 0x00CE), // i with circumflex
+                new UcCharSet(0x60, 0x00F4), // o with circumflex
+                new UcCharSet(0x7B, 0x00E9), // e with accute accent
+                new UcCharSet(0x7C, 0x00F9), // u with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00FB) // u with circumflex
+            };
+
+            public static readonly UcCharSet[] NRCGerman = // German National Replacement
+            {
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00DC), // U with diearesis
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00FC), // u with diearesis
+                new UcCharSet(0x7E, 0x00DF) // funny B
+            };
+
+            public static readonly UcCharSet[] NRCItalian = // Italian National Replacement
+            {
+                new UcCharSet(0x23, 0x00A3), // pound sign
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00B0), // Degree Symbol
+                new UcCharSet(0x5C, 0x00E7), // little cedilla
+                new UcCharSet(0x5D, 0x00E9), // e with accute accent
+                new UcCharSet(0x60, 0x00F9), // u with grav accent
+                new UcCharSet(0x7B, 0x00E0), // a with grav accent
+                new UcCharSet(0x7C, 0x00F2), // o with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00CC) // I with grav accent
+            };
+
+            public static readonly UcCharSet[] NRCNorDanish = // Norwegian Danish National Replacement
+            {
+                new UcCharSet(0x5B, 0x00C6), // AE ligature
+                new UcCharSet(0x5C, 0x00D8), // O with strikethough
+                new UcCharSet(0x5D, 0x00D8), // O with strikethough
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x7B, 0x00E6), // ae ligature
+                new UcCharSet(0x7C, 0x00F8), // o with strikethough
+                new UcCharSet(0x7D, 0x00F8), // o with strikethough
+                new UcCharSet(0x7D, 0x00E5) // a with hollow dot above
+            };
+
+            public static readonly UcCharSet[] NRCPortuguese = // Portuguese National Replacement
+            {
+                new UcCharSet(0x5B, 0x00C3), // A with tilde
+                new UcCharSet(0x5C, 0x00C7), // big cedilla
+                new UcCharSet(0x5D, 0x00D5), // O with tilde
+                new UcCharSet(0x7B, 0x00E3), // a with tilde
+                new UcCharSet(0x7C, 0x00E7), // little cedilla
+                new UcCharSet(0x7D, 0x00F6) // o with tilde
+            };
+
+            public static readonly UcCharSet[] NRCSpanish = // Spanish National Replacement
+            {
+                new UcCharSet(0x23, 0x00A3), // pound sign
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00A1), // I with dot
+                new UcCharSet(0x5C, 0x00D1), // N with tilde
+                new UcCharSet(0x5D, 0x00BF), // Upside down question mark
+                new UcCharSet(0x7B, 0x0060), // back single quote
+                new UcCharSet(0x7C, 0x00B0), // Degree Symbol
+                new UcCharSet(0x7D, 0x00F1), // n with tilde
+                new UcCharSet(0x7E, 0x00E7) // small cedilla
+            };
+
+            public static readonly UcCharSet[] NRCSwedish = // Swedish National Replacement
+            {
+                new UcCharSet(0x40, 0x00C9), // E with acute
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x5E, 0x00DC), // U with diearesis
+                new UcCharSet(0x60, 0x00E9), // e with accute accent
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
+                new UcCharSet(0x7E, 0x00FC) // u with diearesis
+            };
+
+            public static readonly UcCharSet[] NRCSwiss = // Swiss National Replacement
+            {
+                new UcCharSet(0x23, 0x00F9), // u with grav accent
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00E9), // e with accute accent
+                new UcCharSet(0x5C, 0x00E7), // small cedilla
+                new UcCharSet(0x5D, 0x00EA), // e with circumflex
+                new UcCharSet(0x5E, 0x00CE), // i with circumflex
+                new UcCharSet(0x5F, 0x00E8), // e with grav accent
+                new UcCharSet(0x60, 0x00F4), // o with circumflex
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00FC), // u with diearesis
+                new UcCharSet(0x7E, 0x00FB) // u with circumflex
+            };
+
+            public static readonly UcCharSet[] ISOLatin1S = // Same as Latin-1 Supplemental
+            {
+                new UcCharSet(0x00, 0x0000) //
+            };
 
             public Sets Set;
 
@@ -3798,216 +3907,16 @@ namespace PacketComs
                 return curChar;
             }
 
-            public static UcCharSet[] DECSG =
+            public struct UcCharSet
             {
-                new UcCharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
-                //            new uc_CharSet (0x60, 0x25C6), // Filled Diamond 
-                new UcCharSet(0x61, 0x0000), // Pi over upsidedown Pi ?  
-                new UcCharSet(0x62, 0x2409), // HT symbol 
-                new UcCharSet(0x63, 0x240C), // LF Symbol  
-                new UcCharSet(0x64, 0x240D), // CR Symbol  
-                new UcCharSet(0x65, 0x240A), // LF Symbol  
-                new UcCharSet(0x66, 0x00B0), // Degree  
-                new UcCharSet(0x67, 0x00B1), // Plus over Minus  
-                new UcCharSet(0x68, 0x2424), // NL Symbol  
-                new UcCharSet(0x69, 0x240B), // VT Symbol 
-                //            new uc_CharSet (0x6A, 0x2518), // Bottom Right Box 
-                //            new uc_CharSet (0x6B, 0x2510), // Top Right Box
-                //            new uc_CharSet (0x6C, 0x250C), // TopLeft Box
-                //            new uc_CharSet (0x6D, 0x2514), // Bottom Left Box
-                //            new uc_CharSet (0x6E, 0x253C), // Cross Piece
-                new UcCharSet(0x6F, 0x23BA), // Scan Line 1
-                new UcCharSet(0x70, 0x25BB), // Scan Line 3
-                //            new uc_CharSet (0x71, 0x2500), // Horizontal Line (scan line 5 as well?)
-                new UcCharSet(0x72, 0x23BC), // Scan Line 7 
-                new UcCharSet(0x73, 0x23BD), // Scan Line 9 
-                //            new uc_CharSet (0x74, 0x251C), // Left Tee Piece
-                //            new uc_CharSet (0x75, 0x2524), // Right Tee Piece
-                //            new uc_CharSet (0x76, 0x2534), // Bottom Tee Piece
-                //            new uc_CharSet (0x77, 0x252C), // Top Tee Piece
-                //            new uc_CharSet (0x78, 0x2502), // Vertical Line
-                new UcCharSet(0x79, 0x2264), // Less than or equal  
-                new UcCharSet(0x7A, 0x2265), // Greater than or equal 
-                new UcCharSet(0x7B, 0x03A0), // Capital Pi
-                new UcCharSet(0x7C, 0x2260), // Not Equal 
-                new UcCharSet(0x7D, 0x00A3), // Pound Sign 
-                new UcCharSet(0x7E, 0x00B7) // Middle Dot 
-            };
+                public readonly Int32 Location;
+                public readonly Int16 UnicodeNo;
 
-            public static UcCharSet[] DECS =
-            {
-                new UcCharSet(0xA8, 0x0020), // Currency Sign
-                new UcCharSet(0xD7, 0x0152), // latin small ligature OE 
-                new UcCharSet(0xDD, 0x0178), // Capital Y with diaeresis
-                new UcCharSet(0xF7, 0x0153), // latin small ligature oe 
-                new UcCharSet(0xFD, 0x00FF) // Lowercase y with diaeresis
-            };
-
-            public static UcCharSet[] ASCII = // same as Basic Latin
-            {
-                new UcCharSet(0x00, 0x0000) //
-            };
-
-            public static UcCharSet[] NRCUK = // UK National Replacement
-            {
-                new UcCharSet(0x23, 0x00A3) //
-            };
-
-            public static UcCharSet[] NRCFinnish = // Finnish National Replacement
-            {
-                new UcCharSet(0x5B, 0x00C4), // A with diearesis
-                new UcCharSet(0x5C, 0x00D6), // O with diearesis
-                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
-                new UcCharSet(0x5E, 0x00DC), // U with diearesis
-                new UcCharSet(0x60, 0x00E9), // e with accute accent
-                new UcCharSet(0x7B, 0x00E4), // a with diearesis
-                new UcCharSet(0x7C, 0x00F6), // o with diearesis
-                new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
-                new UcCharSet(0x7E, 0x00FC) // u with diearesis
-            };
-
-            public static UcCharSet[] NRCFrench = // French National Replacement
-            {
-                new UcCharSet(0x23, 0x00A3), // Pound Sign
-                new UcCharSet(0x40, 0x00E0), // a with grav accent
-                new UcCharSet(0x5B, 0x00B0), // Degree Symbol
-                new UcCharSet(0x5C, 0x00E7), // little cedila
-                new UcCharSet(0x5D, 0x00A7), // funny s (technical term)
-                new UcCharSet(0x7B, 0x00E9), // e with accute accent
-                new UcCharSet(0x7C, 0x00F9), // u with grav accent
-                new UcCharSet(0x7D, 0x00E8), // e with grav accent
-                new UcCharSet(0x7E, 0x00A8) // diearesis
-            };
-
-            public static UcCharSet[] NRCFrenchCanadian = // French Canadian National Replacement
-            {
-                new UcCharSet(0x40, 0x00E0), // a with grav accent
-                new UcCharSet(0x5B, 0x00E2), // a with circumflex
-                new UcCharSet(0x5C, 0x00E7), // little cedila
-                new UcCharSet(0x5D, 0x00EA), // e with circumflex
-                new UcCharSet(0x5E, 0x00CE), // i with circumflex
-                new UcCharSet(0x60, 0x00F4), // o with circumflex
-                new UcCharSet(0x7B, 0x00E9), // e with accute accent
-                new UcCharSet(0x7C, 0x00F9), // u with grav accent
-                new UcCharSet(0x7D, 0x00E8), // e with grav accent
-                new UcCharSet(0x7E, 0x00FB) // u with circumflex
-            };
-
-            public static UcCharSet[] NRCGerman = // German National Replacement
-            {
-                new UcCharSet(0x40, 0x00A7), // funny s
-                new UcCharSet(0x5B, 0x00C4), // A with diearesis
-                new UcCharSet(0x5C, 0x00D6), // O with diearesis
-                new UcCharSet(0x5D, 0x00DC), // U with diearesis
-                new UcCharSet(0x7B, 0x00E4), // a with diearesis
-                new UcCharSet(0x7C, 0x00F6), // o with diearesis
-                new UcCharSet(0x7D, 0x00FC), // u with diearesis
-                new UcCharSet(0x7E, 0x00DF) // funny B
-            };
-
-            public static UcCharSet[] NRCItalian = // Italian National Replacement
-            {
-                new UcCharSet(0x23, 0x00A3), // pound sign
-                new UcCharSet(0x40, 0x00A7), // funny s
-                new UcCharSet(0x5B, 0x00B0), // Degree Symbol
-                new UcCharSet(0x5C, 0x00E7), // little cedilla
-                new UcCharSet(0x5D, 0x00E9), // e with accute accent
-                new UcCharSet(0x60, 0x00F9), // u with grav accent
-                new UcCharSet(0x7B, 0x00E0), // a with grav accent
-                new UcCharSet(0x7C, 0x00F2), // o with grav accent
-                new UcCharSet(0x7D, 0x00E8), // e with grav accent
-                new UcCharSet(0x7E, 0x00CC) // I with grav accent
-            };
-
-            public static UcCharSet[] NRCNorDanish = // Norwegian Danish National Replacement
-            {
-                new UcCharSet(0x5B, 0x00C6), // AE ligature
-                new UcCharSet(0x5C, 0x00D8), // O with strikethough
-                new UcCharSet(0x5D, 0x00D8), // O with strikethough
-                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
-                new UcCharSet(0x7B, 0x00E6), // ae ligature
-                new UcCharSet(0x7C, 0x00F8), // o with strikethough
-                new UcCharSet(0x7D, 0x00F8), // o with strikethough
-                new UcCharSet(0x7D, 0x00E5) // a with hollow dot above
-            };
-
-            public static UcCharSet[] NRCPortuguese = // Portuguese National Replacement
-            {
-                new UcCharSet(0x5B, 0x00C3), // A with tilde
-                new UcCharSet(0x5C, 0x00C7), // big cedilla
-                new UcCharSet(0x5D, 0x00D5), // O with tilde
-                new UcCharSet(0x7B, 0x00E3), // a with tilde
-                new UcCharSet(0x7C, 0x00E7), // little cedilla
-                new UcCharSet(0x7D, 0x00F6) // o with tilde
-            };
-
-            public static UcCharSet[] NRCSpanish = // Spanish National Replacement
-            {
-                new UcCharSet(0x23, 0x00A3), // pound sign
-                new UcCharSet(0x40, 0x00A7), // funny s
-                new UcCharSet(0x5B, 0x00A1), // I with dot
-                new UcCharSet(0x5C, 0x00D1), // N with tilde
-                new UcCharSet(0x5D, 0x00BF), // Upside down question mark
-                new UcCharSet(0x7B, 0x0060), // back single quote
-                new UcCharSet(0x7C, 0x00B0), // Degree Symbol
-                new UcCharSet(0x7D, 0x00F1), // n with tilde
-                new UcCharSet(0x7E, 0x00E7) // small cedilla
-            };
-
-            public static UcCharSet[] NRCSwedish = // Swedish National Replacement
-            {
-                new UcCharSet(0x40, 0x00C9), // E with acute
-                new UcCharSet(0x5B, 0x00C4), // A with diearesis
-                new UcCharSet(0x5C, 0x00D6), // O with diearesis
-                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
-                new UcCharSet(0x5E, 0x00DC), // U with diearesis
-                new UcCharSet(0x60, 0x00E9), // e with accute accent
-                new UcCharSet(0x7B, 0x00E4), // a with diearesis
-                new UcCharSet(0x7C, 0x00F6), // o with diearesis
-                new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
-                new UcCharSet(0x7E, 0x00FC) // u with diearesis
-            };
-
-            public static UcCharSet[] NRCSwiss = // Swiss National Replacement
-            {
-                new UcCharSet(0x23, 0x00F9), // u with grav accent
-                new UcCharSet(0x40, 0x00E0), // a with grav accent
-                new UcCharSet(0x5B, 0x00E9), // e with accute accent
-                new UcCharSet(0x5C, 0x00E7), // small cedilla
-                new UcCharSet(0x5D, 0x00EA), // e with circumflex
-                new UcCharSet(0x5E, 0x00CE), // i with circumflex
-                new UcCharSet(0x5F, 0x00E8), // e with grav accent
-                new UcCharSet(0x60, 0x00F4), // o with circumflex
-                new UcCharSet(0x7B, 0x00E4), // a with diearesis
-                new UcCharSet(0x7C, 0x00F6), // o with diearesis
-                new UcCharSet(0x7D, 0x00FC), // u with diearesis
-                new UcCharSet(0x7E, 0x00FB) // u with circumflex
-            };
-
-            public static UcCharSet[] ISOLatin1S = // Same as Latin-1 Supplemental
-            {
-                new UcCharSet(0x00, 0x0000) //
-            };
-
-            public enum Sets
-            {
-                None,
-                DECSG,
-                DECTECH,
-                DECS,
-                ASCII,
-                ISOLatin1S,
-                NRCUK,
-                NRCFinnish,
-                NRCFrench,
-                NRCFrenchCanadian,
-                NRCGerman,
-                NRCItalian,
-                NRCNorDanish,
-                NRCPortuguese,
-                NRCSpanish,
-                NRCSwedish,
-                NRCSwiss
+                public UcCharSet(Int32 p1, Int16 p2)
+                {
+                    Location = p1;
+                    UnicodeNo = p2;
+                }
             }
         }
 
@@ -4017,11 +3926,11 @@ namespace PacketComs
 
         private class UcCaret
         {
+            public Bitmap Bitmap;
+            public Graphics Buffer;
+            public Boolean EOL;
+            public Boolean IsOff;
             public Point Pos;
-            public Bitmap Bitmap = null;
-            public Graphics Buffer = null;
-            public Boolean IsOff = false;
-            public Boolean EOL = false;
 
             public UcCaret()
             {
@@ -4082,21 +3991,19 @@ namespace PacketComs
 
         private class UcKeyboard
         {
-            public event KeyboardEventHandler KeyboardEvent;
-
-            private Boolean _lastKeyDownSent = false; // next WM_CHAR ignored if true 
-            private bool _altIsDown = false;
-            private bool _shiftIsDown = false;
-            private bool _ctrlIsDown = false;
-
-            private TerminalEmulator Parent;
-
-            private UcKeyMap KeyMap = new UcKeyMap();
+            private readonly UcKeyMap KeyMap = new UcKeyMap();
+            private readonly TerminalEmulator Parent;
+            private bool _altIsDown;
+            private bool _ctrlIsDown;
+            private Boolean _lastKeyDownSent; // next WM_CHAR ignored if true 
+            private bool _shiftIsDown;
 
             public UcKeyboard(TerminalEmulator p1)
             {
                 Parent = p1;
             }
+
+            public event KeyboardEventHandler KeyboardEvent;
 
             public void KeyDown(Message keyMess)
             {
@@ -4232,12 +4139,13 @@ namespace PacketComs
                     if (_lastKeyDownSent == false)
                     {
                         // send the character straight to the host if we haven't already handled the actual key press
-                        KeyboardEvent(this, e: Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
+                        KeyboardEvent(this, Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
 
                         {
                             if (Parent.LocalEcho)
                             {
-                                Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
+                                Parent.RxdTextEvent(
+                                    Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
                                 Parent.Refresh();
                             }
                         }
@@ -4250,12 +4158,12 @@ namespace PacketComs
 
             private class UcKeyInfo
             {
-                public UInt16 ScanCode;
-                public Boolean ExtendFlag;
-                public String Modifier;
-                public String OutString;
-                public UInt32 Flag;
-                public UInt32 FlagValue;
+                public readonly Boolean ExtendFlag;
+                public readonly UInt32 Flag;
+                public readonly UInt32 FlagValue;
+                public readonly String Modifier;
+                public readonly String OutString;
+                public readonly UInt16 ScanCode;
 
                 public UcKeyInfo(
                     UInt16 p1,
@@ -4276,7 +4184,7 @@ namespace PacketComs
 
             private class UcKeyMap
             {
-                public ArrayList Elements = new ArrayList();
+                public readonly ArrayList Elements = new ArrayList();
 
                 public UcKeyMap()
                 {
@@ -4362,7 +4270,7 @@ namespace PacketComs
                     Elements.Add(new UcKeyInfo(73, false, "Key", "\x1BOy", UcMode.KeypadAppln, 1)); //Keypad9
                     Elements.Add(new UcKeyInfo(74, false, "Key", "\x1BOm", UcMode.KeypadAppln, 1)); //Keypad-
                     Elements.Add(new UcKeyInfo(78, false, "Key", "\x1BOl", UcMode.KeypadAppln, 1));
-                        //Keypad+ (use instead of comma)
+                    //Keypad+ (use instead of comma)
                     Elements.Add(new UcKeyInfo(83, false, "Key", "\x1BOn", UcMode.KeypadAppln, 1)); //Keypad.
                     Elements.Add(new UcKeyInfo(28, true, "Key", "\x1BOM", UcMode.KeypadAppln, 1)); //Keypad Enter
                     Elements.Add(new UcKeyInfo(03, false, "Ctrl", "\x00", UcMode.Any, 0)); //Ctrl2->Null
@@ -4385,7 +4293,7 @@ namespace PacketComs
 
                     for (int i = 0; i < Elements.Count; i++)
                     {
-                        UcKeyInfo element = (UcKeyInfo) Elements[i];
+                        var element = (UcKeyInfo) Elements[i];
 
                         if (element.ScanCode == scanCode &&
                             element.ExtendFlag == extendFlag &&
@@ -4423,7 +4331,7 @@ namespace PacketComs
 
         private class UcParams
         {
-            public ArrayList Elements = new ArrayList();
+            public readonly ArrayList Elements = new ArrayList();
 
             public Int32 Count()
             {
@@ -4449,7 +4357,7 @@ namespace PacketComs
                 else
                 {
                     int i = Elements.Count - 1;
-                    Elements[i] = string.Format("{0}{1}", arg0: Elements[i], arg1: curChar);
+                    Elements[i] = string.Format("{0}{1}", Elements[i], curChar);
                 }
             }
         }
@@ -4460,16 +4368,15 @@ namespace PacketComs
 
         private class UcParser
         {
-            public event ParserEventHandler ParserEvent;
-
-            private States _state = States.Ground;
+            private readonly UcCharEvents CharEvents = new UcCharEvents();
+            private readonly UcParams CurParams = new UcParams();
+            private readonly UcStateChangeEvents StateChangeEvents = new UcStateChangeEvents();
             private Char _curChar = '\0';
             private String _curSequence = "";
 
             private ArrayList _paramList = new ArrayList();
-            private UcCharEvents CharEvents = new UcCharEvents();
-            private UcStateChangeEvents StateChangeEvents = new UcStateChangeEvents();
-            private UcParams CurParams = new UcParams();
+            private States _state = States.Ground;
+            public event ParserEventHandler ParserEvent;
 
             // Every character received is treated as an event which could change the state of
             // the parser. The following section finds out which event or state change this character
@@ -4479,10 +4386,10 @@ namespace PacketComs
             // The sequence is: state change, store character, do action.
             public void ParseString(String inString)
             {
-                States nextState = States.None;
-                Actions nextAction = Actions.None;
-                Actions stateExitAction = Actions.None;
-                Actions StateEntryAction = Actions.None;
+                var nextState = States.None;
+                var nextAction = Actions.None;
+                var stateExitAction = Actions.None;
+                var StateEntryAction = Actions.None;
 
                 foreach (Char c in inString)
                 {
@@ -4598,63 +4505,13 @@ namespace PacketComs
                 Exit = 2
             }
 
-            private struct UcStateChangeInfo
-            {
-                public States State;
-                public Transitions Transition; // the next state we are going to 
-                public Actions NextAction;
-
-                public UcStateChangeInfo(
-                    States p1,
-                    Transitions p2,
-                    Actions p3)
-                {
-                    State = p1;
-                    Transition = p2;
-                    NextAction = p3;
-                }
-            }
-
-            private class UcStateChangeEvents
-            {
-                private UcStateChangeInfo[] Elements =
-                {
-                    new UcStateChangeInfo(States.OscString, Transitions.Entry, Actions.OscStart),
-                    new UcStateChangeInfo(States.OscString, Transitions.Exit, Actions.OscEnd),
-                    new UcStateChangeInfo(States.DcsPassthrough, Transitions.Entry, Actions.Hook),
-                    new UcStateChangeInfo(States.DcsPassthrough, Transitions.Exit, Actions.Unhook)
-                };
-
-                public Boolean GetStateChangeAction(
-                    States state,
-                    Transitions transition,
-                    ref Actions nextAction)
-                {
-                    UcStateChangeInfo Element;
-
-                    for (Int32 i = 0; i < Elements.Length; i++)
-                    {
-                        Element = Elements[i];
-
-                        if (state == Element.State &&
-                            transition == Element.Transition)
-                        {
-                            nextAction = Element.NextAction;
-                            return true;
-                        }
-                    }
-
-                    return false;
-                }
-            }
-
             private struct UcCharEventInfo
             {
-                public States CurState;
-                public Char CharFrom;
-                public Char CharTo;
-                public Actions NextAction;
-                public States NextState; // the next state we are going to 
+                public readonly Char CharFrom;
+                public readonly Char CharTo;
+                public readonly States CurState;
+                public readonly Actions NextAction;
+                public readonly States NextState; // the next state we are going to 
 
                 public UcCharEventInfo(
                     States p1,
@@ -4671,50 +4528,11 @@ namespace PacketComs
                 }
             }
 
-            #region uc_CharEvents
-
             private class UcCharEvents
             {
-                public Boolean GetStateEventAction(
-                    States curState,
-                    Char curChar,
-                    ref States nextState,
-                    ref Actions nextAction)
-                {
-                    UcCharEventInfo Element;
-
-                    // Codes A0-FF are treated exactly the same way as 20-7F
-                    // so we can keep are state table smaller by converting before we look
-                    // up the event associated with the character
-
-                    if (curChar >= '\xA0' &&
-                        curChar <= '\xFF')
-                    {
-                        curChar -= '\x80';
-                    }
-
-                    for (Int32 i = 0; i < Elements.Length; i++)
-                    {
-                        Element = Elements[i];
-
-                        if (curChar >= Element.CharFrom &&
-                            curChar <= Element.CharTo &&
-                            (curState == Element.CurState || Element.CurState == States.Anywhere))
-                        {
-                            nextState = Element.NextState;
-                            nextAction = Element.NextAction;
-                            return true;
-                        }
-                    }
-
-                    return false;
-                }
-
                 #endregion
 
-                #region  uc_CharEventInfo
-
-                public static UcCharEventInfo[] Elements =
+                public static readonly UcCharEventInfo[] Elements =
                 {
                     new UcCharEventInfo(States.Anywhere, '\x1B', '\x1B', Actions.NewCollect, States.Escape),
                     new UcCharEventInfo(States.Anywhere, '\x18', '\x18', Actions.Execute, States.Ground),
@@ -4810,10 +4628,97 @@ namespace PacketComs
                     new UcCharEventInfo(States.OscString, '\x20', '\x7F', Actions.OscPut, States.None),
                     new UcCharEventInfo(States.OscString, '\x9C', '\x9C', Actions.None, States.Ground)
                 };
-            }
-        }
 
-        #endregion
+                public Boolean GetStateEventAction(
+                    States curState,
+                    Char curChar,
+                    ref States nextState,
+                    ref Actions nextAction)
+                {
+                    UcCharEventInfo Element;
+
+                    // Codes A0-FF are treated exactly the same way as 20-7F
+                    // so we can keep are state table smaller by converting before we look
+                    // up the event associated with the character
+
+                    if (curChar >= '\xA0' &&
+                        curChar <= '\xFF')
+                    {
+                        curChar -= '\x80';
+                    }
+
+                    for (Int32 i = 0; i < Elements.Length; i++)
+                    {
+                        Element = Elements[i];
+
+                        if (curChar >= Element.CharFrom &&
+                            curChar <= Element.CharTo &&
+                            (curState == Element.CurState || Element.CurState == States.Anywhere))
+                        {
+                            nextState = Element.NextState;
+                            nextAction = Element.NextAction;
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+
+                #region  uc_CharEventInfo
+            }
+
+            private class UcStateChangeEvents
+            {
+                private readonly UcStateChangeInfo[] Elements =
+                {
+                    new UcStateChangeInfo(States.OscString, Transitions.Entry, Actions.OscStart),
+                    new UcStateChangeInfo(States.OscString, Transitions.Exit, Actions.OscEnd),
+                    new UcStateChangeInfo(States.DcsPassthrough, Transitions.Entry, Actions.Hook),
+                    new UcStateChangeInfo(States.DcsPassthrough, Transitions.Exit, Actions.Unhook)
+                };
+
+                public Boolean GetStateChangeAction(
+                    States state,
+                    Transitions transition,
+                    ref Actions nextAction)
+                {
+                    UcStateChangeInfo Element;
+
+                    for (Int32 i = 0; i < Elements.Length; i++)
+                    {
+                        Element = Elements[i];
+
+                        if (state == Element.State &&
+                            transition == Element.Transition)
+                        {
+                            nextAction = Element.NextAction;
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            }
+
+            private struct UcStateChangeInfo
+            {
+                public readonly Actions NextAction;
+                public readonly States State;
+                public readonly Transitions Transition; // the next state we are going to 
+
+                public UcStateChangeInfo(
+                    States p1,
+                    Transitions p2,
+                    Actions p3)
+                {
+                    State = p1;
+                    Transition = p2;
+                    NextAction = p3;
+                }
+            }
+
+            #region uc_CharEvents
+        }
 
         #endregion
 
@@ -4821,23 +4726,23 @@ namespace PacketComs
 
         private class UcTelnetParser
         {
-            public event NvtParserEventHandler NvtParserEvent;
-            private States _state = States.Ground;
+            private readonly UcCharEvents CharEvents = new UcCharEvents();
+            private readonly UcParams CurParams = new UcParams();
+            private readonly UcStateChangeEvents StateChangeEvents = new UcStateChangeEvents();
             private Char _curChar = '\0';
             private String _curSequence = "";
 
             private ArrayList _paramList = new ArrayList();
-            private UcCharEvents CharEvents = new UcCharEvents();
-            private UcStateChangeEvents StateChangeEvents = new UcStateChangeEvents();
-            private UcParams CurParams = new UcParams();
+            private States _state = States.Ground;
+            public event NvtParserEventHandler NvtParserEvent;
 
 
             public void ParseString(String inString)
             {
-                States nextState = States.None;
-                NvtActions nextAction = NvtActions.None;
-                NvtActions stateExitAction = NvtActions.None;
-                NvtActions StateEntryAction = NvtActions.None;
+                var nextState = States.None;
+                var nextAction = NvtActions.None;
+                var stateExitAction = NvtActions.None;
+                var StateEntryAction = NvtActions.None;
 
                 foreach (Char c in inString)
                 {
@@ -4953,27 +4858,86 @@ namespace PacketComs
                 Exit = 2,
             }
 
-            private struct UcStateChangeInfo
+            private struct UcCharEventInfo
             {
-                public States State;
-                public Transitions Transition; // the next state we are going to 
-                public NvtActions NextAction;
+                public readonly Char CharFrom;
+                public readonly Char CharTo;
+                public readonly States CurState;
+                public readonly NvtActions NextAction;
+                public readonly States NextState; // the next state we are going to 
 
-                public UcStateChangeInfo(
+                public UcCharEventInfo(
                     States p1,
-                    Transitions p2,
-                    NvtActions p3)
+                    Char p2,
+                    Char p3,
+                    NvtActions p4,
+                    States p5)
                 {
-                    State = p1;
-                    Transition = p2;
-                    NextAction = p3;
+                    CurState = p1;
+                    CharFrom = p2;
+                    CharTo = p3;
+                    NextAction = p4;
+                    NextState = p5;
                 }
             }
 
+            private class UcCharEvents
+            {
+                public static readonly UcCharEventInfo[] Elements =
+                {
+                    new UcCharEventInfo(States.Ground, (char) 000, (char) 254, NvtActions.SendUp, States.None),
+                    new UcCharEventInfo(States.Ground, (char) 255, (char) 255, NvtActions.None, States.Command),
+                    new UcCharEventInfo(States.Command, (char) 000, (char) 239, NvtActions.SendUp, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 240, (char) 241, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 242, (char) 249, NvtActions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 250, (char) 250, NvtActions.NewCollect,
+                        States.SubNegotiate),
+                    new UcCharEventInfo(States.Command, (char) 251, (char) 254, NvtActions.NewCollect, States.Negotiate),
+                    new UcCharEventInfo(States.Command, (char) 255, (char) 255, NvtActions.SendUp, States.Ground),
+                    new UcCharEventInfo(States.SubNegotiate, (char) 000, (char) 255, NvtActions.Collect,
+                        States.SubNegValue),
+                    new UcCharEventInfo(States.SubNegValue, (char) 000, (char) 001, NvtActions.Collect,
+                        States.SubNegParam),
+                    new UcCharEventInfo(States.SubNegValue, (char) 002, (char) 255, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegParam, (char) 000, (char) 254, NvtActions.Param, States.None),
+                    new UcCharEventInfo(States.SubNegParam, (char) 255, (char) 255, NvtActions.None, States.SubNegEnd),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 000, (char) 239, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 240, (char) 240, NvtActions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 241, (char) 254, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 255, (char) 255, NvtActions.Param, States.SubNegParam),
+                    new UcCharEventInfo(States.Negotiate, (char) 000, (char) 255, NvtActions.Dispatch, States.Ground)
+                };
+
+                public Boolean GetStateEventAction(
+                    States curState,
+                    Char curChar,
+                    ref States nextState,
+                    ref NvtActions nextAction)
+                {
+                    UcCharEventInfo Element;
+
+
+                    for (Int32 i = 0; i < Elements.Length; i++)
+                    {
+                        Element = Elements[i];
+
+                        if (curChar >= Element.CharFrom &&
+                            curChar <= Element.CharTo &&
+                            (curState == Element.CurState || Element.CurState == States.Anywhere))
+                        {
+                            nextState = Element.NextState;
+                            nextAction = Element.NextAction;
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            }
 
             private class UcStateChangeEvents
             {
-                private UcStateChangeInfo[] Elements =
+                private readonly UcStateChangeInfo[] Elements =
                 {
                     new UcStateChangeInfo(States.None, Transitions.None, NvtActions.None)
                 };
@@ -5001,81 +4965,21 @@ namespace PacketComs
                 }
             }
 
-            private struct UcCharEventInfo
+            private struct UcStateChangeInfo
             {
-                public States CurState;
-                public Char CharFrom;
-                public Char CharTo;
-                public NvtActions NextAction;
-                public States NextState; // the next state we are going to 
+                public readonly NvtActions NextAction;
+                public readonly States State;
+                public readonly Transitions Transition; // the next state we are going to 
 
-                public UcCharEventInfo(
+                public UcStateChangeInfo(
                     States p1,
-                    Char p2,
-                    Char p3,
-                    NvtActions p4,
-                    States p5)
+                    Transitions p2,
+                    NvtActions p3)
                 {
-                    CurState = p1;
-                    CharFrom = p2;
-                    CharTo = p3;
-                    NextAction = p4;
-                    NextState = p5;
+                    State = p1;
+                    Transition = p2;
+                    NextAction = p3;
                 }
-            }
-
-            private class UcCharEvents
-            {
-                public Boolean GetStateEventAction(
-                    States curState,
-                    Char curChar,
-                    ref States nextState,
-                    ref NvtActions nextAction)
-                {
-                    UcCharEventInfo Element;
-
-
-                    for (Int32 i = 0; i < Elements.Length; i++)
-                    {
-                        Element = Elements[i];
-
-                        if (curChar >= Element.CharFrom &&
-                            curChar <= Element.CharTo &&
-                            (curState == Element.CurState || Element.CurState == States.Anywhere))
-                        {
-                            nextState = Element.NextState;
-                            nextAction = Element.NextAction;
-                            return true;
-                        }
-                    }
-
-                    return false;
-                }
-
-                public static UcCharEventInfo[] Elements =
-                {
-                    new UcCharEventInfo(States.Ground, (char) 000, (char) 254, NvtActions.SendUp, States.None),
-                    new UcCharEventInfo(States.Ground, (char) 255, (char) 255, NvtActions.None, States.Command),
-                    new UcCharEventInfo(States.Command, (char) 000, (char) 239, NvtActions.SendUp, States.Ground),
-                    new UcCharEventInfo(States.Command, (char) 240, (char) 241, NvtActions.None, States.Ground),
-                    new UcCharEventInfo(States.Command, (char) 242, (char) 249, NvtActions.Execute, States.Ground),
-                    new UcCharEventInfo(States.Command, (char) 250, (char) 250, NvtActions.NewCollect,
-                        States.SubNegotiate),
-                    new UcCharEventInfo(States.Command, (char) 251, (char) 254, NvtActions.NewCollect, States.Negotiate),
-                    new UcCharEventInfo(States.Command, (char) 255, (char) 255, NvtActions.SendUp, States.Ground),
-                    new UcCharEventInfo(States.SubNegotiate, (char) 000, (char) 255, NvtActions.Collect,
-                        States.SubNegValue),
-                    new UcCharEventInfo(States.SubNegValue, (char) 000, (char) 001, NvtActions.Collect,
-                        States.SubNegParam),
-                    new UcCharEventInfo(States.SubNegValue, (char) 002, (char) 255, NvtActions.None, States.Ground),
-                    new UcCharEventInfo(States.SubNegParam, (char) 000, (char) 254, NvtActions.Param, States.None),
-                    new UcCharEventInfo(States.SubNegParam, (char) 255, (char) 255, NvtActions.None, States.SubNegEnd),
-                    new UcCharEventInfo(States.SubNegEnd, (char) 000, (char) 239, NvtActions.None, States.Ground),
-                    new UcCharEventInfo(States.SubNegEnd, (char) 240, (char) 240, NvtActions.Dispatch, States.Ground),
-                    new UcCharEventInfo(States.SubNegEnd, (char) 241, (char) 254, NvtActions.None, States.Ground),
-                    new UcCharEventInfo(States.SubNegEnd, (char) 255, (char) 255, NvtActions.Param, States.SubNegParam),
-                    new UcCharEventInfo(States.Negotiate, (char) 000, (char) 255, NvtActions.Dispatch, States.Ground)
-                };
             }
         }
 
@@ -5087,10 +4991,10 @@ namespace PacketComs
 
         private struct ParserEventArgs
         {
-            public Actions Action;
-            public Char CurChar;
-            public String CurSequence;
-            public UcParams CurParams;
+            public readonly Actions Action;
+            public readonly Char CurChar;
+            public readonly UcParams CurParams;
+            public readonly String CurSequence;
 
             public ParserEventArgs(
                 Actions p1,
@@ -5111,21 +5015,21 @@ namespace PacketComs
 
         private struct CharAttribStruct
         {
-            public Boolean IsBold;
-            public Boolean IsDim;
-            public Boolean IsUnderscored;
-            public Boolean IsBlinking;
-            public Boolean IsInverse;
-            public Boolean IsPrimaryFont;
-            public Boolean IsAlternateFont;
-            public Boolean UseAltColor;
-            public Color AltColor;
-            public Boolean UseAltBGColor;
             public Color AltBGColor;
+            public Color AltColor;
             public UcChars GL;
             public UcChars GR;
             public UcChars GS;
+            public Boolean IsAlternateFont;
+            public Boolean IsBlinking;
+            public Boolean IsBold;
             public Boolean IsDECSG;
+            public Boolean IsDim;
+            public Boolean IsInverse;
+            public Boolean IsPrimaryFont;
+            public Boolean IsUnderscored;
+            public Boolean UseAltBGColor;
+            public Boolean UseAltColor;
         }
 
         #endregion
@@ -5134,9 +5038,9 @@ namespace PacketComs
 
         private struct NvtParserEventArgs
         {
-            public NvtActions Action;
-            public Char CurChar;
-            public String CurSequence;
+            public readonly NvtActions Action;
+            public readonly Char CurChar;
+            public readonly String CurSequence;
             public UcParams CurParams;
 
             public NvtParserEventArgs(
@@ -5158,17 +5062,6 @@ namespace PacketComs
 
         #region Private Enums
 
-        private enum NvtActions
-        {
-            None = 0,
-            SendUp = 1,
-            Dispatch = 2,
-            Collect = 4,
-            NewCollect = 5,
-            Param = 6,
-            Execute = 7,
-        }
-
         private enum Actions
         {
             None = 0,
@@ -5187,6 +5080,17 @@ namespace PacketComs
             Print = 14
         }
 
+        private enum NvtActions
+        {
+            None = 0,
+            SendUp = 1,
+            Dispatch = 2,
+            Collect = 4,
+            NewCollect = 5,
+            Param = 6,
+            Execute = 7,
+        }
+
         #endregion
 
         #region InitializeComponent
@@ -5203,7 +5107,7 @@ namespace PacketComs
                 {
                     port.Close();
                 }
-                else if (_cType == "SSH")
+                /*else if (_cType == "SSH")
                 {
                     _reader.OnChannelClosed();
                 }
@@ -5216,11 +5120,14 @@ namespace PacketComs
                     _curSocket.Shutdown(SocketShutdown.Both);
                     _curSocket.Close();
                 }
+                 */
             }
             catch (Exception)
             {
             }
         }
+
+        #endregion
 
         #endregion
     }

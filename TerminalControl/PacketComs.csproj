@@ -84,91 +84,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlgorithmSupport.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Base64.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BigInteger.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Blowfish.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CipherUtil.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConnectionInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConnectionParameter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConnectionRoot.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CRC.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DES.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DSA.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DsaPublicKey.cs" />
-    <Compile Include="LibraryClient.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ModifyFile.cs" />
-    <Compile Include="PacketType.cs" />
-    <Compile Include="PKIBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PrimeSieve.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ReaderWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Rijndael.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="RSA.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="RsaKeyPair.cs" />
-    <Compile Include="Socket.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ssh.cs" />
-    <Compile Include="SSH2Connection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SSH2Packet.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SSH2UserAuthKey.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SSH2Util.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SshDataReader.cs" />
-    <Compile Include="SSHUtil.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StringResource.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TerminalControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="strings.resx" />
     <EmbeddedResource Include="TerminalControl.resx">
       <DependentUpon>TerminalControl.cs</DependentUpon>
     </EmbeddedResource>
