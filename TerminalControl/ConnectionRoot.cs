@@ -241,9 +241,9 @@ namespace PacketComs
             string sv = pnh.ServerVersion;
 
             SshConnection con;
-            if (param.Protocol == SSHProtocol.SSH1)
-                con = new Ssh1Connection(param, receiver, sv, SSHUtil.ClientVersionString(param.Protocol));
-            else
+            //if (param.Protocol == SSHProtocol.SSH1)
+            //    con = new Ssh1Connection(param, receiver, sv, SSHUtil.ClientVersionString(param.Protocol));
+            //else
                 con = new SSH2Connection(param, receiver, sv, SSHUtil.ClientVersionString(param.Protocol));
 
             s.SetHandler(con.PacketBuilder);

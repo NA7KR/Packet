@@ -51,47 +51,7 @@ namespace PacketComs.SSHC
     }
 }
 
-namespace PacketComs.SSHCV1
-{
-    using SSHC;
 
-    public class Ssh1ConnectionInfo : SshConnectionInfo
-    {
-        internal SSHServerInfo Serverinfo;
-
-        public override string DumpHostKeyInKnownHostsStyle()
-        {
-            StringBuilder bld = new StringBuilder();
-            bld.Append("ssh1 ");
-            SSH1DataWriter wr = new SSH1DataWriter();
-            //RSA only for SSH1
-            RSAPublicKey rsa = (RSAPublicKey) Hostkey;
-            wr.Write(rsa.Exponent);
-            wr.Write(rsa.Modulus);
-            bld.Append(Encoding.ASCII.GetString(Base64.Encode(wr.ToByteArray())));
-            return bld.ToString();
-        }
-
-        public void SetSupportedCipherAlgorithms(int mask)
-        {
-            StringBuilder bld = new StringBuilder();
-            if ((mask & 2) != 0) AppendSupportedCipher(bld, "Idea");
-            if ((mask & 4) != 0) AppendSupportedCipher(bld, "DES");
-            if ((mask & 8) != 0) AppendSupportedCipher(bld, "TripleDES");
-            if ((mask & 16) != 0) AppendSupportedCipher(bld, "TSS");
-            if ((mask & 32) != 0) AppendSupportedCipher(bld, "RC4");
-            if ((mask & 64) != 0) AppendSupportedCipher(bld, "Blowfish");
-
-            _supportedCipherAlgorithms = bld.ToString();
-        }
-
-        private static void AppendSupportedCipher(StringBuilder bld, string text)
-        {
-            if (bld.Length > 0) bld.Append(',');
-            bld.Append(text);
-        }
-    }
-}
 
 namespace PacketComs.SSHCV2
 {
