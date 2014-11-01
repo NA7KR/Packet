@@ -1405,14 +1405,14 @@ namespace PacketComs
                 {
                     port.Write(strText);
                 }
-                    /*
+                    
                 else
                 {
                     if (_curSocket == null)
                     {
                         try
                         {
-                            _reader.Pf.Transmit(smk);
+                    //        _reader.Pf.Transmit(smk);
                         }
                         catch
                         {
@@ -1430,7 +1430,7 @@ namespace PacketComs
                                 SocketFlags.None,
                                 _callbackEndDispatch,
                                 _curSocket);
-                            _lastAr = ar;
+                           //u.hykmkmnjhghfu87y6tr5uy _lastAr = ar;
                         }
                         catch
                         {
@@ -1438,8 +1438,8 @@ namespace PacketComs
                         }
                     }
                 }
-                     * 
-                */
+                      
+                
             }
             catch (Exception curException)
             {
