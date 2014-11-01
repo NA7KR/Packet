@@ -15,7 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketComs", "TerminalContr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items (2)", "Solution Items (2)", "{A3063E62-89D5-43FF-AB1A-FFBECB4A1850}"
 	ProjectSection(SolutionItems) = preProject
-		sshnet-master\Local.testsettings = sshnet-master\Local.testsettings
 		sshnet-master\Renci.SshNet1.vsmdi = sshnet-master\Renci.SshNet1.vsmdi
 		sshnet-master\TraceAndTestImpact.testsettings = sshnet-master\TraceAndTestImpact.testsettings
 	EndProjectSection

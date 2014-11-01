@@ -26,9 +26,9 @@ namespace PacketComs
     {
         private readonly ModifyFile myFiles = new ModifyFile();
         private readonly SerialPort port = new SerialPort();
-
+        private SshClient myssh = new SshClient("na7kr.na7kr.us","root","");
         #region Public Properties of Comonent
-
+             
         public int Rows
         {
             get { return _rows; }
