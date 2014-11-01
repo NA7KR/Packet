@@ -14,24 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketComs", "TerminalControl\PacketComs.csproj", "{3545E021-A75E-4558-8EA3-234DF99FB49A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items (2)", "Solution Items (2)", "{A3063E62-89D5-43FF-AB1A-FFBECB4A1850}"
-	ProjectSection(SolutionItems) = preProject
-		sshnet-master\Renci.SshNet1.vsmdi = sshnet-master\Renci.SshNet1.vsmdi
-		sshnet-master\TraceAndTestImpact.testsettings = sshnet-master\TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items (3)", "Solution Items (3)", "{773D58CB-3FF3-4A27-B33A-670953464C4F}"
-	ProjectSection(SolutionItems) = preProject
-		TerminalControl\sshnet-master\Local.testsettings = TerminalControl\sshnet-master\Local.testsettings
-		TerminalControl\sshnet-master\Renci.SshNet1.vsmdi = TerminalControl\sshnet-master\Renci.SshNet1.vsmdi
-		TerminalControl\sshnet-master\TraceAndTestImpact.testsettings = TerminalControl\sshnet-master\TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items (4)", "Solution Items (4)", "{6EA5898C-9381-4737-AE28-669B6F32A0F2}"
-	ProjectSection(SolutionItems) = preProject
-		sshnet-master\Local.testsettings = sshnet-master\Local.testsettings
-		sshnet-master\Renci.SshNet1.vsmdi = sshnet-master\Renci.SshNet1.vsmdi
-		sshnet-master\TraceAndTestImpact.testsettings = sshnet-master\TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Renci.SshNet", "sshnet-master\Renci.SshNet\Renci.SshNet.csproj", "{2F5F8C90-0BD1-424F-997C-7BC6280919D1}"
 EndProject
