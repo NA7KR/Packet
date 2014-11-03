@@ -13,7 +13,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
-using Renci.SshNet;
+//using Renci.SshNet;
+//using Renci.SshNet.Common;
 
 #endregion
 
@@ -26,7 +27,7 @@ namespace PacketComs
     {
         private readonly ModifyFile myFiles = new ModifyFile();
         private readonly SerialPort port = new SerialPort();
-        private SshClient myssh = new SshClient("na7kr.na7kr.us","root","");
+        
         #region Public Properties of Comonent
              
         public int Rows
@@ -144,7 +145,7 @@ namespace PacketComs
                 case ConnectionTypes.SSH2:
                 {
                     _cType = "SSH";
-                    //ConnectSsh2(Hostname, Username, Password, Port);
+                    ConnectSsh2(Hostname, Username, Password, Port);
                     break;
                 }
                 default:
@@ -1692,12 +1693,21 @@ namespace PacketComs
 
         #endregion
 
-/*
+
         #region SSH Connect
 
         private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
         {
-            // connect ssh
+          //  using (var client = new SshClient(hostname,Port,username,password))
+            {
+               
+            //    using  stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024)
+                {
+                    //var reader = new StreamReader(stream);
+                   // var write = new StreamWriter(stream);
+                }
+
+                /*
             Focus();
             SshConnection _conn;
             SshConnectionParameter f = new SshConnectionParameter();
@@ -1730,10 +1740,11 @@ namespace PacketComs
             _reader.Conn = _conn;
             SshChannel ch = _conn.OpenShell(_reader);
             _reader.Pf = ch;
+             */
+            }
         }
-
         #endregion
-        */
+
 
         private void ShowSpecialChar(Graphics curGraphics, Char curChar, Int32 y,
             Int32 x, Color curFgColor)
