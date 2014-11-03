@@ -13,8 +13,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
-//using Renci.SshNet;
-//using Renci.SshNet.Common;
+using Renci.SshNet;
+using Renci.SshNet.Common;
 
 #endregion
 
@@ -1698,13 +1698,13 @@ namespace PacketComs
 
         private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
         {
-          //  using (var client = new SshClient(hostname,Port,username,password))
+            using (var client = new SshClient(hostname,Port,username,password))
             {
-               
-            //    using  stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024)
+               client.Connect();
+                using  (var stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024))
                 {
-                    //var reader = new StreamReader(stream);
-                   // var write = new StreamWriter(stream);
+                    var reader = new StreamReader(stream);
+                    var write = new StreamWriter(stream);
                 }
 
                 /*
