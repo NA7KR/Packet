@@ -1697,7 +1697,21 @@ namespace PacketComs
 
         private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
         {
-            using (var client = new SshClient(hostname,Port,username,password))
+            string ip;
+            try
+            {
+                IPHostEntry ipHost = Dns.GetHostEntry(hostname);
+                //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
+          ;      IPAddress[] addr = ipHost.AddressList;
+                ip = addr[0].ToString();
+            }
+            catch
+            {
+                MessageBox.Show("Unable to resolve HostName");
+                return;
+            }
+            
+            using (var client = new SshClient(ip,Port,username,password))
             {
                client.Connect();
                 using  (var stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024))
@@ -1705,9 +1719,9 @@ namespace PacketComs
                     var reader = new StreamReader(stream);
                     var write = new StreamWriter(stream);
                 }
-
+                Focus();
                 /*
-            Focus();
+            
             SshConnection _conn;
             SshConnectionParameter f = new SshConnectionParameter();
             f.UserName = username;
@@ -1719,20 +1733,7 @@ namespace PacketComs
             _reader = new Reader(this);
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             //s.Blocking = false;
-            IPAddress ip;
-            try
-            {
-                IPHostEntry ipHost = Dns.GetHostEntry(hostname);
-                //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
-                IPAddress[] addr = ipHost.AddressList;
-                ip = addr[0];
-            }
-            catch
-            {
-                MessageBox.Show("Unable to resolve HostName");
-                return;
-            }
-
+            
             //s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
             s.Connect(new IPEndPoint(ip, Port));
             _conn = SshConnection.Connect(f, _reader, s);
