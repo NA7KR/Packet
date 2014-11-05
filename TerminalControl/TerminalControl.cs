@@ -242,7 +242,7 @@ namespace PacketComs
         private readonly UcChars G3;
         private readonly UcKeyboard Keyboard;
         private readonly UcMode Modes;
-        private readonly UcParser Parser;
+        private static UcParser Parser;
         private readonly ArrayList SavedCarets;
         private readonly StringCollection ScrollbackBuffer;
         private readonly int ScrollbackBufferSize;
@@ -921,7 +921,22 @@ namespace PacketComs
 
         #endregion
 
-        #region
+        private void ReadStream(StreamReader reader)
+        {
+            String _inputData = reader.ReadLine();
+            if (_inputData != String.Empty)
+            {
+                //Parser.ParseString(_inputData);
+                //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
+                if (_inputData == "/r")
+                {
+                    _inputData = Environment.NewLine;
+                }
+                Invoke(RefreshEvent);
+            }
+        }
+
+        #region port_DataReceived
 
         private void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -1704,6 +1719,7 @@ namespace PacketComs
                 {
                     var reader = new StreamReader(stream);
                     var write = new StreamWriter(stream);
+                    ReadStream(reader);
                 }
 
                 /*
@@ -1744,7 +1760,7 @@ namespace PacketComs
         }
         #endregion
 
-
+        #region ShowSpecialChar
         private void ShowSpecialChar(Graphics curGraphics, Char curChar, Int32 y,
             Int32 x, Color curFgColor)
         {
@@ -1862,6 +1878,7 @@ namespace PacketComs
                     break;
             }
         }
+        #endregion
 
         #region WipeScreen
 
