@@ -24,8 +24,8 @@ namespace PacketComs
 
     public sealed class TerminalEmulator : Control
     {
-        private readonly ModifyFile myFiles = new ModifyFile();
-        private readonly SerialPort port = new SerialPort();
+        private readonly ModifyFile _myFiles = new ModifyFile();
+        private readonly SerialPort _port = new SerialPort();
         
         #region Public Properties of Comonent
              
@@ -710,62 +710,62 @@ namespace PacketComs
                     case
                         BaudRateTypes.Baud_110:
                     {
-                        port.BaudRate = 110;
+                        _port.BaudRate = 110;
                         break;
                     }
                     case
                         BaudRateTypes.Baud_300:
                     {
-                        port.BaudRate = 300;
+                        _port.BaudRate = 300;
                         break;
                     }
                     case
                         BaudRateTypes.Baud_600:
                     {
-                        port.BaudRate = 600;
+                        _port.BaudRate = 600;
                         break;
                     }
                     case
                         BaudRateTypes.Baud_1200:
                     {
-                        port.BaudRate = 1200;
+                        _port.BaudRate = 1200;
                         break;
                     }
                     case
                         BaudRateTypes.Baud_2400:
                     {
-                        port.BaudRate = 2400;
+                        _port.BaudRate = 2400;
                         break;
                     }
                     case
                         BaudRateTypes.Baud_4800:
                     {
-                        port.BaudRate = 4800;
+                        _port.BaudRate = 4800;
                         break;
                     }
                     case
                         BaudRateTypes.Baud_9600:
                     {
-                        port.BaudRate = 9600;
+                        _port.BaudRate = 9600;
                         break;
                     }
                     case
                         BaudRateTypes.Baud_19200:
                     {
-                        port.BaudRate = 19200;
+                        _port.BaudRate = 19200;
                         break;
                     }
                     case
                         BaudRateTypes.Baud_38400:
                     {
-                        port.BaudRate = 38400;
+                        _port.BaudRate = 38400;
                         break;
                     }
 
                     case
                         BaudRateTypes.Baud_57600:
                     {
-                        port.BaudRate = 57600;
+                        _port.BaudRate = 57600;
                         break;
                     }
                 }
@@ -779,25 +779,25 @@ namespace PacketComs
                     case
                         StopBitsTypes.None:
                     {
-                        port.StopBits = StopBits.None;
+                        _port.StopBits = StopBits.None;
                         break;
                     }
                     case
                         StopBitsTypes.One:
                     {
-                        port.StopBits = StopBits.One;
+                        _port.StopBits = StopBits.One;
                         break;
                     }
                     case
                         StopBitsTypes.OnePointFive:
                     {
-                        port.StopBits = StopBits.OnePointFive;
+                        _port.StopBits = StopBits.OnePointFive;
                         break;
                     }
                     case
                         StopBitsTypes.Two:
                     {
-                        port.StopBits = StopBits.Two;
+                        _port.StopBits = StopBits.Two;
                         break;
                     }
                 }
@@ -811,25 +811,25 @@ namespace PacketComs
                     case
                         DataBitsTypes.Data_Bits_5:
                     {
-                        port.DataBits = 5;
+                        _port.DataBits = 5;
                         break;
                     }
                     case
                         DataBitsTypes.Data_Bits_6:
                     {
-                        port.DataBits = 6;
+                        _port.DataBits = 6;
                         break;
                     }
                     case
                         DataBitsTypes.Data_Bits_7:
                     {
-                        port.DataBits = 7;
+                        _port.DataBits = 7;
                         break;
                     }
                     case
                         DataBitsTypes.Data_Bits_8:
                     {
-                        port.DataBits = 8;
+                        _port.DataBits = 8;
                         break;
                     }
                 }
@@ -843,25 +843,25 @@ namespace PacketComs
                     case
                         FlowTypes.XOnXOff:
                     {
-                        port.Handshake = Handshake.XOnXOff;
+                        _port.Handshake = Handshake.XOnXOff;
                         break;
                     }
                     case
                         FlowTypes.RequestToSend:
                     {
-                        port.Handshake = Handshake.RequestToSend;
+                        _port.Handshake = Handshake.RequestToSend;
                         break;
                     }
                     case
                         FlowTypes.RequestToSendXOnXOff:
                     {
-                        port.Handshake = Handshake.RequestToSendXOnXOff;
+                        _port.Handshake = Handshake.RequestToSendXOnXOff;
                         break;
                     }
                     case
                         FlowTypes.None:
                     {
-                        port.Handshake = Handshake.None;
+                        _port.Handshake = Handshake.None;
                         break;
                     }
                 }
@@ -875,40 +875,40 @@ namespace PacketComs
                     case
                         ParityTypes.None:
                     {
-                        port.Parity = Parity.None;
+                        _port.Parity = Parity.None;
                         break;
                     }
                     case
                         ParityTypes.Odd:
                     {
-                        port.Parity = Parity.Odd;
+                        _port.Parity = Parity.Odd;
                         break;
                     }
                     case
                         ParityTypes.Even:
                     {
-                        port.Parity = Parity.Even;
+                        _port.Parity = Parity.Even;
                         break;
                     }
                     case
                         ParityTypes.Mark:
                     {
-                        port.Parity = Parity.Mark;
+                        _port.Parity = Parity.Mark;
                         break;
                     }
                     case
                         ParityTypes.Space:
                     {
-                        port.Parity = Parity.Space;
+                        _port.Parity = Parity.Space;
                         break;
                     }
                 }
 
                 #endregion
 
-                port.PortName = SerialPort;
-                port.Open();
-                port.DataReceived += port_DataReceived;
+                _port.PortName = SerialPort;
+                _port.Open();
+                _port.DataReceived += port_DataReceived;
                 //this.Focus();  
             }
             catch (IOException e)
@@ -942,7 +942,7 @@ namespace PacketComs
         {
             try
             {
-                _inputData = port.ReadExisting();
+                _inputData = _port.ReadExisting();
                 if (_inputData != String.Empty)
                 {
                     Parser.ParseString(_inputData);
@@ -969,7 +969,7 @@ namespace PacketComs
                             for (int i = 1; i < lines.Length - 1; i++)
                                 //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
                             {
-                                myFiles.Write(lines[i] + Environment.NewLine);
+                                _myFiles.Write(lines[i] + Environment.NewLine);
                                 //LastNumber = lines[i].Substring(0, 5);
                             }
                             LastNumberevt(this, new EventArgs());
@@ -1351,7 +1351,7 @@ namespace PacketComs
                             for (int i = 1; i < lines.Length - 1; i++)
                                 //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
                             {
-                                myFiles.Write(lines[i] + Environment.NewLine);
+                                _myFiles.Write(lines[i] + Environment.NewLine);
                                 LastNumber = lines[i].Substring(0, 5);
                             }
                             LastNumberevt(this, new EventArgs());
@@ -1418,7 +1418,7 @@ namespace PacketComs
 
                 if (_cType == "Com")
                 {
-                    port.Write(strText);
+                    _port.Write(strText);
                 }
                     
                 else
@@ -5134,7 +5134,7 @@ namespace PacketComs
             {
                 if (_cType == "Com")
                 {
-                    port.Close();
+                    _port.Close();
                 }
                 /*else if (_cType == "SSH")
                 {
