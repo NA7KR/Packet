@@ -14,6 +14,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using Renci.SshNet;
+using Renci.SshNet.Common;
 
 #endregion
 
@@ -921,19 +922,24 @@ namespace PacketComs
 
         #endregion
 
-        private void ReadStream(StreamReader reader)
+        private void ReadStream(object sender, ShellDataEventArgs e)
         {
-            String _inputData = reader.ReadLine();
-            if (_inputData != String.Empty)
+             _inputData = e.Line;
+            if (_inputData != String.Empty && _inputData != null  )
             {
-                //Parser.ParseString(_inputData);
-                //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
+                Parser.ParseString(_inputData);
+                
                 if (_inputData == "/r")
                 {
                     _inputData = Environment.NewLine;
                 }
                 Invoke(RefreshEvent);
             }
+        }
+
+        private static void WriteStream(string cmd, StreamWriter writer, ShellStream stream)
+        {
+            writer.WriteLine(cmd);
         }
 
         #region port_DataReceived
@@ -1445,7 +1451,7 @@ namespace PacketComs
                                 SocketFlags.None,
                                 _callbackEndDispatch,
                                 _curSocket);
-                           //u.hykmkmnjhghfu87y6tr5uy _lastAr = ar;
+                           
                         }
                         catch
                         {
@@ -1731,9 +1737,10 @@ namespace PacketComs
                client.Connect();
                 using  (var stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024))
                 {
-                    var reader = new StreamReader(stream);
+                    //var reader = new StreamReader(stream);
                     var write = new StreamWriter(stream);
-                    ReadStream(reader);
+                    //ReadStream(reader);
+                    stream.DataReceived += ReadStream;
                 }
                 Focus();
                 /*
