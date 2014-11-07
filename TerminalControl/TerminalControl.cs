@@ -27,6 +27,9 @@ namespace PacketComs
     {
         private readonly ModifyFile _myFiles = new ModifyFile();
         private readonly SerialPort _port = new SerialPort();
+
+        private SshClient _client;
+        private ShellStream _stream;
         
         #region Public Properties of Comonent
              
@@ -924,17 +927,24 @@ namespace PacketComs
 
         private void ReadStream(object sender, ShellDataEventArgs e)
         {
-             _inputData = e.Line;
+            
+             _inputData = System.Text.ASCIIEncoding.ASCII.GetString(e.Data);
             if (_inputData != String.Empty && _inputData != null  )
             {
                 Parser.ParseString(_inputData);
                 
-                if (_inputData == "/r")
+                if (_inputData == "\r")
                 {
                     _inputData = Environment.NewLine;
                 }
-                Invoke(RefreshEvent);
+
             }
+            //MessageBox.Show("Invoke(RefreshEvent);");
+
+
+            this.Invoke(this.RefreshEvent);
+            //Invoke(RefreshEvent);
+
         }
 
         private static void WriteStream(string cmd, StreamWriter writer, ShellStream stream)
@@ -1731,19 +1741,26 @@ namespace PacketComs
                 MessageBox.Show("Unable to resolve HostName");
                 return;
             }
-            
-            using (var client = new SshClient(ip,Port,username,password))
+
+            _client = new SshClient(ip,Port,username,password);
+            _client.Connect();
+            _stream = _client.CreateShellStream("xterm", 80, 24, 800, 600, 1024);
+            _stream.DataReceived += ReadStream;
+
+            /*
+            using (_client = new SshClient(ip,Port,username,password))
             {
-               client.Connect();
-                using  (var stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024))
+                _client.Connect();
+                using  (_stream = _client.CreateShellStream("xterm", 80, 24, 800, 600, 1024))
                 {
                     //var reader = new StreamReader(stream);
-                    var write = new StreamWriter(stream);
+                    //var write = new StreamWriter(stream);
                     //ReadStream(reader);
-                    stream.DataReceived += ReadStream;
+                    _stream.DataReceived += ReadStream;
                 }
                 Focus();
-                /*
+                
+                
             
             SshConnection _conn;
             SshConnectionParameter f = new SshConnectionParameter();
@@ -1763,8 +1780,9 @@ namespace PacketComs
             _reader.Conn = _conn;
             SshChannel ch = _conn.OpenShell(_reader);
             _reader.Pf = ch;
-             */
+             
             }
+            */
         }
         #endregion
 
