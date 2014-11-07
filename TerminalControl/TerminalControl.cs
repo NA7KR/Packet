@@ -919,38 +919,24 @@ namespace PacketComs
             {
                 MessageBox.Show(Convert.ToString(e));
             }
-            //this.Invoke(this.RxdTextEvent, new System.String[] { "hello" });
-            //this.Invoke(this.RefreshEvent);
         }
-
         #endregion
 
-        private void ReadStream(object sender, ShellDataEventArgs e)
+        private void ReadStreamSSH(object sender, ShellDataEventArgs e)
         {
-            
-             _inputData = System.Text.ASCIIEncoding.ASCII.GetString(e.Data);
+             _inputData = System.Text.Encoding.ASCII.GetString(e.Data);
             if (_inputData != String.Empty && _inputData != null  )
             {
-                Parser.ParseString(_inputData);
-                
+                Parser.ParseString(_inputData); 
                 if (_inputData == "\r")
                 {
                     _inputData = Environment.NewLine;
                 }
-
             }
-            //MessageBox.Show("Invoke(RefreshEvent);");
-
-
-            this.Invoke(this.RefreshEvent);
-            //Invoke(RefreshEvent);
-
+            Invoke(RefreshEvent);
         }
 
-        private static void WriteStream(string cmd, StreamWriter writer, ShellStream stream)
-        {
-            writer.WriteLine(cmd);
-        }
+     
 
         #region port_DataReceived
 
@@ -1251,13 +1237,14 @@ namespace PacketComs
                 if (ScrollbackBuffer.Count == 0)
                 {
                     VertScrollBar.Maximum = 0;
+
                     return;
                 }
 
                 // If the offset does not make the Maximum less than zero, set its value.    
-                if ((ScrollbackBuffer.Count*_charSize.Height) - Height > 0)
+                if ((ScrollbackBuffer.Count * _charSize.Height) - Height > 0)
                 {
-                    VertScrollBar.Maximum = ScrollbackBuffer.Count*_charSize.Height - Height;
+                    VertScrollBar.Maximum = ScrollbackBuffer.Count * _charSize.Height - Height;
                 }
 
                 // If the HScrollBar is visible, adjust the Maximum of the 
@@ -1266,8 +1253,8 @@ namespace PacketComs
                 //{
                 //	this.vScrollBar1.Maximum += this.hScrollBar1.Height;
                 //}
-                VertScrollBar.LargeChange = VertScrollBar.Maximum/_charSize.Height*10;
-                VertScrollBar.SmallChange = VertScrollBar.Maximum/_charSize.Height;
+                VertScrollBar.LargeChange = VertScrollBar.Maximum / _charSize.Height * 10;
+                VertScrollBar.SmallChange = VertScrollBar.Maximum / _charSize.Height;
                 // Adjust the Maximum value to make the raw Maximum value 
                 // attainable by user interaction.
                 VertScrollBar.Maximum += VertScrollBar.LargeChange;
@@ -1277,6 +1264,7 @@ namespace PacketComs
             {
                 MessageBox.Show("Error SetScrollBarValues: " + curException.Message);
             }
+
         }
 
         #endregion
@@ -1732,8 +1720,7 @@ namespace PacketComs
             try
             {
                 IPHostEntry ipHost = Dns.GetHostEntry(hostname);
-                //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
-          ;      IPAddress[] addr = ipHost.AddressList;
+                IPAddress[] addr = ipHost.AddressList;
                 ip = addr[0].ToString();
             }
             catch
@@ -1745,7 +1732,7 @@ namespace PacketComs
             _client = new SshClient(ip,Port,username,password);
             _client.Connect();
             _stream = _client.CreateShellStream("xterm", 80, 24, 800, 600, 1024);
-            _stream.DataReceived += ReadStream;
+            _stream.DataReceived += ReadStreamSSH;
 
             /*
             using (_client = new SshClient(ip,Port,username,password))
