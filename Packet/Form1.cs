@@ -516,7 +516,7 @@ namespace Packet
                     terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
                     terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
                     terminalEmulator1.UernamePrompt = _myRegistryBbs.BRead("UserNamePrompt");
-                    terminalEmulator1.passwordPrompt = _myRegistryBbs.BRead("PasswordPrompt");
+                    terminalEmulator1.PasswordPrompt = _myRegistryBbs.BRead("PasswordPrompt");
                 }
                 else
                 {
@@ -579,7 +579,7 @@ namespace Packet
                 terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
                 terminalEmulator1.BBSPrompt = _myRegistryCluster.BRead("Prompt");
                 terminalEmulator1.UernamePrompt = _myRegistryCluster.BRead("UserNamePrompt");
-                terminalEmulator1.passwordPrompt = _myRegistryCluster.BRead("PasswordPrompt");
+                terminalEmulator1.PasswordPrompt = _myRegistryCluster.BRead("PasswordPrompt");
                 terminalEmulator1.Connect();
                 disconnect_button.Enabled = true;
             }
@@ -628,7 +628,7 @@ namespace Packet
                 terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
                 terminalEmulator1.BBSPrompt = _myRegistryNode.BRead("Prompt");
                 terminalEmulator1.UernamePrompt = _myRegistryNode.BRead("UserNamePrompt");
-                terminalEmulator1.passwordPrompt = _myRegistryNode.BRead("PasswordPrompt");
+                terminalEmulator1.PasswordPrompt = _myRegistryNode.BRead("PasswordPrompt");
                 terminalEmulator1.Connect();
                 disconnect_button.Enabled = true;
             }

@@ -88,7 +88,7 @@ namespace Packet
 
         public ComForm()
         {
-            throw new NotImplementedException();
+            InitializeComponent();
         }
 
         public Encrypting MyEncrypt

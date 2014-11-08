@@ -390,7 +390,7 @@ namespace Packet
             this.terminalEmulator1.Name = "terminalEmulator1";
             this.terminalEmulator1.ParityType = TerminalEmulator.ParityTypes.None;
             this.terminalEmulator1.Password = null;
-            this.terminalEmulator1.passwordPrompt = null;
+            this.terminalEmulator1.PasswordPrompt = null;
             this.terminalEmulator1.Port = 9000;
             this.terminalEmulator1.Rows = 40;
             this.terminalEmulator1.SerialPort = "";

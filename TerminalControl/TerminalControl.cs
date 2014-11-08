@@ -86,7 +86,7 @@ namespace PacketComs
 
         public string UernamePrompt { get; set; }
 
-        public string passwordPrompt { get; set; }
+        public string PasswordPrompt { get; set; }
 
         public string Header { get; set; }
 
@@ -236,23 +236,23 @@ namespace PacketComs
 
         #region Fields
 
-        private readonly Color BlinkColor;
-        private readonly Color BoldColor;
-        private readonly UcCaret Caret;
-        private readonly Color FGColor;
-        private readonly UcChars G0;
-        private readonly UcChars G1;
-        private readonly UcChars G2;
-        private readonly UcChars G3;
-        private readonly UcKeyboard Keyboard;
+        private readonly Color _blinkColor;
+        private readonly Color _boldColor;
+        private readonly UcCaret _caret;
+        private readonly Color _fgColor;
+        private readonly UcChars _g0;
+        private readonly UcChars _g1;
+        private readonly UcChars _g2;
+        private readonly UcChars _g3;
+        private readonly UcKeyboard _keyboard;
         private readonly UcMode Modes;
-        private static UcParser Parser;
-        private readonly ArrayList SavedCarets;
-        private readonly StringCollection ScrollbackBuffer;
-        private readonly int ScrollbackBufferSize;
-        private readonly UcTabStops TabStops;
-        private readonly String TypeFace = FontFamily.GenericMonospace.GetName(0);
-        private readonly UcVertScrollBar VertScrollBar;
+        private static UcParser _parser;
+        private readonly ArrayList _savedCarets;
+        private readonly StringCollection _scrollbackBuffer;
+        private readonly int _scrollbackBufferSize;
+        private readonly UcTabStops _tabStops;
+        private readonly String _typeFace = FontFamily.GenericMonospace.GetName(0);
+        private readonly UcVertScrollBar _vertScrollBar;
         private Int32 TypeSize = 8;
         private FontStyle TypeStyle = FontStyle.Regular;
         private CharAttribStruct[][] _attribGrid;
@@ -321,38 +321,38 @@ namespace PacketComs
 
         public TerminalEmulator()
         {
-            ScrollbackBufferSize = 3000;
-            ScrollbackBuffer = new StringCollection();
+            _scrollbackBufferSize = 3000;
+            _scrollbackBuffer = new StringCollection();
 
             // set the display options
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer,
                 true);
-            Keyboard = new UcKeyboard(this);
-            Parser = new UcParser();
+            _keyboard = new UcKeyboard(this);
+            _parser = new UcParser();
             var nvtParser = new UcTelnetParser();
-            Caret = new UcCaret();
+            _caret = new UcCaret();
             Modes = new UcMode();
-            TabStops = new UcTabStops();
-            SavedCarets = new ArrayList();
+            _tabStops = new UcTabStops();
+            _savedCarets = new ArrayList();
 
             //this.Name       = "ACK-TERM";
             //this.Text       = "ACK-TERM";
-            Caret.Pos = new Point(0, 0);
+            _caret.Pos = new Point(0, 0);
             _charSize = new Size();
-            Font = new Font(TypeFace, TypeSize, TypeStyle);
+            Font = new Font(_typeFace, TypeSize, TypeStyle);
             //this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
             //this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
-            FGColor = Color.FromArgb(0, 0, 0);
+            _fgColor = Color.FromArgb(0, 0, 0);
             BackColor = Color.FromArgb(0, 0, 160);
-            BoldColor = Color.FromArgb(255, 255, 255);
-            BlinkColor = Color.Red;
-            G0 = new UcChars(UcChars.Sets.ASCII);
-            G1 = new UcChars(UcChars.Sets.ASCII);
-            G2 = new UcChars(UcChars.Sets.DECSG);
-            G3 = new UcChars(UcChars.Sets.DECSG);
-            _charAttribs.GL = G0;
-            _charAttribs.GR = G2;
-            _charAttribs.GS = null;
+            _boldColor = Color.FromArgb(255, 255, 255);
+            _blinkColor = Color.Red;
+            _g0 = new UcChars(UcChars.Sets.ASCII);
+            _g1 = new UcChars(UcChars.Sets.ASCII);
+            _g2 = new UcChars(UcChars.Sets.DECSG);
+            _g3 = new UcChars(UcChars.Sets.DECSG);
+            _charAttribs.Gl = _g0;
+            _charAttribs.GR = _g2;
+            _charAttribs.Gs = null;
             GetFontInfo();
             // Create and initialize contextmenu
             var contextMenu1 = new ContextMenu();
@@ -374,26 +374,26 @@ namespace PacketComs
             mnuCopyPaste.Click += mnuCopyPaste_Click;
 
             // Create and initialize a VScrollBar.
-            VertScrollBar = new UcVertScrollBar();
-            VertScrollBar.Scroll += HandleScroll;
+            _vertScrollBar = new UcVertScrollBar();
+            _vertScrollBar.Scroll += HandleScroll;
 
             // Dock the scroll bar to the right side of the form.
-            VertScrollBar.Dock = DockStyle.Right;
+            _vertScrollBar.Dock = DockStyle.Right;
 
             // Add the scroll bar to the form.
-            Controls.Add(VertScrollBar);
+            Controls.Add(_vertScrollBar);
 
             // create the character grid (rows by columns). This is a shadow of what's displayed
             // Set the window size to match
             SetSize(24, 80);
 
-            Parser.ParserEvent += CommandRouter;
-            Keyboard.KeyboardEvent += DispatchMessage;
+            _parser.ParserEvent += CommandRouter;
+            _keyboard.KeyboardEvent += DispatchMessage;
             nvtParser.NvtParserEvent += TelnetInterpreter;
             RefreshEvent += ShowBuffer;
             //this.CaretOffEvent += new CaretOffEventHandler(this.CaretOff);
             //this.CaretOnEvent += new CaretOnEventHandler(this.CaretOn);
-            RxdTextEvent += nvtParser.ParseString;
+            RxdTextEvent += s => nvtParser.ParseString(s);
 
             _beginDrag = new Point();
             _endDrag = new Point();
@@ -409,14 +409,14 @@ namespace PacketComs
 
         protected override void OnResize(EventArgs e)
         {
-            Font = new Font(TypeFace, TypeSize, TypeStyle);
+            Font = new Font(_typeFace, TypeSize, TypeStyle);
             // reset scrollbar values
             SetScrollBarValues();
             // capture text at cursor b/c it's not in the scrollback buffer yet
             string textAtCursor = "";
             for (int x = 0; x < _cols; x++)
             {
-                char curChar = _charGrid[Caret.Pos.Y][x];
+                char curChar = _charGrid[_caret.Pos.Y][x];
                 if (curChar == '\0')
                 {
                     continue;
@@ -458,9 +458,9 @@ namespace PacketComs
             // ScrollbackBuffer[0] is the "oldest" string
             // chargrid[0] is the top row on the display
             var visiblebuffer = new StringCollection();
-            for (int i = ScrollbackBuffer.Count - 1; i >= 0; i--)
+            for (int i = _scrollbackBuffer.Count - 1; i >= 0; i--)
             {
-                visiblebuffer.Insert(0, ScrollbackBuffer[i]);
+                visiblebuffer.Insert(0, _scrollbackBuffer[i]);
                 // don't parse more strings than our display can show
                 if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
                     break;
@@ -530,7 +530,7 @@ namespace PacketComs
                 case WMCodes.WM_SYSKEYUP:
                 case WMCodes.WM_SYSCHAR:
                 case WMCodes.WM_CHAR:
-                    Keyboard.KeyDown(m);
+                    _keyboard.KeyDown(m);
                     break;
 
                 default:
@@ -690,8 +690,8 @@ namespace PacketComs
 
         public void Disconnectby()
         {
-            Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m ");
-            Parser.ParseString(Environment.NewLine);
+            _parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m ");
+            _parser.ParseString(Environment.NewLine);
             Invoke(RefreshEvent);
             if (Disconnected != null)
             {
@@ -924,16 +924,23 @@ namespace PacketComs
 
         private void ReadStreamSSH(object sender, ShellDataEventArgs e)
         {
-             _inputData = System.Text.Encoding.ASCII.GetString(e.Data);
-            if (_inputData != String.Empty && _inputData != null  )
+            try
             {
-                Parser.ParseString(_inputData); 
-                if (_inputData == "\r")
+                _inputData = System.Text.Encoding.ASCII.GetString(e.Data);
+                if (_inputData != String.Empty && _inputData != null)
                 {
-                    _inputData = Environment.NewLine;
+                    _parser.ParseString(_inputData);
+                    if (_inputData == "\r")
+                    {
+                        _inputData = Environment.NewLine;
+                    }
                 }
+                Invoke(RefreshEvent);
             }
-            Invoke(RefreshEvent);
+            catch (Exception curException)
+            {
+                MessageBox.Show("Error ReadStreamSSH: " + curException.Message);
+            }
         }
 
      
@@ -947,7 +954,7 @@ namespace PacketComs
                 _inputData = _port.ReadExisting();
                 if (_inputData != String.Empty)
                 {
-                    Parser.ParseString(_inputData);
+                    _parser.ParseString(_inputData);
                     //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
                     if (_inputData == "/r")
                     {
@@ -1127,99 +1134,107 @@ namespace PacketComs
 
         private void HandleScroll(Object sender, ScrollEventArgs se)
         {
-            // capture text at cursor
-            if (Caret.IsOff)
+            try
             {
-            }
-            else
-            {
-                _textAtCursor = "";
-                for (int x = 0; x < _cols; x++)
+                // capture text at cursor
+                if (_caret.IsOff)
                 {
-                    char curChar = _charGrid[Caret.Pos.Y][x];
-                    if (curChar == '\0')
-                    {
-                        continue;
-                    }
-                    _textAtCursor = _textAtCursor + Convert.ToString(curChar);
-                }
-            }
-
-            switch (se.Type)
-            {
-                case ScrollEventType.SmallIncrement: // down
-                    _lastVisibleLine += 1;
-                    break;
-                case ScrollEventType.SmallDecrement: // up
-                    _lastVisibleLine += -1;
-                    break;
-                default:
-                    return;
-            }
-
-            // make sure we don't set LastVisibleLine past the end of the StringCollection
-            // LastVisibleLine is relative to the last line in the StringCollection
-            // 0 is the Last element
-            if (_lastVisibleLine > 0)
-            {
-                _lastVisibleLine = 0;
-            }
-
-            if (_lastVisibleLine < (0 - ScrollbackBuffer.Count) + (_rows))
-            {
-                _lastVisibleLine = (0 - ScrollbackBuffer.Count) + (_rows) - 1;
-            }
-
-
-            int columns = _cols;
-            int rows = _rows;
-
-            SetSize(rows, columns);
-
-            var visiblebuffer = new StringCollection();
-            for (int i = ScrollbackBuffer.Count - 1 + _lastVisibleLine; i >= 0; i--)
-            {
-                visiblebuffer.Insert(0, ScrollbackBuffer[i]);
-
-                // don't parse more strings than our display can show
-                if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
-                    break;
-            }
-
-            //int lastline = (0 - this.ScrollbackBuffer.Count) + (this.Rows);
-            //int lastline = this.LastVisibleLine;
-            for (int i = 0; i < visiblebuffer.Count; i++)
-            {
-                //Console.WriteLine("Writing string to display: " + visiblebuffer[i]);
-                for (int column = 0; column < columns; column++)
-                {
-                    //this.CharGrid[i][column] = '0';
-                    if (column > visiblebuffer[i].Length - 1)
-                        continue;
-                    _charGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
-                }
-                // if we're displaying the last line in scrollbackbuffer, then
-                // replace the cursor and the text on the cursor line
-                //System.Console.WriteLine(Convert.ToString(lastline) + " " + Convert.ToString(this.ScrollbackBuffer.Count));
-                if (_lastVisibleLine == 0)
-                {
-                    CaretOn();
-                    //this.CaretToAbs(0,0);
-                    for (int column = 0; column < _cols; column++)
-                    {
-                        if (column > _textAtCursor.Length - 1)
-                            continue;
-                        _charGrid[_rows - 1][column] = _textAtCursor.ToCharArray()[column];
-                    }
-                    CaretToAbs(_rows - 1, _textAtCursor.Length);
                 }
                 else
                 {
-                    CaretOff();
+                    _textAtCursor = "";
+                    for (int x = 0; x < _cols; x++)
+                    {
+                        char curChar = _charGrid[_caret.Pos.Y][x];
+                        if (curChar == '\0')
+                        {
+                            continue;
+                        }
+                        _textAtCursor = _textAtCursor + Convert.ToString(curChar);
+                    }
                 }
+
+                switch (se.Type)
+                {
+                    case ScrollEventType.SmallIncrement: // down
+                        _lastVisibleLine += 1;
+                        break;
+                    case ScrollEventType.SmallDecrement: // up
+                        _lastVisibleLine += -1;
+                        break;
+                    default:
+                        return;
+                }
+
+                // make sure we don't set LastVisibleLine past the end of the StringCollection
+                // LastVisibleLine is relative to the last line in the StringCollection
+                // 0 is the Last element
+                if (_lastVisibleLine > 0)
+                {
+                    _lastVisibleLine = 0;
+                }
+
+                if (_lastVisibleLine < (0 - _scrollbackBuffer.Count) + (_rows))
+                {
+                    _lastVisibleLine = (0 - _scrollbackBuffer.Count) + (_rows) - 1;
+                }
+
+
+                int columns = _cols;
+                int rows = _rows;
+
+                SetSize(rows, columns);
+
+                var visiblebuffer = new StringCollection();
+                for (int i = _scrollbackBuffer.Count - 1 + _lastVisibleLine; i >= 0; i--)
+                {
+                    visiblebuffer.Insert(0, _scrollbackBuffer[i]);
+
+                    // don't parse more strings than our display can show
+                    if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
+                        break;
+                }
+
+                //int lastline = (0 - this.ScrollbackBuffer.Count) + (this.Rows);
+                //int lastline = this.LastVisibleLine;
+                for (int i = 0; i < visiblebuffer.Count; i++)
+                {
+                    //Console.WriteLine("Writing string to display: " + visiblebuffer[i]);
+                    for (int column = 0; column < columns; column++)
+                    {
+                        //this.CharGrid[i][column] = '0';
+                        if (column > visiblebuffer[i].Length - 1)
+                            continue;
+                        _charGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
+                    }
+                    // if we're displaying the last line in scrollbackbuffer, then
+                    // replace the cursor and the text on the cursor line
+                    //System.Console.WriteLine(Convert.ToString(lastline) + " " + Convert.ToString(this.ScrollbackBuffer.Count));
+                    if (_lastVisibleLine == 0)
+                    {
+                        CaretOn();
+                        //this.CaretToAbs(0,0);
+                        for (int column = 0; column < _cols; column++)
+                        {
+                            if (column > _textAtCursor.Length - 1)
+                                continue;
+                            _charGrid[_rows - 1][column] = _textAtCursor.ToCharArray()[column];
+                        }
+                        CaretToAbs(_rows - 1, _textAtCursor.Length);
+                    }
+                    else
+                    {
+                        CaretOff();
+                    }
+                }
+
+                Refresh();
+            }
+            catch (Exception curException)
+            {
+                MessageBox.Show("Error HandleScroll: " + curException.Message);
             }
 
-            Refresh();
         }
 
         #endregion
@@ -1230,21 +1245,22 @@ namespace PacketComs
         {
             try
             {
+                
                 // Set the Maximum, Minimum, LargeChange and SmallChange properties.
-                VertScrollBar.Minimum = 0;
+                _vertScrollBar.Minimum = 0;
 
                 // if the scrollbackbuffer is empty, there's nothing to scroll
-                if (ScrollbackBuffer.Count == 0)
+                if (_scrollbackBuffer.Count == 0)
                 {
-                    VertScrollBar.Maximum = 0;
+                    _vertScrollBar.Maximum = 0;
 
                     return;
                 }
 
                 // If the offset does not make the Maximum less than zero, set its value.    
-                if ((ScrollbackBuffer.Count * _charSize.Height) - Height > 0)
+                if ((_scrollbackBuffer.Count * _charSize.Height) - Height > 0)
                 {
-                    VertScrollBar.Maximum = ScrollbackBuffer.Count * _charSize.Height - Height;
+                    _vertScrollBar.Maximum = _scrollbackBuffer.Count * _charSize.Height - Height;
                 }
 
                 // If the HScrollBar is visible, adjust the Maximum of the 
@@ -1253,11 +1269,12 @@ namespace PacketComs
                 //{
                 //	this.vScrollBar1.Maximum += this.hScrollBar1.Height;
                 //}
-                VertScrollBar.LargeChange = VertScrollBar.Maximum / _charSize.Height * 10;
-                VertScrollBar.SmallChange = VertScrollBar.Maximum / _charSize.Height;
+                _vertScrollBar.LargeChange = _vertScrollBar.Maximum / _charSize.Height * 10;
+                _vertScrollBar.SmallChange = _vertScrollBar.Maximum / _charSize.Height;
                 // Adjust the Maximum value to make the raw Maximum value 
                 // attainable by user interaction.
-                VertScrollBar.Maximum += VertScrollBar.LargeChange;
+                _vertScrollBar.Maximum += _vertScrollBar.LargeChange;
+                 
             }
 
             catch (Exception curException)
@@ -1332,7 +1349,7 @@ namespace PacketComs
                         DispatchMessage(this, Username);
                         DispatchMessage(this, Environment.NewLine);
                     }
-                    if (sReceived.Contains(passwordPrompt))
+                    if (sReceived.Contains(PasswordPrompt))
                     {
                         DispatchMessage(this, Password);
                         DispatchMessage(this, Environment.NewLine);
@@ -1491,31 +1508,31 @@ namespace PacketComs
 
         private void PrintChar(Char curChar)
         {
-            if (Caret.EOL)
+            if (_caret.EOL)
             {
                 if ((Modes.Flags & UcMode.AutoWrap) == UcMode.AutoWrap)
                 {
                     LineFeed();
                     CarriageReturn();
-                    Caret.EOL = false;
+                    _caret.EOL = false;
                 }
             }
 
-            Int32 x = Caret.Pos.X;
-            Int32 y = Caret.Pos.Y;
+            Int32 x = _caret.Pos.X;
+            Int32 y = _caret.Pos.Y;
 
             _attribGrid[y][x] = _charAttribs;
 
-            if (_charAttribs.GS != null)
+            if (_charAttribs.Gs != null)
             {
-                curChar = UcChars.Get(curChar, _attribGrid[y][x].GS.Set, _attribGrid[y][x].GR.Set);
-                if (_charAttribs.GS.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
-                _charAttribs.GS = null;
+                curChar = UcChars.Get(curChar, _attribGrid[y][x].Gs.Set, _attribGrid[y][x].GR.Set);
+                if (_charAttribs.Gs.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
+                _charAttribs.Gs = null;
             }
             else
             {
-                curChar = UcChars.Get(curChar, _attribGrid[y][x].GL.Set, _attribGrid[y][x].GR.Set);
-                if (_charAttribs.GL.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
+                curChar = UcChars.Get(curChar, _attribGrid[y][x].Gl.Set, _attribGrid[y][x].GR.Set);
+                if (_charAttribs.Gl.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
             }
             _charGrid[y][x] = curChar;
             CaretRight();
@@ -1600,13 +1617,13 @@ namespace PacketComs
 
             if (curAttribs.IsBlinking)
             {
-                CurFGColor = BlinkColor;
+                CurFGColor = _blinkColor;
             }
 
             // bold takes precedence over the blink color
             if (curAttribs.IsBold)
             {
-                CurFGColor = BoldColor;
+                CurFGColor = _boldColor;
             }
 
             if (curAttribs.UseAltColor)
@@ -1617,7 +1634,7 @@ namespace PacketComs
             // alternate color takes precedence over the bold color
             if (curAttribs.UseAltBGColor)
             {
-                CurBGColor = curAttribs.AltBGColor;
+                CurBGColor = curAttribs.AltBgColor;
             }
 
             if (curAttribs.IsInverse)
@@ -1658,7 +1675,7 @@ namespace PacketComs
             AssignColors(curAttribs, ref curFgColor, ref curBgColor);
 
             if ((curBgColor != BackColor && (Modes.Flags & UcMode.LightBackground) == 0) ||
-                (curBgColor != FGColor && (Modes.Flags & UcMode.LightBackground) > 0))
+                (curBgColor != _fgColor && (Modes.Flags & UcMode.LightBackground) > 0))
             {
                 // Erase the current Character underneath the cursor postion
                 _eraseBuffer.Clear(curBgColor);
@@ -1733,6 +1750,7 @@ namespace PacketComs
             _client.Connect();
             _stream = _client.CreateShellStream("xterm", 80, 24, 800, 600, 1024);
             _stream.DataReceived += ReadStreamSSH;
+            Focus();
 
             /*
             using (_client = new SshClient(ip,Port,username,password))
@@ -1900,7 +1918,7 @@ namespace PacketComs
             // clear the screen buffer area
             if ((Modes.Flags & UcMode.LightBackground) > 0)
             {
-                curGraphics.Clear(FGColor);
+                curGraphics.Clear(_fgColor);
             }
             else
             {
@@ -1914,8 +1932,8 @@ namespace PacketComs
 
         private void ClearDown(Int32 param)
         {
-            Int32 x = Caret.Pos.X;
-            Int32 y = Caret.Pos.Y;
+            Int32 x = _caret.Pos.X;
+            Int32 y = _caret.Pos.Y;
 
             switch (param)
             {
@@ -1960,8 +1978,8 @@ namespace PacketComs
 
         private void ClearRight(Int32 param)
         {
-            Int32 x = Caret.Pos.X;
-            Int32 y = Caret.Pos.Y;
+            Int32 x = _caret.Pos.X;
+            Int32 y = _caret.Pos.Y;
 
             switch (param)
             {
@@ -2091,7 +2109,7 @@ namespace PacketComs
             switch (e.Action)
             {
                 case NvtActions.SendUp:
-                    Parser.ParseString(e.CurChar.ToString(CultureInfo.InvariantCulture));
+                    _parser.ParseString(e.CurChar.ToString(CultureInfo.InvariantCulture));
                     break;
                 case NvtActions.Execute:
                     NvtExecuteChar();
@@ -2170,7 +2188,7 @@ namespace PacketComs
 
         private void CarriageReturn()
         {
-            CaretToAbs(Caret.Pos.Y, 0);
+            CaretToAbs(_caret.Pos.Y, 0);
         }
 
         #endregion
@@ -2179,16 +2197,16 @@ namespace PacketComs
 
         private void Tab()
         {
-            for (Int32 i = 0; i < TabStops.Columns.Length; i++)
+            for (Int32 i = 0; i < _tabStops.Columns.Length; i++)
             {
-                if (i > Caret.Pos.X && TabStops.Columns[i])
+                if (i > _caret.Pos.X && _tabStops.Columns[i])
                 {
-                    CaretToAbs(Caret.Pos.Y, i);
+                    CaretToAbs(_caret.Pos.Y, i);
                     return;
                 }
             }
 
-            CaretToAbs(Caret.Pos.Y, _cols - 1);
+            CaretToAbs(_caret.Pos.Y, _cols - 1);
         }
 
         #endregion
@@ -2197,7 +2215,7 @@ namespace PacketComs
 
         private void TabSet()
         {
-            TabStops.Columns[Caret.Pos.X] = true;
+            _tabStops.Columns[_caret.Pos.X] = true;
         }
 
         #endregion
@@ -2216,13 +2234,13 @@ namespace PacketComs
             switch (param)
             {
                 case 0: // Current Position
-                    TabStops.Columns[Caret.Pos.X] = false;
+                    _tabStops.Columns[_caret.Pos.X] = false;
                     break;
 
                 case 3: // All Tabs
-                    for (int i = 0; i < TabStops.Columns.Length; i++)
+                    for (int i = 0; i < _tabStops.Columns.Length; i++)
                     {
-                        TabStops.Columns[i] = false;
+                        _tabStops.Columns[i] = false;
                     }
                     break;
             }
@@ -2235,7 +2253,7 @@ namespace PacketComs
         private void ReverseLineFeed()
         {
             // if we're at the top of the scroll region (top margin)
-            if (Caret.Pos.Y == _topMargin)
+            if (_caret.Pos.Y == _topMargin)
             {
                 // we need to add a new line at the top of the screen margin
                 // so shift all the rows in the scroll region down in the array and
@@ -2262,8 +2280,8 @@ namespace PacketComs
         private void InsertLine(UcParams curParams)
         {
             // if we're not in the scroll region then bail
-            if (Caret.Pos.Y < _topMargin ||
-                Caret.Pos.Y > _bottomMargin)
+            if (_caret.Pos.Y < _topMargin ||
+                _caret.Pos.Y > _bottomMargin)
             {
                 return;
             }
@@ -2278,15 +2296,15 @@ namespace PacketComs
             while (nbrOff > 0)
             {
                 // Shift all the rows from the current row to the bottom margin down one place
-                for (int i = _bottomMargin; i > Caret.Pos.Y; i--)
+                for (int i = _bottomMargin; i > _caret.Pos.Y; i--)
                 {
                     _charGrid[i] = _charGrid[i - 1];
                     _attribGrid[i] = _attribGrid[i - 1];
                 }
 
 
-                _charGrid[Caret.Pos.Y] = new Char[_cols];
-                _attribGrid[Caret.Pos.Y] = new CharAttribStruct[_cols];
+                _charGrid[_caret.Pos.Y] = new Char[_cols];
+                _attribGrid[_caret.Pos.Y] = new CharAttribStruct[_cols];
 
                 nbrOff--;
             }
@@ -2299,8 +2317,8 @@ namespace PacketComs
         private void DeleteLine(UcParams curParams)
         {
             // if we're not in the scroll region then bail
-            if (Caret.Pos.Y < _topMargin ||
-                Caret.Pos.Y > _bottomMargin)
+            if (_caret.Pos.Y < _topMargin ||
+                _caret.Pos.Y > _bottomMargin)
             {
                 return;
             }
@@ -2315,7 +2333,7 @@ namespace PacketComs
             while (nbrOff > 0)
             {
                 // Shift all the rows from below the current row to the bottom margin up one place
-                for (int i = Caret.Pos.Y; i < _bottomMargin; i++)
+                for (int i = _caret.Pos.Y; i < _bottomMargin; i++)
                 {
                     _charGrid[i] = _charGrid[i + 1];
                     _attribGrid[i] = _attribGrid[i + 1];
@@ -2337,18 +2355,18 @@ namespace PacketComs
             SetScrollBarValues();
 
             // capture the new line into the scrollback buffer
-            if (ScrollbackBuffer.Count < ScrollbackBufferSize)
+            if (_scrollbackBuffer.Count < _scrollbackBufferSize)
             {
             }
             else
             {
-                ScrollbackBuffer.RemoveAt(0);
+                _scrollbackBuffer.RemoveAt(0);
             }
 
             string s = "";
             for (int x = 0; x < _cols; x++)
             {
-                char curChar = _charGrid[Caret.Pos.Y][x];
+                char curChar = _charGrid[_caret.Pos.Y][x];
 
                 if (curChar == '\0')
                 {
@@ -2356,9 +2374,9 @@ namespace PacketComs
                 }
                 s = s + Convert.ToString(curChar);
             }
-            ScrollbackBuffer.Add(s);
+            _scrollbackBuffer.Add(s);
 
-            if (Caret.Pos.Y == _bottomMargin || Caret.Pos.Y == _rows - 1)
+            if (_caret.Pos.Y == _bottomMargin || _caret.Pos.Y == _rows - 1)
             {
                 // we need to add a new line so shift all the rows up in the array and
                 // insert a new row at the bottom
@@ -2408,12 +2426,12 @@ namespace PacketComs
 
         private void CaretOff()
         {
-            if (Caret.IsOff)
+            if (_caret.IsOff)
             {
                 return;
             }
 
-            Caret.IsOff = true;
+            _caret.IsOff = true;
         }
 
         #endregion
@@ -2422,12 +2440,12 @@ namespace PacketComs
 
         private void CaretOn()
         {
-            if (Caret.IsOff == false)
+            if (_caret.IsOff == false)
             {
                 return;
             }
 
-            Caret.IsOff = false;
+            _caret.IsOff = false;
         }
 
         #endregion
@@ -2436,17 +2454,17 @@ namespace PacketComs
 
         private void ShowCaret(Graphics curGraphics)
         {
-            Int32 x = Caret.Pos.X;
-            Int32 y = Caret.Pos.Y;
+            Int32 x = _caret.Pos.X;
+            Int32 y = _caret.Pos.Y;
 
-            if (Caret.IsOff)
+            if (_caret.IsOff)
             {
                 return;
             }
 
             // paint a rectangle over the cursor position
             curGraphics.DrawImageUnscaled(
-                Caret.Bitmap,
+                _caret.Bitmap,
                 x*_charSize.Width,
                 y*_charSize.Height);
 
@@ -2460,9 +2478,9 @@ namespace PacketComs
 
             curAttribs.UseAltColor = true;
 
-            curAttribs.GL = _attribGrid[y][x].GL;
+            curAttribs.Gl = _attribGrid[y][x].Gl;
             curAttribs.GR = _attribGrid[y][x].GR;
-            curAttribs.GS = _attribGrid[y][x].GS;
+            curAttribs.Gs = _attribGrid[y][x].Gs;
 
             if (_attribGrid[y][x].UseAltBGColor == false)
             {
@@ -2470,7 +2488,7 @@ namespace PacketComs
             }
             else if (_attribGrid[y][x].UseAltBGColor)
             {
-                curAttribs.AltColor = _attribGrid[y][x].AltBGColor;
+                curAttribs.AltColor = _attribGrid[y][x].AltBgColor;
             }
 
             curAttribs.IsUnderscored = _attribGrid[y][x].IsUnderscored;
@@ -2480,8 +2498,8 @@ namespace PacketComs
             ShowChar(
                 curGraphics,
                 _charGrid[y][x],
-                Caret.Pos.Y*_charSize.Height,
-                Caret.Pos.X*_charSize.Width,
+                _caret.Pos.Y*_charSize.Height,
+                _caret.Pos.X*_charSize.Width,
                 curAttribs);
         }
 
@@ -2491,12 +2509,12 @@ namespace PacketComs
 
         private void CaretUp()
         {
-            Caret.EOL = false;
+            _caret.EOL = false;
 
-            if ((Caret.Pos.Y > 0 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
-                (Caret.Pos.Y > _topMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
+            if ((_caret.Pos.Y > 0 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
+                (_caret.Pos.Y > _topMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
             {
-                Caret.Pos.Y -= 1;
+                _caret.Pos.Y -= 1;
             }
         }
 
@@ -2506,12 +2524,12 @@ namespace PacketComs
 
         private void CaretDown()
         {
-            Caret.EOL = false;
+            _caret.EOL = false;
 
-            if ((Caret.Pos.Y < _rows - 1 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
-                (Caret.Pos.Y < _bottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
+            if ((_caret.Pos.Y < _rows - 1 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
+                (_caret.Pos.Y < _bottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
             {
-                Caret.Pos.Y += 1;
+                _caret.Pos.Y += 1;
             }
         }
 
@@ -2521,11 +2539,11 @@ namespace PacketComs
 
         private void CaretLeft()
         {
-            Caret.EOL = false;
+            _caret.EOL = false;
 
-            if (Caret.Pos.X > 0)
+            if (_caret.Pos.X > 0)
             {
-                Caret.Pos.X -= 1;
+                _caret.Pos.X -= 1;
             }
         }
 
@@ -2535,14 +2553,14 @@ namespace PacketComs
 
         private void CaretRight()
         {
-            if (Caret.Pos.X < _cols - 1)
+            if (_caret.Pos.X < _cols - 1)
             {
-                Caret.Pos.X += 1;
-                Caret.EOL = false;
+                _caret.Pos.X += 1;
+                _caret.EOL = false;
             }
             else
             {
-                Caret.EOL = true;
+                _caret.EOL = true;
             }
         }
 
@@ -2552,7 +2570,7 @@ namespace PacketComs
 
         private void CaretToRel(Int32 y, Int32 x)
         {
-            Caret.EOL = false;
+            _caret.EOL = false;
             /* This code is used when we get a cursor position command from
                    the host. Even if we're not in relative mode we use this as this will
                    sort that out for us. The ToAbs code is used internally by this prog 
@@ -2589,8 +2607,8 @@ namespace PacketComs
                 y = _bottomMargin;
             }
 
-            Caret.Pos.Y = y;
-            Caret.Pos.X = x;
+            _caret.Pos.Y = y;
+            _caret.Pos.X = x;
         }
 
         #endregion
@@ -2599,7 +2617,7 @@ namespace PacketComs
 
         private void CaretToAbs(Int32 y, Int32 x)
         {
-            Caret.EOL = false;
+            _caret.EOL = false;
 
             if (x < 0)
             {
@@ -2631,8 +2649,8 @@ namespace PacketComs
                 y = _bottomMargin;
             }
 
-            Caret.Pos.Y = y;
-            Caret.Pos.X = x;
+            _caret.Pos.Y = y;
+            _caret.Pos.X = x;
         }
 
         #endregion
@@ -2666,47 +2684,47 @@ namespace PacketComs
                     break;
 
                 case "\x1b" + "7": //DECSC Save Cursor position and attributes
-                    SavedCarets.Add(new UcCaretAttribs(
-                        Caret.Pos,
-                        G0.Set,
-                        G1.Set,
-                        G2.Set,
-                        G3.Set,
+                    _savedCarets.Add(new UcCaretAttribs(
+                        _caret.Pos,
+                        _g0.Set,
+                        _g1.Set,
+                        _g2.Set,
+                        _g3.Set,
                         _charAttribs));
 
                     break;
 
                 case "\x1b" + "8": //DECRC Restore Cursor position and attributes
-                    Caret.Pos = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).Pos;
-                    _charAttribs = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).Attribs;
+                    _caret.Pos = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).Pos;
+                    _charAttribs = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).Attribs;
 
-                    G0.Set = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).G0Set;
-                    G1.Set = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).G1Set;
-                    G2.Set = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).G2Set;
-                    G3.Set = ((UcCaretAttribs) SavedCarets[SavedCarets.Count - 1]).G3Set;
+                    _g0.Set = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).G0Set;
+                    _g1.Set = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).G1Set;
+                    _g2.Set = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).G2Set;
+                    _g3.Set = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).G3Set;
 
-                    SavedCarets.RemoveAt(SavedCarets.Count - 1);
+                    _savedCarets.RemoveAt(_savedCarets.Count - 1);
 
                     break;
 
                 case "\x1b~": //LS1R Locking Shift G1 -> GR
-                    _charAttribs.GR = G1;
+                    _charAttribs.GR = _g1;
                     break;
 
                 case "\x1bn": //LS2 Locking Shift G2 -> GL
-                    _charAttribs.GL = G2;
+                    _charAttribs.Gl = _g2;
                     break;
 
                 case "\x1b}": //LS2R Locking Shift G2 -> GR
-                    _charAttribs.GR = G2;
+                    _charAttribs.GR = _g2;
                     break;
 
                 case "\x1bo": //LS3 Locking Shift G3 -> GL
-                    _charAttribs.GL = G3;
+                    _charAttribs.Gl = _g3;
                     break;
 
                 case "\x1b|": //LS3R Locking Shift G3 -> GR
-                    _charAttribs.GR = G3;
+                    _charAttribs.GR = _g3;
                     break;
 
                 case "\x1b#8": //DECALN
@@ -2743,7 +2761,7 @@ namespace PacketComs
 
                     if (inc == 0) inc = 1;
 
-                    CaretToAbs(Caret.Pos.Y + inc, Caret.Pos.X);
+                    CaretToAbs(_caret.Pos.Y + inc, _caret.Pos.X);
                     break;
 
                 case "\x1b[A": // CUU
@@ -2755,7 +2773,7 @@ namespace PacketComs
 
                     if (inc == 0) inc = 1;
 
-                    CaretToAbs(Caret.Pos.Y - inc, Caret.Pos.X);
+                    CaretToAbs(_caret.Pos.Y - inc, _caret.Pos.X);
                     break;
 
                 case "\x1b[C": // CUF
@@ -2767,7 +2785,7 @@ namespace PacketComs
 
                     if (inc == 0) inc = 1;
 
-                    CaretToAbs(Caret.Pos.Y, Caret.Pos.X + inc);
+                    CaretToAbs(_caret.Pos.Y, _caret.Pos.X + inc);
                     break;
 
                 case "\x1b[D": // CUB
@@ -2779,7 +2797,7 @@ namespace PacketComs
 
                     if (inc == 0) inc = 1;
 
-                    CaretToAbs(Caret.Pos.Y, Caret.Pos.X - inc);
+                    CaretToAbs(_caret.Pos.Y, _caret.Pos.X - inc);
                     break;
 
                 case "\x1b[H": // CUP
@@ -2830,11 +2848,11 @@ namespace PacketComs
                     break;
 
                 case "\x1bN": // SS2 Single Shift (G2 -> GL)
-                    _charAttribs.GS = G2;
+                    _charAttribs.Gs = _g2;
                     break;
 
                 case "\x1bO": // SS3 Single Shift (G3 -> GL)
-                    _charAttribs.GS = G3;
+                    _charAttribs.Gs = _g3;
                     //System.Console.WriteLine ("SS3: GS = {0}", this.CharAttribs.GS);
                     break;
 
@@ -2915,22 +2933,22 @@ namespace PacketComs
 
             if (e.CurSequence.StartsWith("\x1b("))
             {
-                SelectCharSet(ref G0.Set, e.CurSequence.Substring(2));
+                SelectCharSet(ref _g0.Set, e.CurSequence.Substring(2));
             }
             else if (e.CurSequence.StartsWith("\x1b-") ||
                      e.CurSequence.StartsWith("\x1b)"))
             {
-                SelectCharSet(ref G1.Set, e.CurSequence.Substring(2));
+                SelectCharSet(ref _g1.Set, e.CurSequence.Substring(2));
             }
             else if (e.CurSequence.StartsWith("\x1b.") ||
                      e.CurSequence.StartsWith("\x1b*"))
             {
-                SelectCharSet(ref G2.Set, e.CurSequence.Substring(2));
+                SelectCharSet(ref _g2.Set, e.CurSequence.Substring(2));
             }
             else if (e.CurSequence.StartsWith("\x1b/") ||
                      e.CurSequence.StartsWith("\x1b+"))
             {
-                SelectCharSet(ref G3.Set, e.CurSequence.Substring(2));
+                SelectCharSet(ref _g3.Set, e.CurSequence.Substring(2));
             }
         }
 
@@ -3250,7 +3268,7 @@ namespace PacketComs
             _charAttribs.UseAltBGColor = false;
             _charAttribs.UseAltColor = false;
             _charAttribs.AltColor = Color.White;
-            _charAttribs.AltBGColor = Color.Black;
+            _charAttribs.AltBgColor = Color.Black;
         }
 
         #endregion
@@ -3347,42 +3365,42 @@ namespace PacketComs
 
                     case 40:
                         _charAttribs.UseAltBGColor = true;
-                        _charAttribs.AltBGColor = Color.Black;
+                        _charAttribs.AltBgColor = Color.Black;
                         break;
 
                     case 41:
                         _charAttribs.UseAltBGColor = true;
-                        _charAttribs.AltBGColor = Color.Red;
+                        _charAttribs.AltBgColor = Color.Red;
                         break;
 
                     case 42:
                         _charAttribs.UseAltBGColor = true;
-                        _charAttribs.AltBGColor = Color.Green;
+                        _charAttribs.AltBgColor = Color.Green;
                         break;
 
                     case 43:
                         _charAttribs.UseAltBGColor = true;
-                        _charAttribs.AltBGColor = Color.Yellow;
+                        _charAttribs.AltBgColor = Color.Yellow;
                         break;
 
                     case 44:
                         _charAttribs.UseAltBGColor = true;
-                        _charAttribs.AltBGColor = Color.Blue;
+                        _charAttribs.AltBgColor = Color.Blue;
                         break;
 
                     case 45:
                         _charAttribs.UseAltBGColor = true;
-                        _charAttribs.AltBGColor = Color.Magenta;
+                        _charAttribs.AltBgColor = Color.Magenta;
                         break;
 
                     case 46:
                         _charAttribs.UseAltBGColor = true;
-                        _charAttribs.AltBGColor = Color.Cyan;
+                        _charAttribs.AltBgColor = Color.Cyan;
                         break;
 
                     case 47:
                         _charAttribs.UseAltBGColor = true;
-                        _charAttribs.AltBGColor = Color.White;
+                        _charAttribs.AltBgColor = Color.White;
                         break;
                 }
             }
@@ -3437,11 +3455,11 @@ namespace PacketComs
                     break;
 
                 case '\x0E': // SO maps G1 into GL
-                    _charAttribs.GL = G1;
+                    _charAttribs.Gl = _g1;
                     break;
 
                 case '\x0F': // SI maps G0 into GL
-                    _charAttribs.GL = G0;
+                    _charAttribs.Gl = _g0;
                     break;
 
                 case '\x11': // DC1/XON continue sending characters
@@ -3455,7 +3473,7 @@ namespace PacketComs
 
                 case '\x85': // NEL Next line (same as line feed and carriage return)
                     LineFeed();
-                    CaretToAbs(Caret.Pos.Y, 0);
+                    CaretToAbs(_caret.Pos.Y, 0);
                     break;
 
                 case '\x88': // HTS Horizontal tab set 
@@ -3467,11 +3485,11 @@ namespace PacketComs
                     break;
 
                 case '\x8E': // SS2 Single Shift (G2 -> GL)
-                    _charAttribs.GS = G2;
+                    _charAttribs.Gs = _g2;
                     break;
 
                 case '\x8F': // SS3 Single Shift (G3 -> GL)
-                    _charAttribs.GS = G3;
+                    _charAttribs.Gs = _g3;
                     break;
             }
         }
@@ -3495,8 +3513,8 @@ namespace PacketComs
             // create the character grid (rows by columns) this is a shadow of what's displayed
             _charGrid = new Char[rows][];
 
-            Caret.Pos.X = 0;
-            Caret.Pos.Y = 0;
+            _caret.Pos.X = 0;
+            _caret.Pos.Y = 0;
 
             for (int i = 0; i < _charGrid.Length; i++)
             {
@@ -3537,9 +3555,9 @@ namespace PacketComs
 
             _underlinePos = _charSize.Height - 2;
 
-            Caret.Bitmap = new Bitmap(_charSize.Width, _charSize.Height);
-            Caret.Buffer = Graphics.FromImage(Caret.Bitmap);
-            Caret.Buffer.Clear(Color.FromArgb(255, 181, 106));
+            _caret.Bitmap = new Bitmap(_charSize.Width, _charSize.Height);
+            _caret.Buffer = Graphics.FromImage(_caret.Bitmap);
+            _caret.Buffer.Clear(Color.FromArgb(255, 181, 106));
             _eraseBitmap = new Bitmap(_charSize.Width, _charSize.Height);
             _eraseBuffer = Graphics.FromImage(_eraseBitmap);
         }
@@ -4409,9 +4427,9 @@ namespace PacketComs
 
         private class UcParser
         {
-            private readonly UcCharEvents CharEvents = new UcCharEvents();
-            private readonly UcParams CurParams = new UcParams();
-            private readonly UcStateChangeEvents StateChangeEvents = new UcStateChangeEvents();
+            private readonly UcCharEvents _charEvents = new UcCharEvents();
+            private readonly UcParams _curParams = new UcParams();
+            private readonly UcStateChangeEvents _stateChangeEvents = new UcStateChangeEvents();
             private Char _curChar = '\0';
             private String _curSequence = "";
 
@@ -4438,13 +4456,13 @@ namespace PacketComs
 
                     // Get the next state and associated action based 
                     // on the current state and char event
-                    CharEvents.GetStateEventAction(_state, _curChar, ref nextState, ref nextAction);
+                    _charEvents.GetStateEventAction(_state, _curChar, ref nextState, ref nextAction);
 
                     // execute any actions arising from leaving the current state
                     if (nextState != States.None && nextState != _state)
                     {
                         // check for state exit actions
-                        StateChangeEvents.GetStateChangeAction(_state, Transitions.Exit, ref stateExitAction);
+                        _stateChangeEvents.GetStateChangeAction(_state, Transitions.Exit, ref stateExitAction);
 
                         // Process the exit action
                         if (stateExitAction != Actions.None) DoAction(stateExitAction);
@@ -4460,7 +4478,7 @@ namespace PacketComs
                         _state = nextState;
 
                         // check for state entry actions
-                        StateChangeEvents.GetStateChangeAction(_state, Transitions.Entry, ref stateExitAction);
+                        _stateChangeEvents.GetStateChangeAction(_state, Transitions.Entry, ref stateExitAction);
 
                         // Process the entry action
                         if (StateEntryAction != Actions.None) DoAction(StateEntryAction);
@@ -4480,11 +4498,11 @@ namespace PacketComs
 
                     case Actions.NewCollect:
                         _curSequence = _curChar.ToString(CultureInfo.InvariantCulture);
-                        CurParams.Clear();
+                        _curParams.Clear();
                         break;
 
                     case Actions.Param:
-                        CurParams.Add(_curChar);
+                        _curParams.Add(_curChar);
                         break;
                 }
 
@@ -4505,7 +4523,7 @@ namespace PacketComs
                         //                        this.CurSequence, this.CurChar.ToString (), this.CurParams.Count ().ToString (), 
                         //                        this.State.ToString (), NextAction.ToString ());
 
-                        ParserEvent(this, new ParserEventArgs(nextAction, _curChar, _curSequence, CurParams));
+                        ParserEvent(this, new ParserEventArgs(nextAction, _curChar, _curSequence, _curParams));
                         break;
                 }
 
@@ -4514,7 +4532,7 @@ namespace PacketComs
                 {
                     case Actions.Dispatch:
                         _curSequence = "";
-                        CurParams.Clear();
+                        _curParams.Clear();
                         break;
                 }
             }
@@ -4710,7 +4728,7 @@ namespace PacketComs
 
             private class UcStateChangeEvents
             {
-                private readonly UcStateChangeInfo[] Elements =
+                private readonly UcStateChangeInfo[] _elements =
                 {
                     new UcStateChangeInfo(States.OscString, Transitions.Entry, Actions.OscStart),
                     new UcStateChangeInfo(States.OscString, Transitions.Exit, Actions.OscEnd),
@@ -4725,9 +4743,9 @@ namespace PacketComs
                 {
                     UcStateChangeInfo Element;
 
-                    for (Int32 i = 0; i < Elements.Length; i++)
+                    for (Int32 i = 0; i < _elements.Length; i++)
                     {
-                        Element = Elements[i];
+                        Element = _elements[i];
 
                         if (state == Element.State &&
                             transition == Element.Transition)
@@ -4767,9 +4785,9 @@ namespace PacketComs
 
         private class UcTelnetParser
         {
-            private readonly UcCharEvents CharEvents = new UcCharEvents();
-            private readonly UcParams CurParams = new UcParams();
-            private readonly UcStateChangeEvents StateChangeEvents = new UcStateChangeEvents();
+            private readonly UcCharEvents _charEvents = new UcCharEvents();
+            private readonly UcParams _curParams = new UcParams();
+            private readonly UcStateChangeEvents _stateChangeEvents = new UcStateChangeEvents();
             private Char _curChar = '\0';
             private String _curSequence = "";
 
@@ -4791,13 +4809,13 @@ namespace PacketComs
 
                     // Get the next state and associated action based 
                     // on the current state and char event
-                    CharEvents.GetStateEventAction(_state, _curChar, ref nextState, ref nextAction);
+                    _charEvents.GetStateEventAction(_state, _curChar, ref nextState, ref nextAction);
 
                     // execute any actions arising from leaving the current state
                     if (nextState != States.None && nextState != _state)
                     {
                         // check for state exit actions
-                        StateChangeEvents.GetStateChangeAction(_state, Transitions.Exit, ref stateExitAction);
+                        _stateChangeEvents.GetStateChangeAction(_state, Transitions.Exit, ref stateExitAction);
 
                         // Process the exit action
                         if (stateExitAction != NvtActions.None) DoAction(stateExitAction);
@@ -4813,7 +4831,7 @@ namespace PacketComs
                         _state = nextState;
 
                         // check for state entry actions
-                        StateChangeEvents.GetStateChangeAction(_state, Transitions.Entry, ref stateExitAction);
+                        _stateChangeEvents.GetStateChangeAction(_state, Transitions.Entry, ref stateExitAction);
 
                         // Process the entry action
                         if (StateEntryAction != NvtActions.None) DoAction(StateEntryAction);
@@ -4835,11 +4853,11 @@ namespace PacketComs
 
                     case NvtActions.NewCollect:
                         _curSequence = _curChar.ToString(CultureInfo.InvariantCulture);
-                        CurParams.Clear();
+                        _curParams.Clear();
                         break;
 
                     case NvtActions.Param:
-                        CurParams.Add(_curChar);
+                        _curParams.Add(_curChar);
                         break;
                 }
 
@@ -4852,12 +4870,12 @@ namespace PacketComs
                         //                        this.CurSequence, (int) this.CurChar, this.CurParams.Count (), 
                         //                        this.State, NextAction);
 
-                        NvtParserEvent(this, new NvtParserEventArgs(nextAction, _curChar, _curSequence, CurParams));
+                        NvtParserEvent(this, new NvtParserEventArgs(nextAction, _curChar, _curSequence, _curParams));
                         break;
 
                     case NvtActions.Execute:
                     case NvtActions.SendUp:
-                        NvtParserEvent(this, new NvtParserEventArgs(nextAction, _curChar, _curSequence, CurParams));
+                        NvtParserEvent(this, new NvtParserEventArgs(nextAction, _curChar, _curSequence, _curParams));
 
                         //                    System.Console.Write ("Sequence = {0}, Char = {1}, PrmCount = {2}, State = {3}, NextAction = {4}\n",
                         //                        this.CurSequence, (int) this.CurChar, this.CurParams.Count (), 
@@ -4869,7 +4887,7 @@ namespace PacketComs
                 {
                     case NvtActions.Dispatch:
                         _curSequence = "";
-                        CurParams.Clear();
+                        _curParams.Clear();
                         break;
                 }
             }
@@ -4978,7 +4996,7 @@ namespace PacketComs
 
             private class UcStateChangeEvents
             {
-                private readonly UcStateChangeInfo[] Elements =
+                private readonly UcStateChangeInfo[] _elements =
                 {
                     new UcStateChangeInfo(States.None, Transitions.None, NvtActions.None)
                 };
@@ -4990,9 +5008,9 @@ namespace PacketComs
                 {
                     UcStateChangeInfo Element;
 
-                    for (Int32 i = 0; i < Elements.Length; i++)
+                    for (Int32 i = 0; i < _elements.Length; i++)
                     {
-                        Element = Elements[i];
+                        Element = _elements[i];
 
                         if (state == Element.State &&
                             transition == Element.Transition)
@@ -5056,11 +5074,11 @@ namespace PacketComs
 
         private struct CharAttribStruct
         {
-            public Color AltBGColor;
+            public Color AltBgColor;
             public Color AltColor;
-            public UcChars GL;
+            public UcChars Gl;
             public UcChars GR;
-            public UcChars GS;
+            public UcChars Gs;
             public Boolean IsAlternateFont;
             public Boolean IsBlinking;
             public Boolean IsBold;
@@ -5148,20 +5166,23 @@ namespace PacketComs
                 {
                     _port.Close();
                 }
-                /*else if (_cType == "SSH")
+                else if (_cType == "SSH")
                 {
-                    _reader.OnChannelClosed();
+                  //  _reader.OnChannelClosed();
+                    _parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
+                    _parser.ParseString(Environment.NewLine);
+                    Invoke(RefreshEvent);
                 }
                 else
                 {
-                    Parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
-                    Parser.ParseString(Environment.NewLine);
+                    _parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
+                    _parser.ParseString(Environment.NewLine);
                     Invoke(RefreshEvent);
 
                     _curSocket.Shutdown(SocketShutdown.Both);
                     _curSocket.Close();
                 }
-                 */
+                 
             }
             catch (Exception)
             {
