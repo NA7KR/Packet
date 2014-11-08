@@ -30,9 +30,9 @@ namespace PacketComs
 
         private SshClient _client;
         private ShellStream _stream;
-        
+
         #region Public Properties of Comonent
-             
+
         public int Rows
         {
             get { return _rows; }
@@ -236,6 +236,8 @@ namespace PacketComs
 
         #region Fields
 
+        private static UcParser _parser;
+        private readonly UcMode Modes;
         private readonly Color _blinkColor;
         private readonly Color _boldColor;
         private readonly UcCaret _caret;
@@ -245,8 +247,6 @@ namespace PacketComs
         private readonly UcChars _g2;
         private readonly UcChars _g3;
         private readonly UcKeyboard _keyboard;
-        private readonly UcMode Modes;
-        private static UcParser _parser;
         private readonly ArrayList _savedCarets;
         private readonly StringCollection _scrollbackBuffer;
         private readonly int _scrollbackBufferSize;
@@ -274,7 +274,7 @@ namespace PacketComs
         private Bitmap _eraseBitmap;
         private Graphics _eraseBuffer;
         private string _inputData = String.Empty;
-   //     private IAsyncResult _lastAr;
+        //     private IAsyncResult _lastAr;
         private int _lastVisibleLine; // used for scrolling
         private String _outBuff = "";
         //private Reader _reader;
@@ -920,13 +920,15 @@ namespace PacketComs
                 MessageBox.Show(Convert.ToString(e));
             }
         }
+
         #endregion
 
-        private void ReadStreamSSH(object sender, ShellDataEventArgs e)
+        #region ReadStreamSSH
+        private void ReadStreamSsh(object sender, ShellDataEventArgs e)
         {
             try
             {
-                _inputData = System.Text.Encoding.ASCII.GetString(e.Data);
+                _inputData = Encoding.ASCII.GetString(e.Data);
                 if (_inputData != String.Empty && _inputData != null)
                 {
                     _parser.ParseString(_inputData);
@@ -942,8 +944,7 @@ namespace PacketComs
                 MessageBox.Show("Error ReadStreamSSH: " + curException.Message);
             }
         }
-
-     
+        #endregion
 
         #region port_DataReceived
 
@@ -1234,7 +1235,6 @@ namespace PacketComs
             {
                 MessageBox.Show("Error HandleScroll: " + curException.Message);
             }
-
         }
 
         #endregion
@@ -1245,7 +1245,6 @@ namespace PacketComs
         {
             try
             {
-                
                 // Set the Maximum, Minimum, LargeChange and SmallChange properties.
                 _vertScrollBar.Minimum = 0;
 
@@ -1258,9 +1257,9 @@ namespace PacketComs
                 }
 
                 // If the offset does not make the Maximum less than zero, set its value.    
-                if ((_scrollbackBuffer.Count * _charSize.Height) - Height > 0)
+                if ((_scrollbackBuffer.Count*_charSize.Height) - Height > 0)
                 {
-                    _vertScrollBar.Maximum = _scrollbackBuffer.Count * _charSize.Height - Height;
+                    _vertScrollBar.Maximum = _scrollbackBuffer.Count*_charSize.Height - Height;
                 }
 
                 // If the HScrollBar is visible, adjust the Maximum of the 
@@ -1269,19 +1268,17 @@ namespace PacketComs
                 //{
                 //	this.vScrollBar1.Maximum += this.hScrollBar1.Height;
                 //}
-                _vertScrollBar.LargeChange = _vertScrollBar.Maximum / _charSize.Height * 10;
-                _vertScrollBar.SmallChange = _vertScrollBar.Maximum / _charSize.Height;
+                _vertScrollBar.LargeChange = _vertScrollBar.Maximum/_charSize.Height*10;
+                _vertScrollBar.SmallChange = _vertScrollBar.Maximum/_charSize.Height;
                 // Adjust the Maximum value to make the raw Maximum value 
                 // attainable by user interaction.
                 _vertScrollBar.Maximum += _vertScrollBar.LargeChange;
-                 
             }
 
             catch (Exception curException)
             {
                 MessageBox.Show("Error SetScrollBarValues: " + curException.Message);
             }
-
         }
 
         #endregion
@@ -1441,14 +1438,14 @@ namespace PacketComs
                 {
                     _port.Write(strText);
                 }
-                    
+
                 else
                 {
                     if (_curSocket == null)
                     {
                         try
                         {
-                    //        _reader.Pf.Transmit(smk);
+                            //        _reader.Pf.Transmit(smk);
                         }
                         catch
                         {
@@ -1466,7 +1463,6 @@ namespace PacketComs
                                 SocketFlags.None,
                                 _callbackEndDispatch,
                                 _curSocket);
-                           
                         }
                         catch
                         {
@@ -1474,8 +1470,6 @@ namespace PacketComs
                         }
                     }
                 }
-                      
-                
             }
             catch (Exception curException)
             {
@@ -1728,7 +1722,6 @@ namespace PacketComs
 
         #endregion
 
-
         #region SSH Connect
 
         private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
@@ -1746,52 +1739,31 @@ namespace PacketComs
                 return;
             }
 
-            _client = new SshClient(ip,Port,username,password);
+            _client = new SshClient(ip, Port, username, password);
             _client.Connect();
             _stream = _client.CreateShellStream("xterm", 80, 24, 800, 600, 1024);
-            _stream.DataReceived += ReadStreamSSH;
+            _stream.DataReceived += ReadStreamSsh;
             Focus();
 
-            /*
-            using (_client = new SshClient(ip,Port,username,password))
-            {
-                _client.Connect();
-                using  (_stream = _client.CreateShellStream("xterm", 80, 24, 800, 600, 1024))
-                {
-                    //var reader = new StreamReader(stream);
-                    //var write = new StreamWriter(stream);
-                    //ReadStream(reader);
-                    _stream.DataReceived += ReadStream;
-                }
-                Focus();
-                
-                
-            
+            /*             
             SshConnection _conn;
             SshConnectionParameter f = new SshConnectionParameter();
-            f.UserName = username;
-            f.Password = password;
             f.Protocol = SSHProtocol.SSH2;
-
-            f.AuthenticationType = AuthenticationType.Password;
             f.WindowSize = 0x1000;
             _reader = new Reader(this);
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //s.Blocking = false;
-            
-            //s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
             s.Connect(new IPEndPoint(ip, Port));
             _conn = SshConnection.Connect(f, _reader, s);
             _reader.Conn = _conn;
             SshChannel ch = _conn.OpenShell(_reader);
             _reader.Pf = ch;
-             
-            }
             */
         }
+
         #endregion
 
         #region ShowSpecialChar
+
         private void ShowSpecialChar(Graphics curGraphics, Char curChar, Int32 y,
             Int32 x, Color curFgColor)
         {
@@ -1909,6 +1881,7 @@ namespace PacketComs
                     break;
             }
         }
+
         #endregion
 
         #region WipeScreen
@@ -5076,8 +5049,8 @@ namespace PacketComs
         {
             public Color AltBgColor;
             public Color AltColor;
-            public UcChars Gl;
             public UcChars GR;
+            public UcChars Gl;
             public UcChars Gs;
             public Boolean IsAlternateFont;
             public Boolean IsBlinking;
@@ -5168,7 +5141,7 @@ namespace PacketComs
                 }
                 else if (_cType == "SSH")
                 {
-                  //  _reader.OnChannelClosed();
+                    //  _reader.OnChannelClosed();
                     _parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
                     _parser.ParseString(Environment.NewLine);
                     Invoke(RefreshEvent);
@@ -5182,7 +5155,6 @@ namespace PacketComs
                     _curSocket.Shutdown(SocketShutdown.Both);
                     _curSocket.Close();
                 }
-                 
             }
             catch (Exception)
             {
