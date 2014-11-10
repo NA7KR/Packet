@@ -1313,7 +1313,6 @@ namespace PacketComs
 
             catch (Exception curException)
             {
-                //System.Console.WriteLine ("ConnectCallback: " + CurException.Message);
                 MessageBox.Show(curException.Message);
             }
         }
@@ -3030,7 +3029,6 @@ namespace PacketComs
                 }
                 catch (Exception curException)
                 {
-                    //System.Console.WriteLine (CurException.Message);
                     MessageBox.Show(curException.Message);
                 }
 
@@ -3093,7 +3091,6 @@ namespace PacketComs
                 }
                 catch (Exception curException)
                 {
-                    //System.Console.WriteLine (CurException.Message);
                     MessageBox.Show(curException.Message);
                 }
 
@@ -3156,7 +3153,6 @@ namespace PacketComs
                 }
                 catch (Exception curException)
                 {
-                    //System.Console.WriteLine (CurException.Message);
                     MessageBox.Show(curException.Message);
                 }
 
@@ -3185,7 +3181,6 @@ namespace PacketComs
                 }
                 catch (Exception curException)
                 {
-                    //System.Console.WriteLine (CurException.Message);
                     MessageBox.Show(curException.Message);
                 }
 
