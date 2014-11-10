@@ -1144,6 +1144,7 @@ namespace PacketComs
                 else
                 {
                     _textAtCursor = "";
+                    /*
                     for (int x = 0; x < _cols; x++)
                     {
                         char curChar = _charGrid[_caret.Pos.Y][x];
@@ -1153,6 +1154,7 @@ namespace PacketComs
                         }
                         _textAtCursor = _textAtCursor + Convert.ToString(curChar);
                     }
+                     */
                 }
 
                 switch (se.Type)
@@ -1162,6 +1164,12 @@ namespace PacketComs
                         break;
                     case ScrollEventType.SmallDecrement: // up
                         _lastVisibleLine += -1;
+                        break;
+                    case ScrollEventType.LargeIncrement: // down
+                        _lastVisibleLine += (_scrollbackBuffer.Count /_rows);
+                        break;
+                    case ScrollEventType.LargeDecrement: // up
+                        _lastVisibleLine += -40;
                         break;
                     default:
                         return;
@@ -1177,8 +1185,13 @@ namespace PacketComs
 
                 if (_lastVisibleLine < (0 - _scrollbackBuffer.Count) + (_rows))
                 {
-                    _lastVisibleLine = (0 - _scrollbackBuffer.Count) + (_rows) - 1;
+                    if (_rows - 1 <= _lastVisibleLine)
+                    {
+                        _lastVisibleLine = (0 - _scrollbackBuffer.Count) + (_rows) - 1;
+                    }
                 }
+              
+                
 
 
                 int columns = _cols;
@@ -1251,9 +1264,12 @@ namespace PacketComs
                 // if the scrollbackbuffer is empty, there's nothing to scroll
                 if (_scrollbackBuffer.Count == 0)
                 {
-                    _vertScrollBar.Maximum = 0;
-
-                    return;
+                    if (_rows - 1 <= _scrollbackBuffer.Count)
+                    {
+                        _vertScrollBar.Maximum = 0;
+                        return;
+                    }
+                    
                 }
 
                 // If the offset does not make the Maximum less than zero, set its value.    
@@ -1264,10 +1280,7 @@ namespace PacketComs
 
                 // If the HScrollBar is visible, adjust the Maximum of the 
                 // VSCrollBar to account for the width of the HScrollBar.
-                //if(this.hScrollBar1.Visible)
-                //{
-                //	this.vScrollBar1.Maximum += this.hScrollBar1.Height;
-                //}
+               
                 _vertScrollBar.LargeChange = _vertScrollBar.Maximum/_charSize.Height*10;
                 _vertScrollBar.SmallChange = _vertScrollBar.Maximum/_charSize.Height;
                 // Adjust the Maximum value to make the raw Maximum value 
