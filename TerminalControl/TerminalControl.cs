@@ -931,12 +931,14 @@ namespace PacketComs
                 _inputData = Encoding.ASCII.GetString(e.Data);
                 if (_inputData != String.Empty && _inputData != null)
                 {
-                    _parser.ParseString(_inputData);
+                    Invoke(RxdTextEvent, new object[] { String.Copy(_inputData) });
                     if (_inputData == "\r")
                     {
                         _inputData = Environment.NewLine;
                     }
                 }
+                
+               
                 Invoke(RefreshEvent);
             }
             catch (Exception curException)
@@ -955,8 +957,9 @@ namespace PacketComs
                 _inputData = _port.ReadExisting();
                 if (_inputData != String.Empty)
                 {
-                    _parser.ParseString(_inputData);
+                    //_parser.ParseString(_inputData);
                     //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
+                    Invoke(RxdTextEvent, new object[] { String.Copy(_inputData) });
                     if (_inputData == "/r")
                     {
                         _inputData = Environment.NewLine;
@@ -1002,11 +1005,8 @@ namespace PacketComs
         private void ConnectTelnet(string hostName, Int32 Port)
         {
             Focus();
-
             IPHostEntry ipHost = Dns.GetHostEntry(hostName);
-            //System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
             IPAddress[] addr = ipHost.AddressList;
-
             try
             {
                 // Create New Socket 
