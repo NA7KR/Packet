@@ -1166,10 +1166,10 @@ namespace PacketComs
                         _lastVisibleLine += -1;
                         break;
                     case ScrollEventType.LargeIncrement: // down
-                        _lastVisibleLine += (_scrollbackBuffer.Count /_rows);
+                        _lastVisibleLine += 10;
                         break;
                     case ScrollEventType.LargeDecrement: // up
-                        _lastVisibleLine += -40;
+                        _lastVisibleLine += -_rows;
                         break;
                     default:
                         return;
@@ -1191,12 +1191,8 @@ namespace PacketComs
                     }
                 }
               
-                
-
-
                 int columns = _cols;
                 int rows = _rows;
-
                 SetSize(rows, columns);
 
                 var visiblebuffer = new StringCollection();
@@ -1280,8 +1276,8 @@ namespace PacketComs
 
                 // If the HScrollBar is visible, adjust the Maximum of the 
                 // VSCrollBar to account for the width of the HScrollBar.
-               
-                _vertScrollBar.LargeChange = _vertScrollBar.Maximum/_charSize.Height*10;
+
+                _vertScrollBar.LargeChange = _vertScrollBar.Maximum / _charSize.Height + _rows;
                 _vertScrollBar.SmallChange = _vertScrollBar.Maximum/_charSize.Height;
                 // Adjust the Maximum value to make the raw Maximum value 
                 // attainable by user interaction.
