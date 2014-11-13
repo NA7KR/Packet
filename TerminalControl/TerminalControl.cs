@@ -1166,7 +1166,7 @@ namespace PacketComs
                         _lastVisibleLine += -1;
                         break;
                     case ScrollEventType.LargeIncrement: // down
-                        _lastVisibleLine += 10;
+                        _lastVisibleLine += _rows;
                         break;
                     case ScrollEventType.LargeDecrement: // up
                         _lastVisibleLine += -_rows;
