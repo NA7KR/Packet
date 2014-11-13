@@ -690,8 +690,8 @@ namespace PacketComs
 
         public void Disconnectby()
         {
-            _parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m ");
-            _parser.ParseString(Environment.NewLine);
+            Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
+            Invoke(RxdTextEvent, new object[] { String.Copy(Environment.NewLine) });  
             Invoke(RefreshEvent);
             if (Disconnected != null)
             {
@@ -3475,34 +3475,29 @@ namespace PacketComs
 
         #region SetSize
 
-        private void SetSize(Int32 rows, Int32 Columns)
+        private void SetSize(Int32 rows, Int32 columns)
         {
             _rows = rows;
-            _cols = Columns;
-
-            _topMargin = 0;
-            _bottomMargin = rows - 1;
-
-            //this.ClientSize = new System.Drawing.Size (
-            //	System.Convert.ToInt32 (this.CharSize.Width  * this.Columns + 2) + this.VertScrollBar.Width,
-            //	System.Convert.ToInt32 (this.CharSize.Height * this.Rows    + 2));
+            _cols = columns;
+            //  _topMargin = 0;
+            //  _bottomMargin = rows - 1;
 
             // create the character grid (rows by columns) this is a shadow of what's displayed
-            _charGrid = new Char[rows][];
+            _charGrid = new Char[_rows][];
 
-            _caret.Pos.X = 0;
-            _caret.Pos.Y = 0;
+            //_caret.Pos.X = 0;
+            //_caret.Pos.Y = 0;
 
             for (int i = 0; i < _charGrid.Length; i++)
             {
-                _charGrid[i] = new Char[Columns];
+                _charGrid[i] = new Char[_cols];
             }
 
-            _attribGrid = new CharAttribStruct[rows][];
+            _attribGrid = new CharAttribStruct[_rows][];
 
             for (int i = 0; i < _attribGrid.Length; i++)
             {
-                _attribGrid[i] = new CharAttribStruct[Columns];
+                _attribGrid[i] = new CharAttribStruct[_cols];
             }
         }
 
@@ -5146,14 +5141,14 @@ namespace PacketComs
                 else if (_cType == "SSH")
                 {
                     //  _reader.OnChannelClosed();
-                    _parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
-                    _parser.ParseString(Environment.NewLine);
+                    Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
+                    Invoke(RxdTextEvent, new object[] { String.Copy(Environment.NewLine) });
                     Invoke(RefreshEvent);
                 }
                 else
                 {
-                    _parser.ParseString("\u001B[31m DISCONNECTED !!! \u001B[0m");
-                    _parser.ParseString(Environment.NewLine);
+                    Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
+                    Invoke(RxdTextEvent, new object[] { String.Copy(Environment.NewLine) });
                     Invoke(RefreshEvent);
 
                     _curSocket.Shutdown(SocketShutdown.Both);
