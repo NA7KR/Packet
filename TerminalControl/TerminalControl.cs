@@ -3449,8 +3449,8 @@ namespace PacketComs
         {
             _rows = rows;
             _cols = columns;
-            //  _topMargin = 0;
-            //  _bottomMargin = rows - 1;
+              _topMargin = 0;
+              _bottomMargin = rows - 1;
 
             // create the character grid (rows by columns) this is a shadow of what's displayed
             _charGrid = new Char[_rows][];
