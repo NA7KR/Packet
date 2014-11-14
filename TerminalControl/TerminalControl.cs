@@ -164,7 +164,6 @@ namespace PacketComs
 
         public void Startforward()
         {
-            //krr
             Int32 ln = Convert.ToInt32(LastNumber);
             ln = ln + 1;
             string nb = ("LR " + ln + "-999999");
@@ -937,8 +936,6 @@ namespace PacketComs
                         _inputData = Environment.NewLine;
                     }
                 }
-                
-               
                 Invoke(RefreshEvent);
             }
             catch (Exception curException)
@@ -967,7 +964,6 @@ namespace PacketComs
                     Invoke(RefreshEvent);
                     if (FileActive)
                     {
-                        //KRR
                         _dataFile = _dataFile + _inputData;
 
                         string[] lines = _dataFile.Split(new[] {Environment.NewLine},
@@ -1254,25 +1250,23 @@ namespace PacketComs
         {
             try
             {
-                // Set the Maximum, Minimum, LargeChange and SmallChange properties.
-                _vertScrollBar.Minimum = 0;
-
                 // if the scrollbackbuffer is empty, there's nothing to scroll
-                if (_scrollbackBuffer.Count == 0)
+                if (_scrollbackBuffer.Count <= _rows)
                 {
-                    if (_rows - 1 <= _scrollbackBuffer.Count)
-                    {
-                        _vertScrollBar.Maximum = 0;
-                        return;
-                    }
-                    
+                    _vertScrollBar.Maximum = 0;
+                    return;
+                }
+                else
+                {
+                    _vertScrollBar.Maximum = _scrollbackBuffer.Count + 1;
+                    _vertScrollBar.Value = _scrollbackBuffer.Count + 1;
                 }
 
                 // If the offset does not make the Maximum less than zero, set its value.    
-                if ((_scrollbackBuffer.Count*_charSize.Height) - Height > 0)
-                {
-                    _vertScrollBar.Maximum = _scrollbackBuffer.Count*_charSize.Height - Height;
-                }
+                //if ((_scrollbackBuffer.Count*_charSize.Height) - Height > 0)
+                //{
+                  //  _vertScrollBar.Maximum = _scrollbackBuffer.Count*_charSize.Height - Height;
+                //}
 
                 // If the HScrollBar is visible, adjust the Maximum of the 
                 // VSCrollBar to account for the width of the HScrollBar.
@@ -1281,7 +1275,7 @@ namespace PacketComs
                 _vertScrollBar.SmallChange = _vertScrollBar.Maximum/_charSize.Height;
                 // Adjust the Maximum value to make the raw Maximum value 
                 // attainable by user interaction.
-                _vertScrollBar.Maximum += _vertScrollBar.LargeChange;
+               // _vertScrollBar.Maximum += _vertScrollBar.LargeChange;
             }
 
             catch (Exception curException)
@@ -1348,7 +1342,6 @@ namespace PacketComs
                     {
                         sReceived += Convert.ToChar(stateObject.Buffer[i]).ToString(CultureInfo.InvariantCulture);
                     }
-                    //krr
                     if (sReceived.Contains(UernamePrompt))
                     {
                         DispatchMessage(this, Username);
@@ -1362,7 +1355,6 @@ namespace PacketComs
 
                     if (FileActive)
                     {
-                        //KRR
                         _dataFile = _dataFile + sReceived;
 
                         string[] lines = _dataFile.Split(new[] {Environment.NewLine},
@@ -1393,7 +1385,6 @@ namespace PacketComs
                 else
                 {
                     // If no data was recieved then the connection is probably dead
-                    //System.Console.WriteLine ("Disconnected", StateObject.Socket.RemoteEndPoint);
                     stateObject.Socket.Shutdown(SocketShutdown.Both);
                     stateObject.Socket.Close();
                     Disconnectby();
@@ -1411,16 +1402,13 @@ namespace PacketComs
 
         private void DispatchMessage(Object sender, string strText)
         {
-            //Console.WriteLine(strText);
             if (_xoff)
             {
                 // store the characters in the outputbuffer
                 _outBuff += strText;
                 return;
             }
-
             int i = 0;
-
             try
             {
                 var smk = new Byte[strText.Length];
@@ -1447,6 +1435,12 @@ namespace PacketComs
                     _port.Write(strText);
                 }
 
+                else if (_cType == "SSH")
+                {
+                    //KRR
+                    strText = strText.Replace("\r\n", "\n");
+                    _stream.Write(strText);
+                }
                 else
                 {
                     if (_curSocket == null)
