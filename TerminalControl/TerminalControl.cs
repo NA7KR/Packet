@@ -273,10 +273,8 @@ namespace PacketComs
         private Bitmap _eraseBitmap;
         private Graphics _eraseBuffer;
         private string _inputData = String.Empty;
-        //     private IAsyncResult _lastAr;
         private int _lastVisibleLine; // used for scrolling
         private String _outBuff = "";
-        //private Reader _reader;
         private Int32 _rows;
         private string _textAtCursor; // used to store Cursortext while scrolling
         private Int32 _topMargin;
@@ -320,7 +318,7 @@ namespace PacketComs
 
         public TerminalEmulator()
         {
-            _scrollbackBufferSize = 3000;
+            _scrollbackBufferSize = 9000;
             _scrollbackBuffer = new StringCollection();
 
             // set the display options
@@ -333,14 +331,9 @@ namespace PacketComs
             Modes = new UcMode();
             _tabStops = new UcTabStops();
             _savedCarets = new ArrayList();
-
-            //this.Name       = "ACK-TERM";
-            //this.Text       = "ACK-TERM";
             _caret.Pos = new Point(0, 0);
             _charSize = new Size();
             Font = new Font(_typeFace, TypeSize, TypeStyle);
-            //this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
-            //this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
             _fgColor = Color.FromArgb(0, 0, 0);
             BackColor = Color.FromArgb(0, 0, 160);
             _boldColor = Color.FromArgb(255, 255, 255);
@@ -1140,7 +1133,7 @@ namespace PacketComs
                 else
                 {
                     _textAtCursor = "";
-                    /*
+                    
                     for (int x = 0; x < _cols; x++)
                     {
                         char curChar = _charGrid[_caret.Pos.Y][x];
@@ -1150,7 +1143,7 @@ namespace PacketComs
                         }
                         _textAtCursor = _textAtCursor + Convert.ToString(curChar);
                     }
-                     */
+                     
                 }
 
                 switch (se.Type)
@@ -1197,7 +1190,7 @@ namespace PacketComs
                     visiblebuffer.Insert(0, _scrollbackBuffer[i]);
 
                     // don't parse more strings than our display can show
-                    if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
+                    if (visiblebuffer.Count >= rows - 0) // rows -1 to leave line for cursor space
                         break;
                 }
 
@@ -1250,34 +1243,18 @@ namespace PacketComs
         {
             try
             {
+                _vertScrollBar.Minimum = 0;
                 // if the scrollbackbuffer is empty, there's nothing to scroll
                 if (_scrollbackBuffer.Count <= _rows)
                 {
                     _vertScrollBar.Maximum = 0;
                     return;
-                }
-                else
-                {
-                    _vertScrollBar.Maximum = _scrollbackBuffer.Count + 1;
-                    _vertScrollBar.Value = _scrollbackBuffer.Count + 1;
-                }
-
-                // If the offset does not make the Maximum less than zero, set its value.    
-                //if ((_scrollbackBuffer.Count*_charSize.Height) - Height > 0)
-                //{
-                  //  _vertScrollBar.Maximum = _scrollbackBuffer.Count*_charSize.Height - Height;
-                //}
-
-                // If the HScrollBar is visible, adjust the Maximum of the 
-                // VSCrollBar to account for the width of the HScrollBar.
-
+                } 
+                _vertScrollBar.Maximum = _scrollbackBuffer.Count + 1;
+                _vertScrollBar.Value =   _scrollbackBuffer.Count + 1;
                 _vertScrollBar.LargeChange = _vertScrollBar.Maximum / _charSize.Height + _rows;
-                _vertScrollBar.SmallChange = _vertScrollBar.Maximum/_charSize.Height;
-                // Adjust the Maximum value to make the raw Maximum value 
-                // attainable by user interaction.
-               // _vertScrollBar.Maximum += _vertScrollBar.LargeChange;
+                _vertScrollBar.SmallChange = _vertScrollBar.Maximum / _charSize.Height;        
             }
-
             catch (Exception curException)
             {
                 MessageBox.Show("Error SetScrollBarValues: " + curException.Message);
@@ -1437,7 +1414,6 @@ namespace PacketComs
 
                 else if (_cType == "SSH")
                 {
-                    //KRR
                     strText = strText.Replace("\r\n", "\n");
                     _stream.Write(strText);
                 }
