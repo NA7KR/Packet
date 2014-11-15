@@ -109,7 +109,6 @@ namespace PacketComs
         #endregion
 
         #region Write
-
         public void Write(byte[] data, int offset, int length)
         {
             string sReceived = Encoding.ASCII.GetString(data, offset, length);
@@ -120,7 +119,6 @@ namespace PacketComs
         #endregion
 
         #region Connect
-
         public void Connect()
         {
             switch (ConnectionType)
@@ -157,7 +155,6 @@ namespace PacketComs
         #endregion
 
         #region Startforward
-
         public void Startforward()
         {
             Int32 ln = Convert.ToInt32(LastNumber);
@@ -169,7 +166,7 @@ namespace PacketComs
 
         #endregion
 
-        #region public enums
+        #region enum BaudRateTypes
 
         public enum BaudRateTypes
         {
@@ -379,8 +376,7 @@ namespace PacketComs
             _keyboard.KeyboardEvent += DispatchMessage;
             nvtParser.NvtParserEvent += TelnetInterpreter;
             RefreshEvent += ShowBuffer;
-            //this.CaretOffEvent += new CaretOffEventHandler(this.CaretOff);
-            //this.CaretOnEvent += new CaretOnEventHandler(this.CaretOn);
+            
             RxdTextEvent += s => nvtParser.ParseString(s);
 
             _beginDrag = new Point();
@@ -675,7 +671,6 @@ namespace PacketComs
         #endregion
 
         #region Disccocted by remote
-
         public void Disconnectby()
         {
             Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
@@ -686,11 +681,9 @@ namespace PacketComs
                 Disconnected(this, new EventArgs());
             }
         }
-
         #endregion
 
         #region Com Port
-
         private void ConnectCom()
         {
             try
@@ -908,7 +901,6 @@ namespace PacketComs
                 MessageBox.Show(Convert.ToString(e));
             }
         }
-
         #endregion
 
         #region ReadStreamSSH
@@ -986,7 +978,6 @@ namespace PacketComs
         #endregion
 
         #region Connect Telnet
-
         private void ConnectTelnet(string hostName, Int32 Port)
         {
             Focus();
@@ -1117,10 +1108,8 @@ namespace PacketComs
         #endregion
 
         #region HandleScroll
-
         private void HandleScroll(Object sender, ScrollEventArgs se)
-        {
-            
+        {  
             try
             {
                 // capture text at cursor
@@ -1292,18 +1281,14 @@ namespace PacketComs
                 if (sock1.Connected)
                 {
                     var stateObject = new UcCommsStateObject();
-
                     stateObject.Socket = sock1;
-
                     // Assign Callback function to read from Asyncronous Socket
                     _callbackProc = OnReceivedData;
-
                     // Begin reading data asyncronously
                     sock1.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
                         SocketFlags.None, _callbackProc, stateObject);
                 }
             }
-
             catch (Exception curException)
             {
                 MessageBox.Show(curException.Message);
@@ -1389,7 +1374,6 @@ namespace PacketComs
         #endregion
 
         #region  DispatchMessage
-
         private void DispatchMessage(Object sender, string strText)
         {
             if (_xoff)
@@ -1436,7 +1420,7 @@ namespace PacketComs
                     {
                         try
                         {
-                            //        _reader.Pf.Transmit(smk);
+                            //  _reader.Pf.Transmit(smk);
                         }
                         catch
                         {
@@ -1714,7 +1698,6 @@ namespace PacketComs
         #endregion
 
         #region SSH Connect
-
         private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
         {
             string ip;
@@ -1735,22 +1718,7 @@ namespace PacketComs
             _stream = _client.CreateShellStream("xterm", 80, 24, 800, 600, 1024);
             _stream.DataReceived += ReadStreamSsh;
             Focus();
-
-            /*             
-            SshConnection _conn;
-            SshConnectionParameter f = new SshConnectionParameter();
-            f.Protocol = SSHProtocol.SSH2;
-            f.WindowSize = 0x1000;
-            _reader = new Reader(this);
-            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            s.Connect(new IPEndPoint(ip, Port));
-            _conn = SshConnection.Connect(f, _reader, s);
-            _reader.Conn = _conn;
-            SshChannel ch = _conn.OpenShell(_reader);
-            _reader.Pf = ch;
-            */
         }
-
         #endregion
 
         #region ShowSpecialChar
@@ -2014,7 +1982,6 @@ namespace PacketComs
         #endregion
 
         #region NvtSendWill
-
         private void NvtSendWill(Char curChar)
         {
             DispatchMessage(this, string.Format("\xFF\xFB{0}", curChar));
@@ -2023,7 +1990,6 @@ namespace PacketComs
         #endregion
 
         #region NvtSendWont
-
         private void NvtSendWont(Char curChar)
         {
             DispatchMessage(this, string.Format("\xFF\xFC{0}", curChar));
@@ -2032,7 +1998,6 @@ namespace PacketComs
         #endregion
 
         #region NvtSendDont
-
         private void NvtSendDont(Char curChar)
         {
             DispatchMessage(this, string.Format("\xFF\xFE{0}", curChar));
@@ -4205,6 +4170,7 @@ namespace PacketComs
                     SetToDefault();
                 }
 
+                #region SetToDefault
                 // set the key mapping up to emulate most keys on a vt420
                 public void SetToDefault()
                 {
@@ -4296,6 +4262,7 @@ namespace PacketComs
                     Elements.Add(new UcKeyInfo(08, false, "Ctrl", "\x1F", UcMode.Any, 0)); //Ctrl7->US
                     Elements.Add(new UcKeyInfo(09, false, "Ctrl", "\x7F", UcMode.Any, 0)); //Ctrl8->DEL
                 }
+                #endregion
 
                 public String Find(
                     UInt16 scanCode,
@@ -4762,7 +4729,7 @@ namespace PacketComs
             private States _state = States.Ground;
             public event NvtParserEventHandler NvtParserEvent;
 
-
+            #region ParseString
             public void ParseString(String inString)
             {
                 var nextState = States.None;
@@ -4805,6 +4772,7 @@ namespace PacketComs
                     }
                 }
             }
+            #endregion
 
             #region DoAction
 
@@ -4861,6 +4829,7 @@ namespace PacketComs
 
             #endregion
 
+            #region enum States
             private enum States
             {
                 None = 0,
@@ -4876,14 +4845,18 @@ namespace PacketComs
                 SubNegEnd = 10,
                 SynchSubNegotiate = 11,
             }
+            #endregion
 
+            #region enum Transitions
             private enum Transitions
             {
                 None = 0,
                 Entry = 1,
                 Exit = 2,
             }
+            #endregion
 
+            #region UcCharEventInfo
             private struct UcCharEventInfo
             {
                 public readonly Char CharFrom;
@@ -4892,12 +4865,8 @@ namespace PacketComs
                 public readonly NvtActions NextAction;
                 public readonly States NextState; // the next state we are going to 
 
-                public UcCharEventInfo(
-                    States p1,
-                    Char p2,
-                    Char p3,
-                    NvtActions p4,
-                    States p5)
+                #region UcCharEventInfo
+                public UcCharEventInfo( States p1,Char p2, Char p3, NvtActions p4, States p5)
                 {
                     CurState = p1;
                     CharFrom = p2;
@@ -4905,10 +4874,14 @@ namespace PacketComs
                     NextAction = p4;
                     NextState = p5;
                 }
+                #endregion
             }
+            #endregion
 
+            #region UcCharEvents
             private class UcCharEvents
             {
+                #region UcCharEventInfo
                 public static readonly UcCharEventInfo[] Elements =
                 {
                     new UcCharEventInfo(States.Ground, (char) 000, (char) 254, NvtActions.SendUp, States.None),
@@ -4933,12 +4906,10 @@ namespace PacketComs
                     new UcCharEventInfo(States.SubNegEnd, (char) 255, (char) 255, NvtActions.Param, States.SubNegParam),
                     new UcCharEventInfo(States.Negotiate, (char) 000, (char) 255, NvtActions.Dispatch, States.Ground)
                 };
+                #endregion
 
-                public Boolean GetStateEventAction(
-                    States curState,
-                    Char curChar,
-                    ref States nextState,
-                    ref NvtActions nextAction)
+                #region GetStateEventAction
+                public Boolean GetStateEventAction( States curState,Char curChar, ref States nextState, ref NvtActions nextAction)
                 {
                     UcCharEventInfo Element;
 
@@ -4959,22 +4930,24 @@ namespace PacketComs
 
                     return false;
                 }
+                #endregion
             }
+            #endregion
 
+            #region UcStateChangeEvents
             private class UcStateChangeEvents
             {
+                #region UcStateChangeInfo
                 private readonly UcStateChangeInfo[] _elements =
                 {
                     new UcStateChangeInfo(States.None, Transitions.None, NvtActions.None)
                 };
+                #endregion
 
-                public Boolean GetStateChangeAction(
-                    States state,
-                    Transitions transition,
-                    ref NvtActions nextAction)
+                #region GetStateChangeAction
+                public Boolean GetStateChangeAction( States state, Transitions transition, ref NvtActions nextAction)
                 {
                     UcStateChangeInfo Element;
-
                     for (Int32 i = 0; i < _elements.Length; i++)
                     {
                         Element = _elements[i];
@@ -4986,11 +4959,13 @@ namespace PacketComs
                             return true;
                         }
                     }
-
                     return false;
                 }
+                #endregion
             }
+            #endregion
 
+            #region  UcStateChangeInfo
             private struct UcStateChangeInfo
             {
                 public readonly NvtActions NextAction;
@@ -5007,6 +4982,7 @@ namespace PacketComs
                     NextAction = p3;
                 }
             }
+            #endregion
         }
 
         #endregion
@@ -5038,7 +5014,6 @@ namespace PacketComs
         #endregion
 
         #region CharAttribStruct
-
         private struct CharAttribStruct
         {
             public Color AltBgColor;
@@ -5061,7 +5036,6 @@ namespace PacketComs
         #endregion
 
         #region NvtParserEventArgs
-
         private struct NvtParserEventArgs
         {
             public readonly NvtActions Action;
@@ -5069,25 +5043,21 @@ namespace PacketComs
             public readonly String CurSequence;
             public UcParams CurParams;
 
-            public NvtParserEventArgs(
-                NvtActions p1,
-                Char p2,
-                String p3,
-                UcParams p4)
+            #region  NvtParserEventArgs
+            public NvtParserEventArgs( NvtActions p1, Char p2, String p3, UcParams p4)
             {
                 Action = p1;
                 CurChar = p2;
                 CurSequence = p3;
                 CurParams = p4;
             }
+            #endregion
         }
-
         #endregion
 
-        #endregion
+        #endregion Private Structs
 
         #region Private Enums
-
         private enum Actions
         {
             None = 0,
@@ -5105,7 +5075,9 @@ namespace PacketComs
             Put = 13,
             Print = 14
         }
+        #endregion
 
+        #region NvtActions
         private enum NvtActions
         {
             None = 0,
@@ -5116,15 +5088,9 @@ namespace PacketComs
             Param = 6,
             Execute = 7,
         }
-
-        #endregion
-
-        #region InitializeComponent
-
         #endregion
 
         #region Disconnect
-
         private void Disconnect()
         {
             try
@@ -5135,17 +5101,17 @@ namespace PacketComs
                 }
                 else if (_cType == "SSH")
                 {
-                    //  _reader.OnChannelClosed();
                     Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
                     Invoke(RxdTextEvent, new object[] { String.Copy(Environment.NewLine) });
                     Invoke(RefreshEvent);
+                    _stream.Close();
+                    _stream.Dispose();
                 }
                 else
                 {
                     Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
                     Invoke(RxdTextEvent, new object[] { String.Copy(Environment.NewLine) });
                     Invoke(RefreshEvent);
-
                     _curSocket.Shutdown(SocketShutdown.Both);
                     _curSocket.Close();
                 }
@@ -5154,9 +5120,7 @@ namespace PacketComs
             {
             }
         }
-
         #endregion
-
         
     }
     #endregion
