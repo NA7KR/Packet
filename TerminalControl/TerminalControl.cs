@@ -20,9 +20,7 @@ using Renci.SshNet.Common;
 
 namespace PacketComs
 {
-
     #region  class TerminalEmulator : Control
-
     public sealed class TerminalEmulator : Control
     {
         private readonly ModifyFile _myFiles = new ModifyFile();
@@ -32,7 +30,6 @@ namespace PacketComs
         private ShellStream _stream;
 
         #region Public Properties of Comonent
-
         public int Rows
         {
             get { return _rows; }
@@ -54,7 +51,6 @@ namespace PacketComs
         public StopBitsTypes StopBitsType { get; set; }
 
         public ParityTypes ParityType { get; set; }
-
 
         public FlowTypes FlowType { get; set; }
 
@@ -160,7 +156,7 @@ namespace PacketComs
 
         #endregion
 
-        #region
+        #region Startforward
 
         public void Startforward()
         {
@@ -4383,7 +4379,6 @@ namespace PacketComs
         #endregion
 
         #region class uc_Parser
-
         private class UcParser
         {
             private readonly UcCharEvents _charEvents = new UcCharEvents();
@@ -4402,6 +4397,7 @@ namespace PacketComs
             // The character may be a command, part of a sequence or a parameter; or it might just need
             // binning.
             // The sequence is: state change, store character, do action.
+            #region ParseString
             public void ParseString(String inString)
             {
                 var nextState = States.None;
@@ -4444,7 +4440,9 @@ namespace PacketComs
                     }
                 }
             }
+            #endregion
 
+            #region DoAction
             private void DoAction(Actions nextAction)
             {
                 // Manage the contents of the Sequence and Param Variables
@@ -4495,7 +4493,9 @@ namespace PacketComs
                         break;
                 }
             }
+            #endregion
 
+            #region enum States
             private enum States
             {
                 None = 0,
@@ -4515,14 +4515,18 @@ namespace PacketComs
                 DcsPassthrough = 14,
                 Anywhere = 16
             }
+            #endregion
 
+            #region Transition
             private enum Transitions
             {
                 None = 0,
                 Entry = 1,
                 Exit = 2
             }
+            #endregion
 
+            #region struct UcCharEventInfo
             private struct UcCharEventInfo
             {
                 public readonly Char CharFrom;
@@ -4545,10 +4549,12 @@ namespace PacketComs
                     NextState = p5;
                 }
             }
+            #endregion
 
+            #region UcCharEvents
             private class UcCharEvents
             {
-                #endregion
+                #region UcCharEventInfo
 
                 public static readonly UcCharEventInfo[] Elements =
                 {
@@ -4647,10 +4653,11 @@ namespace PacketComs
                     new UcCharEventInfo(States.OscString, '\x9C', '\x9C', Actions.None, States.Ground)
                 };
 
-                public Boolean GetStateEventAction(
-                    States curState,
-                    Char curChar,
-                    ref States nextState,
+                #endregion
+
+                #region GetStateEventAction
+
+                public Boolean GetStateEventAction(States curState, Char curChar, ref States nextState,
                     ref Actions nextAction)
                 {
                     UcCharEventInfo Element;
@@ -4681,12 +4688,14 @@ namespace PacketComs
 
                     return false;
                 }
-
-                #region  uc_CharEventInfo
+                #endregion
             }
+            #endregion
 
+            #region UcStateChangeEvents
             private class UcStateChangeEvents
             {
+                #region  uc_CharEventInfo
                 private readonly UcStateChangeInfo[] _elements =
                 {
                     new UcStateChangeInfo(States.OscString, Transitions.Entry, Actions.OscStart),
@@ -4694,11 +4703,10 @@ namespace PacketComs
                     new UcStateChangeInfo(States.DcsPassthrough, Transitions.Entry, Actions.Hook),
                     new UcStateChangeInfo(States.DcsPassthrough, Transitions.Exit, Actions.Unhook)
                 };
+                #endregion
 
-                public Boolean GetStateChangeAction(
-                    States state,
-                    Transitions transition,
-                    ref Actions nextAction)
+                #region GetStateChangeAction
+                public Boolean GetStateChangeAction( States state, Transitions transition, ref Actions nextAction)
                 {
                     UcStateChangeInfo Element;
 
@@ -4713,31 +4721,31 @@ namespace PacketComs
                             return true;
                         }
                     }
-
                     return false;
                 }
+                #endregion
             }
+            #endregion
 
+            #region UcStateChangeInfo
             private struct UcStateChangeInfo
             {
                 public readonly Actions NextAction;
                 public readonly States State;
                 public readonly Transitions Transition; // the next state we are going to 
 
-                public UcStateChangeInfo(
-                    States p1,
-                    Transitions p2,
-                    Actions p3)
+                #region UcStateChangeInfo
+                public UcStateChangeInfo( States p1, Transitions p2, Actions p3)
                 {
                     State = p1;
                     Transition = p2;
                     NextAction = p3;
                 }
+                #endregion
             }
-
-            #region uc_CharEvents
+            #endregion
+           
         }
-
         #endregion
 
         #region Class uc_TelnetParser
@@ -5149,8 +5157,7 @@ namespace PacketComs
 
         #endregion
 
-        #endregion
+        
     }
-
     #endregion
 }
