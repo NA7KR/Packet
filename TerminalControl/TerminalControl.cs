@@ -3422,25 +3422,20 @@ namespace PacketComs
         #endregion
 
         #region SetSize
-
         private void SetSize(Int32 rows, Int32 columns)
         {
             _rows = rows;
             _cols = columns;
-              _topMargin = 0;
-              _bottomMargin = rows - 1;
+            _topMargin = 0;
+            _bottomMargin = rows - 1;
 
             // create the character grid (rows by columns) this is a shadow of what's displayed
             _charGrid = new Char[_rows][];
-
-            //_caret.Pos.X = 0;
-            //_caret.Pos.Y = 0;
 
             for (int i = 0; i < _charGrid.Length; i++)
             {
                 _charGrid[i] = new Char[_cols];
             }
-
             _attribGrid = new CharAttribStruct[_rows][];
 
             for (int i = 0; i < _attribGrid.Length; i++)
@@ -3448,11 +3443,9 @@ namespace PacketComs
                 _attribGrid[i] = new CharAttribStruct[_cols];
             }
         }
-
         #endregion
 
         #region GetFontInfo
-
         private void GetFontInfo()
         {
             Graphics tmpGraphics = CreateGraphics();
@@ -3466,53 +3459,40 @@ namespace PacketComs
             _charSize.Width = tmpPoint.X; // make a little breathing room
             _charSize.Height = tmpPoint.Y;
 
-            //Graphics g = this.CreateGraphics();
-            //SizeF size = g.MeasureString("_", this.Font);
-            //this.CharSize.Width = (int) size.Width;
-            //this.CharSize.Height = (int) size.Height;
-
             tmpGraphics.Dispose();
-
             _underlinePos = _charSize.Height - 2;
-
             _caret.Bitmap = new Bitmap(_charSize.Width, _charSize.Height);
             _caret.Buffer = Graphics.FromImage(_caret.Bitmap);
             _caret.Buffer.Clear(Color.FromArgb(255, 181, 106));
             _eraseBitmap = new Bitmap(_charSize.Width, _charSize.Height);
             _eraseBuffer = Graphics.FromImage(_eraseBitmap);
         }
-
-        #endregion
-
-        #region OnClickFont
-
         #endregion
 
         #region class uc_CommsStateObject
-
         private class UcCommsStateObject
         {
             public readonly Byte[] Buffer;
             public Socket Socket;
 
+            #region UcCommsStateObject
             public UcCommsStateObject()
             {
                 Buffer = new Byte[8192];
             }
+            #endregion
         }
-
         #endregion
 
         #region class uc_TabStops
-
         private class UcTabStops
         {
             public readonly Boolean[] Columns;
 
+            #region UcTabStops
             public UcTabStops()
             {
                 Columns = new Boolean[256];
-
                 Columns[8] = true;
                 Columns[16] = true;
                 Columns[24] = true;
@@ -3530,12 +3510,12 @@ namespace PacketComs
                 Columns[120] = true;
                 Columns[128] = true;
             }
+            #endregion
         }
 
         #endregion
 
         #region class uc_CaretAttribs
-
         private class UcCaretAttribs
         {
             public readonly CharAttribStruct Attribs;
@@ -3545,13 +3525,8 @@ namespace PacketComs
             public readonly UcChars.Sets G3Set;
             public readonly Point Pos;
 
-            public UcCaretAttribs(
-                Point p1,
-                UcChars.Sets p2,
-                UcChars.Sets p3,
-                UcChars.Sets p4,
-                UcChars.Sets p5,
-                CharAttribStruct p6)
+            #region UcCaretAttribs
+            public UcCaretAttribs( Point p1, UcChars.Sets p2, UcChars.Sets p3, UcChars.Sets p4, UcChars.Sets p5, CharAttribStruct p6)
             {
                 Pos = p1;
                 G0Set = p2;
@@ -3560,14 +3535,14 @@ namespace PacketComs
                 G3Set = p5;
                 Attribs = p6;
             }
+            #endregion
         }
-
         #endregion
 
         #region calss uc_Chars
-
         private class UcChars
         {
+            #region enum Sets
             public enum Sets
             {
                 None,
@@ -3588,7 +3563,9 @@ namespace PacketComs
                 NRCSwedish,
                 NRCSwiss
             }
+            #endregion
 
+            #region UcCharSet[] DECSG
             public static readonly UcCharSet[] DECSG =
             {
                 new UcCharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
@@ -3624,7 +3601,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00A3), // Pound Sign 
                 new UcCharSet(0x7E, 0x00B7) // Middle Dot 
             };
+            #endregion
 
+            #region  UcCharSet[] DECS
             public static readonly UcCharSet[] DECS =
             {
                 new UcCharSet(0xA8, 0x0020), // Currency Sign
@@ -3633,17 +3612,23 @@ namespace PacketComs
                 new UcCharSet(0xF7, 0x0153), // latin small ligature oe 
                 new UcCharSet(0xFD, 0x00FF) // Lowercase y with diaeresis
             };
+            #endregion
 
+            #region UcCharSet[] ASCII
             public static readonly UcCharSet[] ASCII = // same as Basic Latin
             {
                 new UcCharSet(0x00, 0x0000) //
             };
+            #endregion
 
+            #region UcCharSet[] NRCUK
             public static readonly UcCharSet[] NRCUK = // UK National Replacement
             {
                 new UcCharSet(0x23, 0x00A3) //
             };
+            #endregion
 
+            #region  UcCharSet[] NRCFinnish
             public static readonly UcCharSet[] NRCFinnish = // Finnish National Replacement
             {
                 new UcCharSet(0x5B, 0x00C4), // A with diearesis
@@ -3656,7 +3641,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
                 new UcCharSet(0x7E, 0x00FC) // u with diearesis
             };
+            #endregion
 
+            #region UcCharSet[] NRCFrench
             public static readonly UcCharSet[] NRCFrench = // French National Replacement
             {
                 new UcCharSet(0x23, 0x00A3), // Pound Sign
@@ -3669,7 +3656,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00E8), // e with grav accent
                 new UcCharSet(0x7E, 0x00A8) // diearesis
             };
+            #endregion
 
+            #region UcCharSet[] NRCFrenchCanadian
             public static readonly UcCharSet[] NRCFrenchCanadian = // French Canadian National Replacement
             {
                 new UcCharSet(0x40, 0x00E0), // a with grav accent
@@ -3683,7 +3672,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00E8), // e with grav accent
                 new UcCharSet(0x7E, 0x00FB) // u with circumflex
             };
+            #endregion
 
+            #region UcCharSet[] NRCGerman
             public static readonly UcCharSet[] NRCGerman = // German National Replacement
             {
                 new UcCharSet(0x40, 0x00A7), // funny s
@@ -3695,7 +3686,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00FC), // u with diearesis
                 new UcCharSet(0x7E, 0x00DF) // funny B
             };
+            #endregion
 
+            #region UcCharSet[] NRCItalian
             public static readonly UcCharSet[] NRCItalian = // Italian National Replacement
             {
                 new UcCharSet(0x23, 0x00A3), // pound sign
@@ -3709,7 +3702,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00E8), // e with grav accent
                 new UcCharSet(0x7E, 0x00CC) // I with grav accent
             };
+            #endregion
 
+            #region UcCharSet[] NRCNorDanish
             public static readonly UcCharSet[] NRCNorDanish = // Norwegian Danish National Replacement
             {
                 new UcCharSet(0x5B, 0x00C6), // AE ligature
@@ -3721,7 +3716,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00F8), // o with strikethough
                 new UcCharSet(0x7D, 0x00E5) // a with hollow dot above
             };
+            #endregion
 
+            #region UcCharSet[] NRCPortuguese
             public static readonly UcCharSet[] NRCPortuguese = // Portuguese National Replacement
             {
                 new UcCharSet(0x5B, 0x00C3), // A with tilde
@@ -3731,7 +3728,9 @@ namespace PacketComs
                 new UcCharSet(0x7C, 0x00E7), // little cedilla
                 new UcCharSet(0x7D, 0x00F6) // o with tilde
             };
+            #endregion
 
+            #region UcCharSet[] NRCSpanish
             public static readonly UcCharSet[] NRCSpanish = // Spanish National Replacement
             {
                 new UcCharSet(0x23, 0x00A3), // pound sign
@@ -3744,7 +3743,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00F1), // n with tilde
                 new UcCharSet(0x7E, 0x00E7) // small cedilla
             };
+            #endregion
 
+            #region UcCharSet[] NRCSwedish
             public static readonly UcCharSet[] NRCSwedish = // Swedish National Replacement
             {
                 new UcCharSet(0x40, 0x00C9), // E with acute
@@ -3758,7 +3759,9 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
                 new UcCharSet(0x7E, 0x00FC) // u with diearesis
             };
+            #endregion
 
+            #region UcCharSet[] NRCSwiss
             public static readonly UcCharSet[] NRCSwiss = // Swiss National Replacement
             {
                 new UcCharSet(0x23, 0x00F9), // u with grav accent
@@ -3774,19 +3777,25 @@ namespace PacketComs
                 new UcCharSet(0x7D, 0x00FC), // u with diearesis
                 new UcCharSet(0x7E, 0x00FB) // u with circumflex
             };
+            #endregion
 
+            #region  UcCharSet
             public static readonly UcCharSet[] ISOLatin1S = // Same as Latin-1 Supplemental
             {
                 new UcCharSet(0x00, 0x0000) //
             };
+            #endregion
 
             public Sets Set;
 
+            #region UcChars
             public UcChars(Sets p1)
             {
                 Set = p1;
             }
+            #endregion 
 
+            #region Char
             public static Char Get(Char curChar, Sets gl, Sets gr)
             {
                 UcCharSet[] curSet;
@@ -3885,24 +3894,28 @@ namespace PacketComs
 
                 return curChar;
             }
+            #endregion
 
+            #region UcCharSet
             public struct UcCharSet
             {
                 public readonly Int32 Location;
                 public readonly Int16 UnicodeNo;
 
+                #region UcCharSet
                 public UcCharSet(Int32 p1, Int16 p2)
                 {
                     Location = p1;
                     UnicodeNo = p2;
                 }
+                #endregion
             }
+            #endregion
         }
 
         #endregion
 
         #region class uc_Caret
-
         private class UcCaret
         {
             public Bitmap Bitmap;
@@ -3911,16 +3924,16 @@ namespace PacketComs
             public Boolean IsOff;
             public Point Pos;
 
+            #region UcCaret
             public UcCaret()
             {
                 Pos = new Point(0, 0);
             }
+            #endregion
         }
-
         #endregion
 
-        #region WMCodes
-
+        #region class WMCodes
         private class WMCodes
         {
             public const int WM_KEYFIRST = 0x0100;
@@ -3934,11 +3947,9 @@ namespace PacketComs
             public const int WM_SYSDEADCHAR = 0x0107;
             public const int WM_KEYLAST = 0x0108;
         }
-
         #endregion
 
         #region class uc_Mode
-
         private class UcMode
         {
             public static UInt32 Locked = 1; // Unlocked           = off 
@@ -3955,19 +3966,19 @@ namespace PacketComs
             public static UInt32 LightBackground = 2048; // DarkBackground     = off
             public static UInt32 National = 4096; // Multinational      = off
             public static UInt32 Any = 0x80000000; // Any Flags
-
             public UInt32 Flags;
 
+            #region UcMode
             public UcMode()
             {
                 Flags = 0;
             }
+            #endregion
         }
 
         #endregion
 
         #region class uc_Keyboard
-
         private class UcKeyboard
         {
             private readonly UcKeyMap KeyMap = new UcKeyMap();
@@ -3977,13 +3988,16 @@ namespace PacketComs
             private Boolean _lastKeyDownSent; // next WM_CHAR ignored if true 
             private bool _shiftIsDown;
 
+            #region UcKeyboard
             public UcKeyboard(TerminalEmulator p1)
             {
                 Parent = p1;
             }
+            #endregion
 
             public event KeyboardEventHandler KeyboardEvent;
 
+            #region KeyDown
             public void KeyDown(Message keyMess)
             {
                 Byte[] lBytes;
@@ -4109,22 +4123,18 @@ namespace PacketComs
                     AnsiChar = wBytes[0];
                     BitConverter.ToUInt16(wBytes, 0);
 
-
                     // if there's a string mapped to this key combo we want to ignore the character
                     // as it has been overriden in the keydown event
-
                     // only send the windows generated char if there was no custom
                     // string sent by the keydown event
                     if (_lastKeyDownSent == false)
                     {
                         // send the character straight to the host if we haven't already handled the actual key press
                         KeyboardEvent(this, Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
-
                         {
                             if (Parent.LocalEcho)
                             {
-                                Parent.RxdTextEvent(
-                                    Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
+                                Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
                                 Parent.Refresh();
                             }
                         }
@@ -4134,7 +4144,9 @@ namespace PacketComs
                 //System.Console.Write ("AnsiChar = {0} Result = {1} ScanCode = {2} KeyValue = {3} Flags = {4} Repeat = {5}\n ", 
                 //AnsiChar, KeyMess.Result, ScanCode, KeyValue, Flags, RepeatCount);
             }
+            #endregion
 
+            #region class UcKeyInfo
             private class UcKeyInfo
             {
                 public readonly Boolean ExtendFlag;
@@ -4144,13 +4156,8 @@ namespace PacketComs
                 public readonly String OutString;
                 public readonly UInt16 ScanCode;
 
-                public UcKeyInfo(
-                    UInt16 p1,
-                    Boolean p2,
-                    String p3,
-                    String p4,
-                    UInt32 p5,
-                    UInt32 p6)
+                #region UcKeyInfo
+                public UcKeyInfo( UInt16 p1, Boolean p2, String p3, String p4, UInt32 p5, UInt32 p6)
                 {
                     ScanCode = p1;
                     ExtendFlag = p2;
@@ -4159,16 +4166,21 @@ namespace PacketComs
                     Flag = p5;
                     FlagValue = p6;
                 }
+                #endregion
             }
+            #endregion
 
+            #region UcKeyMap
             private class UcKeyMap
             {
                 public readonly ArrayList Elements = new ArrayList();
 
+                #region UcKeyMap
                 public UcKeyMap()
                 {
                     SetToDefault();
                 }
+                #endregion
 
                 #region SetToDefault
                 // set the key mapping up to emulate most keys on a vt420
@@ -4264,14 +4276,10 @@ namespace PacketComs
                 }
                 #endregion
 
-                public String Find(
-                    UInt16 scanCode,
-                    Boolean extendFlag,
-                    String modifier,
-                    UInt32 modeFlags)
+                #region Find
+                public String Find(  UInt16 scanCode,  Boolean extendFlag, String modifier, UInt32 modeFlags)
                 {
                     String outString = "";
-
                     for (int i = 0; i < Elements.Count; i++)
                     {
                         var element = (UcKeyInfo) Elements[i];
@@ -4287,12 +4295,12 @@ namespace PacketComs
                             return outString;
                         }
                     }
-
                     return outString;
                 }
+                #endregion
             }
+            #endregion
         }
-
         #endregion
 
         #region class uc_VertScrollBar
@@ -4715,7 +4723,7 @@ namespace PacketComs
         }
         #endregion
 
-        #region Class uc_TelnetParser
+        #region class uc_TelnetParser
 
         private class UcTelnetParser
         {
@@ -4724,7 +4732,6 @@ namespace PacketComs
             private readonly UcStateChangeEvents _stateChangeEvents = new UcStateChangeEvents();
             private Char _curChar = '\0';
             private String _curSequence = "";
-
             private ArrayList _paramList = new ArrayList();
             private States _state = States.Ground;
             public event NvtParserEventHandler NvtParserEvent;
