@@ -1124,6 +1124,7 @@ namespace PacketComs
 
         private void HandleScroll(Object sender, ScrollEventArgs se)
         {
+            
             try
             {
                 // capture text at cursor
@@ -1163,7 +1164,18 @@ namespace PacketComs
                         _lastVisibleLine += _rows;
                         break;
                     case ScrollEventType.LargeDecrement: // up
-                        _lastVisibleLine += -_rows;
+                        if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
+                        {
+                            int i = 0;
+                            while ( i <= _rows)
+                            {
+                                i++;
+                                if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
+                                {
+                                    _lastVisibleLine += -1;
+                                }
+                            }
+                        }
                         break;
                     default:
                         return;
@@ -1195,7 +1207,7 @@ namespace PacketComs
                     visiblebuffer.Insert(0, _scrollbackBuffer[i]);
 
                     // don't parse more strings than our display can show
-                    if (visiblebuffer.Count >= rows - 0) // rows -1 to leave line for cursor space
+                    if (visiblebuffer.Count >= rows -1) // rows -1 to leave line for cursor space
                         break;
                 }
 
