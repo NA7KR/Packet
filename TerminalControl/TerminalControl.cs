@@ -228,7 +228,7 @@ namespace PacketComs
         #region Fields
 
         private static UcParser _parser;
-        private readonly UcMode Modes;
+        private readonly UcMode _modes;
         private readonly Color _blinkColor;
         private readonly Color _boldColor;
         private readonly UcCaret _caret;
@@ -244,7 +244,7 @@ namespace PacketComs
         private readonly UcTabStops _tabStops;
         private readonly String _typeFace = FontFamily.GenericMonospace.GetName(0);
         private readonly UcVertScrollBar _vertScrollBar;
-        private Int32 TypeSize = 8;
+        private const Int32 TypeSize = 8;
         private FontStyle TypeStyle = FontStyle.Regular;
         private CharAttribStruct[][] _attribGrid;
         private Boolean _beep;
@@ -320,7 +320,7 @@ namespace PacketComs
             _parser = new UcParser();
             var nvtParser = new UcTelnetParser();
             _caret = new UcCaret();
-            Modes = new UcMode();
+            _modes = new UcMode();
             _tabStops = new UcTabStops();
             _savedCarets = new ArrayList();
             _caret.Pos = new Point(0, 0);
@@ -977,7 +977,7 @@ namespace PacketComs
         #endregion
 
         #region Connect Telnet
-        private void ConnectTelnet(string hostName, Int32 Port)
+        private void ConnectTelnet(string hostName, Int32 port)
         {
             Focus();
             IPHostEntry ipHost = Dns.GetHostEntry(hostName);
@@ -990,7 +990,7 @@ namespace PacketComs
                     ProtocolType.Tcp);
 
                 // Create New EndPoint
-                var iep = new IPEndPoint(addr[0], Port);
+                var iep = new IPEndPoint(addr[0], port);
 
                 // This is a non blocking IO
                 _curSocket.Blocking = false;
@@ -1431,7 +1431,7 @@ namespace PacketComs
                     {
                         try
                         {
-                            IAsyncResult ar = _curSocket.BeginSend(
+                            _curSocket.BeginSend(
                                 smk,
                                 0,
                                 smk.Length,
@@ -1479,7 +1479,7 @@ namespace PacketComs
         {
             if (_caret.EOL)
             {
-                if ((Modes.Flags & UcMode.AutoWrap) == UcMode.AutoWrap)
+                if ((_modes.Flags & UcMode.AutoWrap) == UcMode.AutoWrap)
                 {
                     LineFeed();
                     CarriageReturn();
@@ -1578,25 +1578,25 @@ namespace PacketComs
 
         #region AssignColors
 
-        private void AssignColors(CharAttribStruct curAttribs, ref Color CurFGColor, ref Color CurBGColor)
+        private void AssignColors(CharAttribStruct curAttribs, ref Color curFgColor, ref Color CurBGColor)
         {
-            CurFGColor = ForeColor;
+            curFgColor = ForeColor;
             CurBGColor = BackColor;
 
             if (curAttribs.IsBlinking)
             {
-                CurFGColor = _blinkColor;
+                curFgColor = _blinkColor;
             }
 
             // bold takes precedence over the blink color
             if (curAttribs.IsBold)
             {
-                CurFGColor = _boldColor;
+                curFgColor = _boldColor;
             }
 
             if (curAttribs.UseAltColor)
             {
-                CurFGColor = curAttribs.AltColor;
+                curFgColor = curAttribs.AltColor;
             }
 
             // alternate color takes precedence over the bold color
@@ -1609,19 +1609,19 @@ namespace PacketComs
             {
                 Color tmpColor = CurBGColor;
 
-                CurBGColor = CurFGColor;
-                CurFGColor = tmpColor;
+                CurBGColor = curFgColor;
+                curFgColor = tmpColor;
             }
 
             // If light background is on and we're not using alt colors
             // reverse the colors
-            if ((Modes.Flags & UcMode.LightBackground) > 0 &&
+            if ((_modes.Flags & UcMode.LightBackground) > 0 &&
                 curAttribs.UseAltColor == false && curAttribs.UseAltBGColor == false)
             {
                 Color tmpColor = CurBGColor;
 
-                CurBGColor = CurFGColor;
-                CurFGColor = tmpColor;
+                CurBGColor = curFgColor;
+                curFgColor = tmpColor;
             }
         }
 
@@ -1642,8 +1642,8 @@ namespace PacketComs
 
             AssignColors(curAttribs, ref curFgColor, ref curBgColor);
 
-            if ((curBgColor != BackColor && (Modes.Flags & UcMode.LightBackground) == 0) ||
-                (curBgColor != _fgColor && (Modes.Flags & UcMode.LightBackground) > 0))
+            if ((curBgColor != BackColor && (_modes.Flags & UcMode.LightBackground) == 0) ||
+                (curBgColor != _fgColor && (_modes.Flags & UcMode.LightBackground) > 0))
             {
                 // Erase the current Character underneath the cursor postion
                 _eraseBuffer.Clear(curBgColor);
@@ -1697,7 +1697,7 @@ namespace PacketComs
         #endregion
 
         #region SSH Connect
-        private void ConnectSsh2(string hostname, string username, string password, Int32 Port)
+        private void ConnectSsh2(string hostname, string username, string password, Int32 port)
         {
             string ip;
             try
@@ -1712,7 +1712,7 @@ namespace PacketComs
                 return;
             }
 
-            _client = new SshClient(ip, Port, username, password);
+            _client = new SshClient(ip, port, username, password);
             _client.Connect();
             _stream = _client.CreateShellStream("xterm", 80, 24, 800, 600, 1024);
             _stream.DataReceived += ReadStreamSsh;
@@ -1847,7 +1847,7 @@ namespace PacketComs
         private void WipeScreen(Graphics curGraphics)
         {
             // clear the screen buffer area
-            if ((Modes.Flags & UcMode.LightBackground) > 0)
+            if ((_modes.Flags & UcMode.LightBackground) > 0)
             {
                 curGraphics.Clear(_fgColor);
             }
@@ -2439,8 +2439,8 @@ namespace PacketComs
         {
             _caret.EOL = false;
 
-            if ((_caret.Pos.Y > 0 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
-                (_caret.Pos.Y > _topMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
+            if ((_caret.Pos.Y > 0 && (_modes.Flags & UcMode.OriginRelative) == 0) ||
+                (_caret.Pos.Y > _topMargin && (_modes.Flags & UcMode.OriginRelative) > 0))
             {
                 _caret.Pos.Y -= 1;
             }
@@ -2454,8 +2454,8 @@ namespace PacketComs
         {
             _caret.EOL = false;
 
-            if ((_caret.Pos.Y < _rows - 1 && (Modes.Flags & UcMode.OriginRelative) == 0) ||
-                (_caret.Pos.Y < _bottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0))
+            if ((_caret.Pos.Y < _rows - 1 && (_modes.Flags & UcMode.OriginRelative) == 0) ||
+                (_caret.Pos.Y < _bottomMargin && (_modes.Flags & UcMode.OriginRelative) > 0))
             {
                 _caret.Pos.Y += 1;
             }
@@ -2505,7 +2505,7 @@ namespace PacketComs
                    but is smart enough to stay within the margins if the originrelative 
                    flagis set. */
 
-            if ((Modes.Flags & UcMode.OriginRelative) == 0)
+            if ((_modes.Flags & UcMode.OriginRelative) == 0)
             {
                 CaretToAbs(y, x);
                 return;
@@ -2557,22 +2557,22 @@ namespace PacketComs
                 x = _cols - 1;
             }
 
-            if (y < 0 && (Modes.Flags & UcMode.OriginRelative) == 0)
+            if (y < 0 && (_modes.Flags & UcMode.OriginRelative) == 0)
             {
                 y = 0;
             }
 
-            if (y < _topMargin && (Modes.Flags & UcMode.OriginRelative) > 0)
+            if (y < _topMargin && (_modes.Flags & UcMode.OriginRelative) > 0)
             {
                 y = _topMargin;
             }
 
-            if (y > _rows - 1 && (Modes.Flags & UcMode.OriginRelative) == 0)
+            if (y > _rows - 1 && (_modes.Flags & UcMode.OriginRelative) == 0)
             {
                 y = _rows - 1;
             }
 
-            if (y > _bottomMargin && (Modes.Flags & UcMode.OriginRelative) > 0)
+            if (y > _bottomMargin && (_modes.Flags & UcMode.OriginRelative) > 0)
             {
                 y = _bottomMargin;
             }
@@ -2673,11 +2673,11 @@ namespace PacketComs
                     break;
 
                 case "\x1b=": // Keypad to Application mode
-                    Modes.Flags = Modes.Flags | UcMode.KeypadAppln;
+                    _modes.Flags = _modes.Flags | UcMode.KeypadAppln;
                     break;
 
                 case "\x1b>": // Keypad to Numeric mode
-                    Modes.Flags = Modes.Flags ^ UcMode.KeypadAppln;
+                    _modes.Flags = _modes.Flags ^ UcMode.KeypadAppln;
                     break;
 
                 case "\x1b[B": // CUD
@@ -2909,7 +2909,7 @@ namespace PacketComs
                     break;
 
                 case "A":
-                    if ((Modes.Flags & UcMode.National) == 0)
+                    if ((_modes.Flags & UcMode.National) == 0)
                     {
                         curTarget = UcChars.Sets.ISOLatin1S;
                     }
@@ -2991,11 +2991,11 @@ namespace PacketComs
                 switch (optInt)
                 {
                     case 1: // set cursor keys to application mode
-                        Modes.Flags = Modes.Flags | UcMode.CursorAppln;
+                        _modes.Flags = _modes.Flags | UcMode.CursorAppln;
                         break;
 
                     case 2: // lock the keyboard
-                        Modes.Flags = Modes.Flags | UcMode.Locked;
+                        _modes.Flags = _modes.Flags | UcMode.Locked;
                         break;
 
                     case 3: // set terminal to 132 column mode
@@ -3003,29 +3003,29 @@ namespace PacketComs
                         break;
 
                     case 5: // Light Background Mode
-                        Modes.Flags = Modes.Flags | UcMode.LightBackground;
+                        _modes.Flags = _modes.Flags | UcMode.LightBackground;
                         RefreshEvent();
                         break;
 
                     case 6: // Origin Mode Relative
-                        Modes.Flags = Modes.Flags | UcMode.OriginRelative;
+                        _modes.Flags = _modes.Flags | UcMode.OriginRelative;
                         CaretToRel(0, 0);
                         break;
 
                     case 7: // Autowrap On
-                        Modes.Flags = Modes.Flags | UcMode.AutoWrap;
+                        _modes.Flags = _modes.Flags | UcMode.AutoWrap;
                         break;
 
                     case 8: // AutoRepeat On
-                        Modes.Flags = Modes.Flags | UcMode.Repeat;
+                        _modes.Flags = _modes.Flags | UcMode.Repeat;
                         break;
 
                     case 42: // DECNRCM Multinational Charset
-                        Modes.Flags = Modes.Flags | UcMode.National;
+                        _modes.Flags = _modes.Flags | UcMode.National;
                         break;
 
                     case 66: // Numeric Keypad Application Mode On
-                        Modes.Flags = Modes.Flags | UcMode.KeypadAppln;
+                        _modes.Flags = _modes.Flags | UcMode.KeypadAppln;
                         break;
                 }
             }
@@ -3053,11 +3053,11 @@ namespace PacketComs
                 switch (optInt)
                 {
                     case 1: // set cursor keys to normal cursor mode
-                        Modes.Flags = Modes.Flags & ~UcMode.CursorAppln;
+                        _modes.Flags = _modes.Flags & ~UcMode.CursorAppln;
                         break;
 
                     case 2: // unlock the keyboard
-                        Modes.Flags = Modes.Flags & ~UcMode.Locked;
+                        _modes.Flags = _modes.Flags & ~UcMode.Locked;
                         break;
 
                     case 3: // set terminal to 80 column mode
@@ -3065,29 +3065,29 @@ namespace PacketComs
                         break;
 
                     case 5: // Dark Background Mode
-                        Modes.Flags = Modes.Flags & ~UcMode.LightBackground;
+                        _modes.Flags = _modes.Flags & ~UcMode.LightBackground;
                         RefreshEvent();
                         break;
 
                     case 6: // Origin Mode Absolute
-                        Modes.Flags = Modes.Flags & ~UcMode.OriginRelative;
+                        _modes.Flags = _modes.Flags & ~UcMode.OriginRelative;
                         CaretToAbs(0, 0);
                         break;
 
                     case 7: // Autowrap Off
-                        Modes.Flags = Modes.Flags & ~UcMode.AutoWrap;
+                        _modes.Flags = _modes.Flags & ~UcMode.AutoWrap;
                         break;
 
                     case 8: // AutoRepeat Off
-                        Modes.Flags = Modes.Flags & ~UcMode.Repeat;
+                        _modes.Flags = _modes.Flags & ~UcMode.Repeat;
                         break;
 
                     case 42: // DECNRCM National Charset
-                        Modes.Flags = Modes.Flags & ~UcMode.National;
+                        _modes.Flags = _modes.Flags & ~UcMode.National;
                         break;
 
                     case 66: // Numeric Keypad Application Mode On
-                        Modes.Flags = Modes.Flags & ~UcMode.KeypadAppln;
+                        _modes.Flags = _modes.Flags & ~UcMode.KeypadAppln;
                         break;
                 }
             }
@@ -3115,7 +3115,7 @@ namespace PacketComs
                 switch (optInt)
                 {
                     case 1: // set local echo off
-                        Modes.Flags = Modes.Flags | UcMode.LocalEchoOff;
+                        _modes.Flags = _modes.Flags | UcMode.LocalEchoOff;
                         break;
                 }
             }
@@ -3143,7 +3143,7 @@ namespace PacketComs
                 switch (optInt)
                 {
                     case 1: // set LocalEcho on
-                        Modes.Flags = Modes.Flags & ~UcMode.LocalEchoOff;
+                        _modes.Flags = _modes.Flags & ~UcMode.LocalEchoOff;
                         break;
                 }
             }
@@ -3980,8 +3980,8 @@ namespace PacketComs
         #region class uc_Keyboard
         private class UcKeyboard
         {
-            private readonly UcKeyMap KeyMap = new UcKeyMap();
-            private readonly TerminalEmulator Parent;
+            private readonly UcKeyMap _keyMap = new UcKeyMap();
+            private readonly TerminalEmulator _parent;
             private bool _altIsDown;
             private bool _ctrlIsDown;
             private Boolean _lastKeyDownSent; // next WM_CHAR ignored if true 
@@ -3990,7 +3990,7 @@ namespace PacketComs
             #region UcKeyboard
             public UcKeyboard(TerminalEmulator p1)
             {
-                Parent = p1;
+                _parent = p1;
             }
             #endregion
 
@@ -4012,7 +4012,7 @@ namespace PacketComs
                 BitConverter.ToUInt16(lBytes, 0);
                 scanCode = lBytes[2];
                 flags = lBytes[3];
-                keyValue = BitConverter.ToUInt16(wBytes, 0);
+                //keyValue = BitConverter.ToUInt16(wBytes, 0);
 
 
                 // key down messages send the scan code in wParam whereas
@@ -4061,8 +4061,8 @@ namespace PacketComs
                     }
 
                     // the key pressed was not a modifier so check for an override string
-                    String outString = KeyMap.Find(scanCode, Convert.ToBoolean(flags & 0x01), modifier,
-                        Parent.Modes.Flags);
+                    String outString = _keyMap.Find(scanCode, Convert.ToBoolean(flags & 0x01), modifier,
+                        _parent._modes.Flags);
 
                     _lastKeyDownSent = false;
 
@@ -4106,10 +4106,10 @@ namespace PacketComs
 
                         default:
                         {
-                            if (Parent.LocalEcho && keyValue == 13)
+                            if (_parent.LocalEcho && keyValue == 13)
                             {
-                                Parent.RxdTextEvent(Environment.NewLine);
-                                Parent.Refresh();
+                                _parent.RxdTextEvent(Environment.NewLine);
+                                _parent.Refresh();
                             }
                         }
                             break;
@@ -4131,10 +4131,10 @@ namespace PacketComs
                         // send the character straight to the host if we haven't already handled the actual key press
                         KeyboardEvent(this, Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
                         {
-                            if (Parent.LocalEcho)
+                            if (_parent.LocalEcho)
                             {
-                                Parent.RxdTextEvent(Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
-                                Parent.Refresh();
+                                _parent.RxdTextEvent(Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
+                                _parent.Refresh();
                             }
                         }
                     }
