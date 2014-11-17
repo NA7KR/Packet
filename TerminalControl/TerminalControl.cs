@@ -25,7 +25,6 @@ namespace PacketComs
     {
         private readonly ModifyFile _myFiles = new ModifyFile();
         private readonly SerialPort _port = new SerialPort();
-
         private SshClient _client;
         private ShellStream _stream;
 
@@ -1254,7 +1253,8 @@ namespace PacketComs
                 } 
                 _vertScrollBar.Maximum = _scrollbackBuffer.Count + 1;
                 _vertScrollBar.Value =   _scrollbackBuffer.Count + 1;
-                _vertScrollBar.LargeChange = _vertScrollBar.Maximum / _charSize.Height + _rows;
+                //KRR
+                _vertScrollBar.LargeChange = _vertScrollBar.Maximum  /   _rows  ;
                 _vertScrollBar.SmallChange = _vertScrollBar.Maximum / _charSize.Height;        
             }
             catch (Exception curException)
@@ -1578,8 +1578,7 @@ namespace PacketComs
 
         #region AssignColors
 
-        private void AssignColors(CharAttribStruct curAttribs, ref Color CurFGColor,
-            ref Color CurBGColor)
+        private void AssignColors(CharAttribStruct curAttribs, ref Color CurFGColor, ref Color CurBGColor)
         {
             CurFGColor = ForeColor;
             CurBGColor = BackColor;
