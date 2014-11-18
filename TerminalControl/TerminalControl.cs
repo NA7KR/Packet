@@ -363,7 +363,7 @@ namespace PacketComs
 
             // Dock the scroll bar to the right side of the form.
             _vertScrollBar.Dock = DockStyle.Right;
-
+            
             // Add the scroll bar to the form.
             Controls.Add(_vertScrollBar);
 
@@ -1250,11 +1250,11 @@ namespace PacketComs
                 {
                     _vertScrollBar.Maximum = 0;
                     return;
-                } 
+                }
                 _vertScrollBar.Maximum = _scrollbackBuffer.Count + 1;
                 _vertScrollBar.Value =   _scrollbackBuffer.Count + 1;
                 //KRR
-                _vertScrollBar.LargeChange = _vertScrollBar.Maximum  /   _rows  ;
+                _vertScrollBar.LargeChange =    _rows  ;
                 _vertScrollBar.SmallChange = _vertScrollBar.Maximum / _charSize.Height;        
             }
             catch (Exception curException)
