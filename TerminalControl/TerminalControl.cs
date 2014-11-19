@@ -513,6 +513,8 @@ namespace PacketComs
                 case WMCodes.WM_SYSKEYUP:
                 case WMCodes.WM_SYSCHAR:
                 case WMCodes.WM_CHAR:
+                case WMCodes.MOUSEWHEEL:
+                case WMCodes.OCM_VSCROLL:
                     _keyboard.KeyDown(m);
                     break;
 
@@ -1253,7 +1255,7 @@ namespace PacketComs
                 }
                 _vertScrollBar.Maximum = _scrollbackBuffer.Count + 1;
                 _vertScrollBar.Value =   _scrollbackBuffer.Count + 1;
-                //KRR
+                
                 _vertScrollBar.LargeChange =    _rows  ;
                 _vertScrollBar.SmallChange = _vertScrollBar.Maximum / _charSize.Height;        
             }
@@ -3945,6 +3947,9 @@ namespace PacketComs
             public const int WM_SYSCHAR = 0x0106;
             public const int WM_SYSDEADCHAR = 0x0107;
             public const int WM_KEYLAST = 0x0108;
+            public const int MOUSEWHEEL = 0x020A;
+            public const int OCM_VSCROLL = 0x0115;
+
         }
         #endregion
 
@@ -4115,30 +4120,39 @@ namespace PacketComs
                             break;
                     }
                 }
-
-                else if (keyMess.Msg == WMCodes.WM_SYSCHAR ||
-                         keyMess.Msg == WMCodes.WM_CHAR)
+               else if (keyMess.Msg == WMCodes.OCM_VSCROLL )
+               {
+                   //KRR
+                   _parent._vertScrollBar.Value--;
+               }
+               else if ( keyMess.Msg == WMCodes.MOUSEWHEEL)
                 {
-                    AnsiChar = wBytes[0];
-                    BitConverter.ToUInt16(wBytes, 0);
-
-                    // if there's a string mapped to this key combo we want to ignore the character
-                    // as it has been overriden in the keydown event
-                    // only send the windows generated char if there was no custom
-                    // string sent by the keydown event
-                    if (_lastKeyDownSent == false)
-                    {
-                        // send the character straight to the host if we haven't already handled the actual key press
-                        KeyboardEvent(this, Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
-                        {
-                            if (_parent.LocalEcho)
-                            {
-                                _parent.RxdTextEvent(Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
-                                _parent.Refresh();
-                            }
-                        }
-                    }
+                    //KRR
+                    _parent._vertScrollBar.Value--;
                 }
+               else if (keyMess.Msg == WMCodes.WM_SYSCHAR || keyMess.Msg == WMCodes.WM_CHAR )
+               {
+                   AnsiChar = wBytes[0];
+                   BitConverter.ToUInt16(wBytes, 0);
+
+                   // if there's a string mapped to this key combo we want to ignore the character
+                   // as it has been overriden in the keydown event
+                   // only send the windows generated char if there was no custom
+                   // string sent by the keydown event
+                   if (_lastKeyDownSent == false)
+                   {
+                       // send the character straight to the host if we haven't already handled the actual key press
+                       KeyboardEvent(this, Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
+                       {
+                           if (_parent.LocalEcho)
+                           {
+                               _parent.RxdTextEvent(
+                                   Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
+                               _parent.Refresh();
+                           }
+                       }
+                   }
+               }
 
                 //System.Console.Write ("AnsiChar = {0} Result = {1} ScanCode = {2} KeyValue = {3} Flags = {4} Repeat = {5}\n ", 
                 //AnsiChar, KeyMess.Result, ScanCode, KeyValue, Flags, RepeatCount);
