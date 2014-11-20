@@ -63,16 +63,10 @@ namespace Packet
             this.node_button = new System.Windows.Forms.Button();
             this.disconnect_button = new System.Windows.Forms.Button();
             this.ssh_button = new System.Windows.Forms.Button();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mail_button = new System.Windows.Forms.Button();
-            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            
-            this.terminalEmulator1 = new TerminalEmulator();
-            
+            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
             // bbs_button
@@ -283,7 +277,7 @@ namespace Packet
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -365,21 +359,24 @@ namespace Packet
             this.mail_button.Name = "mail_button";
             this.mail_button.Size = new System.Drawing.Size(94, 23);
             this.mail_button.TabIndex = 8;
+            this.mail_button.TabStop = false;
             this.mail_button.Text = "Mail";
             this.toolTip1.SetToolTip(this.mail_button, "Mail List");
             this.mail_button.UseVisualStyleBackColor = true;
             this.mail_button.Click += new System.EventHandler(this.mail_button_Click);
             // 
-            terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            terminalEmulator1.BaudRateType = TerminalEmulator.BaudRateTypes.Baud_4800;
+            // terminalEmulator1
+            // 
+            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
+            this.terminalEmulator1.BaudRateType = PacketComs.TerminalEmulator.BaudRateTypes.Baud_4800;
             this.terminalEmulator1.BBSPrompt = null;
             this.terminalEmulator1.Beep = true;
             this.terminalEmulator1.Close = false;
             this.terminalEmulator1.Columns = 172;
-            this.terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.DataBitsType = TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
             this.terminalEmulator1.FileActive = false;
-            this.terminalEmulator1.FlowType = TerminalEmulator.FlowTypes.XOnXOff;
+            this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
             this.terminalEmulator1.Header = null;
             this.terminalEmulator1.Hostname = null;
@@ -388,14 +385,14 @@ namespace Packet
             this.terminalEmulator1.LocalEcho = false;
             this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";
-            this.terminalEmulator1.ParityType = TerminalEmulator.ParityTypes.None;
+            this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
             this.terminalEmulator1.Password = null;
             this.terminalEmulator1.PasswordPrompt = null;
             this.terminalEmulator1.Port = 9000;
             this.terminalEmulator1.Rows = 40;
             this.terminalEmulator1.SerialPort = "";
             this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
-            this.terminalEmulator1.StopBitsType = TerminalEmulator.StopBitsTypes.One;
+            this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
             this.terminalEmulator1.TabIndex = 5;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.UernamePrompt = null;
@@ -426,8 +423,6 @@ namespace Packet
             this.Resize += new System.EventHandler(this.Form1_Resize_1);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -468,9 +463,7 @@ namespace Packet
         private TerminalEmulator terminalEmulator1;
         private System.Windows.Forms.ToolStripMenuItem SSHConfigToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCom;
-        private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.BindingSource bindingSource2;
         private System.Windows.Forms.Button mail_button;
         private readonly ModifyRegistry _myRegistryBbs = new ModifyRegistry();
         private readonly Encrypting _myEncrypt = new Encrypting();

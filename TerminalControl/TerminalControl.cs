@@ -1129,42 +1129,49 @@ namespace PacketComs
                         _textAtCursor = _textAtCursor + Convert.ToString(curChar);
                     }
                 }
-  /*        
-                    case 2:			// page up
-                        if (_vertScrollBar.Value - _rows > 0)
+       
+              
+                switch (se)
+                {
+                    case 0:			// page up
+                        if (_vertScrollBar.Value  > _rows)
                         {
-                            _vertScrollBar.Value -= _rows;
+                            _vertScrollBar.Value -= 1;
+                            _lastVisibleLine += -1;
                         }
                         else
                         {
                             _vertScrollBar.Value = 0;
+                            _lastVisibleLine += -1; 
                         }
-                    case 3:			// page down
-                        if (_vertScrollBar.Value + _vertScrollBar.LargeChange + _rows < _vertScrollBar.Maximum)
+                        break;
+                    case 1:			// page down
+                        if (_vertScrollBar.Value   < (_vertScrollBar.Maximum + _rows))
                         {
-                            _vertScrollBar.Value += _rows;
+                            _vertScrollBar.Value += 1;
+                            _lastVisibleLine += 1;
                         }
                         else
                         {
-                           _vertScrollBar.Value = _vertScrollBar.Maximum - _vertScrollBar.LargeChange;
+                            _vertScrollBar.Value = _vertScrollBar.Maximum;
                         }
                         break;
-*/
-                switch (se)
-                {
-                    
-                    case 0: // up
+
+                    case 10: // up
                     {
                         if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
                         {
                             _lastVisibleLine += -1;
+                            _vertScrollBar.Value = _lastVisibleLine;
                         }
                         break;
                     }
-                    case 1: // down
+                    case 12: // down
                         _lastVisibleLine += 1;
+                        _vertScrollBar.Value  += 1; 
                         break;
 
+                    
                     case 2: // up
                         if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
                         {
@@ -1175,14 +1182,23 @@ namespace PacketComs
                                 if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
                                 {
                                     _lastVisibleLine += -1;
+                                    _vertScrollBar.Value += -1; 
                                 }
                             }
+                            
                         }
                         break;
 
                     case 3: // down
                         _lastVisibleLine += _rows;
+                        _vertScrollBar.Value += _rows; 
                         break;
+                    case 7864320:
+                        break;
+
+                    case -7864320:
+                        break;
+                  
 
                     default:
                         return;
@@ -4133,7 +4149,7 @@ namespace PacketComs
                    BitConverter.ToUInt16(wBytes, 0);
                    if (_lastKeyDownSent == false)
                    {
-                       KeyboardEvent(this, Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
+                        KeyboardEvent(this, Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
                        {
                            if (_parent.LocalEcho)
                            {
