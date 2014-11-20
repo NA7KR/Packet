@@ -359,7 +359,7 @@ namespace PacketComs
 
             // Create and initialize a VScrollBar.
             _vertScrollBar = new UcVertScrollBar();
-            _vertScrollBar.Scroll += HandleScroll;
+           // _vertScrollBar.Scroll += HandleScroll;
 
             // Dock the scroll bar to the right side of the form.
             _vertScrollBar.Dock = DockStyle.Right;
@@ -1109,11 +1109,10 @@ namespace PacketComs
         #endregion
 
         #region HandleScroll
-        private void HandleScroll(Object sender, ScrollEventArgs se)
+        private void HandleScroll( int se)
         {  
-            try
+           /* try
             {
-                // capture text at cursor
                 if (_caret.IsOff)
                 {
                 }
@@ -1166,10 +1165,6 @@ namespace PacketComs
                     default:
                         return;
                 }
-
-                // make sure we don't set LastVisibleLine past the end of the StringCollection
-                // LastVisibleLine is relative to the last line in the StringCollection
-                // 0 is the Last element
                 if (_lastVisibleLine > 0)
                 {
                     _lastVisibleLine = 0;
@@ -1191,31 +1186,23 @@ namespace PacketComs
                 for (int i = _scrollbackBuffer.Count - 1 + _lastVisibleLine; i >= 0; i--)
                 {
                     visiblebuffer.Insert(0, _scrollbackBuffer[i]);
-
-                    // don't parse more strings than our display can show
                     if (visiblebuffer.Count >= rows -1) // rows -1 to leave line for cursor space
                         break;
                 }
 
-                //int lastline = (0 - this.ScrollbackBuffer.Count) + (this.Rows);
-                //int lastline = this.LastVisibleLine;
                 for (int i = 0; i < visiblebuffer.Count; i++)
                 {
-                    //Console.WriteLine("Writing string to display: " + visiblebuffer[i]);
+                    
                     for (int column = 0; column < columns; column++)
-                    {
-                        //this.CharGrid[i][column] = '0';
+                    {   
                         if (column > visiblebuffer[i].Length - 1)
                             continue;
                         _charGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
                     }
-                    // if we're displaying the last line in scrollbackbuffer, then
-                    // replace the cursor and the text on the cursor line
-                    //System.Console.WriteLine(Convert.ToString(lastline) + " " + Convert.ToString(this.ScrollbackBuffer.Count));
+                   
                     if (_lastVisibleLine == 0)
                     {
                         CaretOn();
-                        //this.CaretToAbs(0,0);
                         for (int column = 0; column < _cols; column++)
                         {
                             if (column > _textAtCursor.Length - 1)
@@ -1236,6 +1223,7 @@ namespace PacketComs
             {
                 MessageBox.Show("Error HandleScroll: " + curException.Message);
             }
+            */ 
         }
 
         #endregion
@@ -4011,7 +3999,6 @@ namespace PacketComs
                 Byte AnsiChar = 0;
                 Byte flags = 0;
 
-
                 lBytes = BitConverter.GetBytes(keyMess.LParam.ToInt32());
                 wBytes = BitConverter.GetBytes(keyMess.WParam.ToInt32());
                 BitConverter.ToUInt16(lBytes, 0);
@@ -4022,13 +4009,9 @@ namespace PacketComs
 
                 // key down messages send the scan code in wParam whereas
                 // key press messages send the char and unicode values in this word
-                if (keyMess.Msg == WMCodes.WM_SYSKEYDOWN ||
-                    keyMess.Msg == WMCodes.WM_KEYDOWN)
+                if (keyMess.Msg == WMCodes.WM_SYSKEYDOWN || keyMess.Msg == WMCodes.WM_KEYDOWN)
                 {
                     keyValue = BitConverter.ToUInt16(wBytes, 0);
-
-                    // set the key down flags. I know you can get alt from lparam flags
-                    // but this feels more consistent
                     switch (keyValue)
                     {
                         case 16: // Shift Keys
@@ -4065,20 +4048,13 @@ namespace PacketComs
                         modifier = "Alt";
                     }
 
-                    // the key pressed was not a modifier so check for an override string
-                    String outString = _keyMap.Find(scanCode, Convert.ToBoolean(flags & 0x01), modifier,
-                        _parent._modes.Flags);
+                    String outString = _keyMap.Find(scanCode, Convert.ToBoolean(flags & 0x01), modifier, _parent._modes.Flags);
 
                     _lastKeyDownSent = false;
 
                     if (outString != "")
                     {
-                        // Flag the event so that the associated WM_CHAR event (if any) is ignored
                         _lastKeyDownSent = true;
-
-
-                        //Parent.NvtParser.ParseString (OutString); 
-                        //this.Parent.Invalidate ();
                         outString = Environment.NewLine;
 
                         KeyboardEvent(this, outString);
@@ -4123,25 +4099,53 @@ namespace PacketComs
                else if (keyMess.Msg == WMCodes.OCM_VSCROLL )
                {
                    //KRR
-                   _parent._vertScrollBar.Value--;
+                   switch ((uint)keyMess.WParam)
+                   {
+                       case 0: //up small
+                           _parent.HandleScroll(0);
+                           break;
+                       case 1: //down small
+                           break;
+                       case 2:			// page up
+                           if (_parent._vertScrollBar.Value - _parent._rows > 0)
+                           {
+                               _parent._vertScrollBar.Value -= _parent._rows;
+                           }
+                           else
+                           {
+                               _parent._vertScrollBar.Value = 0;
+                           }
+                           
+                           break;
+
+                       case 3:			// page down
+                           if (_parent._vertScrollBar.Value + _parent._vertScrollBar.LargeChange + _parent._rows < _parent._vertScrollBar.Maximum)
+                           {
+                               _parent._vertScrollBar.Value += _parent._rows;
+                           }
+                           else
+                           {
+                               _parent._vertScrollBar.Value = _parent._vertScrollBar.Maximum - _parent._vertScrollBar.LargeChange;
+                           }
+                           break;
+                   }
                }
                else if ( keyMess.Msg == WMCodes.MOUSEWHEEL)
                 {
                     //KRR
-                    _parent._vertScrollBar.Value--;
+                    switch ((uint)keyMess.WParam)
+                    {
+                      //      ;
+
+                    }
+  
                 }
                else if (keyMess.Msg == WMCodes.WM_SYSCHAR || keyMess.Msg == WMCodes.WM_CHAR )
                {
                    AnsiChar = wBytes[0];
                    BitConverter.ToUInt16(wBytes, 0);
-
-                   // if there's a string mapped to this key combo we want to ignore the character
-                   // as it has been overriden in the keydown event
-                   // only send the windows generated char if there was no custom
-                   // string sent by the keydown event
                    if (_lastKeyDownSent == false)
                    {
-                       // send the character straight to the host if we haven't already handled the actual key press
                        KeyboardEvent(this, Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture));
                        {
                            if (_parent.LocalEcho)
@@ -4153,9 +4157,6 @@ namespace PacketComs
                        }
                    }
                }
-
-                //System.Console.Write ("AnsiChar = {0} Result = {1} ScanCode = {2} KeyValue = {3} Flags = {4} Repeat = {5}\n ", 
-                //AnsiChar, KeyMess.Result, ScanCode, KeyValue, Flags, RepeatCount);
             }
             #endregion
 
