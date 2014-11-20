@@ -1111,15 +1111,14 @@ namespace PacketComs
         #region HandleScroll
         private void HandleScroll( int se)
         {  
-           /* try
+            try
             {
                 if (_caret.IsOff)
                 {
                 }
                 else
                 {
-                    _textAtCursor = "";
-                    
+                    _textAtCursor = "";   
                     for (int x = 0; x < _cols; x++)
                     {
                         char curChar = _charGrid[_caret.Pos.Y][x];
@@ -1129,15 +1128,32 @@ namespace PacketComs
                         }
                         _textAtCursor = _textAtCursor + Convert.ToString(curChar);
                     }
-                     
                 }
-
-                switch (se.Type)
-                {
-                    case ScrollEventType.SmallIncrement: // down
-                        _lastVisibleLine += 1;
+  /*        
+                    case 2:			// page up
+                        if (_vertScrollBar.Value - _rows > 0)
+                        {
+                            _vertScrollBar.Value -= _rows;
+                        }
+                        else
+                        {
+                            _vertScrollBar.Value = 0;
+                        }
+                    case 3:			// page down
+                        if (_vertScrollBar.Value + _vertScrollBar.LargeChange + _rows < _vertScrollBar.Maximum)
+                        {
+                            _vertScrollBar.Value += _rows;
+                        }
+                        else
+                        {
+                           _vertScrollBar.Value = _vertScrollBar.Maximum - _vertScrollBar.LargeChange;
+                        }
                         break;
-                    case ScrollEventType.SmallDecrement: // up
+*/
+                switch (se)
+                {
+                    
+                    case 0: // up
                     {
                         if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
                         {
@@ -1145,10 +1161,11 @@ namespace PacketComs
                         }
                         break;
                     }
-                    case ScrollEventType.LargeIncrement: // down
-                        _lastVisibleLine += _rows;
+                    case 1: // down
+                        _lastVisibleLine += 1;
                         break;
-                    case ScrollEventType.LargeDecrement: // up
+
+                    case 2: // up
                         if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
                         {
                             int i = 0;
@@ -1162,6 +1179,11 @@ namespace PacketComs
                             }
                         }
                         break;
+
+                    case 3: // down
+                        _lastVisibleLine += _rows;
+                        break;
+
                     default:
                         return;
                 }
@@ -1218,12 +1240,14 @@ namespace PacketComs
                 }
 
                 Refresh();
+ 
             }
+ 
             catch (Exception curException)
             {
                 MessageBox.Show("Error HandleScroll: " + curException.Message);
             }
-            */ 
+             
         }
 
         #endregion
@@ -4096,50 +4120,13 @@ namespace PacketComs
                             break;
                     }
                 }
-               else if (keyMess.Msg == WMCodes.OCM_VSCROLL )
+                else if (keyMess.Msg == WMCodes.OCM_VSCROLL || keyMess.Msg == WMCodes.MOUSEWHEEL)
                {
+                   _parent.HandleScroll(keyMess.WParam.ToInt32());
+                   _parent.Refresh();
                    //KRR
-                   switch ((uint)keyMess.WParam)
-                   {
-                       case 0: //up small
-                           _parent.HandleScroll(0);
-                           break;
-                       case 1: //down small
-                           break;
-                       case 2:			// page up
-                           if (_parent._vertScrollBar.Value - _parent._rows > 0)
-                           {
-                               _parent._vertScrollBar.Value -= _parent._rows;
-                           }
-                           else
-                           {
-                               _parent._vertScrollBar.Value = 0;
-                           }
-                           
-                           break;
-
-                       case 3:			// page down
-                           if (_parent._vertScrollBar.Value + _parent._vertScrollBar.LargeChange + _parent._rows < _parent._vertScrollBar.Maximum)
-                           {
-                               _parent._vertScrollBar.Value += _parent._rows;
-                           }
-                           else
-                           {
-                               _parent._vertScrollBar.Value = _parent._vertScrollBar.Maximum - _parent._vertScrollBar.LargeChange;
-                           }
-                           break;
-                   }
                }
-               else if ( keyMess.Msg == WMCodes.MOUSEWHEEL)
-                {
-                    //KRR
-                    switch ((uint)keyMess.WParam)
-                    {
-                      //      ;
-
-                    }
-  
-                }
+              
                else if (keyMess.Msg == WMCodes.WM_SYSCHAR || keyMess.Msg == WMCodes.WM_CHAR )
                {
                    AnsiChar = wBytes[0];
@@ -4150,8 +4137,7 @@ namespace PacketComs
                        {
                            if (_parent.LocalEcho)
                            {
-                               _parent.RxdTextEvent(
-                                   Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
+                               _parent.RxdTextEvent(Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
                                _parent.Refresh();
                            }
                        }
