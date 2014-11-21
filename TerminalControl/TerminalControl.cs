@@ -1134,27 +1134,32 @@ namespace PacketComs
                 switch (se)
                 {
                     case 0:			// page up
-                        if (_vertScrollBar.Value  > _rows)
+                        if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
                         {
+                            if (_vertScrollBar.Value == _vertScrollBar.Maximum)
+                            {
+                                _vertScrollBar.Value = _vertScrollBar.Value - _rows;
+                            }
+
                             _vertScrollBar.Value -= 1;
+                            _vertScrollBar.Refresh();
                             _lastVisibleLine -= 1;
                         }
                         else
                         {
-                            _vertScrollBar.Value = 0;
-                            _lastVisibleLine += -1; 
+                            _vertScrollBar.Value = 0;      
                         }
                         break;
                     case 1:			// page down
-                        if (_vertScrollBar.Value   < (_vertScrollBar.Maximum + _rows))
+                        if (_vertScrollBar.Value   < (_vertScrollBar.Maximum ))
                         {
+                          
                             _vertScrollBar.Value += 1;
                             _lastVisibleLine += 1;
                         }
                         else
                         {
-                            _vertScrollBar.Value = _vertScrollBar.Maximum;
-                            _lastVisibleLine = _vertScrollBar.Maximum;
+                            _vertScrollBar.Value = _vertScrollBar.Maximum;           
                         }
                         break;
 
@@ -1162,6 +1167,10 @@ namespace PacketComs
                     case 2: // up
                         if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
                         {
+                            if (_vertScrollBar.Value == _vertScrollBar.Maximum)
+                            {
+                                _vertScrollBar.Value = _vertScrollBar.Value - _rows;
+                            }
                             int i = 0;
                             while ( i <= _rows)
                             {
@@ -1172,7 +1181,18 @@ namespace PacketComs
                                     _vertScrollBar.Value += -1; 
                                 }
                             }
-                            
+                            if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
+                            {
+                            }
+                            else
+                            {
+                                _vertScrollBar.Value = 0;
+                            }
+
+                        }
+                        else
+                        {
+                            _vertScrollBar.Value = 0;
                         }
                         break;
 
