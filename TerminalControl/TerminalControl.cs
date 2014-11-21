@@ -1200,12 +1200,54 @@ namespace PacketComs
                         _lastVisibleLine += _rows;
                         _vertScrollBar.Value += _rows; 
                         break;
-                    case 7864320:
-                        break;
-
                     case -7864320:
+                        if (_vertScrollBar.Value < (_vertScrollBar.Maximum))
+                        {
+                            if (_vertScrollBar.Value + _rows > (_vertScrollBar.Maximum))
+                            {
+                                _vertScrollBar.Value = _vertScrollBar.Maximum;
+                            }
+                            else
+                            {
+                                _lastVisibleLine += _rows;
+                                _vertScrollBar.Value += _rows;
+                            }
+                            
+                        }
+                        else
+                        {
+                            _vertScrollBar.Value = _vertScrollBar.Maximum;           
+                        }
                         break;
-                  
+                        
+                    case 7864320:
+                        if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
+                        {
+                            if (_vertScrollBar.Value == _vertScrollBar.Maximum)
+                            {
+                                _vertScrollBar.Value = _vertScrollBar.Value - _rows;
+                            }
+                            int i = 0;
+                            while (i <= _rows)
+                            {
+                                i++;
+                                if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
+                                {
+                                    _lastVisibleLine += -1;
+                                    _vertScrollBar.Value += -1;
+                                }
+                            }
+                            if (!(_lastVisibleLine > -(_scrollbackBuffer.Count - _rows)))
+                            {
+                                _vertScrollBar.Value = 0;
+                            }
+
+                        }
+                        else
+                        {
+                            _vertScrollBar.Value = 0;
+                        }
+                        break;
 
                     default:
                         return;
