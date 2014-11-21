@@ -1137,7 +1137,7 @@ namespace PacketComs
                         if (_vertScrollBar.Value  > _rows)
                         {
                             _vertScrollBar.Value -= 1;
-                            _lastVisibleLine += -1;
+                            _lastVisibleLine -= 1;
                         }
                         else
                         {
@@ -1154,24 +1154,11 @@ namespace PacketComs
                         else
                         {
                             _vertScrollBar.Value = _vertScrollBar.Maximum;
+                            _lastVisibleLine = _vertScrollBar.Maximum;
                         }
                         break;
 
-                    case 10: // up
-                    {
-                        if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
-                        {
-                            _lastVisibleLine += -1;
-                            _vertScrollBar.Value = _lastVisibleLine;
-                        }
-                        break;
-                    }
-                    case 12: // down
-                        _lastVisibleLine += 1;
-                        _vertScrollBar.Value  += 1; 
-                        break;
-
-                    
+                                                   
                     case 2: // up
                         if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
                         {
