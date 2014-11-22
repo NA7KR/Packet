@@ -25,39 +25,6 @@ namespace PacketComs
                 }
                 path = path + @"\myMailList.txt";
 
-                /* if (!File.Exists(path))
-                {
-                    
-                    using (StreamWriter sw = File.CreateText(path))
-                    {
-                        sw.WriteLine(textVale);
-                        return true;
-                    }
-                }
-                else
-                {
-                    char[] buffer = new char[2048];
-                    string tempFile = path + ".tmp";
-                    File.Move(path, tempFile);
-                    using (StreamReader reader = new StreamReader(tempFile))
-                    {
-                        using (StreamWriter writer = new StreamWriter(path, false))
-                        {
-                            writer.WriteLine(textVale);
-                            int totalRead;
-                            while ((totalRead = reader.Read(buffer, 0, buffer.Length)) > 0)
-                            {
-                                writer.Write(buffer, 0, totalRead);
-                            }
-                            writer.Close();
-                            reader.Close();
-                        }
-
-                        File.Delete(tempFile);
-                    }
-                    return true;
-                } 
-                     */
                 File.AppendAllText(path, textVale);
                 return true;
             } //end try
@@ -81,22 +48,17 @@ namespace PacketComs
             RXFROM = "NA7KR";
             RXDATE = "1014/1014";
             RXSUBJECT = "TEST";
-        }
-
-
-
-
-        /*
-
-
-            #region Read
-
-            public bool Read(string textVale)
+            string path = Directory.GetCurrentDirectory() + @"\Data";
+            if (!Directory.Exists(path))
             {
+                // Try to create the directory.
+                Directory.CreateDirectory(path);
+            }
+            path = path + @"\myMailList.txt";
+       
+            
                 // The 5+5+2 is the assumed lenght of a line
                 const int recLength = 12;
-
-                string path = @"d:\temp\DATA1.txt";
 
                 if (File.Exists(path))
                 {
@@ -112,12 +74,12 @@ namespace PacketComs
 
                         // Read the 5 bytes and build the key and value string, 
                         // note that reading (or writing) advances the Position 
-                        key = new string(br.ReadChars(5));
-                        value = new string(br.ReadChars(5));
+                        key = new string(br.ReadChars(7));
+                        value = new string(br.ReadChars(4));
                     }
                 }
             }
-            */
+            
 
 
         //end public call
