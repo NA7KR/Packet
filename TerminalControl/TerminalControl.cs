@@ -1657,10 +1657,10 @@ namespace PacketComs
 
         #region AssignColors
 
-        private void AssignColors(CharAttribStruct curAttribs, ref Color curFgColor, ref Color CurBGColor)
+        private void AssignColors(CharAttribStruct curAttribs, ref Color curFgColor, ref Color curBGColor)
         {
             curFgColor = ForeColor;
-            CurBGColor = BackColor;
+            curBGColor = BackColor;
 
             if (curAttribs.IsBlinking)
             {
@@ -1681,14 +1681,14 @@ namespace PacketComs
             // alternate color takes precedence over the bold color
             if (curAttribs.UseAltBGColor)
             {
-                CurBGColor = curAttribs.AltBgColor;
+                curBGColor = curAttribs.AltBgColor;
             }
 
             if (curAttribs.IsInverse)
             {
-                Color tmpColor = CurBGColor;
+                Color tmpColor = curBGColor;
 
-                CurBGColor = curFgColor;
+                curBGColor = curFgColor;
                 curFgColor = tmpColor;
             }
 
@@ -1697,9 +1697,9 @@ namespace PacketComs
             if ((_modes.Flags & UcMode.LightBackground) > 0 &&
                 curAttribs.UseAltColor == false && curAttribs.UseAltBGColor == false)
             {
-                Color tmpColor = CurBGColor;
+                Color tmpColor = curBGColor;
 
-                CurBGColor = curFgColor;
+                curBGColor = curFgColor;
                 curFgColor = tmpColor;
             }
         }
@@ -2026,8 +2026,6 @@ namespace PacketComs
 
         private void Redraw(Graphics curGraphics)
         {
-            Point CurPoint;
-
             Char CurChar;
 
 
@@ -2043,7 +2041,7 @@ namespace PacketComs
                         continue;
                     }
 
-                    CurPoint = new Point(
+                    Point CurPoint = new Point(
                         x*_charSize.Width,
                         y*_charSize.Height);
 

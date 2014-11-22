@@ -546,8 +546,17 @@ namespace Packet
             }
             catch
             {
-                MessageBox.Show("Com Port or Telnet Error", "Important Note", MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                DialogResult dialogResult = MessageBox.Show("Configure BBS in Setup");
+                bbs_button.Enabled = true;
+                cluster_button.Enabled = true;
+                node_button.Enabled = true;
+                disconnect_button.Enabled = false;
+                if (_myRegistrySsh.Read("Active") == "No")
+                {
+                    ssh_button.Enabled = false;
+                }
+                else
+                    ssh_button.Enabled = true;
             }
         }
 
@@ -557,47 +566,64 @@ namespace Packet
 
         private void cluster_button_Click(object sender, EventArgs e)
         {
-            bbs_button.Enabled = false;
-            cluster_button.Enabled = false;
-            node_button.Enabled = false;
-            ssh_button.Enabled = false;
-            if (_myRegistry.Read("Cluster-Mode") == "Telnet")
+            try
             {
-                if (_myRegistryCluster.Read("Echo") == "Yes")
+                bbs_button.Enabled = false;
+                cluster_button.Enabled = false;
+                node_button.Enabled = false;
+                ssh_button.Enabled = false;
+                if (_myRegistry.Read("Cluster-Mode") == "Telnet")
                 {
-                    terminalEmulator1.LocalEcho = true;
+                    if (_myRegistryCluster.Read("Echo") == "Yes")
+                    {
+                        terminalEmulator1.LocalEcho = true;
+                    }
+                    else
+                    {
+                        terminalEmulator1.LocalEcho = false;
+                    }
+                    terminalEmulator1.Beep = _bBeep;
+                    terminalEmulator1.Port = Convert.ToInt32(_myRegistryCluster.Read("Port"));
+                    terminalEmulator1.Hostname = _myRegistryCluster.Read("IP");
+                    terminalEmulator1.Username = _myRegistryCluster.Read("CallSign");
+                    terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryCluster.Read("Password"));
+                    terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
+                    terminalEmulator1.BBSPrompt = _myRegistryCluster.BRead("Prompt");
+                    terminalEmulator1.UernamePrompt = _myRegistryCluster.BRead("UserNamePrompt");
+                    terminalEmulator1.PasswordPrompt = _myRegistryCluster.BRead("PasswordPrompt");
+                    terminalEmulator1.Connect();
+                    disconnect_button.Enabled = true;
                 }
                 else
                 {
-                    terminalEmulator1.LocalEcho = false;
+                    terminalEmulator1.BaudRateType =
+                        ParseEnum<TerminalEmulator.BaudRateTypes>("Baud_" + _myRegistryCom.Read("Baud"));
+                    terminalEmulator1.DataBitsType =
+                        ParseEnum<TerminalEmulator.DataBitsTypes>("Data_Bits_" +
+                                                                  _myRegistryCom.Read("Data Bits"));
+                    terminalEmulator1.StopBitsType =
+                        ParseEnum<TerminalEmulator.StopBitsTypes>(_myRegistryCom.Read("Stop Bits"));
+                    terminalEmulator1.ParityType =
+                        ParseEnum<TerminalEmulator.ParityTypes>(_myRegistryCom.Read("Parity"));
+                    terminalEmulator1.FlowType =
+                        ParseEnum<TerminalEmulator.FlowTypes>(_myRegistryCom.Read("Flow"));
+                    terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.COM;
+                    terminalEmulator1.SerialPort = _myRegistryCom.Read("Port");
                 }
-                terminalEmulator1.Beep = _bBeep;
-                terminalEmulator1.Port = Convert.ToInt32(_myRegistryCluster.Read("Port"));
-                terminalEmulator1.Hostname = _myRegistryCluster.Read("IP");
-                terminalEmulator1.Username = _myRegistryCluster.Read("CallSign");
-                terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryCluster.Read("Password"));
-                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-                terminalEmulator1.BBSPrompt = _myRegistryCluster.BRead("Prompt");
-                terminalEmulator1.UernamePrompt = _myRegistryCluster.BRead("UserNamePrompt");
-                terminalEmulator1.PasswordPrompt = _myRegistryCluster.BRead("PasswordPrompt");
-                terminalEmulator1.Connect();
-                disconnect_button.Enabled = true;
             }
-            else
+            catch (Exception)
             {
-                terminalEmulator1.BaudRateType =
-                    ParseEnum<TerminalEmulator.BaudRateTypes>("Baud_" + _myRegistryCom.Read("Baud"));
-                terminalEmulator1.DataBitsType =
-                    ParseEnum<TerminalEmulator.DataBitsTypes>("Data_Bits_" +
-                                                              _myRegistryCom.Read("Data Bits"));
-                terminalEmulator1.StopBitsType =
-                    ParseEnum<TerminalEmulator.StopBitsTypes>(_myRegistryCom.Read("Stop Bits"));
-                terminalEmulator1.ParityType =
-                    ParseEnum<TerminalEmulator.ParityTypes>(_myRegistryCom.Read("Parity"));
-                terminalEmulator1.FlowType =
-                    ParseEnum<TerminalEmulator.FlowTypes>(_myRegistryCom.Read("Flow"));
-                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.COM;
-                terminalEmulator1.SerialPort = _myRegistryCom.Read("Port");
+                DialogResult dialogResult = MessageBox.Show("Configure Cluster in Setup");
+                bbs_button.Enabled = true;
+                cluster_button.Enabled = true;
+                node_button.Enabled = true;
+                disconnect_button.Enabled = false;
+                if (_myRegistrySsh.Read("Active") == "No")
+                {
+                    ssh_button.Enabled = false;
+                }
+                else
+                    ssh_button.Enabled = true;
             }
         }
 
@@ -607,47 +633,65 @@ namespace Packet
 
         private void node_button_Click(object sender, EventArgs e)
         {
-            bbs_button.Enabled = false;
-            cluster_button.Enabled = false;
-            node_button.Enabled = false;
-            ssh_button.Enabled = false;
-            if (_myRegistry.Read("Node-Mode") == "Telnet")
+            try
             {
-                if (_myRegistryNode.Read("Echo") == "Yes")
+                bbs_button.Enabled = false;
+                cluster_button.Enabled = false;
+                node_button.Enabled = false;
+                ssh_button.Enabled = false;
+                if (_myRegistry.Read("Node-Mode") == "Telnet")
                 {
-                    terminalEmulator1.LocalEcho = true;
+                    if (_myRegistryNode.Read("Echo") == "Yes")
+                    {
+                        terminalEmulator1.LocalEcho = true;
+                    }
+                    else
+                    {
+                        terminalEmulator1.LocalEcho = false;
+                    }
+                    terminalEmulator1.Port = Convert.ToInt32(_myRegistryNode.Read("Port"));
+                    terminalEmulator1.Hostname = _myRegistryNode.Read("IP");
+                    terminalEmulator1.Username = _myRegistryNode.Read("CallSign");
+                    terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryNode.Read("Password"));
+                    terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
+                    terminalEmulator1.BBSPrompt = _myRegistryNode.BRead("Prompt");
+                    terminalEmulator1.UernamePrompt = _myRegistryNode.BRead("UserNamePrompt");
+                    terminalEmulator1.PasswordPrompt = _myRegistryNode.BRead("PasswordPrompt");
+                    terminalEmulator1.Connect();
+                    disconnect_button.Enabled = true;
                 }
                 else
                 {
-                    terminalEmulator1.LocalEcho = false;
+                    terminalEmulator1.BaudRateType =
+                        ParseEnum<TerminalEmulator.BaudRateTypes>("Baud_" + _myRegistryCom.Read("Baud"));
+                    terminalEmulator1.DataBitsType =
+                        ParseEnum<TerminalEmulator.DataBitsTypes>("Data_Bits_" +
+                                                                  _myRegistryCom.Read("Data Bits"));
+                    terminalEmulator1.StopBitsType =
+                        ParseEnum<TerminalEmulator.StopBitsTypes>(_myRegistryCom.Read("Stop Bits"));
+                    terminalEmulator1.ParityType =
+                        ParseEnum<TerminalEmulator.ParityTypes>(_myRegistryCom.Read("Parity"));
+                    terminalEmulator1.FlowType =
+                        ParseEnum<TerminalEmulator.FlowTypes>(_myRegistryCom.Read("Flow"));
+                    terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.COM;
+                    terminalEmulator1.SerialPort = _myRegistryCom.Read("Port");
                 }
-                terminalEmulator1.Port = Convert.ToInt32(_myRegistryNode.Read("Port"));
-                terminalEmulator1.Hostname = _myRegistryNode.Read("IP");
-                terminalEmulator1.Username = _myRegistryNode.Read("CallSign");
-                terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryNode.Read("Password"));
-                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-                terminalEmulator1.BBSPrompt = _myRegistryNode.BRead("Prompt");
-                terminalEmulator1.UernamePrompt = _myRegistryNode.BRead("UserNamePrompt");
-                terminalEmulator1.PasswordPrompt = _myRegistryNode.BRead("PasswordPrompt");
-                terminalEmulator1.Connect();
-                disconnect_button.Enabled = true;
             }
-            else
+            catch (Exception)
             {
-                terminalEmulator1.BaudRateType =
-                    ParseEnum<TerminalEmulator.BaudRateTypes>("Baud_" + _myRegistryCom.Read("Baud"));
-                terminalEmulator1.DataBitsType =
-                    ParseEnum<TerminalEmulator.DataBitsTypes>("Data_Bits_" +
-                                                              _myRegistryCom.Read("Data Bits"));
-                terminalEmulator1.StopBitsType =
-                    ParseEnum<TerminalEmulator.StopBitsTypes>(_myRegistryCom.Read("Stop Bits"));
-                terminalEmulator1.ParityType =
-                    ParseEnum<TerminalEmulator.ParityTypes>(_myRegistryCom.Read("Parity"));
-                terminalEmulator1.FlowType =
-                    ParseEnum<TerminalEmulator.FlowTypes>(_myRegistryCom.Read("Flow"));
-                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.COM;
-                terminalEmulator1.SerialPort = _myRegistryCom.Read("Port");
+                DialogResult dialogResult = MessageBox.Show("Configure Node in Setup");
+                bbs_button.Enabled = true;
+                cluster_button.Enabled = true;
+                node_button.Enabled = true;
+                disconnect_button.Enabled = false;
+                if (_myRegistrySsh.Read("Active") == "No")
+                {
+                    ssh_button.Enabled = false;
+                }
+                else
+                    ssh_button.Enabled = true;
             }
+
         }
 
         #endregion
@@ -685,6 +729,12 @@ namespace Packet
             terminalEmulator1.FileActive = false;
             forward_button.Enabled = false;
             forward_button.Text = "Forward";
+            if (_myRegistrySsh.Read("Active") == "No")
+            {
+                ssh_button.Enabled = false;
+            }
+            else
+                ssh_button.Enabled = true;
         }
 
         #endregion
@@ -693,17 +743,34 @@ namespace Packet
 
         private void ssh_button_Click(object sender, EventArgs e)
         {
-            ssh_button.Enabled = false;
-            bbs_button.Enabled = false;
-            cluster_button.Enabled = false;
-            node_button.Enabled = false;
-            disconnect_button.Enabled = true;
-            terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.SSH2;
-            terminalEmulator1.Port = Convert.ToInt32(_myRegistrySsh.Read("Port"));
-            terminalEmulator1.Hostname = _myRegistrySsh.Read("IP");
-            terminalEmulator1.Username = _myRegistrySsh.Read("UserName");
-            terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistrySsh.Read("Password"));
-            terminalEmulator1.Connect();
+            try
+            {
+                ssh_button.Enabled = false;
+                bbs_button.Enabled = false;
+                cluster_button.Enabled = false;
+                node_button.Enabled = false;
+                disconnect_button.Enabled = true;
+                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.SSH2;
+                terminalEmulator1.Port = Convert.ToInt32(_myRegistrySsh.Read("Port"));
+                terminalEmulator1.Hostname = _myRegistrySsh.Read("IP");
+                terminalEmulator1.Username = _myRegistrySsh.Read("UserName");
+                terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistrySsh.Read("Password"));
+                terminalEmulator1.Connect();
+            }
+            catch (Exception)
+            {
+                DialogResult dialogResult = MessageBox.Show("Configure SSH in Setup");
+                bbs_button.Enabled = true; 
+                cluster_button.Enabled = true;
+                node_button.Enabled = true;
+                disconnect_button.Enabled = false;
+                if (_myRegistrySsh.Read("Active") == "No")
+                {
+                    ssh_button.Enabled = false;
+                }
+                else
+                    ssh_button.Enabled = true;
+            }
         }
 
         #endregion
