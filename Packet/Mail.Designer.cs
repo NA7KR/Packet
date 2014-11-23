@@ -65,9 +65,10 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.Location = new System.Drawing.Point(64, 481);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(339, 96);
+            this.richTextBox1.Size = new System.Drawing.Size(658, 96);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             // 

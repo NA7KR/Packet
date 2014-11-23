@@ -86,7 +86,6 @@
   <ItemGroup>
     <Compile Include="ModifyFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RXD.cs" />
     <Compile Include="TerminalControl.cs">
       <SubType>Component</SubType>
     </Compile>
