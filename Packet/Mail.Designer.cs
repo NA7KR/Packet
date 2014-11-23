@@ -28,21 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button_OK = new System.Windows.Forms.Button();
             this.button_Cancel = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.DataGridView1 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(37, 48);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(514, 231);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // button_OK
             // 
@@ -62,37 +52,35 @@
             this.button_Cancel.TabIndex = 2;
             this.button_Cancel.Text = "Cancel";
             this.button_Cancel.UseVisualStyleBackColor = true;
+            this.button_Cancel.Click += new System.EventHandler(this.button_Cancel_Click);
             // 
-            // richTextBox1
+            // DataGridView1
             // 
-            this.richTextBox1.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(64, 481);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(658, 96);
-            this.richTextBox1.TabIndex = 3;
-            this.richTextBox1.Text = "";
+            this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGridView1.Location = new System.Drawing.Point(52, 37);
+            this.DataGridView1.Name = "DataGridView1";
+            this.DataGridView1.Size = new System.Drawing.Size(1039, 258);
+            this.DataGridView1.TabIndex = 3;
             // 
             // Mail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(836, 657);
-            this.Controls.Add(this.richTextBox1);
+            this.ClientSize = new System.Drawing.Size(1234, 657);
+            this.Controls.Add(this.DataGridView1);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_OK);
-            this.Controls.Add(this.dataGridView1);
             this.Name = "Mail";
             this.Text = "Mail";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button_OK;
         private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.DataGridView DataGridView1;
     }
 }
