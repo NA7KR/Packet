@@ -34,7 +34,11 @@ namespace Packet
                 DataGridView1.Columns.Add("RXFROM", "FROM");
                 DataGridView1.Columns.Add("RXDATE", "DATE");
                 DataGridView1.Columns.Add("RXSUBJECT", "SUBJECT");
+                
                
+               
+
+
 
                 string myString = _myFiles.RX();
                 string[] lines = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
@@ -58,7 +62,7 @@ namespace Packet
                     RXDATE[i] = Mid(line, 39, 9);
                     RXSUBJECT[i] = Mid(line, 48, (line.Length - 48));
                     // Invoke((Action)delegate { richTextBox1.Text = myString; });
-
+                    DataGridView1.Rows.Add(RXMSG[i], RXTSLD[i], RXSIZE[i], RXTO[i], RXROUTE[i], RXFROM[i], RXDATE[i], RXSUBJECT[i]);
                 }
             }
             catch (IOException ex)
