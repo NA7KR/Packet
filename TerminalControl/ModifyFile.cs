@@ -24,7 +24,31 @@ namespace PacketComs
                     Directory.CreateDirectory(path);
                 }
                 path = path + @"\myMailList.txt";
+                File.AppendAllText(path, textVale);
+                return true;
+            } //end try
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+        } //end write
 
+        #endregion
+
+        #region WriteST
+
+        public bool WriteST(string textVale,string FileName)
+        {
+            try
+            {
+                string path = Directory.GetCurrentDirectory() + @"\Data";
+                if (!Directory.Exists(path))
+                {
+                    // Try to create the directory.
+                    Directory.CreateDirectory(path);
+                }
+                path = path + @"\" + FileName + ".txt";
                 File.AppendAllText(path, textVale);
                 return true;
             } //end try

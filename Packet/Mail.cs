@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml;
 using PacketComs;
 
 namespace Packet
@@ -35,9 +36,6 @@ namespace Packet
                 DataGridView1.Columns.Add("RXDATE", "DATE");
                 DataGridView1.Columns.Add("RXSUBJECT", "SUBJECT");
                 
-               
-               
-
 
 
                 string myString = _myFiles.RX();
@@ -50,6 +48,12 @@ namespace Packet
                 string[] RXFROM = new string[lines.Length];
                 string[] RXDATE = new string[lines.Length];
                 string[] RXSUBJECT = new string[lines.Length];
+
+                string[] STRXTO = new string[lines.Length];
+                string[] STRXROUTE = new string[lines.Length];
+                string[] STRXFROM = new string[lines.Length]; 
+                string[] STRXSUBJECT = new string[lines.Length];
+
                 for (i = 0; i < lines.Length; i++)
                 {
                     string line = lines[i];
@@ -61,8 +65,15 @@ namespace Packet
                     RXFROM[i] = Mid(line, 32, 7);
                     RXDATE[i] = Mid(line, 39, 9);
                     RXSUBJECT[i] = Mid(line, 48, (line.Length - 48));
+        
+           
+
                     // Invoke((Action)delegate { richTextBox1.Text = myString; });
                     DataGridView1.Rows.Add(RXMSG[i], RXTSLD[i], RXSIZE[i], RXTO[i], RXROUTE[i], RXFROM[i], RXDATE[i], RXSUBJECT[i]);
+                    _myFiles.WriteST(RXTO[i]+ Environment.NewLine, "SortTo");
+                    _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
+                    _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
+                    _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
                 }
             }
             catch (IOException ex)
