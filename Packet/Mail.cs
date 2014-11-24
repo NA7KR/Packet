@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -17,7 +19,7 @@ namespace Packet
         #region OK
         private void button_OK_Click(object sender, EventArgs e)
         {
-            int i = 0;
+            int i;
             
             try
             {
@@ -49,37 +51,45 @@ namespace Packet
                     
                 string myString = _myFiles.RX();
                 string[] lines = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                string[] RXMSG = new string[lines.Length];
-                string[] RXTSLD = new string[lines.Length];
-                string[] RXSIZE = new string[lines.Length];
-                string[] RXTO = new string[lines.Length];
-                string[] RXROUTE = new string[lines.Length];
-                string[] RXFROM = new string[lines.Length];
-                string[] RXDATE = new string[lines.Length];
-                string[] RXSUBJECT = new string[lines.Length];
+                string[] rxmsg = new string[lines.Length];
+                string[] rxtsld = new string[lines.Length];
+                string[] rxsize = new string[lines.Length];
+                string[] rxto = new string[lines.Length];
+                string[] rxroute = new string[lines.Length];
+                string[] rxfrom = new string[lines.Length];
+                string[] rxdate = new string[lines.Length];
+                string[] rxsubject = new string[lines.Length];
 
                 for (i = 0; i < lines.Length; i++)
                 {
                     string line = lines[i];
-                    RXMSG[i] = Mid(line, 0, 4);
-                    RXTSLD[i] = Mid(line, 7, 4);
-                    RXSIZE[i] = Mid(line, 13, 5);
-                    RXTO[i] = Mid(line, 18, 6);
-                    RXROUTE[i] = Mid(line, 24, 8);
-                    RXFROM[i] = Mid(line, 32, 7);
-                    RXDATE[i] = Mid(line, 39, 9);
-                    RXSUBJECT[i] = Mid(line, 48, (line.Length - 48));
+                    rxmsg[i] = Mid(line, 0, 4);
+                    rxtsld[i] = Mid(line, 7, 4);
+                    rxsize[i] = Mid(line, 13, 5);
+                    rxto[i] = Mid(line, 18, 6);
+                    rxroute[i] = Mid(line, 24, 8);
+                    rxfrom[i] = Mid(line, 32, 7);
+                    rxdate[i] = Mid(line, 39, 9);
+                    rxsubject[i] = Mid(line, 48, (line.Length - 48));
                     
                     // Invoke((Action)delegate { richTextBox1.Text = myString; });
-                    DataGridView1.Rows.Add(RXMSG[i], RXTSLD[i], RXSIZE[i], RXTO[i], RXROUTE[i], RXFROM[i], RXDATE[i], RXSUBJECT[i]);
+                    DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i], rxsubject[i]);
+                   
                   
                 }
-                backgroundWorker1.RunWorkerAsync();//this invokes the DoWork event
+
+
+
+                _myFiles.WriteST(RemovePepeatWords( "SortRoute",rxmsg), "SortTo");
+                // _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
+                // _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
+                // _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
+                
             }
             catch (IOException ex)
 
             {
-                DialogResult dialogResult = MessageBox.Show("Error in file read" + " " + ex.Source);
+                MessageBox.Show("Error in file read" + " " + ex.Source);
 
             }
         }
@@ -104,15 +114,33 @@ namespace Packet
         }
         #endregion
 
-        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        public static string RemovePepeatWords( string File_Name, Array Array_Name)
         {
-            // _myFiles.WriteST(RXTO[i]+ Environment.NewLine, "SortTo");
-            // _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
-            // _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
-            // _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
-        }
+            //read file
+            string str1 = _myFiles.RXST("j");
 
-     
+
+            //
+            foreach (string str in Array_Name)
+            {
+                str1 = str + Environment.NewLine + str1;
+            }
+
+            Dictionary<string, bool> listofUniqueWords = new Dictionary<string, bool>();
+            StringBuilder destBuilder = new StringBuilder();
+            string[] spilltedwords = str1.Split(new[] { ' ', ',', ';', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in spilltedwords)
+            {
+                string lower = item.ToLower();
+                if (!listofUniqueWords.ContainsKey(lower))
+                {
+                    destBuilder.Append(item).Append(' ');
+                    listofUniqueWords.Add(lower, true);
+                }
+            }
+            return destBuilder.ToString().Trim();
+        }
+    
 
     }
 }
