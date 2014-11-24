@@ -119,18 +119,16 @@ namespace Packet
         {
             //read file
             string str1 = _myFiles.RXST(File_Name);
-            if (str1 == null)
-            { }
-            else
-            {
-                str1 = str1.Replace("\r", ",").Replace("\r", ",");
-            }
+           
             //
             foreach (string str in Array_Name)
             {
                 
                 str1 = str + "," + str1;
             }
+            str1 = str1.Replace("\r", ",");
+            str1 = str1.Replace("\r", ",");
+            str1 = str1.Replace(" ", "");
 
             Dictionary<string, bool> listofUniqueWords = new Dictionary<string, bool>();
             StringBuilder destBuilder = new StringBuilder();
@@ -139,7 +137,7 @@ namespace Packet
             {
                 if (!listofUniqueWords.ContainsKey(item))
                 {
-                    destBuilder.Append(item).Append("\n\r");
+                    destBuilder.Append(item).Append(Environment.NewLine);
                     listofUniqueWords.Add(item, true);
                 }
             }
