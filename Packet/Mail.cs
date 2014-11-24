@@ -10,7 +10,7 @@ namespace Packet
 
     public partial class Mail : Form
     {
-        private readonly ModifyFile _myFiles = new ModifyFile();
+        private static readonly ModifyFile _myFiles = new ModifyFile();
         public Mail()
         {
             InitializeComponent();
@@ -80,7 +80,7 @@ namespace Packet
 
 
 
-                _myFiles.WriteST(RemovePepeatWords( "SortRoute",rxmsg), "SortTo");
+                _myFiles.WriteST(RemovePepeatWords("SortTo", rxto), "SortTo");
                 // _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
                 // _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
                 // _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
@@ -114,33 +114,39 @@ namespace Packet
         }
         #endregion
 
+        #region RemovePepeatWords
         public static string RemovePepeatWords( string File_Name, Array Array_Name)
         {
             //read file
-            string str1 = _myFiles.RXST("j");
-
-
+            string str1 = _myFiles.RXST(File_Name);
+            if (str1 == null)
+            { }
+            else
+            {
+                str1 = str1.Replace("\r", ",").Replace("\r", ",");
+            }
             //
             foreach (string str in Array_Name)
             {
-                str1 = str + Environment.NewLine + str1;
+                
+                str1 = str + "," + str1;
             }
 
             Dictionary<string, bool> listofUniqueWords = new Dictionary<string, bool>();
             StringBuilder destBuilder = new StringBuilder();
-            string[] spilltedwords = str1.Split(new[] { ' ', ',', ';', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] spilltedwords = str1.Split(new[] { ' ', ',', ';', '.'}, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in spilltedwords)
             {
-                string lower = item.ToLower();
-                if (!listofUniqueWords.ContainsKey(lower))
+                if (!listofUniqueWords.ContainsKey(item))
                 {
-                    destBuilder.Append(item).Append(' ');
-                    listofUniqueWords.Add(lower, true);
+                    destBuilder.Append(item).Append("\n\r");
+                    listofUniqueWords.Add(item, true);
                 }
             }
-            return destBuilder.ToString().Trim();
+ 
+           return destBuilder.ToString().Trim();
+            
         }
-    
-
+        #endregion
     }
 }

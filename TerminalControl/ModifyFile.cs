@@ -80,6 +80,7 @@ namespace PacketComs
                 myString = myFile.ReadToEnd();
                 
             }
+           
             return myString;
         }
         #endregion
