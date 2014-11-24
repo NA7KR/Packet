@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml;
 using PacketComs;
 
 namespace Packet
@@ -13,11 +12,6 @@ namespace Packet
         public Mail()
         {
             InitializeComponent();
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         #region OK
@@ -35,9 +29,23 @@ namespace Packet
                 DataGridView1.Columns.Add("RXFROM", "FROM");
                 DataGridView1.Columns.Add("RXDATE", "DATE");
                 DataGridView1.Columns.Add("RXSUBJECT", "SUBJECT");
+
                 
+                DataGridView1.Columns[0].Width = 80;
+                DataGridView1.Columns[1].Width = 60;
+                DataGridView1.Columns[2].Width = 70;
+                DataGridView1.Columns[3].Width = 80;
+                DataGridView1.Columns[4].Width = 100;
+                DataGridView1.Columns[5].Width = 80;
+                DataGridView1.Columns[6].Width = 120;
+                DataGridView1.Columns[7].Width = 400;
+                DataGridView1.Width = DataGridView1.Columns[0].Width + DataGridView1.Columns[1].Width +
+                                      DataGridView1.Columns[2].Width + DataGridView1.Columns[3].Width +
+                                      DataGridView1.Columns[4].Width + DataGridView1.Columns[5].Width +
+                                      DataGridView1.Columns[6].Width + DataGridView1.Columns[7].Width + 60;
 
-
+                DataGridView1.Visible = true;
+                    
                 string myString = _myFiles.RX();
                 string[] lines = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                 string[] RXMSG = new string[lines.Length];
@@ -48,11 +56,6 @@ namespace Packet
                 string[] RXFROM = new string[lines.Length];
                 string[] RXDATE = new string[lines.Length];
                 string[] RXSUBJECT = new string[lines.Length];
-
-                string[] STRXTO = new string[lines.Length];
-                string[] STRXROUTE = new string[lines.Length];
-                string[] STRXFROM = new string[lines.Length]; 
-                string[] STRXSUBJECT = new string[lines.Length];
 
                 for (i = 0; i < lines.Length; i++)
                 {
@@ -65,15 +68,13 @@ namespace Packet
                     RXFROM[i] = Mid(line, 32, 7);
                     RXDATE[i] = Mid(line, 39, 9);
                     RXSUBJECT[i] = Mid(line, 48, (line.Length - 48));
-        
-           
-
+                    
                     // Invoke((Action)delegate { richTextBox1.Text = myString; });
                     DataGridView1.Rows.Add(RXMSG[i], RXTSLD[i], RXSIZE[i], RXTO[i], RXROUTE[i], RXFROM[i], RXDATE[i], RXSUBJECT[i]);
-                    _myFiles.WriteST(RXTO[i]+ Environment.NewLine, "SortTo");
-                    _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
-                    _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
-                    _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
+                   // _myFiles.WriteST(RXTO[i]+ Environment.NewLine, "SortTo");
+                   // _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
+                   // _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
+                   // _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
                 }
             }
             catch (IOException ex)
@@ -103,6 +104,17 @@ namespace Packet
             Close();
         }
         #endregion
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+
+        }
+
+        private void Mail_Load(object sender, EventArgs e)
+        {
+           
+
+        }
 
     }
 }
