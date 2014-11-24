@@ -18,6 +18,7 @@ namespace Packet
         private void button_OK_Click(object sender, EventArgs e)
         {
             int i = 0;
+            
             try
             {
                 
@@ -71,11 +72,9 @@ namespace Packet
                     
                     // Invoke((Action)delegate { richTextBox1.Text = myString; });
                     DataGridView1.Rows.Add(RXMSG[i], RXTSLD[i], RXSIZE[i], RXTO[i], RXROUTE[i], RXFROM[i], RXDATE[i], RXSUBJECT[i]);
-                   // _myFiles.WriteST(RXTO[i]+ Environment.NewLine, "SortTo");
-                   // _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
-                   // _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
-                   // _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
+                  
                 }
+                backgroundWorker1.RunWorkerAsync();//this invokes the DoWork event
             }
             catch (IOException ex)
 
@@ -84,7 +83,7 @@ namespace Packet
 
             }
         }
-#endregion
+        #endregion
 
         #region Mid
         public static string Mid(string param, int startIndex, int length)
@@ -107,14 +106,13 @@ namespace Packet
 
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-
+            // _myFiles.WriteST(RXTO[i]+ Environment.NewLine, "SortTo");
+            // _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
+            // _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
+            // _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
         }
 
-        private void Mail_Load(object sender, EventArgs e)
-        {
-           
-
-        }
+     
 
     }
 }
