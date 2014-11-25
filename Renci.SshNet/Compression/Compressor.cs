@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Renci.SshNet.Security;
+﻿using Renci.SshNet.Security;
 using System.IO;
 using System;
 

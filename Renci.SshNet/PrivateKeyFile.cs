@@ -5,8 +5,6 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Renci.SshNet.Security;
-using System.Security.Cryptography;
-using System.Security;
 using Renci.SshNet.Common;
 using System.Globalization;
 using Renci.SshNet.Security.Cryptography;

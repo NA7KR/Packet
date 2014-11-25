@@ -1,9 +1,11 @@
-﻿using System;
+﻿#region Using Directive
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using PacketComs;
+#endregion
 
 namespace Packet
 {
@@ -11,10 +13,13 @@ namespace Packet
     public partial class Mail : Form
     {
         private static readonly ModifyFile _myFiles = new ModifyFile();
+
+        #region Mail InitializeComponent
         public Mail()
         {
             InitializeComponent();
         }
+        #endregion
 
         #region OK
         private void button_OK_Click(object sender, EventArgs e)

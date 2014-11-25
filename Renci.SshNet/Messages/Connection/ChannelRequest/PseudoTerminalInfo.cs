@@ -1,5 +1,4 @@
-﻿using System;
-using Renci.SshNet.Common;
+﻿using Renci.SshNet.Common;
 using System.Collections.Generic;
 namespace Renci.SshNet.Messages.Connection
 {

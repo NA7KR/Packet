@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.IO;
-using Renci.SshNet.Sftp;
-using System.Text;
 using Renci.SshNet.Common;
-using System.Globalization;
-using System.Threading;
 using Renci.SshNet.NetConf;
 using System.Xml;
 using System.Diagnostics.CodeAnalysis;

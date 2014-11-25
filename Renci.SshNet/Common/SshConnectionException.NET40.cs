@@ -1,5 +1,4 @@
 ﻿using System;
-using Renci.SshNet.Messages.Transport;
 using System.Runtime.Serialization;
 
 namespace Renci.SshNet.Common

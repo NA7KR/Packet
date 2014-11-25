@@ -3,7 +3,6 @@ using System.Threading;
 using Renci.SshNet.Channels;
 using Renci.SshNet.Messages.Connection;
 using Renci.SshNet.Common;
-using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 

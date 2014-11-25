@@ -1,5 +1,4 @@
-﻿using System.Text;
-namespace Renci.SshNet.Messages.Connection
+﻿namespace Renci.SshNet.Messages.Connection
 {
     /// <summary>
     /// Represents "exit-signal" type channel request information

@@ -1,16 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using Renci.SshNet.Channels;
 using Renci.SshNet.Common;
-using System.Diagnostics;
-using System.Collections.Generic;
 using System.Globalization;
-using Renci.SshNet.Sftp.Responses;
-using Renci.SshNet.Sftp.Requests;
-using Renci.SshNet.Messages.Connection;
 
 namespace Renci.SshNet.Sftp
 {

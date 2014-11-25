@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading;
 using Renci.SshNet.Channels;
 using Renci.SshNet.Common;
-using Renci.SshNet.Messages.Connection;
 using System.Collections.Generic;
 
 namespace Renci.SshNet

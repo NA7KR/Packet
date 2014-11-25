@@ -3,11 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Renci.SshNet.Sftp;
-using System.Text;
-using Renci.SshNet.Common;
 using System.Globalization;
-using System.Threading;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Renci.SshNet
 {

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Security.Cryptography;
 using Renci.SshNet.Messages.Transport;
-using System.Diagnostics;
 using Renci.SshNet.Messages;
 using Renci.SshNet.Common;
-using Renci.SshNet.Security.Cryptography;
 using System.Globalization;
 
 namespace Renci.SshNet.Security
