@@ -153,5 +153,18 @@ namespace Packet
             DataGridView1.Invalidate();
 
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var box = new Sort();
+            box.ShowDialog();
+        }
+
+
     }
 }

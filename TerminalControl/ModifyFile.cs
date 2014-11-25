@@ -50,9 +50,9 @@ namespace PacketComs
                 }
                 string file_path = path + @"\" + FileName + ".txt";
 
-                File.AppendAllText(file_path, textVale);
-                string path_backup = path + @"\" + FileName + ".bak";
-                File.Delete(path_backup);
+                File.WriteAllText(file_path, textVale);
+                //string path_backup = path + @"\" + FileName + ".bak";
+                //File.Delete(path_backup);
                 return true;
             } //end try
             catch (Exception e)
@@ -80,10 +80,10 @@ namespace PacketComs
                 StreamReader myFile = new System.IO.StreamReader(file_path);
                 myString = myFile.ReadToEnd();
                 myFile.Close();
-                string path_backup = path + @"\" + FileName + ".bak";
+                //string path_backup = path + @"\" + FileName + ".bak";
 
-                File.Copy(file_path, path_backup);
-                File.Delete(file_path);
+                //File.Copy(file_path, path_backup);
+                //File.Delete(file_path);
             }
             
             return myString;
