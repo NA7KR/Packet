@@ -48,10 +48,11 @@ namespace PacketComs
                     // Try to create the directory.
                     Directory.CreateDirectory(path);
                 }
-                path = path + @"\" + FileName + ".txt";
+                string file_path = path + @"\" + FileName + ".txt";
 
-                File.AppendAllText(path, textVale);
-
+                File.AppendAllText(file_path, textVale);
+                string path_backup = path + @"\" + FileName + ".bak";
+                File.Delete(path_backup);
                 return true;
             } //end try
             catch (Exception e)
@@ -73,15 +74,20 @@ namespace PacketComs
                 // Try to create the directory.
                 Directory.CreateDirectory(path);
             }
-            path = path + @"\" + FileName + ".txt";
-            if (File.Exists(path))
+            string file_path = path + @"\" + FileName + ".txt";
+            if (File.Exists(file_path))
             {
-                StreamReader myFile = new System.IO.StreamReader(path);
+                StreamReader myFile = new System.IO.StreamReader(file_path);
                 myString = myFile.ReadToEnd();
-                
+                myFile.Close();
+                string path_backup = path + @"\" + FileName + ".bak";
+
+                File.Copy(file_path, path_backup);
+                File.Delete(file_path);
             }
-           
+            
             return myString;
+
         }
         #endregion
    

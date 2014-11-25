@@ -32,7 +32,6 @@ namespace Packet
                 DataGridView1.Columns.Add("RXFROM", "FROM");
                 DataGridView1.Columns.Add("RXDATE", "DATE");
                 DataGridView1.Columns.Add("RXSUBJECT", "SUBJECT");
-
                 
                 DataGridView1.Columns[0].Width = 80;
                 DataGridView1.Columns[1].Width = 60;
@@ -71,26 +70,16 @@ namespace Packet
                     rxfrom[i] = Mid(line, 32, 7);
                     rxdate[i] = Mid(line, 39, 9);
                     rxsubject[i] = Mid(line, 48, (line.Length - 48));
-                    
-                    // Invoke((Action)delegate { richTextBox1.Text = myString; });
-                    DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i], rxsubject[i]);
-                   
-                  
+                    DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i], rxsubject[i]);         
                 }
-
-
-
                 _myFiles.WriteST(RemovePepeatWords("SortTo", rxto), "SortTo");
-                // _myFiles.WriteST(RXROUTE[i] + Environment.NewLine, "SortRoute");
-                // _myFiles.WriteST(RXFROM[i] + Environment.NewLine, "SortFrom");
-                // _myFiles.WriteST(RXSUBJECT[i] + Environment.NewLine, "SortSubject");
-                
+                _myFiles.WriteST(RemovePepeatWords("SortRoute", rxroute), "SortRoute");
+                _myFiles.WriteST(RemovePepeatWords("SortFrom", rxfrom), "SortFrom");
+                _myFiles.WriteST(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");  
             }
             catch (IOException ex)
-
             {
                 MessageBox.Show("Error in file read" + " " + ex.Source);
-
             }
         }
         #endregion
@@ -133,6 +122,7 @@ namespace Packet
             Dictionary<string, bool> listofUniqueWords = new Dictionary<string, bool>();
             StringBuilder destBuilder = new StringBuilder();
             string[] spilltedwords = str1.Split(new[] { ' ', ',', ';', '.'}, StringSplitOptions.RemoveEmptyEntries);
+            Array.Sort(spilltedwords);
             foreach (string item in spilltedwords)
             {
                 if (!listofUniqueWords.ContainsKey(item))
