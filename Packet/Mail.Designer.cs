@@ -99,6 +99,7 @@
             this.Controls.Add(this.button_OK);
             this.Name = "Mail";
             this.Text = "Mail";
+            this.Load += new System.EventHandler(this.Mail_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
             this.ResumeLayout(false);
 

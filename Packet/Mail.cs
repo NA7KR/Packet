@@ -25,32 +25,8 @@ namespace Packet
         private void button_OK_Click(object sender, EventArgs e)
         {
             int i;
-            
             try
             {
-                
-                DataGridView1.Columns.Add("RXMSG", "MSG");
-                DataGridView1.Columns.Add("RXTSLD", "TSLD");
-                DataGridView1.Columns.Add("RXSIZE", "SIZE");
-                DataGridView1.Columns.Add("RXTO", "TO");
-                DataGridView1.Columns.Add("RXROUTE", "ROUTE");
-                DataGridView1.Columns.Add("RXFROM", "FROM");
-                DataGridView1.Columns.Add("RXDATE", "DATE");
-                DataGridView1.Columns.Add("RXSUBJECT", "SUBJECT");
-                
-                DataGridView1.Columns[0].Width = 80;
-                DataGridView1.Columns[1].Width = 60;
-                DataGridView1.Columns[2].Width = 70;
-                DataGridView1.Columns[3].Width = 80;
-                DataGridView1.Columns[4].Width = 100;
-                DataGridView1.Columns[5].Width = 80;
-                DataGridView1.Columns[6].Width = 120;
-                DataGridView1.Columns[7].Width = 400;
-                DataGridView1.Width = DataGridView1.Columns[0].Width + DataGridView1.Columns[1].Width +
-                                      DataGridView1.Columns[2].Width + DataGridView1.Columns[3].Width +
-                                      DataGridView1.Columns[4].Width + DataGridView1.Columns[5].Width +
-                                      DataGridView1.Columns[6].Width + DataGridView1.Columns[7].Width + 60;
-
                 DataGridView1.Visible = true;
                     
                 string myString = _myFiles.RX();
@@ -139,6 +115,34 @@ namespace Packet
  
            return destBuilder.ToString().Trim();
             
+        }
+        #endregion
+
+        #region Mail_Load
+        private void Mail_Load(object sender, EventArgs e)
+        {
+            DataGridView1.Columns.Add("RXMSG", "MSG");
+            DataGridView1.Columns.Add("RXTSLD", "TSLD");
+            DataGridView1.Columns.Add("RXSIZE", "SIZE");
+            DataGridView1.Columns.Add("RXTO", "TO");
+            DataGridView1.Columns.Add("RXROUTE", "ROUTE");
+            DataGridView1.Columns.Add("RXFROM", "FROM");
+            DataGridView1.Columns.Add("RXDATE", "DATE");
+            DataGridView1.Columns.Add("RXSUBJECT", "SUBJECT");
+
+            DataGridView1.Columns[0].Width = 80;
+            DataGridView1.Columns[1].Width = 60;
+            DataGridView1.Columns[2].Width = 70;
+            DataGridView1.Columns[3].Width = 80;
+            DataGridView1.Columns[4].Width = 100;
+            DataGridView1.Columns[5].Width = 80;
+            DataGridView1.Columns[6].Width = 120;
+            DataGridView1.Columns[7].Width = 400;
+            DataGridView1.Width = DataGridView1.Columns[0].Width + DataGridView1.Columns[1].Width +
+                                  DataGridView1.Columns[2].Width + DataGridView1.Columns[3].Width +
+                                  DataGridView1.Columns[4].Width + DataGridView1.Columns[5].Width +
+                                  DataGridView1.Columns[6].Width + DataGridView1.Columns[7].Width + 60;
+
         }
         #endregion
     }
