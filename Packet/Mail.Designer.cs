@@ -39,7 +39,7 @@
             // 
             // button_OK
             // 
-            this.button_OK.Location = new System.Drawing.Point(217, 411);
+            this.button_OK.Location = new System.Drawing.Point(202, 565);
             this.button_OK.Name = "button_OK";
             this.button_OK.Size = new System.Drawing.Size(75, 23);
             this.button_OK.TabIndex = 1;
@@ -49,7 +49,7 @@
             // 
             // button_Cancel
             // 
-            this.button_Cancel.Location = new System.Drawing.Point(399, 410);
+            this.button_Cancel.Location = new System.Drawing.Point(346, 565);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.button_Cancel.TabIndex = 2;
@@ -83,11 +83,12 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.DataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.DataGridView1.Location = new System.Drawing.Point(52, 37);
+            this.DataGridView1.Location = new System.Drawing.Point(12, 12);
             this.DataGridView1.Name = "DataGridView1";
-            this.DataGridView1.Size = new System.Drawing.Size(1208, 258);
+            this.DataGridView1.Size = new System.Drawing.Size(1208, 521);
             this.DataGridView1.TabIndex = 3;
             this.DataGridView1.Visible = false;
+            this.DataGridView1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.DataGridView1_Scroll);
             // 
             // Mail
             // 

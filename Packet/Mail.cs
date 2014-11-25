@@ -142,8 +142,16 @@ namespace Packet
                                   DataGridView1.Columns[2].Width + DataGridView1.Columns[3].Width +
                                   DataGridView1.Columns[4].Width + DataGridView1.Columns[5].Width +
                                   DataGridView1.Columns[6].Width + DataGridView1.Columns[7].Width + 60;
+            DataGridView1.Left = 10;
+            Width = DataGridView1.Width + 50;
 
         }
         #endregion
+
+        private void DataGridView1_Scroll(object sender, ScrollEventArgs e)
+        {
+            DataGridView1.Invalidate();
+
+        }
     }
 }
