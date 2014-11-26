@@ -28,14 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button_ok = new System.Windows.Forms.Button();
             this.button_Cancel = new System.Windows.Forms.Button();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.SuspendLayout();
             // 
             // button_ok
             // 
-            this.button_ok.Location = new System.Drawing.Point(44, 226);
+            this.button_ok.Location = new System.Drawing.Point(188, 513);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 1;
@@ -46,7 +51,7 @@
             // button_Cancel
             // 
             this.button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_Cancel.Location = new System.Drawing.Point(167, 226);
+            this.button_Cancel.Location = new System.Drawing.Point(349, 513);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.button_Cancel.TabIndex = 2;
@@ -54,33 +59,41 @@
             this.button_Cancel.UseVisualStyleBackColor = true;
             this.button_Cancel.Click += new System.EventHandler(this.button2_Click);
             // 
-            // checkedListBox1
+            // listView1
             // 
-            this.checkedListBox1.CheckOnClick = true;
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.checkedListBox1.Location = new System.Drawing.Point(8, 12);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.ScrollAlwaysVisible = true;
-            this.checkedListBox1.Size = new System.Drawing.Size(264, 199);
-            this.checkedListBox1.Sorted = true;
-            this.checkedListBox1.TabIndex = 4;
-            this.checkedListBox1.ThreeDCheckBoxes = true;
+            this.listView1.CheckBoxes = true;
+            this.listView1.Location = new System.Drawing.Point(12, 12);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(556, 483);
+            this.listView1.TabIndex = 5;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.List;
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // errorProvider2
+            // 
+            this.errorProvider2.ContainerControl = this;
             // 
             // Sort
             // 
+            this.AcceptButton = this.button_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_Cancel;
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.checkedListBox1);
+            this.ClientSize = new System.Drawing.Size(580, 557);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_ok);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "Sort";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Sort";
             this.Load += new System.EventHandler(this.Sort_Load);
+            this.Resize += new System.EventHandler(this.Sort_Resize);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -89,6 +102,8 @@
 
         private System.Windows.Forms.Button button_ok;
         private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ErrorProvider errorProvider2;
     }
 }
