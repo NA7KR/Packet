@@ -104,7 +104,7 @@ namespace Packet
 
             Dictionary<string, bool> listofUniqueWords = new Dictionary<string, bool>();
             StringBuilder destBuilder = new StringBuilder();
-            string[] spilltedwords = str1.Split(new[] { ' ', ',', ';', '.'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] spilltedwords = str1.Split(new[] { ','}, StringSplitOptions.RemoveEmptyEntries);
             Array.Sort(spilltedwords);
             foreach (string item in spilltedwords)
             {

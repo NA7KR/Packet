@@ -61,9 +61,11 @@
             this.checkedListBox1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.checkedListBox1.Location = new System.Drawing.Point(8, 12);
             this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.ScrollAlwaysVisible = true;
             this.checkedListBox1.Size = new System.Drawing.Size(264, 199);
             this.checkedListBox1.Sorted = true;
             this.checkedListBox1.TabIndex = 4;
+            this.checkedListBox1.ThreeDCheckBoxes = true;
             // 
             // Sort
             // 
