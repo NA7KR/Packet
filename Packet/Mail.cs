@@ -96,8 +96,10 @@ namespace Packet
                 
                 str1 = str + "," + str1;
             }
+            str1 = str1.Replace(Environment.NewLine, ",");
             str1 = str1.Replace("\r", ",");
-            str1 = str1.Replace("\r", ",");
+            str1 = str1.Replace("\n", ",");
+         
             str1 = str1.Replace(" ", "");
 
             Dictionary<string, bool> listofUniqueWords = new Dictionary<string, bool>();

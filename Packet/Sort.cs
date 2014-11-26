@@ -36,7 +36,12 @@ namespace Packet
             string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray)
             {
-                listBox1.Items.Add(s);
+                if (s == " ")
+                { }
+                else
+                {
+                    checkedListBox1.Items.Add(s);
+                }
             }
           //  _myFiles.RXST("SortTo");
         }

@@ -30,12 +30,12 @@
         {
             this.button_ok = new System.Windows.Forms.Button();
             this.button_Cancel = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // button_ok
             // 
-            this.button_ok.Location = new System.Drawing.Point(58, 187);
+            this.button_ok.Location = new System.Drawing.Point(44, 226);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 1;
@@ -45,7 +45,8 @@
             // 
             // button_Cancel
             // 
-            this.button_Cancel.Location = new System.Drawing.Point(165, 187);
+            this.button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button_Cancel.Location = new System.Drawing.Point(167, 226);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.button_Cancel.TabIndex = 2;
@@ -53,24 +54,28 @@
             this.button_Cancel.UseVisualStyleBackColor = true;
             this.button_Cancel.Click += new System.EventHandler(this.button2_Click);
             // 
-            // listBox1
+            // checkedListBox1
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(0, 0);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBox1.Size = new System.Drawing.Size(221, 134);
-            this.listBox1.Sorted = true;
-            this.listBox1.TabIndex = 3;
+            this.checkedListBox1.CheckOnClick = true;
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.checkedListBox1.Location = new System.Drawing.Point(8, 12);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(264, 199);
+            this.checkedListBox1.Sorted = true;
+            this.checkedListBox1.TabIndex = 4;
             // 
             // Sort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button_Cancel;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_ok);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Sort";
             this.Text = "Sort";
             this.Load += new System.EventHandler(this.Sort_Load);
@@ -82,6 +87,6 @@
 
         private System.Windows.Forms.Button button_ok;
         private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }
