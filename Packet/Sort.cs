@@ -25,7 +25,7 @@ namespace Packet
             //string myString = listView1.SelectedItems;
 
             string myString = string.Empty;
-            foreach (ListViewItem.Selected anItem in listView1.Items)
+            foreach (ListViewItem anItem in listView1.CheckedItems)
             {
                  myString += "," + anItem.Text;
             }
@@ -42,16 +42,7 @@ namespace Packet
             listView1.Height = (Height - 100);
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
-
-            /*
-             int selectedItem = Properties.Settings.Default.SelectedItem;
-                if (selectedItem != -1)
-                {
-                   this.listView1.Items[selectedItem].Selected = true;
-                }
-             */
-
-            
+ 
             string myString = _myFiles.RXST("SortTo");
             string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray)
@@ -63,7 +54,32 @@ namespace Packet
                     listView1.Items.Add(s);
                 } 
             }
-          //  _myFiles.RXST("SortTo");
+            
+
+            string myString2 = _myFiles.RXST("SelectedTo");
+            string[] myArray2 = myString2.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string s in myArray2)
+            {
+                if (s == " ")
+                {
+                }
+                else
+                {
+                    ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(s);
+
+                    // Did we find a match?
+                    if (itemYouAreLookingFor != null)
+                    {
+                        itemYouAreLookingFor.Checked = true;
+                        // Yes, so find out if the item is checked or not?
+                        if (itemYouAreLookingFor.Checked)
+                        {
+                            // Yes, it is found and check so do something with item here
+                            itemYouAreLookingFor.Checked = true;
+                        }
+                    }
+                }
+            }
         }
 
         private void Sort_Resize(object sender, EventArgs e)
@@ -74,6 +90,10 @@ namespace Packet
             listView1.Height = (Height - 100);
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
         }
 
      
