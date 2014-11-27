@@ -1,9 +1,7 @@
 ﻿#region Using Directive
-
 using System;
 using System.Windows.Forms;
 using PacketComs;
-
 #endregion
 
 namespace Packet
@@ -11,10 +9,17 @@ namespace Packet
     public partial class Sort : Form
     {
         private static readonly ModifyFile MyFiles = new ModifyFile();
-        public Sort()
-        {
+        public string file_Name_Select; // "SelectedTo"
+        public string file_Name_Sort; // SortTo
+
+        #region Sort
+        public Sort(string fileNameSelect, string fileNameSort)
+        {   
             InitializeComponent();
+            file_Name_Select = fileNameSelect; //local to public
+            file_Name_Sort = fileNameSort; //local to public
         }
+        #endregion
 
         #region OK
         private void button_ok_Click(object sender, EventArgs e)
@@ -28,7 +33,7 @@ namespace Packet
             }
 
 
-            MyFiles.WriteST(myString, "SelectedTo"); 
+            MyFiles.WriteST(myString, file_Name_Select); 
         }
         #endregion
 
@@ -41,8 +46,8 @@ namespace Packet
             listView1.Height = (Height - 100);
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
- 
-            string myString = MyFiles.RXST("SortTo");
+
+            string myString = MyFiles.RXST(file_Name_Sort);
             string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray)
             {
@@ -55,7 +60,7 @@ namespace Packet
             }
             
 
-            string myString2 = MyFiles.RXST("SelectedTo");
+            string myString2 = MyFiles.RXST(file_Name_Sort);
             string[] myArray2 = myString2.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray2)
             {

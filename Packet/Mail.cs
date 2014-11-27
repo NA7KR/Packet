@@ -11,7 +11,6 @@ using PacketComs;
 
 namespace Packet
 {
-
     public partial class Mail : Form
     {
         private static readonly ModifyFile MyFiles = new ModifyFile();
@@ -152,23 +151,50 @@ namespace Packet
         }
         #endregion
 
+        #region DataGridView1_Scroll
         private void DataGridView1_Scroll(object sender, ScrollEventArgs e)
         {
             DataGridView1.Invalidate();
-
         }
+        #endregion 
 
+        #region exitToolStripMenuItem
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
+        #endregion
 
+        #region toolStripMenuItem TO
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var box = new Sort();
+            var box = new Sort("SelectedTo", "SortTo");
             box.ShowDialog();
         }
+        #endregion
 
+        #region toolStripMenuItem Subject
+        private void configToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            var box = new Sort("SelectedSubject", "SortSubject");
+            box.ShowDialog();
+        }
+        #endregion
 
+        #region toolStripMenuItem From
+        private void configToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var box = new Sort("SelectedFrom", "SortFrom");
+            box.ShowDialog();
+        }
+        #endregion
+
+        #region toolStripMenuItem Roure
+        private void configToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var box = new Sort("SelectedRoute", "SortRoute");
+            box.ShowDialog();
+        }
+        #endregion
     }
 }

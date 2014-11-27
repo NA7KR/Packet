@@ -31,9 +31,9 @@ namespace Packet
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.button_OK = new System.Windows.Forms.Button();
             this.button_Cancel = new System.Windows.Forms.Button();
             this.DataGridView1 = new System.Windows.Forms.DataGridView();
@@ -48,10 +48,13 @@ namespace Packet
             this.cleanListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mailConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.routeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.subjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemTO = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemRoute = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemFrom = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemSubject = new System.Windows.Forms.ToolStripMenuItem();
+            this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.configToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -68,6 +71,7 @@ namespace Packet
             // 
             // button_Cancel
             // 
+            this.button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button_Cancel.Location = new System.Drawing.Point(346, 565);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
@@ -82,26 +86,26 @@ namespace Packet
             this.DataGridView1.AllowUserToDeleteRows = false;
             this.DataGridView1.AllowUserToResizeColumns = false;
             this.DataGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DataGridView1.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DataGridView1.DefaultCellStyle = dataGridViewCellStyle9;
             this.DataGridView1.Location = new System.Drawing.Point(0, 27);
             this.DataGridView1.Name = "DataGridView1";
             this.DataGridView1.Size = new System.Drawing.Size(1208, 521);
@@ -131,7 +135,7 @@ namespace Packet
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -150,7 +154,7 @@ namespace Packet
             this.keepTimeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox1});
             this.keepTimeToolStripMenuItem.Name = "keepTimeToolStripMenuItem";
-            this.keepTimeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.keepTimeToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.keepTimeToolStripMenuItem.Text = "Keep Time";
             // 
             // toolStripComboBox1
@@ -173,7 +177,7 @@ namespace Packet
             this.keepQTYToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox2});
             this.keepQTYToolStripMenuItem.Name = "keepQTYToolStripMenuItem";
-            this.keepQTYToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.keepQTYToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.keepQTYToolStripMenuItem.Text = "Keep QTY";
             // 
             // toolStripComboBox2
@@ -194,16 +198,16 @@ namespace Packet
             // cleanListToolStripMenuItem
             // 
             this.cleanListToolStripMenuItem.Name = "cleanListToolStripMenuItem";
-            this.cleanListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cleanListToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.cleanListToolStripMenuItem.Text = "Clean List";
             // 
             // mailConfigToolStripMenuItem
             // 
             this.mailConfigToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toToolStripMenuItem,
-            this.routeToolStripMenuItem,
-            this.fromToolStripMenuItem,
-            this.subjectToolStripMenuItem});
+            this.ToolStripMenuItemRoute,
+            this.ToolStripMenuItemFrom,
+            this.ToolStripMenuItemSubject});
             this.mailConfigToolStripMenuItem.Name = "mailConfigToolStripMenuItem";
             this.mailConfigToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
             this.mailConfigToolStripMenuItem.Text = "Mail Config";
@@ -211,35 +215,62 @@ namespace Packet
             // toToolStripMenuItem
             // 
             this.toToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItemTO});
             this.toToolStripMenuItem.Name = "toToolStripMenuItem";
             this.toToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.toToolStripMenuItem.Text = "To";
             // 
-            // routeToolStripMenuItem
+            // toolStripMenuItemTO
             // 
-            this.routeToolStripMenuItem.Name = "routeToolStripMenuItem";
-            this.routeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.routeToolStripMenuItem.Text = "Route";
+            this.toolStripMenuItemTO.Name = "toolStripMenuItemTO";
+            this.toolStripMenuItemTO.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemTO.Text = "Config";
+            this.toolStripMenuItemTO.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
-            // fromToolStripMenuItem
+            // ToolStripMenuItemRoute
             // 
-            this.fromToolStripMenuItem.Name = "fromToolStripMenuItem";
-            this.fromToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.fromToolStripMenuItem.Text = "From";
+            this.ToolStripMenuItemRoute.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configToolStripMenuItem});
+            this.ToolStripMenuItemRoute.Name = "ToolStripMenuItemRoute";
+            this.ToolStripMenuItemRoute.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemRoute.Text = "Route";
             // 
-            // subjectToolStripMenuItem
+            // ToolStripMenuItemFrom
             // 
-            this.subjectToolStripMenuItem.Name = "subjectToolStripMenuItem";
-            this.subjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.subjectToolStripMenuItem.Text = "Subject";
+            this.ToolStripMenuItemFrom.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configToolStripMenuItem1});
+            this.ToolStripMenuItemFrom.Name = "ToolStripMenuItemFrom";
+            this.ToolStripMenuItemFrom.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemFrom.Text = "From";
             // 
-            // toolStripMenuItem1
+            // ToolStripMenuItemSubject
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem1.Text = "Config";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.ToolStripMenuItemSubject.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configToolStripMenuItem2});
+            this.ToolStripMenuItemSubject.Name = "ToolStripMenuItemSubject";
+            this.ToolStripMenuItemSubject.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemSubject.Text = "Subject";
+            // 
+            // configToolStripMenuItem
+            // 
+            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.configToolStripMenuItem.Text = "Config";
+            this.configToolStripMenuItem.Click += new System.EventHandler(this.configToolStripMenuItem_Click);
+            // 
+            // configToolStripMenuItem1
+            // 
+            this.configToolStripMenuItem1.Name = "configToolStripMenuItem1";
+            this.configToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.configToolStripMenuItem1.Text = "Config";
+            this.configToolStripMenuItem1.Click += new System.EventHandler(this.configToolStripMenuItem1_Click);
+            // 
+            // configToolStripMenuItem2
+            // 
+            this.configToolStripMenuItem2.Name = "configToolStripMenuItem2";
+            this.configToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.configToolStripMenuItem2.Text = "Config";
+            this.configToolStripMenuItem2.Click += new System.EventHandler(this.configToolStripMenuItem2_Click);
             // 
             // Mail
             // 
@@ -279,9 +310,12 @@ namespace Packet
         private ToolStripMenuItem cleanListToolStripMenuItem;
         private ToolStripMenuItem mailConfigToolStripMenuItem;
         private ToolStripMenuItem toToolStripMenuItem;
-        private ToolStripMenuItem routeToolStripMenuItem;
-        private ToolStripMenuItem fromToolStripMenuItem;
-        private ToolStripMenuItem subjectToolStripMenuItem;
-        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem ToolStripMenuItemRoute;
+        private ToolStripMenuItem ToolStripMenuItemFrom;
+        private ToolStripMenuItem ToolStripMenuItemSubject;
+        private ToolStripMenuItem toolStripMenuItemTO;
+        private ToolStripMenuItem configToolStripMenuItem;
+        private ToolStripMenuItem configToolStripMenuItem1;
+        private ToolStripMenuItem configToolStripMenuItem2;
     }
 }
