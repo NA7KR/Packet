@@ -111,7 +111,7 @@ namespace PacketComs
         public void Write(byte[] data, int offset, int length)
         {
             string sReceived = Encoding.ASCII.GetString(data, offset, length);
-            Invoke(RxdTextEvent, new object[] {String.Copy(sReceived)});
+            Invoke(RxdTextEvent, String.Copy(sReceived));
             Invoke(RefreshEvent);
         }
 
@@ -178,7 +178,7 @@ namespace PacketComs
             Baud_9600 = 9600,
             Baud_19200 = 19200,
             Baud_38400 = 38400,
-            Baud_57600 = 57600,
+            Baud_57600 = 57600
             //Baud_115200 = 115200,
         }
 
@@ -187,7 +187,7 @@ namespace PacketComs
             Telnet,
             COM,
             SSH1,
-            SSH2,
+            SSH2
         }
 
         public enum DataBitsTypes
@@ -195,7 +195,7 @@ namespace PacketComs
             Data_Bits_5 = 5,
             Data_Bits_6 = 6,
             Data_Bits_7 = 7,
-            Data_Bits_8 = 8,
+            Data_Bits_8 = 8
         }
 
         public enum FlowTypes
@@ -203,7 +203,7 @@ namespace PacketComs
             XOnXOff,
             RequestToSend,
             RequestToSendXOnXOff,
-            None,
+            None
         }
 
         public enum ParityTypes
@@ -212,7 +212,7 @@ namespace PacketComs
             Odd,
             Even,
             Mark,
-            Space,
+            Space
         }
 
         public enum StopBitsTypes
@@ -220,7 +220,7 @@ namespace PacketComs
             None,
             One,
             OnePointFive,
-            Two,
+            Two
         }
 
         #endregion
@@ -674,8 +674,8 @@ namespace PacketComs
         #region Disccocted by remote
         public void Disconnectby()
         {
-            Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
-            Invoke(RxdTextEvent, new object[] { String.Copy(Environment.NewLine) });  
+            Invoke(RxdTextEvent, String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
+            Invoke(RxdTextEvent, String.Copy(Environment.NewLine));  
             Invoke(RefreshEvent);
             if (Disconnected != null)
             {
@@ -912,7 +912,7 @@ namespace PacketComs
                 _inputData = Encoding.ASCII.GetString(e.Data);
                 if (_inputData != String.Empty && _inputData != null)
                 {
-                    Invoke(RxdTextEvent, new object[] { String.Copy(_inputData) });
+                    Invoke(RxdTextEvent, String.Copy(_inputData));
                     if (_inputData == "\r")
                     {
                         _inputData = Environment.NewLine;
@@ -938,7 +938,7 @@ namespace PacketComs
                 {
                     //_parser.ParseString(_inputData);
                     //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
-                    Invoke(RxdTextEvent, new object[] { String.Copy(_inputData) });
+                    Invoke(RxdTextEvent, String.Copy(_inputData));
                     if (_inputData == "/r")
                     {
                         _inputData = Environment.NewLine;
@@ -1430,7 +1430,7 @@ namespace PacketComs
                             _dataFile = "";
                         }
                     }
-                    Invoke(RxdTextEvent, new object[] {String.Copy(sReceived)});
+                    Invoke(RxdTextEvent, String.Copy(sReceived));
                     Invoke(RefreshEvent);
                     // Re-Establish the next asyncronous receveived data callback as
                     stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
@@ -4913,7 +4913,7 @@ namespace PacketComs
                 SubNegValue = 8,
                 SubNegParam = 9,
                 SubNegEnd = 10,
-                SynchSubNegotiate = 11,
+                SynchSubNegotiate = 11
             }
             #endregion
 
@@ -4922,7 +4922,7 @@ namespace PacketComs
             {
                 None = 0,
                 Entry = 1,
-                Exit = 2,
+                Exit = 2
             }
             #endregion
 
@@ -5156,7 +5156,7 @@ namespace PacketComs
             Collect = 4,
             NewCollect = 5,
             Param = 6,
-            Execute = 7,
+            Execute = 7
         }
         #endregion
 
@@ -5171,16 +5171,16 @@ namespace PacketComs
                 }
                 else if (_cType == "SSH")
                 {
-                    Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
-                    Invoke(RxdTextEvent, new object[] { String.Copy(Environment.NewLine) });
+                    Invoke(RxdTextEvent, String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
+                    Invoke(RxdTextEvent, String.Copy(Environment.NewLine));
                     Invoke(RefreshEvent);
                     _stream.Close();
                     _stream.Dispose();
                 }
                 else
                 {
-                    Invoke(RxdTextEvent, new object[] { String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m") });
-                    Invoke(RxdTextEvent, new object[] { String.Copy(Environment.NewLine) });
+                    Invoke(RxdTextEvent, String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
+                    Invoke(RxdTextEvent, String.Copy(Environment.NewLine));
                     Invoke(RefreshEvent);
                     _curSocket.Shutdown(SocketShutdown.Both);
                     _curSocket.Close();

@@ -8,18 +8,13 @@ namespace Packet
 {
     public partial class Sort : Form
     {
-        private static readonly ModifyFile _myFiles = new ModifyFile();
+        private static readonly ModifyFile MyFiles = new ModifyFile();
         public Sort()
         {
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-       
+        #region OK
         private void button_ok_Click(object sender, EventArgs e)
         {
             //string myString = listView1.SelectedItems;
@@ -31,9 +26,11 @@ namespace Packet
             }
 
 
-            _myFiles.WriteST(myString, "SelectedTo"); 
+            MyFiles.WriteST(myString, "SelectedTo"); 
         }
+        #endregion
 
+        #region Load
         private void Sort_Load(object sender, EventArgs e)
         {
             listView1.Left =  5;
@@ -43,7 +40,7 @@ namespace Packet
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
  
-            string myString = _myFiles.RXST("SortTo");
+            string myString = MyFiles.RXST("SortTo");
             string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray)
             {
@@ -56,7 +53,7 @@ namespace Packet
             }
             
 
-            string myString2 = _myFiles.RXST("SelectedTo");
+            string myString2 = MyFiles.RXST("SelectedTo");
             string[] myArray2 = myString2.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray2)
             {
@@ -66,22 +63,17 @@ namespace Packet
                 else
                 {
                     ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(s);
-
                     // Did we find a match?
                     if (itemYouAreLookingFor != null)
                     {
                         itemYouAreLookingFor.Checked = true;
-                        // Yes, so find out if the item is checked or not?
-                        if (itemYouAreLookingFor.Checked)
-                        {
-                            // Yes, it is found and check so do something with item here
-                            itemYouAreLookingFor.Checked = true;
-                        }
                     }
                 }
             }
         }
+        #endregion
 
+        #region resize
         private void Sort_Resize(object sender, EventArgs e)
         {
             listView1.Left = 5;
@@ -91,11 +83,6 @@ namespace Packet
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
-
-     
+        #endregion
     }
 }

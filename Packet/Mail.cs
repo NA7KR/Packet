@@ -12,7 +12,7 @@ namespace Packet
 
     public partial class Mail : Form
     {
-        private static readonly ModifyFile _myFiles = new ModifyFile();
+        private static readonly ModifyFile MyFiles = new ModifyFile();
 
         #region Mail InitializeComponent
         public Mail()
@@ -29,7 +29,7 @@ namespace Packet
             {
                 DataGridView1.Visible = true;
                     
-                string myString = _myFiles.RX();
+                string myString = MyFiles.RX();
                 string[] lines = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                 string[] rxmsg = new string[lines.Length];
                 string[] rxtsld = new string[lines.Length];
@@ -53,10 +53,10 @@ namespace Packet
                     rxsubject[i] = Mid(line, 48, (line.Length - 48));
                     DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i], rxsubject[i]);         
                 }
-                _myFiles.WriteST(RemovePepeatWords("SortTo", rxto), "SortTo");
-                _myFiles.WriteST(RemovePepeatWords("SortRoute", rxroute), "SortRoute");
-                _myFiles.WriteST(RemovePepeatWords("SortFrom", rxfrom), "SortFrom");
-                _myFiles.WriteST(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");  
+                MyFiles.WriteST(RemovePepeatWords("SortTo", rxto), "SortTo");
+                MyFiles.WriteST(RemovePepeatWords("SortRoute", rxroute), "SortRoute");
+                MyFiles.WriteST(RemovePepeatWords("SortFrom", rxfrom), "SortFrom");
+                MyFiles.WriteST(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");  
             }
             catch (IOException ex)
             {
@@ -85,13 +85,13 @@ namespace Packet
         #endregion
 
         #region RemovePepeatWords
-        public static string RemovePepeatWords( string File_Name, Array Array_Name)
+        public static string RemovePepeatWords( string fileName, Array arrayName)
         {
             //read file
-            string str1 = _myFiles.RXST(File_Name);
+            string str1 = MyFiles.RXST(fileName);
            
             //
-            foreach (string str in Array_Name)
+            foreach (string str in arrayName)
             {
                 
                 str1 = str + "," + str1;

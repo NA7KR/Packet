@@ -37,7 +37,7 @@ namespace PacketComs
 
         #region WriteST
 
-        public bool WriteST(string textVale,string FileName)
+        public bool WriteST(string textVale,string fileName)
         {
             
             try
@@ -48,9 +48,9 @@ namespace PacketComs
                     // Try to create the directory.
                     Directory.CreateDirectory(path);
                 }
-                string file_path = path + @"\" + FileName + ".txt";
+                string filePath = path + @"\" + fileName + ".txt";
 
-                File.WriteAllText(file_path, textVale);
+                File.WriteAllText(filePath, textVale);
                 //string path_backup = path + @"\" + FileName + ".bak";
                 //File.Delete(path_backup);
                 return true;
@@ -65,7 +65,7 @@ namespace PacketComs
         #endregion
 
         #region RXST
-        public string RXST(string FileName)
+        public string RXST(string fileName)
         {
             string myString = null;
             string path = Directory.GetCurrentDirectory() + @"\Data";
@@ -74,10 +74,10 @@ namespace PacketComs
                 // Try to create the directory.
                 Directory.CreateDirectory(path);
             }
-            string file_path = path + @"\" + FileName + ".txt";
-            if (File.Exists(file_path))
+            string filePath = path + @"\" + fileName + ".txt";
+            if (File.Exists(filePath))
             {
-                StreamReader myFile = new System.IO.StreamReader(file_path);
+                StreamReader myFile = new StreamReader(filePath);
                 myString = myFile.ReadToEnd();
                 myFile.Close();
                 //string path_backup = path + @"\" + FileName + ".bak";
@@ -106,7 +106,7 @@ namespace PacketComs
 
             if (File.Exists(path))
             {
-                StreamReader myFile = new System.IO.StreamReader(path);
+                StreamReader myFile = new StreamReader(path);
                 myString = myFile.ReadToEnd();
                 
             }
