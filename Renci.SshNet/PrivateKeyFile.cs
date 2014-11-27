@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Renci.SshNet.Security;
 using Renci.SshNet.Common;
-using System.Globalization;
+using Renci.SshNet.Security;
 using Renci.SshNet.Security.Cryptography;
 using Renci.SshNet.Security.Cryptography.Ciphers;
 using Renci.SshNet.Security.Cryptography.Ciphers.Modes;
 using Renci.SshNet.Security.Cryptography.Ciphers.Paddings;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Renci.SshNet
 {
@@ -120,7 +120,7 @@ namespace Renci.SshNet
             var salt = privateKeyMatch.Result("${salt}");
             var data = privateKeyMatch.Result("${data}");
 
-            var binaryData = System.Convert.FromBase64String(data);
+            var binaryData = Convert.FromBase64String(data);
 
             byte[] decryptedData = null;
 

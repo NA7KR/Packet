@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -7,7 +8,6 @@ using Renci.SshNet.Common;
 using Renci.SshNet.Messages;
 using Renci.SshNet.Messages.Connection;
 using Renci.SshNet.Messages.Transport;
-using System.Globalization;
 
 namespace Renci.SshNet
 {
@@ -398,7 +398,7 @@ namespace Renci.SshNet
             this._sessionErrorOccuredWaitHandle.Set();
         }
 
-        private void Channel_Closed(object sender, Common.ChannelEventArgs e)
+        private void Channel_Closed(object sender, ChannelEventArgs e)
         {
             if (this.OutputStream != null)
             {
@@ -420,7 +420,7 @@ namespace Renci.SshNet
             ((EventWaitHandle)this._asyncResult.AsyncWaitHandle).Set();
         }
 
-        private void Channel_RequestReceived(object sender, Common.ChannelRequestEventArgs e)
+        private void Channel_RequestReceived(object sender, ChannelRequestEventArgs e)
         {
             Message replyMessage = new ChannelFailureMessage(this._channel.LocalChannelNumber);
 
@@ -439,7 +439,7 @@ namespace Renci.SshNet
             }
         }
 
-        private void Channel_ExtendedDataReceived(object sender, Common.ChannelDataEventArgs e)
+        private void Channel_ExtendedDataReceived(object sender, ChannelDataEventArgs e)
         {
             if (this.ExtendedOutputStream != null)
             {
@@ -453,7 +453,7 @@ namespace Renci.SshNet
             }
         }
 
-        private void Channel_DataReceived(object sender, Common.ChannelDataEventArgs e)
+        private void Channel_DataReceived(object sender, ChannelDataEventArgs e)
         {
             if (this.OutputStream != null)
             {

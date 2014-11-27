@@ -321,7 +321,7 @@ namespace Renci.SshNet.Security
         /// </returns>
         protected virtual byte[] Hash(byte[] hashData)
         {
-            using (var sha1 = new Renci.SshNet.Security.Cryptography.SHA1Hash())
+            using (var sha1 = new SHA1Hash())
             {
                 return sha1.ComputeHash(hashData, 0, hashData.Length);
             }

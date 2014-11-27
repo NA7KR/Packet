@@ -77,9 +77,9 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
 
             byte[] temp = new byte[this.BlockSize];
 
-            DesCipher.DesFunc(this._encryptionKey1, inputBuffer, inputOffset, temp, 0);
-            DesCipher.DesFunc(this._encryptionKey2, temp, 0, temp, 0);
-            DesCipher.DesFunc(this._encryptionKey3, temp, 0, outputBuffer, outputOffset);
+            DesFunc(this._encryptionKey1, inputBuffer, inputOffset, temp, 0);
+            DesFunc(this._encryptionKey2, temp, 0, temp, 0);
+            DesFunc(this._encryptionKey3, temp, 0, outputBuffer, outputOffset);
 
             return this.BlockSize;
         }
@@ -129,9 +129,9 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
 
             byte[] temp = new byte[this.BlockSize];
 
-            DesCipher.DesFunc(this._decryptionKey3, inputBuffer, inputOffset, temp, 0);
-            DesCipher.DesFunc(this._decryptionKey2, temp, 0, temp, 0);
-            DesCipher.DesFunc(this._decryptionKey1, temp, 0, outputBuffer, outputOffset);
+            DesFunc(this._decryptionKey3, inputBuffer, inputOffset, temp, 0);
+            DesFunc(this._decryptionKey2, temp, 0, temp, 0);
+            DesFunc(this._decryptionKey1, temp, 0, outputBuffer, outputOffset);
 
             return this.BlockSize;
         }

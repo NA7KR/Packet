@@ -141,7 +141,7 @@ namespace Renci.SshNet.Security.Cryptography
 
         private void ProcessWord(byte[] input, int inOff)
         {
-            this.X[_offset] = SHA512Hash.BE_To_UInt64(input, inOff);
+            this.X[_offset] = BE_To_UInt64(input, inOff);
 
             if (++_offset == 16)
             {

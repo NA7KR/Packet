@@ -1,4 +1,6 @@
-﻿namespace Renci.SshNet.Sftp.Responses
+﻿using System;
+
+namespace Renci.SshNet.Sftp.Responses
 {
     internal class StatVfsReplyInfo : ExtendedReplyInfo
     {
@@ -18,7 +20,7 @@
 
         protected override void SaveData()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using Renci.SshNet.Common;
-using System.Collections.Generic;
-using System.Globalization;
-using Renci.SshNet.Sftp.Responses;
 using Renci.SshNet.Sftp.Requests;
+using Renci.SshNet.Sftp.Responses;
 
 namespace Renci.SshNet.Sftp
 {

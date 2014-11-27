@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using Renci.SshNet.Channels;
 using Renci.SshNet.Common;
+using ASCIIEncoding = Renci.SshNet.Common.ASCIIEncoding;
 
 namespace Renci.SshNet
 {
@@ -209,7 +210,7 @@ namespace Renci.SshNet
                             addressBuffer = new byte[length];
                             stream.Read(addressBuffer, 0, addressBuffer.Length);
 
-                            ipAddress = IPAddress.Parse(new Renci.SshNet.Common.ASCIIEncoding().GetString(addressBuffer));
+                            ipAddress = IPAddress.Parse(new ASCIIEncoding().GetString(addressBuffer));
                         }
                         break;
                     case 0x04:

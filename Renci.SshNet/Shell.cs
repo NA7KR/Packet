@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Renci.SshNet.Channels;
 using Renci.SshNet.Common;
-using System.Collections.Generic;
 
 namespace Renci.SshNet
 {
@@ -216,12 +216,12 @@ namespace Renci.SshNet
             }
         }
 
-        private void Session_Disconnected(object sender, System.EventArgs e)
+        private void Session_Disconnected(object sender, EventArgs e)
         {
             this.Stop();
         }
 
-        private void Channel_ExtendedDataReceived(object sender, Common.ChannelDataEventArgs e)
+        private void Channel_ExtendedDataReceived(object sender, ChannelDataEventArgs e)
         {
             if (this._extendedOutputStream != null)
             {
@@ -229,7 +229,7 @@ namespace Renci.SshNet
             }
         }
 
-        private void Channel_DataReceived(object sender, Common.ChannelDataEventArgs e)
+        private void Channel_DataReceived(object sender, ChannelDataEventArgs e)
         {
             if (this._outputStream != null)
             {
@@ -237,7 +237,7 @@ namespace Renci.SshNet
             }
         }
 
-        private void Channel_Closed(object sender, Common.ChannelEventArgs e)
+        private void Channel_Closed(object sender, ChannelEventArgs e)
         {
             if (this.Stopping != null)
             {

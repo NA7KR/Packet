@@ -1,11 +1,14 @@
-﻿namespace Packet
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Packet
 {
     partial class Mail
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -262,23 +265,23 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.DataGridView DataGridView1;
-        protected System.Windows.Forms.Button button_OK;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setupToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem keepTimeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
-        private System.Windows.Forms.ToolStripMenuItem keepQTYToolStripMenuItem;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox2;
-        private System.Windows.Forms.ToolStripMenuItem cleanListToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mailConfigToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem routeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fromToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem subjectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private Button button_Cancel;
+        private DataGridView DataGridView1;
+        protected Button button_OK;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem setupToolStripMenuItem;
+        private ToolStripMenuItem keepTimeToolStripMenuItem;
+        private ToolStripComboBox toolStripComboBox1;
+        private ToolStripMenuItem keepQTYToolStripMenuItem;
+        private ToolStripComboBox toolStripComboBox2;
+        private ToolStripMenuItem cleanListToolStripMenuItem;
+        private ToolStripMenuItem mailConfigToolStripMenuItem;
+        private ToolStripMenuItem toToolStripMenuItem;
+        private ToolStripMenuItem routeToolStripMenuItem;
+        private ToolStripMenuItem fromToolStripMenuItem;
+        private ToolStripMenuItem subjectToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem1;
     }
 }

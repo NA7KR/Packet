@@ -1,5 +1,5 @@
-﻿using Renci.SshNet.Sftp.Responses;
-using System;
+﻿using System;
+using Renci.SshNet.Sftp.Responses;
 
 namespace Renci.SshNet.Sftp.Requests
 {

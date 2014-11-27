@@ -44,9 +44,9 @@
 * ***************************************************************************/
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography;
 
 /*
@@ -66,7 +66,7 @@ namespace Renci.SshNet.Common
     /// </summary>
     public struct BigInteger : IComparable, IFormattable, IComparable<BigInteger>, IEquatable<BigInteger>
     {
-        private static RNGCryptoServiceProvider _randomizer = new System.Security.Cryptography.RNGCryptoServiceProvider();
+        private static RNGCryptoServiceProvider _randomizer = new RNGCryptoServiceProvider();
 
         private const ulong _BASE = 0x100000000;
         private const Int32 _DECIMALSIGNMASK = unchecked((Int32)0x80000000);
@@ -561,7 +561,7 @@ namespace Renci.SshNet.Common
             try
             {
                 return double.Parse(value.ToString(),
-                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                     CultureInfo.InvariantCulture.NumberFormat);
             }
             catch (OverflowException)
             {
@@ -582,7 +582,7 @@ namespace Renci.SshNet.Common
             try
             {
                 return float.Parse(value.ToString(),
-                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                CultureInfo.InvariantCulture.NumberFormat);
             }
             catch (OverflowException)
             {
@@ -2213,7 +2213,7 @@ namespace Renci.SshNet.Common
                 d *= 0.5;
                 testBit = testBit >> 1;
             }
-            return (System.Math.Log(c) + System.Math.Log(2) * bitlen) / System.Math.Log(baseValue);
+            return (Math.Log(c) + Math.Log(2) * bitlen) / Math.Log(baseValue);
         }
 
         /// <summary>
@@ -2396,7 +2396,7 @@ namespace Renci.SshNet.Common
         /// <param name="style">A bitwise combination of the enumeration values that specify the permitted format of value.</param>
         /// <param name="provider">An object that provides culture-specific formatting information about value.</param>
         /// <returns>Parsed <see cref="BigInteger"/> number</returns>
-        public static BigInteger Parse(string value, System.Globalization.NumberStyles style, IFormatProvider provider)
+        public static BigInteger Parse(string value, NumberStyles style, IFormatProvider provider)
         {
             Exception ex;
             BigInteger result;
@@ -2672,7 +2672,7 @@ namespace Renci.SshNet.Common
         /// null or is not in a format that is compliant with style. This parameter is
         /// passed uninitialized.</param>
         /// <returns>true if the value parameter was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string value, System.Globalization.NumberStyles style, CultureInfo cultureInfo, out BigInteger result)
+        public static bool TryParse(string value, NumberStyles style, CultureInfo cultureInfo, out BigInteger result)
         {
             Exception ex;
             return Parse(value, true, style, cultureInfo, out result, out ex);
@@ -2915,7 +2915,7 @@ namespace Renci.SshNet.Common
             return true;
         }
 
-        private static bool Parse(string s, bool tryParse, System.Globalization.NumberStyles style, IFormatProvider provider, out BigInteger result, out Exception exc)
+        private static bool Parse(string s, bool tryParse, NumberStyles style, IFormatProvider provider, out BigInteger result, out Exception exc)
         {
             int len;
             int i, sign = 1;

@@ -1,11 +1,14 @@
-﻿namespace Packet
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Packet
 {
     partial class IpForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -300,31 +303,31 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label_ip;
-        private System.Windows.Forms.TextBox textBox_ip;
-        private System.Windows.Forms.Button Done_button;
-        private System.Windows.Forms.Button Cancel_button;
-        private System.Windows.Forms.Label label_port;
-        private System.Windows.Forms.Label label_mycall;
-        private System.Windows.Forms.TextBox textBox_port;
-        private System.Windows.Forms.TextBox textBox_mycall;
-        private System.Windows.Forms.TextBox textBox_start;
-        private System.Windows.Forms.TextBox textBox_bbs;
-        private System.Windows.Forms.Label label_start;
-        private System.Windows.Forms.Label label_bbs;
-        private System.Windows.Forms.TextBox textBox_password;
-        private System.Windows.Forms.Label label_password;
-        private System.Windows.Forms.Label label_echo;
-        private System.Windows.Forms.ComboBox echo_comboBox;
-        private System.Windows.Forms.TextBox textBox_prompt;
-        private System.Windows.Forms.Label label_prompt;
-        private System.Windows.Forms.TextBox textBox_username_prompt;
-        private System.Windows.Forms.Label label_username_prompt;
-        private System.Windows.Forms.TextBox textBox_password_prompt;
-        private System.Windows.Forms.Label label_password_prompt;
-        private System.Windows.Forms.BindingSource bindingSource1;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.BindingSource bindingSource2;
+        private Label label_ip;
+        private TextBox textBox_ip;
+        private Button Done_button;
+        private Button Cancel_button;
+        private Label label_port;
+        private Label label_mycall;
+        private TextBox textBox_port;
+        private TextBox textBox_mycall;
+        private TextBox textBox_start;
+        private TextBox textBox_bbs;
+        private Label label_start;
+        private Label label_bbs;
+        private TextBox textBox_password;
+        private Label label_password;
+        private Label label_echo;
+        private ComboBox echo_comboBox;
+        private TextBox textBox_prompt;
+        private Label label_prompt;
+        private TextBox textBox_username_prompt;
+        private Label label_username_prompt;
+        private TextBox textBox_password_prompt;
+        private Label label_password_prompt;
+        private BindingSource bindingSource1;
+        private ToolTip toolTip1;
+        private BindingSource bindingSource2;
         private readonly string _var1; // mode bbs
         private readonly string _var2; //mode telnet
     }

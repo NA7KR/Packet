@@ -1,4 +1,6 @@
-﻿using PacketComs;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using PacketComs;
 
 namespace Packet
 {
@@ -7,7 +9,7 @@ namespace Packet
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
         
         /// <summary>
         /// Clean up any resources being used.
@@ -430,41 +432,41 @@ namespace Packet
 
         #endregion
 
-        private System.Windows.Forms.Button bbs_button;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem setupToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem telnetComToolStripMenuItem;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
-        private System.Windows.Forms.ToolStripMenuItem iPConfigToolStripMenuItem;
-        private System.Windows.Forms.Button forward_button;
-        private System.Windows.Forms.ToolStripMenuItem clusterTelnetComToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clusterIPConfigToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem nodeTelnetComToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem nodeIPConfigToolStripMenuItem;
-        private System.Windows.Forms.Button cluster_button;
-        private System.Windows.Forms.Button node_button;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox2;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox3;
-        private System.Windows.Forms.Button disconnect_button;
-        private System.Windows.Forms.Button ssh_button;
-        private System.Windows.Forms.ToolStripMenuItem beepToolStripMenuItem;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBeep;
-        private System.Windows.Forms.ToolStripMenuItem colourToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem backgroundColourToolStripMenuItem;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxBGC;
-        private System.Windows.Forms.ToolStripMenuItem textColorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxTXTC;
+        private Button bbs_button;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private TextBox textBox1;
+        private ToolStripMenuItem fileToolStripMenuItem1;
+        private ToolStripMenuItem exitToolStripMenuItem1;
+        private ToolStripMenuItem setupToolStripMenuItem;
+        private ToolStripMenuItem telnetComToolStripMenuItem;
+        private ToolStripComboBox toolStripComboBox1;
+        private ToolStripMenuItem iPConfigToolStripMenuItem;
+        private Button forward_button;
+        private ToolStripMenuItem clusterTelnetComToolStripMenuItem;
+        private ToolStripMenuItem clusterIPConfigToolStripMenuItem;
+        private ToolStripMenuItem nodeTelnetComToolStripMenuItem;
+        private ToolStripMenuItem nodeIPConfigToolStripMenuItem;
+        private Button cluster_button;
+        private Button node_button;
+        private ToolStripComboBox toolStripComboBox2;
+        private ToolStripComboBox toolStripComboBox3;
+        private Button disconnect_button;
+        private Button ssh_button;
+        private ToolStripMenuItem beepToolStripMenuItem;
+        private ToolStripComboBox toolStripComboBoxBeep;
+        private ToolStripMenuItem colourToolStripMenuItem;
+        private ToolStripMenuItem backgroundColourToolStripMenuItem;
+        private ToolStripComboBox toolStripComboBoxBGC;
+        private ToolStripMenuItem textColorToolStripMenuItem;
+        private ToolStripComboBox toolStripComboBoxTXTC;
         private TerminalEmulator terminalEmulator1;
-        private System.Windows.Forms.ToolStripMenuItem SSHConfigToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCom;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Button mail_button;
+        private ToolStripMenuItem SSHConfigToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItemCom;
+        private ToolTip toolTip1;
+        private Button mail_button;
         private readonly ModifyRegistry _myRegistryBbs = new ModifyRegistry();
         private readonly Encrypting _myEncrypt = new Encrypting();
         private readonly ModifyRegistry _myRegistry = new ModifyRegistry();

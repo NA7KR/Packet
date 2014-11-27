@@ -3,8 +3,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Renci.SshNet.Common;
-using Renci.SshNet.Messages.Authentication;
 using Renci.SshNet.Messages;
+using Renci.SshNet.Messages.Authentication;
 
 namespace Renci.SshNet
 {

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Renci.SshNet.Security;
-using Renci.SshNet.Messages.Connection;
 using Renci.SshNet.Common;
 using Renci.SshNet.Messages.Authentication;
+using Renci.SshNet.Messages.Connection;
+using Renci.SshNet.Security;
 using Renci.SshNet.Security.Cryptography;
-using Renci.SshNet.Security.Cryptography.Ciphers.Modes;
 using Renci.SshNet.Security.Cryptography.Ciphers;
+using Renci.SshNet.Security.Cryptography.Ciphers.Modes;
 
 namespace Renci.SshNet
 {
@@ -205,7 +205,7 @@ namespace Renci.SshNet
         /// <param name="username">The username.</param>
         /// <param name="authenticationMethods">The authentication methods.</param>
         public ConnectionInfo(string host, string username, params AuthenticationMethod[] authenticationMethods)
-            : this(host, ConnectionInfo.DEFAULT_PORT, username, ProxyTypes.None, null, 0, null, null, authenticationMethods)
+            : this(host, DEFAULT_PORT, username, ProxyTypes.None, null, 0, null, null, authenticationMethods)
         {
         }
 

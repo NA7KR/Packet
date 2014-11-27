@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Threading;
 using Renci.SshNet.Channels;
 using Renci.SshNet.Common;
-using System.Globalization;
 
 namespace Renci.SshNet.Sftp
 {
@@ -136,12 +136,12 @@ namespace Renci.SshNet.Sftp
             }
         }
 
-        private void Channel_DataReceived(object sender, Common.ChannelDataEventArgs e)
+        private void Channel_DataReceived(object sender, ChannelDataEventArgs e)
         {
             this.OnDataReceived(e.DataTypeCode, e.Data);
         }
 
-        private void Channel_Closed(object sender, Common.ChannelEventArgs e)
+        private void Channel_Closed(object sender, ChannelEventArgs e)
         {
             this._channelClosedWaitHandle.Set();
         }

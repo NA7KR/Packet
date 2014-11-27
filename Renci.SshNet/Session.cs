@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -15,8 +16,8 @@ using Renci.SshNet.Messages.Authentication;
 using Renci.SshNet.Messages.Connection;
 using Renci.SshNet.Messages.Transport;
 using Renci.SshNet.Security;
-using System.Globalization;
 using Renci.SshNet.Security.Cryptography;
+using ASCIIEncoding = Renci.SshNet.Common.ASCIIEncoding;
 
 namespace Renci.SshNet
 {
@@ -35,7 +36,7 @@ namespace Renci.SshNet
         /// </summary>
         protected const int MAXIMUM_PAYLOAD_SIZE = 1024 * 32;
 
-        private static RNGCryptoServiceProvider _randomizer = new System.Security.Cryptography.RNGCryptoServiceProvider();
+        private static RNGCryptoServiceProvider _randomizer = new RNGCryptoServiceProvider();
 
 #if SILVERLIGHT
         private static Regex _serverVersionRe = new Regex("^SSH-(?<protoversion>[^-]+)-(?<softwareversion>.+)( SP.+)?$");
@@ -666,9 +667,9 @@ namespace Renci.SshNet
 
             var messageData = message.GetBytes();
 
-            if (messageData.Length > Session.MAXIMUM_PAYLOAD_SIZE)
+            if (messageData.Length > MAXIMUM_PAYLOAD_SIZE)
             {
-                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Payload cannot be more then {0} bytes.", Session.MAXIMUM_PAYLOAD_SIZE));
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Payload cannot be more then {0} bytes.", MAXIMUM_PAYLOAD_SIZE));
             }
 
             if (this._clientCompression != null)
@@ -717,9 +718,9 @@ namespace Renci.SshNet
                     packetData = this._clientCipher.Encrypt(packetData);
                 }
 
-                if (packetData.Length > Session.MAXIMUM_PACKET_SIZE)
+                if (packetData.Length > MAXIMUM_PACKET_SIZE)
                 {
-                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Packet is too big. Maximum packet size is {0} bytes.", Session.MAXIMUM_PACKET_SIZE));
+                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Packet is too big. Maximum packet size is {0} bytes.", MAXIMUM_PACKET_SIZE));
                 }
 
                 if (this._clientMac == null)
@@ -810,7 +811,7 @@ namespace Renci.SshNet
             var packetLength = (uint)(firstBlock[0] << 24 | firstBlock[1] << 16 | firstBlock[2] << 8 | firstBlock[3]);
 
             //  Test packet minimum and maximum boundaries
-            if (packetLength < Math.Max((byte)16, blockSize) - 4 || packetLength > Session.MAXIMUM_PACKET_SIZE - 4)
+            if (packetLength < Math.Max((byte)16, blockSize) - 4 || packetLength > MAXIMUM_PACKET_SIZE - 4)
                 throw new SshConnectionException(string.Format(CultureInfo.CurrentCulture, "Bad packet length {0}", packetLength), DisconnectReason.ProtocolError);
 
             //  Read rest of the packet data
@@ -1624,7 +1625,7 @@ namespace Renci.SshNet
             this.SocketWrite(ipAddress.GetAddressBytes());
 
             //  Send username
-            var username = new Renci.SshNet.Common.ASCIIEncoding().GetBytes(this.ConnectionInfo.ProxyUsername);
+            var username = new ASCIIEncoding().GetBytes(this.ConnectionInfo.ProxyUsername);
             this.SocketWrite(username);
             this.SocketWriteByte(0x00);
 
@@ -1686,7 +1687,7 @@ namespace Renci.SshNet
                     //  Send version
                     this.SocketWriteByte(0x01);
 
-                    var encoding = new Renci.SshNet.Common.ASCIIEncoding();
+                    var encoding = new ASCIIEncoding();
 
                     var username = encoding.GetBytes(this.ConnectionInfo.ProxyUsername);
 
@@ -1825,7 +1826,7 @@ namespace Renci.SshNet
             var httpResponseRe = new Regex(@"HTTP/(?<version>\d[.]\d) (?<statusCode>\d{3}) (?<reasonPhrase>.+)$");
             var httpHeaderRe = new Regex(@"(?<fieldName>[^\[\]()<>@,;:\""/?={} \t]+):(?<fieldValue>.+)?");
 
-            var encoding = new Renci.SshNet.Common.ASCIIEncoding();
+            var encoding = new ASCIIEncoding();
 
             this.SocketWrite(encoding.GetBytes(string.Format("CONNECT {0}:{1} HTTP/1.0\r\n", this.ConnectionInfo.Host, this.ConnectionInfo.Port)));
 

@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Net.Sockets;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using Renci.SshNet.Channels;
+using Renci.SshNet.Common;
 
 namespace Renci.SshNet
 {
@@ -105,7 +106,7 @@ namespace Renci.SshNet
             this.IsStarted = false;
         }
 
-        private void Session_ErrorOccured(object sender, Common.ExceptionEventArgs e)
+        private void Session_ErrorOccured(object sender, ExceptionEventArgs e)
         {
             this._listener.Stop();
         }

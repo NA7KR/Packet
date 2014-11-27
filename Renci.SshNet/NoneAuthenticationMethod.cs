@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using Renci.SshNet.Messages.Authentication;
 using Renci.SshNet.Messages;
+using Renci.SshNet.Messages.Authentication;
 
 namespace Renci.SshNet
 {

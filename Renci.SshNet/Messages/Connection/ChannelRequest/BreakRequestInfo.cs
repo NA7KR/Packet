@@ -20,7 +20,7 @@ namespace Renci.SshNet.Messages.Connection
         /// </value>
         public override string RequestName
         {
-            get { return BreakRequestInfo.NAME; }
+            get { return NAME; }
         }
 
         /// <summary>

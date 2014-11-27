@@ -1,8 +1,9 @@
 ﻿using System;
-using Renci.SshNet.Channels;
 using System.IO;
-using Renci.SshNet.Common;
+using System.Text;
 using System.Text.RegularExpressions;
+using Renci.SshNet.Channels;
+using Renci.SshNet.Common;
 
 namespace Renci.SshNet
 {
@@ -33,7 +34,7 @@ namespace Renci.SshNet
             using (var input = new PipeStream())
             using (var channel = this.Session.CreateChannel<ChannelSession>())
             {
-                channel.DataReceived += delegate(object sender, Common.ChannelDataEventArgs e)
+                channel.DataReceived += delegate(object sender, ChannelDataEventArgs e)
                 {
                     input.Write(e.Data, 0, e.Data.Length);
                     input.Flush();
@@ -69,7 +70,7 @@ namespace Renci.SshNet
             using (var input = new PipeStream())
             using (var channel = this.Session.CreateChannel<ChannelSession>())
             {
-                channel.DataReceived += delegate(object sender, Common.ChannelDataEventArgs e)
+                channel.DataReceived += delegate(object sender, ChannelDataEventArgs e)
                 {
                     input.Write(e.Data, 0, e.Data.Length);
                     input.Flush();
@@ -111,7 +112,7 @@ namespace Renci.SshNet
             using (var input = new PipeStream())
             using (var channel = this.Session.CreateChannel<ChannelSession>())
             {
-                channel.DataReceived += delegate(object sender, Common.ChannelDataEventArgs e)
+                channel.DataReceived += delegate(object sender, ChannelDataEventArgs e)
                 {
                     input.Write(e.Data, 0, e.Data.Length);
                     input.Flush();
@@ -146,7 +147,7 @@ namespace Renci.SshNet
             using (var input = new PipeStream())
             using (var channel = this.Session.CreateChannel<ChannelSession>())
             {
-                channel.DataReceived += delegate(object sender, Common.ChannelDataEventArgs e)
+                channel.DataReceived += delegate(object sender, ChannelDataEventArgs e)
                 {
                     input.Write(e.Data, 0, e.Data.Length);
                     input.Flush();
@@ -300,7 +301,7 @@ namespace Renci.SshNet
 
         partial void SendData(ChannelSession channel, string command)
         {
-            channel.SendData(System.Text.Encoding.Default.GetBytes(command));
+            channel.SendData(Encoding.Default.GetBytes(command));
         }
     }
 }

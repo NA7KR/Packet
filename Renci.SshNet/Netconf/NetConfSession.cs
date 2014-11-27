@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
+using System.Xml;
 using Renci.SshNet.Common;
 using Renci.SshNet.Sftp;
-using System.Xml;
-using System.Text.RegularExpressions;
 
 namespace Renci.SshNet.NetConf
 {

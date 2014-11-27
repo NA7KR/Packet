@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
+using System.Text.RegularExpressions;
+using System.Threading;
 using Renci.SshNet.Channels;
 using Renci.SshNet.Common;
-using System.Threading;
-using System.Text.RegularExpressions;
 
 namespace Renci.SshNet
 {
@@ -202,7 +202,7 @@ namespace Renci.SshNet
         /// <exception cref="T:System.NotSupportedException">The stream does not support seeking, such as if the stream is constructed from a pipe or console output. </exception>
         ///   
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-        public override long Seek(long offset, System.IO.SeekOrigin origin)
+        public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException();
         }

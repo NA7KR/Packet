@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace Packet
 {
@@ -7,7 +9,7 @@ namespace Packet
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -544,42 +546,42 @@ namespace Packet
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBoxBaudRate;
-        private System.Windows.Forms.RadioButton radioButton110;
-        private System.Windows.Forms.RadioButton radioButton19200;
-        private System.Windows.Forms.RadioButton radioButton1200;
-        private System.Windows.Forms.RadioButton radioButton9600;
-        private System.Windows.Forms.RadioButton radioButton600;
-        private System.Windows.Forms.RadioButton radioButton4800;
-        private System.Windows.Forms.RadioButton radioButton300;
-        private System.Windows.Forms.GroupBox groupBoxDataBits;
-        private System.Windows.Forms.RadioButton radioButton_Data_8;
-        private System.Windows.Forms.RadioButton radioButton_Data_7;
-        private System.Windows.Forms.RadioButton radioButton_Data_6;
-        private System.Windows.Forms.RadioButton radioButton_Data_5;
-        private System.Windows.Forms.GroupBox groupBoxParity;
-        private System.Windows.Forms.RadioButton radioButton_Parity_Space;
-        private System.Windows.Forms.RadioButton radioButton_Parity_Mark;
-        private System.Windows.Forms.RadioButton radioButton_Parity_Even;
-        private System.Windows.Forms.RadioButton radioButton_Parity_Odd;
-        private System.Windows.Forms.RadioButton radioButton_Parity_None;
-        private System.Windows.Forms.Button ok_button;
-        private System.Windows.Forms.Button cancel_button;
-        private System.Windows.Forms.GroupBox groupBoxStopBits;
-        private System.Windows.Forms.RadioButton radioButton_Stop_1_5;
-        private System.Windows.Forms.RadioButton radioButton_Stop_1;
-        private System.Windows.Forms.GroupBox groupBoxFlow;
-        private System.Windows.Forms.RadioButton radioButton_Flow_None;
-        private System.Windows.Forms.RadioButton radioButton_Flow_RequestToSendXOnXOff;
-        private System.Windows.Forms.RadioButton radioButton_Flow_Xon_Xoff;
-        private System.Windows.Forms.ComboBox comboBoxPort;
-        private System.Windows.Forms.Label Port_label;
-        private System.Windows.Forms.RadioButton radioButton57600;
-        private System.Windows.Forms.RadioButton radioButton38400;
-        private System.Windows.Forms.RadioButton radioButton2400;
-        private System.Windows.Forms.RadioButton radioButton_Stop_None;
-        private System.Windows.Forms.RadioButton radioButton_Stop_2;
-        private System.Windows.Forms.RadioButton radioButton_Flow_RequestToSend;
+        private GroupBox groupBoxBaudRate;
+        private RadioButton radioButton110;
+        private RadioButton radioButton19200;
+        private RadioButton radioButton1200;
+        private RadioButton radioButton9600;
+        private RadioButton radioButton600;
+        private RadioButton radioButton4800;
+        private RadioButton radioButton300;
+        private GroupBox groupBoxDataBits;
+        private RadioButton radioButton_Data_8;
+        private RadioButton radioButton_Data_7;
+        private RadioButton radioButton_Data_6;
+        private RadioButton radioButton_Data_5;
+        private GroupBox groupBoxParity;
+        private RadioButton radioButton_Parity_Space;
+        private RadioButton radioButton_Parity_Mark;
+        private RadioButton radioButton_Parity_Even;
+        private RadioButton radioButton_Parity_Odd;
+        private RadioButton radioButton_Parity_None;
+        private Button ok_button;
+        private Button cancel_button;
+        private GroupBox groupBoxStopBits;
+        private RadioButton radioButton_Stop_1_5;
+        private RadioButton radioButton_Stop_1;
+        private GroupBox groupBoxFlow;
+        private RadioButton radioButton_Flow_None;
+        private RadioButton radioButton_Flow_RequestToSendXOnXOff;
+        private RadioButton radioButton_Flow_Xon_Xoff;
+        private ComboBox comboBoxPort;
+        private Label Port_label;
+        private RadioButton radioButton57600;
+        private RadioButton radioButton38400;
+        private RadioButton radioButton2400;
+        private RadioButton radioButton_Stop_None;
+        private RadioButton radioButton_Stop_2;
+        private RadioButton radioButton_Flow_RequestToSend;
         public string flow;
         public string parity;
         public string port;

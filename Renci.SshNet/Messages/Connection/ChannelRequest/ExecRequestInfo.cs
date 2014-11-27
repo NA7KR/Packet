@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Renci.SshNet.Messages.Connection
 {
@@ -20,7 +21,7 @@ namespace Renci.SshNet.Messages.Connection
         /// </value>
         public override string RequestName
         {
-            get { return ExecRequestInfo.NAME; }
+            get { return NAME; }
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace Renci.SshNet.Messages.Connection
             : this()
         {
             if (command == null)
-                throw new System.ArgumentNullException("command");
+                throw new ArgumentNullException("command");
 
             this.Command = command;
             this.Encoding = encoding;

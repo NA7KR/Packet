@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Globalization;
 
 namespace Renci.SshNet.Common
 {
@@ -236,7 +236,7 @@ namespace Renci.SshNet.Common
         /// <returns>string read</returns>
         protected string ReadString()
         {
-            return this.ReadString(SshData._utf8);
+            return this.ReadString(_utf8);
         }
 
         /// <summary>
@@ -388,7 +388,7 @@ namespace Renci.SshNet.Common
         /// <param name="data">string data to write.</param>
         protected void WriteAscii(string data)
         {
-            this.Write(data, SshData._ascii);
+            this.Write(data, _ascii);
         }
 
         /// <summary>
@@ -398,7 +398,7 @@ namespace Renci.SshNet.Common
         /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
         protected void Write(string data)
         {
-            this.Write(data, SshData._utf8);
+            this.Write(data, _utf8);
         }
 
         protected void Write(string data, Encoding encoding)

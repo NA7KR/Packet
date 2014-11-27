@@ -1,6 +1,6 @@
-﻿using Renci.SshNet.Common;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
+using Renci.SshNet.Common;
 
 namespace Renci.SshNet.Messages.Transport
 {

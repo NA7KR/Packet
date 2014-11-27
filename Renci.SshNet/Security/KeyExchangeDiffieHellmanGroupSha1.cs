@@ -1,4 +1,5 @@
-﻿using Renci.SshNet.Common;
+﻿using System;
+using Renci.SshNet.Common;
 using Renci.SshNet.Messages;
 using Renci.SshNet.Messages.Transport;
 
@@ -108,7 +109,7 @@ namespace Renci.SshNet.Security
 
             protected override void LoadData()
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             protected override void SaveData()

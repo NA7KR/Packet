@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Threading;
-using Renci.SshNet.Channels;
-using Renci.SshNet.Messages.Connection;
-using Renci.SshNet.Common;
 using System.Globalization;
 using System.Net;
+using System.Threading;
+using Renci.SshNet.Channels;
+using Renci.SshNet.Common;
+using Renci.SshNet.Messages.Connection;
 
 namespace Renci.SshNet
 {
@@ -174,7 +174,7 @@ namespace Renci.SshNet
             }
         }
 
-        private void Session_RequestFailure(object sender, System.EventArgs e)
+        private void Session_RequestFailure(object sender, EventArgs e)
         {
             this._requestStatus = false;
             this._globalRequestResponse.Set();

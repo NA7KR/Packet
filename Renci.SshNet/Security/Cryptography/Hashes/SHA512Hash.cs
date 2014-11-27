@@ -46,14 +46,14 @@
 
             this.Finish();
 
-            SHA2HashBase.UInt64_To_BE(H1, output, 0);
-            SHA2HashBase.UInt64_To_BE(H2, output, 8);
-            SHA2HashBase.UInt64_To_BE(H3, output, 16);
-            SHA2HashBase.UInt64_To_BE(H4, output, 24);
-            SHA2HashBase.UInt64_To_BE(H5, output, 32);
-            SHA2HashBase.UInt64_To_BE(H6, output, 40);
-            SHA2HashBase.UInt64_To_BE(H7, output, 48);
-            SHA2HashBase.UInt64_To_BE(H8, output, 56);
+            UInt64_To_BE(H1, output, 0);
+            UInt64_To_BE(H2, output, 8);
+            UInt64_To_BE(H3, output, 16);
+            UInt64_To_BE(H4, output, 24);
+            UInt64_To_BE(H5, output, 32);
+            UInt64_To_BE(H6, output, 40);
+            UInt64_To_BE(H7, output, 48);
+            UInt64_To_BE(H8, output, 56);
 
             this.Initialize();
 

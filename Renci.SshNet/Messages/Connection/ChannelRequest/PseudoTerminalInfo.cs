@@ -1,5 +1,6 @@
-﻿using Renci.SshNet.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Renci.SshNet.Common;
+
 namespace Renci.SshNet.Messages.Connection
 {
     /// <summary>
@@ -20,7 +21,7 @@ namespace Renci.SshNet.Messages.Connection
         /// </value>
         public override string RequestName
         {
-            get { return PseudoTerminalRequestInfo.NAME; }
+            get { return NAME; }
         }
 
         /// <summary>

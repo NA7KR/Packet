@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
 using System.Linq;
-using System;
-using Renci.SshNet.Messages;
 using System.Threading;
+using System.Threading.Tasks;
+using Renci.SshNet.Messages;
 
 namespace Renci.SshNet
 {

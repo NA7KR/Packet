@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 using Renci.SshNet.Common;
 using Renci.SshNet.Messages;
 using Renci.SshNet.Messages.Connection;
-using System.Globalization;
 
 namespace Renci.SshNet.Channels
 {

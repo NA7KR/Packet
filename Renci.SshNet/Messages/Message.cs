@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Renci.SshNet.Common;
-using System.Globalization;
 
 namespace Renci.SshNet.Messages
 {

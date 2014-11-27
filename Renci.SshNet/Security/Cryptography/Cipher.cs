@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Renci.SshNet.Security.Cryptography
+﻿namespace Renci.SshNet.Security.Cryptography
 {
     /// <summary>
     /// Base class for cipher implementation.
@@ -62,7 +60,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// Converts big endian bytes into number.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        /// <returns>Converted <see cref="Int32" />.</returns>
+        /// <returns>Converted <see cref="int" />.</returns>
         protected static uint BigEndianToUInt32(byte[] buffer)
         {
             uint n = (uint)buffer[0] << 24;
@@ -77,7 +75,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="offset">The buffer offset.</param>
-        /// <returns>Converted <see cref="UInt32" />.</returns>
+        /// <returns>Converted <see cref="uint" />.</returns>
         protected static uint BigEndianToUInt32(byte[] buffer, int offset)
         {
             uint n = (uint)buffer[offset] << 24;
@@ -91,7 +89,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// Converts big endian bytes into number.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        /// <returns>Converted <see cref="UInt64" />.</returns>
+        /// <returns>Converted <see cref="ulong" />.</returns>
         protected static ulong BigEndianToUInt64(byte[] buffer)
         {
             uint hi = BigEndianToUInt32(buffer);
@@ -104,7 +102,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="offset">The buffer offset.</param>
-        /// <returns>Converted <see cref="UInt64" />.</returns>
+        /// <returns>Converted <see cref="ulong" />.</returns>
         protected static ulong BigEndianToUInt64(byte[] buffer, int offset)
         {
             uint hi = BigEndianToUInt32(buffer, offset);
@@ -166,7 +164,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// Converts little endian bytes into number.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        /// <returns>Converted <see cref="UInt32" />.</returns>
+        /// <returns>Converted <see cref="uint" />.</returns>
         protected static uint LittleEndianToUInt32(byte[] buffer)
         {
             uint n = (uint)buffer[0];
@@ -181,7 +179,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="offset">The buffer offset.</param>
-        /// <returns>Converted <see cref="Int32" />.</returns>
+        /// <returns>Converted <see cref="int" />.</returns>
         protected static uint LittleEndianToUInt32(byte[] buffer, int offset)
         {
             uint n = (uint)buffer[offset];
@@ -195,7 +193,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// Converts little endian bytes into number.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        /// <returns>Converted <see cref="UInt64" />.</returns>
+        /// <returns>Converted <see cref="ulong" />.</returns>
         protected static ulong LittleEndianToUInt64(byte[] buffer)
         {
             uint lo = LittleEndianToUInt32(buffer);
@@ -208,7 +206,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="offset">The buffer offset.</param>
-        /// <returns>Converted <see cref="UInt64" />.</returns>
+        /// <returns>Converted <see cref="ulong" />.</returns>
         protected static ulong LittleEndianToUInt64(byte[] buffer, int offset)
         {
             uint lo = LittleEndianToUInt32(buffer, offset);

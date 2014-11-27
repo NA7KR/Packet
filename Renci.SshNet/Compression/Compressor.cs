@@ -1,6 +1,6 @@
-﻿using Renci.SshNet.Security;
+﻿using System;
 using System.IO;
-using System;
+using Renci.SshNet.Security;
 
 namespace Renci.SshNet.Compression
 {

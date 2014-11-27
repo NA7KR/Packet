@@ -18,7 +18,7 @@
         /// </value>
         public override string RequestName
         {
-            get { return EndOfWriteRequestInfo.NAME; }
+            get { return NAME; }
         }
 
         /// <summary>

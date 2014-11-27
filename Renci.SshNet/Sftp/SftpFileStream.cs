@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
-using System.Diagnostics.CodeAnalysis;
 using Renci.SshNet.Common;
 
 namespace Renci.SshNet.Sftp

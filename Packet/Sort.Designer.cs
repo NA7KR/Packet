@@ -1,11 +1,14 @@
-﻿namespace Packet
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Packet
 {
     partial class Sort
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -99,10 +102,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_ok;
-        private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.ErrorProvider errorProvider2;
+        private Button button_ok;
+        private Button button_Cancel;
+        private ListView listView1;
+        private ErrorProvider errorProvider1;
+        private ErrorProvider errorProvider2;
     }
 }

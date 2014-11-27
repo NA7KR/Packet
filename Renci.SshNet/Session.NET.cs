@@ -1,13 +1,14 @@
-﻿using System.Linq;
-using System;
-using System.Net.Sockets;
-using System.Net;
-using Renci.SshNet.Common;
-using System.Threading;
-using Renci.SshNet.Messages.Transport;
-using System.Diagnostics;
-using System.Text;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using Renci.SshNet.Common;
+using Renci.SshNet.Messages.Transport;
+using ASCIIEncoding = Renci.SshNet.Common.ASCIIEncoding;
 
 namespace Renci.SshNet
 {
@@ -59,7 +60,7 @@ namespace Renci.SshNet
 
         partial void SocketReadLine(ref string response)
         {
-            var encoding = new Renci.SshNet.Common.ASCIIEncoding();
+            var encoding = new ASCIIEncoding();
 
             var line = new StringBuilder();
             //  Read data one byte at a time to find end of line and leave any unhandled information in the buffer to be processed later
@@ -180,7 +181,7 @@ namespace Renci.SshNet
 
         partial void Log(string text)
         {
-            this._log.TraceEvent(System.Diagnostics.TraceEventType.Verbose, 1, text);
+            this._log.TraceEvent(TraceEventType.Verbose, 1, text);
         }
     }
 }

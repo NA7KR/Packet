@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using PacketComs;
 
-
 #endregion
 
 namespace Packet

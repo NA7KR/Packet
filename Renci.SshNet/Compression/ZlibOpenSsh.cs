@@ -1,4 +1,6 @@
-﻿namespace Renci.SshNet.Compression
+﻿using Renci.SshNet.Messages.Authentication;
+
+namespace Renci.SshNet.Compression
 {
     /// <summary>
     /// Represents "zlib@openssh.org" compression implementation
@@ -24,7 +26,7 @@
             session.UserAuthenticationSuccessReceived += Session_UserAuthenticationSuccessReceived;
         }
 
-        private void Session_UserAuthenticationSuccessReceived(object sender, MessageEventArgs<Messages.Authentication.SuccessMessage> e)
+        private void Session_UserAuthenticationSuccessReceived(object sender, MessageEventArgs<SuccessMessage> e)
         {
             this.IsActive = true;
             this.Session.UserAuthenticationSuccessReceived -= Session_UserAuthenticationSuccessReceived;

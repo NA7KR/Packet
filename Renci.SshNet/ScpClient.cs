@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Text;
-using Renci.SshNet.Channels;
-using System.IO;
-using Renci.SshNet.Common;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Diagnostics.CodeAnalysis;
+using Renci.SshNet.Channels;
+using Renci.SshNet.Common;
 
 namespace Renci.SshNet
 {
@@ -144,7 +144,7 @@ namespace Renci.SshNet
             using (var input = new PipeStream())
             using (var channel = this.Session.CreateChannel<ChannelSession>())
             {
-                channel.DataReceived += delegate(object sender, Common.ChannelDataEventArgs e)
+                channel.DataReceived += delegate(object sender, ChannelDataEventArgs e)
                 {
                     input.Write(e.Data, 0, e.Data.Length);
                     input.Flush();
@@ -198,7 +198,7 @@ namespace Renci.SshNet
             using (var input = new PipeStream())
             using (var channel = this.Session.CreateChannel<ChannelSession>())
             {
-                channel.DataReceived += delegate(object sender, Common.ChannelDataEventArgs e)
+                channel.DataReceived += delegate(object sender, ChannelDataEventArgs e)
                 {
                     input.Write(e.Data, 0, e.Data.Length);
                     input.Flush();

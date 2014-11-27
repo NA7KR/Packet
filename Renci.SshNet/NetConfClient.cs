@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Xml;
 using Renci.SshNet.Common;
 using Renci.SshNet.NetConf;
-using System.Xml;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Renci.SshNet
 {

@@ -1,11 +1,11 @@
-﻿namespace Renci.SshNet.Common
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Threading;
-    using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Threading;
 
+namespace Renci.SshNet.Common
+{
     /// <summary>
     /// PipeStream is a thread-safe read/write data stream for use between two threads in a 
     /// single-producer/single-consumer type problem.
