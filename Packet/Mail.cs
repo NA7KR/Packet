@@ -16,34 +16,37 @@ namespace Packet
         private static readonly ModifyFile MyFiles = new ModifyFile();
 
         #region Mail InitializeComponent
+
         public Mail()
         {
             InitializeComponent();
         }
+
         #endregion
 
         #region OK
+
         private void button_OK_Click(object sender, EventArgs e)
         {
             int i;
             try
             {
                 DataGridView1.Visible = true;
-                    
-                string myString = MyFiles.RX();
-                string[] lines = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                string[] rxmsg = new string[lines.Length];
-                string[] rxtsld = new string[lines.Length];
-                string[] rxsize = new string[lines.Length];
-                string[] rxto = new string[lines.Length];
-                string[] rxroute = new string[lines.Length];
-                string[] rxfrom = new string[lines.Length];
-                string[] rxdate = new string[lines.Length];
-                string[] rxsubject = new string[lines.Length];
+                DataGridView1.Rows.Clear();
+                var myString = MyFiles.RX();
+                var lines = myString.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+                var rxmsg = new string[lines.Length];
+                var rxtsld = new string[lines.Length];
+                var rxsize = new string[lines.Length];
+                var rxto = new string[lines.Length];
+                var rxroute = new string[lines.Length];
+                var rxfrom = new string[lines.Length];
+                var rxdate = new string[lines.Length];
+                var rxsubject = new string[lines.Length];
 
                 for (i = 0; i < lines.Length; i++)
                 {
-                    string line = lines[i];
+                    var line = lines[i];
                     rxmsg[i] = Mid(line, 0, 4);
                     rxtsld[i] = Mid(line, 7, 4);
                     rxsize[i] = Mid(line, 13, 5);
@@ -52,62 +55,68 @@ namespace Packet
                     rxfrom[i] = Mid(line, 32, 7);
                     rxdate[i] = Mid(line, 39, 9);
                     rxsubject[i] = Mid(line, 48, (line.Length - 48));
-                    DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i], rxsubject[i]);         
+                    DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i],
+                        rxsubject[i]);
                 }
                 MyFiles.WriteST(RemovePepeatWords("SortTo", rxto), "SortTo");
                 MyFiles.WriteST(RemovePepeatWords("SortRoute", rxroute), "SortRoute");
                 MyFiles.WriteST(RemovePepeatWords("SortFrom", rxfrom), "SortFrom");
-                MyFiles.WriteST(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");  
+                MyFiles.WriteST(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");
             }
             catch (IOException ex)
             {
                 MessageBox.Show("Error in file read" + " " + ex.Source);
             }
         }
+
         #endregion
 
         #region Mid
+
         public static string Mid(string param, int startIndex, int length)
         {
-                if (param == "")
-                {
-                    return null;
-                }
-                string result = param.Substring(startIndex, length);
-                return result;
+            if (param == "")
+            {
+                return null;
+            }
+            var result = param.Substring(startIndex, length);
+            return result;
         }
+
         #endregion
 
         #region cancel
+
         private void button_Cancel_Click(object sender, EventArgs e)
         {
             Close();
         }
+
         #endregion
 
         #region RemovePepeatWords
-        public static string RemovePepeatWords( string fileName, Array arrayName)
+
+        public static string RemovePepeatWords(string fileName, Array arrayName)
         {
             //read file
-            string str1 = MyFiles.RXST(fileName);
-           
+            var str1 = MyFiles.RXST(fileName);
+
             //
             foreach (string str in arrayName)
             {
-                
                 str1 = str + "," + str1;
             }
             str1 = str1.Replace(Environment.NewLine, ",");
             str1 = str1.Replace("\r", ",");
             str1 = str1.Replace("\n", ",");
-         
+
             str1 = str1.Replace(" ", "");
 
-            Dictionary<string, bool> listofUniqueWords = new Dictionary<string, bool>();
-            StringBuilder destBuilder = new StringBuilder();
-            string[] spilltedwords = str1.Split(new[] { ','}, StringSplitOptions.RemoveEmptyEntries);
+            var listofUniqueWords = new Dictionary<string, bool>();
+            var destBuilder = new StringBuilder();
+            var spilltedwords = str1.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             Array.Sort(spilltedwords);
-            foreach (string item in spilltedwords)
+            foreach (var item in spilltedwords)
             {
                 if (!listofUniqueWords.ContainsKey(item))
                 {
@@ -115,13 +124,14 @@ namespace Packet
                     listofUniqueWords.Add(item, true);
                 }
             }
- 
-           return destBuilder.ToString().Trim();
-            
+
+            return destBuilder.ToString().Trim();
         }
+
         #endregion
 
         #region Mail_Load
+
         private void Mail_Load(object sender, EventArgs e)
         {
             DataGridView1.Columns.Add("RXMSG", "MSG");
@@ -147,54 +157,66 @@ namespace Packet
                                   DataGridView1.Columns[6].Width + DataGridView1.Columns[7].Width + 60;
             DataGridView1.Left = 10;
             Width = DataGridView1.Width + 50;
-
         }
+
         #endregion
 
         #region DataGridView1_Scroll
+
         private void DataGridView1_Scroll(object sender, ScrollEventArgs e)
         {
             DataGridView1.Invalidate();
         }
-        #endregion 
+
+        #endregion
 
         #region exitToolStripMenuItem
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
+
         #endregion
 
         #region toolStripMenuItem TO
+
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             var box = new Sort("SelectedTo", "SortTo");
             box.ShowDialog();
         }
+
         #endregion
 
         #region toolStripMenuItem Subject
+
         private void configToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             var box = new Sort("SelectedSubject", "SortSubject");
             box.ShowDialog();
         }
+
         #endregion
 
         #region toolStripMenuItem From
+
         private void configToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             var box = new Sort("SelectedFrom", "SortFrom");
             box.ShowDialog();
         }
+
         #endregion
 
         #region toolStripMenuItem Roure
+
         private void configToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var box = new Sort("SelectedRoute", "SortRoute");
             box.ShowDialog();
         }
+
         #endregion
     }
 }
