@@ -91,8 +91,34 @@ namespace PacketComs
                 MessageBox.Show(e.Message);
                 return false;
             }
-        } //end write
+        } //end delete
+        #endregion
 
+        #region checkST
+        public bool? CheckST(string fileName)
+        {
+
+            try
+            {
+                string path = Directory.GetCurrentDirectory() + @"\Data";
+                if (!Directory.Exists(path))
+                {
+                    // Try to create the directory.
+                    Directory.CreateDirectory(path);
+                }
+                path = path + @"\" + fileName + ".txt";
+                if (File.Exists(path))
+                {
+                    return true;
+                }
+                return null;
+            } //end try
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+        } //end check
         #endregion
 
         #region RXST

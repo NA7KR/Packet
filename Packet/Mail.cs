@@ -42,6 +42,7 @@ namespace Packet
                 }
                 MyFiles.WriteST(ToDownLoad, "ToDownLoad");
             }
+            Close();
         }
         #endregion
 

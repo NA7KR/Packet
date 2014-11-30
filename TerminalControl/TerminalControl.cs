@@ -162,11 +162,12 @@ namespace PacketComs
             DispatchMessage(this, nb);
             DispatchMessage(this, Environment.NewLine);
 
-            nb = "R " + _myFiles.RXST("ToDownLoad");
-            DispatchMessage(this, nb);
-            DispatchMessage(this, Environment.NewLine);
-            if (_myFiles.DeleteST("ToDownLoad") == true)
+            
+            if (_myFiles.CheckST("ToDownLoad") == true)
             {
+                nb = "R " + _myFiles.RXST("ToDownLoad");
+                DispatchMessage(this, nb);
+                DispatchMessage(this, Environment.NewLine);
                 _myFiles.DeleteST("ToDownLoad");
             }
         }
