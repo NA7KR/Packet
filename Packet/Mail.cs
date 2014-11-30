@@ -25,26 +25,27 @@ namespace Packet
         #endregion
 
         #region OK
-
         private void button_OK_Click(object sender, EventArgs e)
         {
-            try
+            if (DataGridView1.SelectedRows != null)
             {
-                foreach (DataGridViewCell cell in DataGridView1.SelectedCells)
+                string ToDownLoad = "";
+                bool firstvalue = true;
+                foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
                 {
-                    MessageBox.Show(cell.Value.ToString());
+                    if (!firstvalue)
+                    {
+                        ToDownLoad += ",";
+                    }
+                    ToDownLoad += drv.Cells[0].Value.ToString();
+                    firstvalue = false;
                 }
-            }
-            catch (IOException ex)
-            {
-                MessageBox.Show("Error in file read" + " " + ex.Source);
+                MyFiles.WriteST(ToDownLoad, "ToDownLoad");
             }
         }
-
         #endregion
 
         #region Mid
-
         public static string Mid(string param, int startIndex, int length)
         {
             if (param == "")
@@ -54,20 +55,16 @@ namespace Packet
             var result = param.Substring(startIndex, length);
             return result;
         }
-
         #endregion
 
         #region cancel
-
         private void button_Cancel_Click(object sender, EventArgs e)
         {
             Close();
         }
-
         #endregion
 
         #region RemovePepeatWords
-
         public static string RemovePepeatWords(string fileName, Array arrayName)
         {
             //read file
@@ -99,11 +96,9 @@ namespace Packet
 
             return destBuilder.ToString().Trim();
         }
-
         #endregion
 
         #region Mail_Load
-
         private void Mail_Load(object sender, EventArgs e)
         {
             int i;
@@ -169,65 +164,52 @@ namespace Packet
                 MessageBox.Show("Error in file read" + " " + ex.Source);
             }
         }
-
         #endregion
 
         #region DataGridView1_Scroll
-
         private void DataGridView1_Scroll(object sender, ScrollEventArgs e)
         {
             DataGridView1.Invalidate();
         }
-
         #endregion
 
         #region exitToolStripMenuItem
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
-
         #endregion
 
         #region toolStripMenuItem TO
-
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             var box = new Sort("SelectedTo", "SortTo");
             box.ShowDialog();
         }
-
         #endregion
 
         #region toolStripMenuItem Subject
-
         private void configToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             var box = new Sort("SelectedSubject", "SortSubject");
             box.ShowDialog();
         }
-
         #endregion
 
         #region toolStripMenuItem From
-
         private void configToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             var box = new Sort("SelectedFrom", "SortFrom");
             box.ShowDialog();
         }
-
         #endregion
 
         #region toolStripMenuItem Roure
-
         private void configToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var box = new Sort("SelectedRoute", "SortRoute");
             box.ShowDialog();
         }
-
         #endregion
     }
 }

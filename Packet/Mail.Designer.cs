@@ -46,6 +46,8 @@ namespace Packet
             this.keepQTYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
             this.cleanListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mailConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemTO = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,8 +58,7 @@ namespace Packet
             this.ToolStripMenuItemSubject = new System.Windows.Forms.ToolStripMenuItem();
             this.configToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.customToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cleanSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -158,7 +159,7 @@ namespace Packet
             this.keepTimeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox1});
             this.keepTimeToolStripMenuItem.Name = "keepTimeToolStripMenuItem";
-            this.keepTimeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.keepTimeToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.keepTimeToolStripMenuItem.Text = "Keep Time";
             // 
             // toolStripComboBox1
@@ -181,7 +182,7 @@ namespace Packet
             this.keepQTYToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox2});
             this.keepQTYToolStripMenuItem.Name = "keepQTYToolStripMenuItem";
-            this.keepQTYToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.keepQTYToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.keepQTYToolStripMenuItem.Text = "Keep QTY";
             // 
             // toolStripComboBox2
@@ -205,8 +206,20 @@ namespace Packet
             this.allToolStripMenuItem,
             this.cleanSelectedToolStripMenuItem});
             this.cleanListToolStripMenuItem.Name = "cleanListToolStripMenuItem";
-            this.cleanListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cleanListToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.cleanListToolStripMenuItem.Text = "Clean List";
+            // 
+            // allToolStripMenuItem
+            // 
+            this.allToolStripMenuItem.Name = "allToolStripMenuItem";
+            this.allToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.allToolStripMenuItem.Text = "All";
+            // 
+            // cleanSelectedToolStripMenuItem
+            // 
+            this.cleanSelectedToolStripMenuItem.Name = "cleanSelectedToolStripMenuItem";
+            this.cleanSelectedToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.cleanSelectedToolStripMenuItem.Text = "Clean Selected";
             // 
             // mailConfigToolStripMenuItem
             // 
@@ -224,7 +237,7 @@ namespace Packet
             this.toToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemTO});
             this.toToolStripMenuItem.Name = "toToolStripMenuItem";
-            this.toToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.toToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.toToolStripMenuItem.Text = "To";
             // 
             // toolStripMenuItemTO
@@ -239,7 +252,7 @@ namespace Packet
             this.ToolStripMenuItemRoute.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configToolStripMenuItem});
             this.ToolStripMenuItemRoute.Name = "ToolStripMenuItemRoute";
-            this.ToolStripMenuItemRoute.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemRoute.Size = new System.Drawing.Size(113, 22);
             this.ToolStripMenuItemRoute.Text = "Route";
             // 
             // configToolStripMenuItem
@@ -254,7 +267,7 @@ namespace Packet
             this.ToolStripMenuItemFrom.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configToolStripMenuItem1});
             this.ToolStripMenuItemFrom.Name = "ToolStripMenuItemFrom";
-            this.ToolStripMenuItemFrom.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemFrom.Size = new System.Drawing.Size(113, 22);
             this.ToolStripMenuItemFrom.Text = "From";
             // 
             // configToolStripMenuItem1
@@ -270,33 +283,28 @@ namespace Packet
             this.configToolStripMenuItem2,
             this.customToolStripMenuItem});
             this.ToolStripMenuItemSubject.Name = "ToolStripMenuItemSubject";
-            this.ToolStripMenuItemSubject.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemSubject.Size = new System.Drawing.Size(113, 22);
             this.ToolStripMenuItemSubject.Text = "Subject";
             // 
             // configToolStripMenuItem2
             // 
             this.configToolStripMenuItem2.Name = "configToolStripMenuItem2";
-            this.configToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.configToolStripMenuItem2.Size = new System.Drawing.Size(116, 22);
             this.configToolStripMenuItem2.Text = "Config";
             this.configToolStripMenuItem2.Click += new System.EventHandler(this.configToolStripMenuItem2_Click);
             // 
             // customToolStripMenuItem
             // 
             this.customToolStripMenuItem.Name = "customToolStripMenuItem";
-            this.customToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.customToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.customToolStripMenuItem.Text = "Custom";
             // 
-            // allToolStripMenuItem
+            // textBox1
             // 
-            this.allToolStripMenuItem.Name = "allToolStripMenuItem";
-            this.allToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.allToolStripMenuItem.Text = "All";
-            // 
-            // cleanSelectedToolStripMenuItem
-            // 
-            this.cleanSelectedToolStripMenuItem.Name = "cleanSelectedToolStripMenuItem";
-            this.cleanSelectedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.cleanSelectedToolStripMenuItem.Text = "Clean Selected";
+            this.textBox1.Location = new System.Drawing.Point(526, 600);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(501, 20);
+            this.textBox1.TabIndex = 6;
             // 
             // Mail
             // 
@@ -304,6 +312,7 @@ namespace Packet
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_Cancel;
             this.ClientSize = new System.Drawing.Size(1380, 657);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.DataGridView1);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_OK);
@@ -346,5 +355,6 @@ namespace Packet
         private ToolStripMenuItem allToolStripMenuItem;
         private ToolStripMenuItem cleanSelectedToolStripMenuItem;
         private ToolStripMenuItem customToolStripMenuItem;
+        private TextBox textBox1;
     }
 }

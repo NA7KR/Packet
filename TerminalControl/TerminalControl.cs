@@ -161,6 +161,10 @@ namespace PacketComs
             string nb = ("LR " + ln + "-999999");
             DispatchMessage(this, nb);
             DispatchMessage(this, Environment.NewLine);
+
+            nb = "R " + _myFiles.RXST("ToDownLoad");
+            DispatchMessage(this, nb);
+            DispatchMessage(this, Environment.NewLine);
         }
 
         #endregion
