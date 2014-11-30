@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Resources;
 using System.Windows.Forms;
 
 #endregion
@@ -51,9 +52,40 @@ namespace PacketComs
                 string filePath = path + @"\" + fileName + ".txt";
 
                 File.WriteAllText(filePath, textVale);
-                //string path_backup = path + @"\" + FileName + ".bak";
-                //File.Delete(path_backup);
                 return true;
+            } //end try
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+        } //end write
+
+        #endregion
+
+        #region DeleteST
+        public bool? DeleteST(string fileName)
+        {
+
+            try
+            {
+                string path = Directory.GetCurrentDirectory() + @"\Data";
+                if (!Directory.Exists(path))
+                {
+                    // Try to create the directory.
+                    Directory.CreateDirectory(path);
+                }
+                string filePath = path + @"\" + fileName + ".txt";
+                if (File.Exists(path))
+                {
+                    File.Delete(filePath);
+                    return null;
+                }
+                else
+                {
+                    return true;
+                }
+                
             } //end try
             catch (Exception e)
             {
@@ -74,18 +106,13 @@ namespace PacketComs
                 // Try to create the directory.
                 Directory.CreateDirectory(path);
             }
-            string filePath = path + @"\" + fileName + ".txt";
-            if (File.Exists(filePath))
+            path = path + @"\" + fileName + ".txt";
+            if (File.Exists(path))
             {
-                StreamReader myFile = new StreamReader(filePath);
+                StreamReader myFile = new StreamReader(path);
                 myString = myFile.ReadToEnd();
                 myFile.Close();
-                //string path_backup = path + @"\" + FileName + ".bak";
-
-                //File.Copy(file_path, path_backup);
-                //File.Delete(file_path);
             }
-            
             return myString;
 
         }
@@ -107,11 +134,10 @@ namespace PacketComs
             if (File.Exists(path))
             {
                 StreamReader myFile = new StreamReader(path);
-                myString = myFile.ReadToEnd();
-                
+                myString = myFile.ReadToEnd();  
             }
             return myString;
         }
         #endregion
     }
-} //end namespace
+} //end name-space

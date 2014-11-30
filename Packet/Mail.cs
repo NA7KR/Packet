@@ -35,7 +35,7 @@ namespace Packet
                 {
                     if (!firstvalue)
                     {
-                        ToDownLoad += ",";
+                        ToDownLoad += " ";
                     }
                     ToDownLoad += drv.Cells[0].Value.ToString();
                     firstvalue = false;

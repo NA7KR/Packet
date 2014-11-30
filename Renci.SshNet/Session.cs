@@ -1159,7 +1159,7 @@ namespace Renci.SshNet
             //  Disable all registered messages except key exchange related
             foreach (var messageMetadata in this._messagesMetadata)
             {
-                if (messageMetadata.Activated == true && messageMetadata.Number > 2 && (messageMetadata.Number < 20 || messageMetadata.Number > 30))
+                if (messageMetadata.Activated && messageMetadata.Number > 2 && (messageMetadata.Number < 20 || messageMetadata.Number > 30))
                     messageMetadata.Enabled = false;
             }
 
@@ -1233,7 +1233,7 @@ namespace Renci.SshNet
             //  Enable all active registered messages
             foreach (var messageMetadata in this._messagesMetadata)
             {
-                if (messageMetadata.Activated == true)
+                if (messageMetadata.Activated)
                     messageMetadata.Enabled = true;
             }
 
