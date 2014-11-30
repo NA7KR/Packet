@@ -75,16 +75,15 @@ namespace PacketComs
                     // Try to create the directory.
                     Directory.CreateDirectory(path);
                 }
-                string filePath = path + @"\" + fileName + ".txt";
+                path = path + @"\" + fileName + ".txt";
                 if (File.Exists(path))
                 {
-                    File.Delete(filePath);
-                    return null;
-                }
-                else
-                {
+                    File.Delete(path);
                     return true;
                 }
+            
+                return null;
+                
                 
             } //end try
             catch (Exception e)

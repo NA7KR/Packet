@@ -165,6 +165,10 @@ namespace PacketComs
             nb = "R " + _myFiles.RXST("ToDownLoad");
             DispatchMessage(this, nb);
             DispatchMessage(this, Environment.NewLine);
+            if (_myFiles.DeleteST("ToDownLoad") == true)
+            {
+                _myFiles.DeleteST("ToDownLoad");
+            }
         }
 
         #endregion
@@ -1424,11 +1428,19 @@ namespace PacketComs
                             ForwardDone(this, new EventArgs());
                             FileActive = false;
 
-                            for (int i = 1; i < lines.Length - 1; i++)
+                            for (int i = 1; i < lines.Length - 1;)
                                 //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
                             {
                                 _myFiles.Write(lines[i] + Environment.NewLine);
                                 LastNumber = lines[i].Substring(0, 5);
+                                if (lines[i+1].Contains(BBSPrompt))
+                                {
+                                    i = lines.Length;
+                                }
+                                else
+                                {
+                                    i++;
+                                }
                             }
                             LastNumberevt(this, new EventArgs());
                             _dataFile = "";
