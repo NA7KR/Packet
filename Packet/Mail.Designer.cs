@@ -58,7 +58,6 @@ namespace Packet
             this.ToolStripMenuItemSubject = new System.Windows.Forms.ToolStripMenuItem();
             this.configToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.customToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -299,20 +298,12 @@ namespace Packet
             this.customToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.customToolStripMenuItem.Text = "Custom";
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(526, 600);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(501, 20);
-            this.textBox1.TabIndex = 6;
-            // 
             // Mail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_Cancel;
             this.ClientSize = new System.Drawing.Size(1380, 657);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.DataGridView1);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_OK);
@@ -355,6 +346,5 @@ namespace Packet
         private ToolStripMenuItem allToolStripMenuItem;
         private ToolStripMenuItem cleanSelectedToolStripMenuItem;
         private ToolStripMenuItem customToolStripMenuItem;
-        private TextBox textBox1;
     }
 }

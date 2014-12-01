@@ -166,6 +166,7 @@ namespace PacketComs
             if (_myFiles.CheckST("ToDownLoad") == true)
             {
                 nb = "R " + _myFiles.RXST("ToDownLoad");
+                
                 DispatchMessage(this, nb);
                 DispatchMessage(this, Environment.NewLine);
                 _myFiles.DeleteST("ToDownLoad");
