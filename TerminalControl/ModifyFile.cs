@@ -1,9 +1,11 @@
 ﻿#region Using Directive
 
 using System;
+using System.Data.Odbc;
 using System.IO;
 using System.Resources;
 using System.Windows.Forms;
+
 
 #endregion
 
@@ -11,6 +13,21 @@ namespace PacketComs
 {
     public class ModifyFile
     {
+        OdbcConnection myConnection = new OdbcConnection("DSN=Packet");
+        public  ModifyFile()
+        {  
+            myConnection.Open();     
+        }
+
+        public string SQL(string SQLCommand)
+        {
+            OdbcCommand myCommand = myConnection.CreateCommand();
+            myCommand.CommandText = SQLCommand;
+            OdbcDataReader myReader = myCommand.ExecuteReader();
+            return myReader.ToString();
+        }
+
+
         #region Write
 
         public bool Write(string textVale)

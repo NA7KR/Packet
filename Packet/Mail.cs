@@ -30,7 +30,7 @@ namespace Packet
             if (DataGridView1.SelectedRows != null)
             {
                 string ToDownLoad = "";
-                File.Delete(path);
+                //File.Delete("path");
                 bool firstvalue = true;
                 foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
                 {
