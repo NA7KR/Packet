@@ -8,7 +8,7 @@ namespace Packet
 {
     public partial class Sort : Form
     {
-        private static readonly ModifyFile MyFiles = new ModifyFile();
+        private static readonly FileSQL MyFiles = new FileSQL();
         public string file_Name_Select; // "SelectedTo"
         public string file_Name_Sort; // SortTo
 

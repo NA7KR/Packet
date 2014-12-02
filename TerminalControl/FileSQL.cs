@@ -9,10 +9,10 @@ using System.Windows.Forms;
 
 namespace PacketComs
     {
-    public class ModifyFile
+    public class FileSQL
         {
         OdbcConnection myConnection = new OdbcConnection("DSN=Packet");
-        public ModifyFile()
+        public FileSQL()
             {
             myConnection.Open();
             if

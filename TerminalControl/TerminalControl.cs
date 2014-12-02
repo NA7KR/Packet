@@ -23,7 +23,7 @@ namespace PacketComs
     #region  class TerminalEmulator : Control
     public sealed class TerminalEmulator : Control
     {
-        private readonly ModifyFile _myFiles = new ModifyFile();
+        private readonly FileSQL _myFiles = new FileSQL();
         private readonly SerialPort _port = new SerialPort();
         private SshClient _client;
         private ShellStream _stream;

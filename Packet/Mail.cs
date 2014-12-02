@@ -13,7 +13,7 @@ namespace Packet
 {
     public partial class Mail : Form
     {
-        private static readonly ModifyFile MyFiles = new ModifyFile();
+        private static readonly FileSQL MyFiles = new FileSQL();
 
         #region Mail InitializeComponent
 
