@@ -18,7 +18,7 @@ namespace PacketComs
         public  ModifyFile()
         {  
             myConnection.Open();
-            if (SQLMakeTable() == true)
+            if (SQLMakeTable() )
             { }
         }
 
@@ -35,7 +35,7 @@ namespace PacketComs
         public bool SQLMakeTable()
             {
             OdbcCommand myCommand = myConnection.CreateCommand();
-            myCommand.CommandText  =  "CREATE TABLE  Packet ( MSG int PRIMARY KEY, TSLD CHAR(3), Size int, TOCALL CHAR(6), Route CHAR(7), Date-Time CHAR(9), Subject CHAR(30), Start CHAR(8)     )";
+            myCommand.CommandText  =  "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8)     )";
 
 
             myCommand.ExecuteNonQuery();
