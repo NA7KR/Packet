@@ -2,6 +2,7 @@
 
 using System;
 using System.Data.Odbc;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Resources;
 using System.Windows.Forms;
@@ -27,6 +28,14 @@ namespace PacketComs
             return myReader.ToString();
         }
 
+        public bool SQLMakeTable(string SQLCommand)
+            {
+            OdbcCommand myCommand = myConnection.CreateCommand();
+            myCommand.CommandText  = "CREATE TABLE Packet(" +
+                         "[ID] VARCAR (14))";
+            myCommand.ExecuteNonQuery();
+            return true;
+            }
 
         #region Write
 
