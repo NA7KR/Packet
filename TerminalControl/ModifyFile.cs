@@ -17,7 +17,9 @@ namespace PacketComs
         OdbcConnection myConnection = new OdbcConnection("DSN=Packet");
         public  ModifyFile()
         {  
-            myConnection.Open();     
+            myConnection.Open();
+            if (SQLMakeTable() == true)
+            { }
         }
 
         public string SQL(string SQLCommand)
@@ -25,14 +27,17 @@ namespace PacketComs
             OdbcCommand myCommand = myConnection.CreateCommand();
             myCommand.CommandText = SQLCommand;
             OdbcDataReader myReader = myCommand.ExecuteReader();
+            
+         
             return myReader.ToString();
         }
 
-        public bool SQLMakeTable(string SQLCommand)
+        public bool SQLMakeTable()
             {
             OdbcCommand myCommand = myConnection.CreateCommand();
-            myCommand.CommandText  = "CREATE TABLE Packet(" +
-                         "[ID] VARCAR (14))";
+            myCommand.CommandText  =  "CREATE TABLE  Packet ( MSG int PRIMARY KEY, TSLD CHAR(3), Size int, TOCALL CHAR(6), Route CHAR(7), Date-Time CHAR(9), Subject CHAR(30), Start CHAR(8)     )";
+
+
             myCommand.ExecuteNonQuery();
             return true;
             }
