@@ -26,12 +26,12 @@ namespace PacketComs
         {
             try
             {
-            OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-            OdbcDataAdapter sqlAdapt = new OdbcDataAdapter(Query);
-            OdbcCommandBuilder sqlCmdBuilder = new OdbcCommandBuilder(sqlAdapt);
-            DataSet sqlSet = new DataSet();
-            sqlAdapt.Fill(sqlSet, "dataSetTableName");
-            sqlConn.Close();
+                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+                OdbcDataAdapter sqlAdapt = new OdbcDataAdapter(Query);
+                OdbcCommandBuilder sqlCmdBuilder = new OdbcCommandBuilder(sqlAdapt);
+                DataSet sqlSet = new DataSet();
+                sqlAdapt.Fill(sqlSet, "dataSetTableName");
+                sqlConn.Close();
             }
             catch (OdbcException e)
             {
@@ -44,16 +44,16 @@ namespace PacketComs
         public bool SQLInsert(string Query)
         {
             try
-                {
-                    OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-                    OdbcCommand sqlComm = new OdbcCommand();
-                    sqlComm = sqlConn.CreateCommand();
-                    sqlComm.CommandText = Query;
-                    sqlConn.Open();
-                    sqlComm.ExecuteNonQuery();
-                    sqlConn.Close();
-                    return true;
-                }
+            {
+                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+                OdbcCommand sqlComm = new OdbcCommand();
+                sqlComm = sqlConn.CreateCommand();
+                sqlComm.CommandText = Query;
+                sqlConn.Open();
+                sqlComm.ExecuteNonQuery();
+                sqlConn.Close();
+                return true;
+            }
             catch (OdbcException e)
             {
                 MessageBox.Show(e.Message);
@@ -65,17 +65,45 @@ namespace PacketComs
 
         #region SQLUPDATE
 
-        public bool SQLUPDATE(string textVale)
+        public bool SQLUPDATE(string Query)
         {
-            
+            try
+            {
+                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+                OdbcCommand sqlComm = new OdbcCommand();
+                sqlComm = sqlConn.CreateCommand();
+                sqlComm.CommandText = Query;
+                sqlConn.Open();
+                sqlComm.ExecuteNonQuery();
+                sqlConn.Close();
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }  
         }
         #endregion
 
         #region SQLDELETE
 
-        public bool SQLDELETE(string textVale)
+        public bool SQLDELETE(string Query)
         {
-            
+            try
+            {
+                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+                OdbcCommand sqlComm = new OdbcCommand();
+                sqlComm = sqlConn.CreateCommand();
+                sqlComm.CommandText = Query;
+                sqlConn.Open();
+                sqlComm.ExecuteNonQuery();
+                sqlConn.Close();
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            } 
         }
         #endregion
 
