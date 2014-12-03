@@ -22,7 +22,7 @@ namespace PacketComs
             }
 
         #region SQLSELECT
-        public string SQLSELECT(string Query)
+        public string SQLSELECT(OdbcCommand Query)
         {
             try
             {
@@ -32,10 +32,12 @@ namespace PacketComs
                 DataSet sqlSet = new DataSet();
                 sqlAdapt.Fill(sqlSet, "dataSetTableName");
                 sqlConn.Close();
+                return "";
             }
             catch (OdbcException e)
             {
                 MessageBox.Show(e.Message);
+                return "";
             }
         }
         #endregion
@@ -76,6 +78,7 @@ namespace PacketComs
                 sqlConn.Open();
                 sqlComm.ExecuteNonQuery();
                 sqlConn.Close();
+                return true;
             }
             catch (OdbcException e)
             {
@@ -98,6 +101,7 @@ namespace PacketComs
                 sqlConn.Open();
                 sqlComm.ExecuteNonQuery();
                 sqlConn.Close();
+                return true;
             }
             catch (OdbcException e)
             {
