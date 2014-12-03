@@ -1,6 +1,7 @@
 ﻿#region Using Directive
 
 using System;
+using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Windows.Forms;
@@ -15,32 +16,40 @@ namespace PacketComs
         public FileSQL()
             {
             
-            if
+            if 
             (SQLInsert("CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8)     )"))
             { }
             }
 
-        #region SQL
-        public string SQL(string SQLCommand)
+        #region SQLSELECT
+        public string SQLSELECT(string Query)
+        {
+            try
             {
             OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-            OdbcCommand sqlComm = sqlConn.CreateCommand();
-            sqlComm.CommandText = SQLCommand;
-            OdbcDataReader myReader = sqlComm.ExecuteReader();
-            return myReader.ToString();
+            OdbcDataAdapter sqlAdapt = new OdbcDataAdapter(Query);
+            OdbcCommandBuilder sqlCmdBuilder = new OdbcCommandBuilder(sqlAdapt);
+            DataSet sqlSet = new DataSet();
+            sqlAdapt.Fill(sqlSet, "dataSetTableName");
+            sqlConn.Close();
             }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
         #endregion
 
 
         #region SQLInsert
-        public bool SQLInsert(string stTable)
+        public bool SQLInsert(string Query)
         {
             try
                 {
                     OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
                     OdbcCommand sqlComm = new OdbcCommand();
                     sqlComm = sqlConn.CreateCommand();
-                    sqlComm.CommandText = stTable;
+                    sqlComm.CommandText = Query;
                     sqlConn.Open();
                     sqlComm.ExecuteNonQuery();
                     sqlConn.Close();
