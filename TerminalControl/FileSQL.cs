@@ -11,10 +11,10 @@ namespace PacketComs
     {
     public class FileSQL
         {
-        OdbcConnection myConnection = new OdbcConnection("DSN=Packet");
+        
         public FileSQL()
             {
-            myConnection.Open();
+            
             if
             (SQLInsert("CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8)     )"))
             { }
@@ -23,9 +23,10 @@ namespace PacketComs
         #region SQL
         public string SQL(string SQLCommand)
             {
-            OdbcCommand myCommand = myConnection.CreateCommand();
-            myCommand.CommandText = SQLCommand;
-            OdbcDataReader myReader = myCommand.ExecuteReader();
+            OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+            OdbcCommand sqlComm = sqlConn.CreateCommand();
+            sqlComm.CommandText = SQLCommand;
+            OdbcDataReader myReader = sqlComm.ExecuteReader();
             return myReader.ToString();
             }
         #endregion
@@ -36,9 +37,13 @@ namespace PacketComs
         {
             try
                 {
-                   OdbcCommand myCommand = myConnection.CreateCommand();
-                    myCommand.CommandText = stTable;
-                    myCommand.ExecuteNonQuery();
+                    OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+                    OdbcCommand sqlComm = new OdbcCommand();
+                    sqlComm = sqlConn.CreateCommand();
+                    sqlComm.CommandText = stTable;
+                    sqlConn.Open();
+                    sqlComm.ExecuteNonQuery();
+                    sqlConn.Close();
                     return true;
                 }
             catch (OdbcException e)
