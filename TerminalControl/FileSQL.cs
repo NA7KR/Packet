@@ -40,7 +40,6 @@ namespace PacketComs
         }
         #endregion
 
-
         #region SQLInsert
         public bool SQLInsert(string Query)
         {
@@ -62,6 +61,22 @@ namespace PacketComs
             }
        }
 
+        #endregion
+
+        #region SQLUPDATE
+
+        public bool SQLUPDATE(string textVale)
+        {
+            
+        }
+        #endregion
+
+        #region SQLDELETE
+
+        public bool SQLDELETE(string textVale)
+        {
+            
+        }
         #endregion
 
         #region Write
@@ -205,7 +220,6 @@ namespace PacketComs
 
             }
         #endregion
-
 
         #region RX
         public string RX()
