@@ -20,11 +20,13 @@ namespace PacketComs
         {
             ODBC_Manager odbc = new ODBC_Manager();
             string dsnName = "Packet"; //Name of the DSN connection here
-            if (odbc.CheckForDSN(dsnName) > 0)
+            string path = Directory.GetCurrentDirectory() + @"\Data";
+
+            if (odbc.CheckForDSN("Packet") > 0)
             {
                 DataSet dataS = SQLSELECT("SELECT MSG FROM  Packet where MSG = 101 ; ", "Packet");
 
-                if (DoesTableExist("Packet") == false)
+                if (DoesTableExist(path + "\\packet") == false)
                     {
                     SQLInsert(
                         "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8)    )");
@@ -140,25 +142,17 @@ namespace PacketComs
         #region DoesTableExist
         public bool DoesTableExist(string TableName)
         {
-        string dsnName = "DSN=Packet"; //Name of the DSN connection here
+        string dsnName = "DSN=Packet"; 
             bool TableExists = false;
-            // Using the Access Db connection...
             OdbcConnection DbConnection = new OdbcConnection(dsnName);
-            //OleDbConnection DbConnection = new OleDbConnection(dsnName)
             {
-                // Try the database logic
                 try
                     {
-                    // Make the Database Connection
                     DbConnection.Open();
-                    // Get the datatable information
                     DataTable dt = DbConnection.GetSchema("Tables");
-                    // Loop throw the rows in the datatable
                     foreach (DataRow row in dt.Rows)
                         {
-                        // If we have a table name match, make our return true
-                        // and break the looop
-                        if (row.ItemArray[2].ToString() == TableName)
+                        if (row.ItemArray[0].ToString() == TableName)
                             {
                                 TableExists = true;
                                 break;
@@ -172,11 +166,9 @@ namespace PacketComs
 
                 finally
                     {
-                    // Always remeber to close your database connections!
                     DbConnection.Close();
                     }
-                }
-            // Return the results!
+                }     
             return TableExists;
         }
         #endregion
