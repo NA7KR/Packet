@@ -1,83 +1,118 @@
 ﻿namespace PacketComs
 {
-    public class SQLDTO
+    public class Sqldto
     {
+        private int    _msg;
+        private int    _msgSize;
+        private string _msgtsld;
+        private string _msgto;
+        private string _msgRoute;
+        private string _msgFrom;
+        private string _msgDateTime;
+        private string _msgSubject;
+        private string _msgState;
 
-        private int    MSG;
-        private string MSGTSLD;
-        private string MSGTO;
-        private int    MSGSize;
-        private string MSGRoute;
-        private string MSGFrom;
-        private string MSGDateTime;
-        private string MSGSubject;
-        private string MSGState;
-
-        public SQLDTO(int MSG, string MSGTSLD, string MSGTO, int MSGSize, string MSGRoute, string MSGFrom, string MSGDateTime, string MSGSubject, string MSGState )
+        public Sqldto(int msg, string msgtsld, string msgto, int msgSize, string msgRoute, string msgFrom, string msgDateTime, string msgSubject, string msgState )
         {
-            this.MSG = MSG;
-            this.MSGTSLD = MSGTSLD;
-            this.MSGTO = MSGTO;
-            this.MSGSize = MSGSize;
-            this.MSGRoute = MSGRoute;
-            this.MSGFrom = MSGFrom;
-            this.MSGDateTime = MSGDateTime;
-            this.MSGSubject = MSGSubject;
-            this.MSGState = MSGState;
+            _msg = msg;
+            _msgtsld = msgtsld;
+            _msgto = msgto;
+            _msgSize = msgSize;
+            _msgRoute = msgRoute;
+            _msgFrom = msgFrom;
+            _msgDateTime = msgDateTime;
+            _msgSubject = msgSubject;
+            _msgState = msgState;
         }
-
-       
 
         public int get_MSG()
         {
-            return this.MSG;
+            return _msg;
         }
 
         public string get_MSGTSLD()
         {
-            return this.MSGTSLD;
+            return _msgtsld;
         }
 
         public string get_MSGTO()
         {
-            return this.MSGTO;
+            return _msgto;
         }
 
         public int get_MSGSize()
         {
-            return this.MSGSize;
+            return _msgSize;
         }
 
         public string get_MSGRoute()
         {
-            return this.MSGRoute;
+            return _msgRoute;
         }
 
-        public void set_MSG(int MSG)
+        public string get_MSGFrom()
         {
-            this.MSG = MSG;
+            return _msgFrom;
         }
 
-        public void set_MSGTSLD(string MSGTSLD)
+        public string get_MSGDateTime()
         {
-            this.MSGTSLD = MSGTSLD;
+            return _msgDateTime;
         }
 
-        public void set_MSGTO(string MSGTO)
+        public string MsgSubject()
         {
-            this.MSGTO = MSGTO;
+            return _msgSubject ;
         }
 
-        public void set_MSGSize(int MSGSize)
+        public string MsgState()
         {
-            this.MSGSize = MSGSize;
+          return  _msgState;
         }
 
-        public void set_MSGRoute(string MSGRoute)
+        public void set_MSG(int msg)
         {
-            this.MSGRoute = MSGRoute;
+            _msg = msg;
         }
 
+        public void set_MSGTSLD(string msgtsld)
+        {
+            _msgtsld = msgtsld;
+        }
+
+        public void set_MSGTO(string msgto)
+        {
+            _msgto = msgto;
+        }
+
+        public void set_MSGSize(int msgSize)
+        {
+            _msgSize = msgSize;
+        }
+
+        public void set_MSGRoute(string msgRoute)
+        {
+            _msgRoute = msgRoute;
+        }
+
+        public void set_MSGFrom(string msgFrom)
+        {
+            _msgFrom = msgFrom;
+        }
+
+        public void set_MSGDateTime(string msgDateTime)
+        {
+            _msgDateTime = msgDateTime;
+        }
+
+         public void set_MSGSubject(string msgSubject)
+        {
+            _msgSubject = msgSubject;
+        }
+
+         public void set_MSGState(string msgState)
+        {
+            _msgState = msgState;
+        }
     }
-
 }
