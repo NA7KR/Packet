@@ -1,9 +1,12 @@
 ﻿#region Using Directive
 
 using System;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Odbc;
+using System.Data.OleDb;
 using System.IO;
+using System.Runtime.ConstrainedExecution;
 using System.Windows.Forms;
 
 #endregion
@@ -12,33 +15,56 @@ namespace PacketComs
     {
     public class FileSQL
         {
-        
+
         public FileSQL()
+        {
+            ODBC_Manager odbc = new ODBC_Manager();
+            string dsnName = "Packet"; //Name of the DSN connection here
+            if (odbc.CheckForDSN(dsnName) > 0)
             {
-            
-            if 
-            (SQLInsert("CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8)     )"))
-            { }
+                DataSet dataS = SQLSELECT("SELECT MSG FROM  Packet where MSG = 101 ; ", "Packet");
+
+                if (DoesTableExist("Packet") == false)
+                    {
+                    SQLInsert(
+                        "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8)    )");
+                    }
+                
+  
+            }
+            else
+            {
+                  odbc.CreateDSN(dsnName);
+                  MessageBox.Show("No Packet System DSN " + Environment.NewLine +
+                                  "Please make one...","Critical Warning",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                  Environment.Exit(1);
             }
 
+           
+        }
+
         #region SQLSELECT
-        public string SQLSELECT(OdbcCommand Query)
+        public static DataSet SQLSELECT(string Query, string tableName)
         {
             try
             {
-                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-                OdbcDataAdapter sqlAdapt = new OdbcDataAdapter(Query);
-                OdbcCommandBuilder sqlCmdBuilder = new OdbcCommandBuilder(sqlAdapt);
                 DataSet sqlSet = new DataSet();
-                sqlAdapt.Fill(sqlSet, "dataSetTableName");
+                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+                OdbcDataAdapter sqlAdapt = new OdbcDataAdapter();
+                sqlAdapt.SelectCommand = new OdbcCommand(Query,sqlConn);
+                OdbcCommandBuilder sqlCmdBuilder = new OdbcCommandBuilder(sqlAdapt);
+                sqlConn.Open();
+                sqlAdapt.Fill(sqlSet, tableName);
+                sqlAdapt.Update(sqlSet, tableName);
                 sqlConn.Close();
-                return "";
+                return sqlSet;
             }
             catch (OdbcException e)
             {
                 MessageBox.Show(e.Message);
-                return "";
+                return null;
             }
+            
         }
         #endregion
 
@@ -108,6 +134,50 @@ namespace PacketComs
                 MessageBox.Show(e.Message);
                 return false;
             } 
+        }
+        #endregion
+
+        #region DoesTableExist
+        public bool DoesTableExist(string TableName)
+        {
+        string dsnName = "DSN=Packet"; //Name of the DSN connection here
+            bool TableExists = false;
+            // Using the Access Db connection...
+            OdbcConnection DbConnection = new OdbcConnection(dsnName);
+            //OleDbConnection DbConnection = new OleDbConnection(dsnName)
+            {
+                // Try the database logic
+                try
+                    {
+                    // Make the Database Connection
+                    DbConnection.Open();
+                    // Get the datatable information
+                    DataTable dt = DbConnection.GetSchema("Tables");
+                    // Loop throw the rows in the datatable
+                    foreach (DataRow row in dt.Rows)
+                        {
+                        // If we have a table name match, make our return true
+                        // and break the looop
+                        if (row.ItemArray[2].ToString() == TableName)
+                            {
+                                TableExists = true;
+                                break;
+                            }
+                        }
+                    }
+                catch (Exception e)
+                    {
+                    // Handle your ERRORS!
+                    }
+
+                finally
+                    {
+                    // Always remeber to close your database connections!
+                    DbConnection.Close();
+                    }
+                }
+            // Return the results!
+            return TableExists;
         }
         #endregion
 
