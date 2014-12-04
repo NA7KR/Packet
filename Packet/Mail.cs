@@ -145,7 +145,7 @@ namespace Packet
                 for (i = 0; i < lines.Length; i++)
                 {
                     var line = lines[i];
-                    rxmsg[i] = Mid(line, 0, 4);
+                    rxmsg[i] = Mid(line, 0, 5);
                     rxtsld[i] = Mid(line, 7, 4);
                     rxsize[i] = Mid(line, 13, 5);
                     rxto[i] = Mid(line, 18, 6);

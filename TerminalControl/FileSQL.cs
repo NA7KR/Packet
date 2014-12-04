@@ -25,36 +25,28 @@ namespace PacketComs
         ArrayList rxfrom = new ArrayList() ;
         ArrayList rxdate = new ArrayList() ;
         ArrayList rxsubject = new ArrayList() ;
-        private UInt32 i;
+        private int i;
        
 
         public FileSQL()
         {
         ODBC_Manager odbc = new ODBC_Manager();
-            string dsnName = "Packet"; //Name of the DSN connection here
+            string dsnName = "Packet"; 
             string path = Directory.GetCurrentDirectory() + @"\Data";
-
             if (odbc.CheckForDSN("Packet") > 0)
             {
-                DataSet dataS = Sqlselect("SELECT MSG FROM  Packet where MSG = 101 ; ", "Packet");
-
                 if (DoesTableExist(path + "\\packet") == false)
                     {
                     SQLInsert(
-                        "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8)    )");
-                    }
-                
-  
+                        "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
+                    } 
             }
             else
             {
                   odbc.CreateDSN(dsnName);
-                  MessageBox.Show("No Packet System DSN " + Environment.NewLine +
-                                  "Please make one...","Critical Warning",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                  MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one...","Critical Warning",MessageBoxButtons.OK,MessageBoxIcon.Error);
                   Environment.Exit(1);
-            }
-
-           
+            }           
         }
 
         #region SQLSELECT
@@ -164,7 +156,7 @@ namespace PacketComs
                     DataTable dt = DbConnection.GetSchema("Tables");
                     foreach (DataRow row in dt.Rows)
                         {
-                        if (row.ItemArray[0].ToString() == TableName)
+                        if (row.ItemArray[0].ToString().ToLower() == TableName.ToLower())
                             {
                                 TableExists = true;
                                 break;
@@ -186,45 +178,41 @@ namespace PacketComs
         }
         #endregion
 
-        #region Write
+        #region WriteSQL
 
+        public bool WriteSQL(string textValue)
+            {
+            try
+                {
+                    DtoPacket packet = new DtoPacket();    
+                    rxmsg.Add(Mid(textValue, 0, 5));
+                    rxtsld.Add(Mid(textValue, 7, 4));
+                    rxsize.Add(Mid(textValue, 13, 5));
+                    rxto.Add(Mid(textValue, 18, 6));
+                    rxroute.Add(Mid(textValue, 24, 8));
+                    rxfrom.Add(Mid(textValue, 32, 7));
+                    rxdate.Add(Mid(textValue, 39, 9));
+                    rxsubject.Add(Mid(textValue, 48, (textValue.Length - 48)));
+
+                    packet.set_MSG( Convert.ToInt32(rxmsg[i]));
+                    packet.set_MSGTSLD(  rxtsld[i].ToString());
+                    i++;
+                    return true;
+                } //end try
+            catch (Exception e)
+                {
+                MessageBox.Show(e.Message);
+                return false;
+                }
+            } //end write
+
+        #endregion 
+
+        #region Write
         public bool Write(string textValue)
             {
             try
                 {
-                /*
-                SQLInsert("INSERT INTO  Packet " +
-                             "( MSG," +
-                             "MSGTSLD," +
-                             "MSGSize," +
-                             "MSGTO," +
-                             "MSGRoute," +
-                             "MSGFrom," +
-                             "MSGDateTime," +
-                             "MSGSubject," +
-                             "MSGState  ) VALUES ( '101','BF','1504','SWPC','@WW','CX2SA','0318/1811','Solar Region Summary','')");
-                 for each line in textvalue
-                 *      put elements in dtopacket 
-                 * 
-                 * 
-                 * 
-                 
-                */
-                DtoPacket packet = new DtoPacket();    
-                rxmsg.Add(Mid(textValue, 0, 4));
-                rxtsld.Add(Mid(textValue, 7, 4));
-                rxsize.Add(Mid(textValue, 13, 5));
-                rxto.Add(Mid(textValue, 18, 6));
-                rxroute.Add(Mid(textValue, 24, 8));
-                rxfrom.Add(Mid(textValue, 32, 7));
-                rxdate.Add(Mid(textValue, 39, 9));
-                rxsubject.Add(Mid(textValue, 48, (textValue.Length - 48)));
-              
-                packet.set_MSG((int) rxmsg[i]);
-
-
-                i++;
-
                 string path = Directory.GetCurrentDirectory() + @"\Data";
                 if (!Directory.Exists(path))
                     {
@@ -375,11 +363,12 @@ namespace PacketComs
         #region Mid
         public static string Mid(string param, int startIndex, int length)
         {
-            if (param == "")
+            var result = " ";
+            if (param == " ")
             {
                 return null;
             }
-            var result = param.Substring(startIndex, length);
+             result = param.Substring(startIndex, length);
             return result;
         }
         #endregion
