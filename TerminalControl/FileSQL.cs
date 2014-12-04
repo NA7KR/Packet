@@ -2,13 +2,9 @@
 
 using System;
 using System.Collections;
-using System.ComponentModel;
 using System.Data;
 using System.Data.Odbc;
-using System.Data.OleDb;
 using System.IO;
-using System.Reflection.Emit;
-using System.Runtime.ConstrainedExecution;
 using System.Windows.Forms;
 
 #endregion
@@ -102,7 +98,6 @@ namespace PacketComs
         #region SQLInsert
         public bool SQLInsert(DtoPacket packet)
         {
-            
             try
             {
                 OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
@@ -120,14 +115,14 @@ namespace PacketComs
                           "MSGSubject) "  +
                           
                           "VALUES (?,?,?,?,?,?,?,?)";
-                sqlComm.Parameters.Add(packet.get_MSG());
-                sqlComm.Parameters.Add(packet.get_MSGTSLD());
-                sqlComm.Parameters.Add(packet.get_MSGSize());
-                sqlComm.Parameters.Add(packet.get_MSGTO());
-                sqlComm.Parameters.Add(packet.get_MSGRoute());
-                sqlComm.Parameters.Add(packet.get_MSGFrom());
-                sqlComm.Parameters.Add(packet.get_MSGDateTime());
-                sqlComm.Parameters.Add(packet.get_MSGSubject());
+                sqlComm.Parameters.AddWithValue("?ID1", SqlDbType.Int).Value = packet.get_MSG();
+                sqlComm.Parameters.AddWithValue("?ID2", SqlDbType.Text).Value = packet.get_MSGTSLD();
+                sqlComm.Parameters.AddWithValue("?ID3", SqlDbType.Int).Value = packet.get_MSGSize();
+                sqlComm.Parameters.AddWithValue("?ID4", SqlDbType.Text).Value = packet.get_MSGTO();
+                sqlComm.Parameters.AddWithValue("?ID5", SqlDbType.Text).Value = packet.get_MSGRoute();
+                sqlComm.Parameters.AddWithValue("?ID6", SqlDbType.Text).Value = packet.get_MSGFrom();
+                sqlComm.Parameters.AddWithValue("?ID7", SqlDbType.Text).Value = packet.get_MSGDateTime();
+                sqlComm.Parameters.AddWithValue("?ID8", SqlDbType.Text).Value = packet.get_MSGSubject();
                 sqlConn.Open();
                 sqlComm.ExecuteNonQuery();
                 sqlConn.Close();
@@ -230,13 +225,13 @@ namespace PacketComs
         try
         {
                 packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
-                packet.set_MSGTSLD  ("'" + Mid(textValue, 7, 4) + "'" );
+                packet.set_MSGTSLD  ( Mid(textValue, 7, 4)  );
                 packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
-                packet.set_MSGTO("'" + Mid(  textValue, 18, 6) + "'" );
-                packet.set_MSGRoute("'" + Mid(textValue, 24, 8)+ "'" );
-                packet.set_MSGFrom("'" + Mid(textValue, 32, 7)+ "'" );
-                packet.set_MSGDateTime("'" + Mid(textValue, 39, 9)+ "'" );
-                packet.set_MSGSubject("'" + Mid(textValue, 49, (textValue.Length - 49))+ "'" );
+                packet.set_MSGTO(Mid(  textValue, 18, 6)  );
+                packet.set_MSGRoute(Mid(textValue, 24, 8) );
+                packet.set_MSGFrom( Mid(textValue, 32, 7) );
+                packet.set_MSGDateTime( Mid(textValue, 39, 9) );
+                packet.set_MSGSubject( Mid(textValue, 49, (textValue.Length - 49)));
 
 
             SQLInsert(packet);
