@@ -1,8 +1,10 @@
-﻿namespace PacketComs
+﻿using System;
+
+namespace PacketComs
 {
     public class DtoPacket
     {
-        private int    _msg;
+        private Int32    _msg;
         private int    _msgSize;
         private string _msgtsld;
         private string _msgto;
@@ -11,6 +13,19 @@
         private string _msgDateTime;
         private string _msgSubject;
         private string _msgState;
+
+        public DtoPacket()
+        {
+        _msg = Int32.MinValue;
+            _msgtsld = null ;
+            _msgto = "";
+            _msgSize = Int32.MinValue;
+            _msgRoute = null;
+            _msgFrom = null;
+            _msgDateTime = null;
+            _msgSubject = null;
+            _msgState = null;
+        }
 
         public DtoPacket(int msg, string msgtsld, string msgto, int msgSize, string msgRoute, string msgFrom, string msgDateTime, string msgSubject, string msgState )
         {

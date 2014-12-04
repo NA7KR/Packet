@@ -17,14 +17,14 @@ namespace PacketComs
    
     public class FileSQL
         {
-        ArrayList  rxmsg = new ArrayList ;
-        ArrayList rxtsld = new ArrayList ;
-        ArrayList rxsize = new ArrayList ;
-        ArrayList rxto = new ArrayList ;
-        ArrayList rxroute = new ArrayList ;
-        ArrayList rxfrom = new ArrayList ;
-        ArrayList rxdate = new ArrayList ;
-        ArrayList rxsubject = new ArrayList ;
+        ArrayList rxmsg =  new ArrayList() ;
+        ArrayList rxtsld = new ArrayList() ;
+        ArrayList rxsize = new ArrayList() ;
+        ArrayList rxto =   new ArrayList() ;
+        ArrayList rxroute = new ArrayList() ;
+        ArrayList rxfrom = new ArrayList() ;
+        ArrayList rxdate = new ArrayList() ;
+        ArrayList rxsubject = new ArrayList() ;
         private UInt32 i;
        
 
@@ -192,6 +192,7 @@ namespace PacketComs
             {
             try
                 {
+                /*
                 SQLInsert("INSERT INTO  Packet " +
                              "( MSG," +
                              "MSGTSLD," +
@@ -202,23 +203,28 @@ namespace PacketComs
                              "MSGDateTime," +
                              "MSGSubject," +
                              "MSGState  ) VALUES ( '101','BF','1504','SWPC','@WW','CX2SA','0318/1811','Solar Region Summary','')");
-                /* for each line in textvalue
+                 for each line in textvalue
                  *      put elements in dtopacket 
                  * 
                  * 
                  * 
                  
                 */
-                    
-                rxmsg[i] = Mid(textValue, 0, 4);
-                rxtsld[i] = Mid(textValue, 7, 4);
-                rxsize[i] = Mid(textValue, 13, 5);
-                rxto[i] = Mid(textValue, 18, 6);
-                rxroute[i] = Mid(textValue, 24, 8);
-                rxfrom[i] = Mid(textValue, 32, 7);
-                rxdate[i] = Mid(textValue, 39, 9);
-                rxsubject[i] = Mid(textValue, 48, (textValue.Length - 48));
+                DtoPacket packet = new DtoPacket();    
+                rxmsg.Add(Mid(textValue, 0, 4));
+                rxtsld.Add(Mid(textValue, 7, 4));
+                rxsize.Add(Mid(textValue, 13, 5));
+                rxto.Add(Mid(textValue, 18, 6));
+                rxroute.Add(Mid(textValue, 24, 8));
+                rxfrom.Add(Mid(textValue, 32, 7));
+                rxdate.Add(Mid(textValue, 39, 9));
+                rxsubject.Add(Mid(textValue, 48, (textValue.Length - 48)));
+              
+                packet.set_MSG((int) rxmsg[i]);
+
+
                 i++;
+
                 string path = Directory.GetCurrentDirectory() + @"\Data";
                 if (!Directory.Exists(path))
                     {
