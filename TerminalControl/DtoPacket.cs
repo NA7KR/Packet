@@ -1,6 +1,6 @@
 ﻿namespace PacketComs
 {
-    public class Sqldto
+    public class DtoPacket
     {
         private int    _msg;
         private int    _msgSize;
@@ -12,7 +12,7 @@
         private string _msgSubject;
         private string _msgState;
 
-        public Sqldto(int msg, string msgtsld, string msgto, int msgSize, string msgRoute, string msgFrom, string msgDateTime, string msgSubject, string msgState )
+        public DtoPacket(int msg, string msgtsld, string msgto, int msgSize, string msgRoute, string msgFrom, string msgDateTime, string msgSubject, string msgState )
         {
             _msg = msg;
             _msgtsld = msgtsld;

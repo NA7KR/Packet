@@ -1,6 +1,7 @@
 ﻿#region Using Directive
 
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Odbc;
@@ -13,18 +14,29 @@ using System.Windows.Forms;
 
 namespace PacketComs
     {
+   
     public class FileSQL
         {
+        ArrayList  rxmsg = new ArrayList ;
+        ArrayList rxtsld = new ArrayList ;
+        ArrayList rxsize = new ArrayList ;
+        ArrayList rxto = new ArrayList ;
+        ArrayList rxroute = new ArrayList ;
+        ArrayList rxfrom = new ArrayList ;
+        ArrayList rxdate = new ArrayList ;
+        ArrayList rxsubject = new ArrayList ;
+        private UInt32 i;
+       
 
         public FileSQL()
         {
-            ODBC_Manager odbc = new ODBC_Manager();
+        ODBC_Manager odbc = new ODBC_Manager();
             string dsnName = "Packet"; //Name of the DSN connection here
             string path = Directory.GetCurrentDirectory() + @"\Data";
 
             if (odbc.CheckForDSN("Packet") > 0)
             {
-                DataSet dataS = SQLSELECT("SELECT MSG FROM  Packet where MSG = 101 ; ", "Packet");
+                DataSet dataS = Sqlselect("SELECT MSG FROM  Packet where MSG = 101 ; ", "Packet");
 
                 if (DoesTableExist(path + "\\packet") == false)
                     {
@@ -46,7 +58,7 @@ namespace PacketComs
         }
 
         #region SQLSELECT
-        public static DataSet SQLSELECT(string Query, string tableName)
+        public static DataSet Sqlselect(string Query, string tableName)
         {
             try
             {
@@ -161,7 +173,8 @@ namespace PacketComs
                     }
                 catch (Exception e)
                     {
-                    // Handle your ERRORS!
+                        MessageBox.Show(e.Message);
+                        return false;
                     }
 
                 finally
@@ -175,7 +188,7 @@ namespace PacketComs
 
         #region Write
 
-        public bool Write(string textVale)
+        public bool Write(string textValue)
             {
             try
                 {
@@ -189,6 +202,23 @@ namespace PacketComs
                              "MSGDateTime," +
                              "MSGSubject," +
                              "MSGState  ) VALUES ( '101','BF','1504','SWPC','@WW','CX2SA','0318/1811','Solar Region Summary','')");
+                /* for each line in textvalue
+                 *      put elements in dtopacket 
+                 * 
+                 * 
+                 * 
+                 
+                */
+                    
+                rxmsg[i] = Mid(textValue, 0, 4);
+                rxtsld[i] = Mid(textValue, 7, 4);
+                rxsize[i] = Mid(textValue, 13, 5);
+                rxto[i] = Mid(textValue, 18, 6);
+                rxroute[i] = Mid(textValue, 24, 8);
+                rxfrom[i] = Mid(textValue, 32, 7);
+                rxdate[i] = Mid(textValue, 39, 9);
+                rxsubject[i] = Mid(textValue, 48, (textValue.Length - 48));
+                i++;
                 string path = Directory.GetCurrentDirectory() + @"\Data";
                 if (!Directory.Exists(path))
                     {
@@ -196,7 +226,7 @@ namespace PacketComs
                     Directory.CreateDirectory(path);
                     }
                 path = path + @"\myMailList.txt";
-                File.AppendAllText(path, textVale);
+                File.AppendAllText(path, textValue);
                 return true;
                 } //end try
             catch (Exception e)
@@ -334,6 +364,18 @@ namespace PacketComs
                 }
             return myString;
             }
+        #endregion
+
+        #region Mid
+        public static string Mid(string param, int startIndex, int length)
+        {
+            if (param == "")
+            {
+                return null;
+            }
+            var result = param.Substring(startIndex, length);
+            return result;
+        }
         #endregion
         }
     } //end name-space

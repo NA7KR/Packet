@@ -49,14 +49,14 @@ namespace Packet
 
         #region Mid
         public static string Mid(string param, int startIndex, int length)
-        {
-            if (param == "")
             {
+            if (param == "")
+                {
                 return null;
-            }
+                }
             var result = param.Substring(startIndex, length);
             return result;
-        }
+            }
         #endregion
 
         #region cancel

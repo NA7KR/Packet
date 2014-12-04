@@ -85,7 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DSN.cs" />
-    <Compile Include="SQLDTO.cs" />
+    <Compile Include="DtoPacket.cs" />
     <Compile Include="FileSQL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TerminalControl.cs">
