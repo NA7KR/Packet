@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.Data.OleDb;
 using System.IO;
+using System.Reflection.Emit;
 using System.Runtime.ConstrainedExecution;
 using System.Windows.Forms;
 
@@ -32,12 +33,12 @@ namespace PacketComs
         {
         ODBC_Manager odbc = new ODBC_Manager();
             string dsnName = "Packet"; 
-            string path = Directory.GetCurrentDirectory() + @"\Data";
+            
             if (odbc.CheckForDSN("Packet") > 0)
             {
-                if (DoesTableExist(path + "\\" + dsnName) == false)
+            if (DoesTableExist("Packet") == false)
                     {
-                    SQLInsert(
+                    SQLMakeTable(
                         "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
                     } 
             }
@@ -74,15 +75,59 @@ namespace PacketComs
         }
         #endregion
 
+        #region SQLMakeTable
+        private bool SQLMakeTable(String Query)
+            {
+
+            try
+                {
+                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+                OdbcCommand sqlComm = new OdbcCommand();
+                sqlComm = sqlConn.CreateCommand();
+                sqlComm.CommandText = Query;        
+                sqlConn.Open();
+                sqlComm.ExecuteNonQuery();
+                sqlConn.Close();
+                return true;
+                }
+            catch (OdbcException e)
+                {
+                MessageBox.Show(e.Message);
+                return false;
+                }
+            }
+
+        #endregion
+
         #region SQLInsert
-        public bool SQLInsert(string Query)
+        public bool SQLInsert(DtoPacket packet)
         {
+            
             try
             {
                 OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
                 OdbcCommand sqlComm = new OdbcCommand();
                 sqlComm = sqlConn.CreateCommand();
-                sqlComm.CommandText = Query;
+                
+                sqlComm.CommandText = "INSERT INTO  Packet " +
+                          "(MSG," +
+                          "MSGTSLD," +
+                          "MSGSize," +
+                          "MSGTO," +
+                          "MSGRoute," +
+                          "MSGFrom," +
+                          "MSGDateTime," +
+                          "MSGSubject) "  +
+                          
+                          "VALUES (?,?,?,?,?,?,?,?)";
+                sqlComm.Parameters.Add(packet.get_MSG());
+                sqlComm.Parameters.Add(packet.get_MSGTSLD());
+                sqlComm.Parameters.Add(packet.get_MSGSize());
+                sqlComm.Parameters.Add(packet.get_MSGTO());
+                sqlComm.Parameters.Add(packet.get_MSGRoute());
+                sqlComm.Parameters.Add(packet.get_MSGFrom());
+                sqlComm.Parameters.Add(packet.get_MSGDateTime());
+                sqlComm.Parameters.Add(packet.get_MSGSubject());
                 sqlConn.Open();
                 sqlComm.ExecuteNonQuery();
                 sqlConn.Close();
@@ -153,10 +198,10 @@ namespace PacketComs
                 try
                     {
                     DbConnection.Open();
-                    DataTable dt = DbConnection.GetSchema("Tables");
+                    DataTable dt = DbConnection.GetSchema("TABLES");
                     foreach (DataRow row in dt.Rows)
                         {
-                        if (row.ItemArray[0].ToString().ToLower() == TableName.ToLower())
+                        if (row[2].ToString().ToLower() == TableName.ToLower())
                             {
                                 TableExists = true;
                                 break;
@@ -194,25 +239,7 @@ namespace PacketComs
                 packet.set_MSGSubject("'" + Mid(textValue, 49, (textValue.Length - 49))+ "'" );
 
 
-                SQLInsert("INSERT INTO  Packet " +
-                          "(MSG," +
-                          "MSGTSLD," +
-                          "MSGSize," +
-                          "MSGTO," +
-                          "MSGRoute," +
-                          "MSGFrom," +
-                          "MSGDateTime," +
-                          "MSGSubject) "  +
-                          
-                          "VALUES (" +
-                          packet.get_MSG() + "," +
-                          packet.get_MSGTSLD() + "," +
-                          packet.get_MSGSize() + "," +
-                          packet.get_MSGTO() + "," +
-                          packet.get_MSGRoute() + "," +
-                          packet.get_MSGFrom() + "," +
-                          packet.get_MSGDateTime() + "," +
-                          packet.get_MSGSubject() + ")");
+            SQLInsert(packet);
                           
                 return true;
             } 
