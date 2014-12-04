@@ -35,7 +35,7 @@ namespace PacketComs
             string path = Directory.GetCurrentDirectory() + @"\Data";
             if (odbc.CheckForDSN("Packet") > 0)
             {
-                //if (DoesTableExist(path + "\\" + dsnName) == false)
+                if (DoesTableExist(path + "\\" + dsnName) == false)
                     {
                     SQLInsert(
                         "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
@@ -185,25 +185,25 @@ namespace PacketComs
         try
         {
                 packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
-                packet.set_MSGTSLD (Mid(textValue, 7, 4));
+                packet.set_MSGTSLD  ("'" + Mid(textValue, 7, 4) + "'" );
                 packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
-                packet.set_MSGTO(Mid(textValue, 18, 6));
-                packet.set_MSGRoute(Mid(textValue, 24, 8));
-                packet.set_MSGFrom(Mid(textValue, 32, 7));
-                packet.set_MSGDateTime(Mid(textValue, 39, 9));
-                packet.set_MSGSubject(Mid(textValue, 49, (textValue.Length - 49)));
+                packet.set_MSGTO("'" + Mid(  textValue, 18, 6) + "'" );
+                packet.set_MSGRoute("'" + Mid(textValue, 24, 8)+ "'" );
+                packet.set_MSGFrom("'" + Mid(textValue, 32, 7)+ "'" );
+                packet.set_MSGDateTime("'" + Mid(textValue, 39, 9)+ "'" );
+                packet.set_MSGSubject("'" + Mid(textValue, 49, (textValue.Length - 49))+ "'" );
 
 
                 SQLInsert("INSERT INTO  Packet " +
-                          "( MSG," +
+                          "(MSG," +
                           "MSGTSLD," +
                           "MSGSize," +
                           "MSGTO," +
                           "MSGRoute," +
                           "MSGFrom," +
                           "MSGDateTime," +
-                          "MSGSubject )" +
-                          //"MSGState  ) " +
+                          "MSGSubject) "  +
+                          
                           "VALUES (" +
                           packet.get_MSG() + "," +
                           packet.get_MSGTSLD() + "," +
@@ -223,8 +223,6 @@ namespace PacketComs
             }
         } 
         #endregion 
-
-
 
         #region Write
         public bool Write(string textValue)
