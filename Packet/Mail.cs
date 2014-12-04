@@ -152,7 +152,7 @@ namespace Packet
                     rxroute[i] = Mid(line, 24, 8);
                     rxfrom[i] = Mid(line, 32, 7);
                     rxdate[i] = Mid(line, 39, 9);
-                    rxsubject[i] = Mid(line, 48, (line.Length - 48));
+                    rxsubject[i] = Mid(line, 49, (line.Length - 49));
                     DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i],
                         rxsubject[i]);
                 }

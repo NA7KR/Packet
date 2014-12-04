@@ -75,12 +75,12 @@ namespace PacketComs
             return _msgDateTime;
         }
 
-        public string MsgSubject()
+        public string get_MSGSubject()
         {
             return _msgSubject ;
         }
 
-        public string MsgState()
+        public string get_MSGState()
         {
           return  _msgState;
         }

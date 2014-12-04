@@ -25,7 +25,7 @@ namespace PacketComs
         ArrayList rxfrom = new ArrayList() ;
         ArrayList rxdate = new ArrayList() ;
         ArrayList rxsubject = new ArrayList() ;
-       
+        DtoPacket packet = new DtoPacket(); 
        
 
         public FileSQL()
@@ -35,7 +35,7 @@ namespace PacketComs
             string path = Directory.GetCurrentDirectory() + @"\Data";
             if (odbc.CheckForDSN("Packet") > 0)
             {
-                if (DoesTableExist(path + "\\packet") == false)
+                //if (DoesTableExist(path + "\\" + dsnName) == false)
                     {
                     SQLInsert(
                         "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
@@ -44,7 +44,7 @@ namespace PacketComs
             else
             {
                   odbc.CreateDSN(dsnName);
-                  MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one...","Critical Warning",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                  MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet","Critical Warning",MessageBoxButtons.OK,MessageBoxIcon.Error);
                   Environment.Exit(1);
             }           
         }
@@ -183,8 +183,7 @@ namespace PacketComs
         public bool WriteSQL(string textValue)
         {
         try
-            {
-                DtoPacket packet = new DtoPacket();    
+        {
                 packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
                 packet.set_MSGTSLD (Mid(textValue, 7, 4));
                 packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
@@ -192,7 +191,29 @@ namespace PacketComs
                 packet.set_MSGRoute(Mid(textValue, 24, 8));
                 packet.set_MSGFrom(Mid(textValue, 32, 7));
                 packet.set_MSGDateTime(Mid(textValue, 39, 9));
-                packet.set_MSGSubject(Mid(textValue, 48, (textValue.Length - 48)));
+                packet.set_MSGSubject(Mid(textValue, 49, (textValue.Length - 49)));
+
+
+                SQLInsert("INSERT INTO  Packet " +
+                          "( MSG," +
+                          "MSGTSLD," +
+                          "MSGSize," +
+                          "MSGTO," +
+                          "MSGRoute," +
+                          "MSGFrom," +
+                          "MSGDateTime," +
+                          "MSGSubject )" +
+                          //"MSGState  ) " +
+                          "VALUES (" +
+                          packet.get_MSG() + "," +
+                          packet.get_MSGTSLD() + "," +
+                          packet.get_MSGSize() + "," +
+                          packet.get_MSGTO() + "," +
+                          packet.get_MSGRoute() + "," +
+                          packet.get_MSGFrom() + "," +
+                          packet.get_MSGDateTime() + "," +
+                          packet.get_MSGSubject() + ")");
+                          
                 return true;
             } 
         catch (Exception e)
