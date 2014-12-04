@@ -25,7 +25,7 @@ namespace PacketComs
         ArrayList rxfrom = new ArrayList() ;
         ArrayList rxdate = new ArrayList() ;
         ArrayList rxsubject = new ArrayList() ;
-        private int i;
+       
        
 
         public FileSQL()
@@ -181,32 +181,29 @@ namespace PacketComs
         #region WriteSQL
 
         public bool WriteSQL(string textValue)
+        {
+        try
             {
-            try
-                {
-                    DtoPacket packet = new DtoPacket();    
-                    rxmsg.Add(Mid(textValue, 0, 5));
-                    rxtsld.Add(Mid(textValue, 7, 4));
-                    rxsize.Add(Mid(textValue, 13, 5));
-                    rxto.Add(Mid(textValue, 18, 6));
-                    rxroute.Add(Mid(textValue, 24, 8));
-                    rxfrom.Add(Mid(textValue, 32, 7));
-                    rxdate.Add(Mid(textValue, 39, 9));
-                    rxsubject.Add(Mid(textValue, 48, (textValue.Length - 48)));
-
-                    packet.set_MSG( Convert.ToInt32(rxmsg[i]));
-                    packet.set_MSGTSLD(  rxtsld[i].ToString());
-                    i++;
-                    return true;
-                } //end try
-            catch (Exception e)
-                {
-                MessageBox.Show(e.Message);
-                return false;
-                }
-            } //end write
-
+                DtoPacket packet = new DtoPacket();    
+                packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
+                packet.set_MSGTSLD (Mid(textValue, 7, 4));
+                packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
+                packet.set_MSGTO(Mid(textValue, 18, 6));
+                packet.set_MSGRoute(Mid(textValue, 24, 8));
+                packet.set_MSGFrom(Mid(textValue, 32, 7));
+                packet.set_MSGDateTime(Mid(textValue, 39, 9));
+                packet.set_MSGSubject(Mid(textValue, 48, (textValue.Length - 48)));
+                return true;
+            } 
+        catch (Exception e)
+            {
+            MessageBox.Show(e.Message);
+            return false;
+            }
+        } 
         #endregion 
+
+
 
         #region Write
         public bool Write(string textValue)

@@ -45,7 +45,7 @@ namespace PacketComs
             return _msg;
         }
 
-        public string get_MSGTSLD(object o)
+        public string get_MSGTSLD()
         {
             return _msgtsld;
         }
