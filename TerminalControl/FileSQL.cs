@@ -39,6 +39,7 @@ namespace PacketComs
             }
 
         #region SQLSELECT
+        /*
         public static DataSet Sqlselect(string query, string tableName)
             {
             try
@@ -61,6 +62,7 @@ namespace PacketComs
                 }
 
             }
+         */
         #endregion
 
         #region SQLMakeTable
@@ -86,6 +88,7 @@ namespace PacketComs
         #endregion
 
         #region SQLInsert
+  
         public bool SQLInsert(DtoPacket packet)
         {
             using (OdbcConnection sqlConn = new OdbcConnection("DSN=Packet"))
@@ -132,7 +135,7 @@ namespace PacketComs
         #endregion
 
         #region SQLUPDATE
-
+        /*
         public bool SQLUPDATE(string Query)
             {
             try
@@ -152,6 +155,7 @@ namespace PacketComs
                 return false;
                 }
             }
+         
         #endregion
 
         #region SQLDELETE
@@ -175,6 +179,7 @@ namespace PacketComs
                 return false;
                 }
             }
+         */
         #endregion
 
         #region DoesTableExist
@@ -241,6 +246,7 @@ namespace PacketComs
         #endregion
 
         #region Write
+        /*
         public bool Write(string textValue)
             {
             try
@@ -261,7 +267,7 @@ namespace PacketComs
                 return false;
                 }
             } //end write
-
+        */
         #endregion
 
         #region WriteST
