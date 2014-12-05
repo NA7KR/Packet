@@ -3,13 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace PacketComs
 {
-    public class ODBC_Manager
+    public class OdbcManager
     {
         [DllImport("ODBCCP32.dll")]
         public static extern bool SQLConfigDataSource(IntPtr parent, int request, string driver, string attributes);
 
         [DllImport("ODBCCP32.dll")]
-        public static extern int SQLGetPrivateProfileString(string lpszSection, string lpszEntry, string lpszDefault, string @RetBuffer, int cbRetBuffer, string lpszFilename);
+        public static extern int SQLGetPrivateProfileString(string lpszSection, string lpszEntry, string lpszDefault, string retBuffer, int cbRetBuffer, string lpszFilename);
 
         //private const short ODBC_ADD_DSN = 1;
         //private const short ODBC_CONFIG_DSN = 2;
@@ -20,7 +20,7 @@ namespace PacketComs
         //private const int vbAPINull = 0;
 
         #region CreateDSN
-        public void CreateDSN(string strDSNName)
+        public void CreateDSN(string strDsnName)
         {
             try
             {
@@ -35,18 +35,18 @@ namespace PacketComs
                 }
                 else
                 {
-                    Console.WriteLine(ex.Message.ToString());
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
         #endregion
 
         #region CheckForDSN
-        public int CheckForDSN(string strDSNName)
+        public int CheckForDSN(string strDsnName)
         {
             int iData;
             string strRetBuff = "";
-            iData = SQLGetPrivateProfileString("ODBC Data Sources", strDSNName, "", strRetBuff, 200, "odbc.ini");
+            iData = SQLGetPrivateProfileString("ODBC Data Sources", strDsnName, "", strRetBuff, 200, "odbc.ini");
             return iData;
         }
         #endregion

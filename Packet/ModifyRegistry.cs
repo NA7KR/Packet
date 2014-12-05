@@ -14,7 +14,7 @@ namespace Packet
 
     public class ModifyRegistry
     {
-        private RegistryKey _baseRegistryKey = Registry.LocalMachine;
+        private RegistryKey _baseRegistryKey = Registry.CurrentUser;
         private bool _showError;
         private string _subKey = "SOFTWARE\\" + Application.ProductName;
 
