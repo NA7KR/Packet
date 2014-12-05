@@ -177,30 +177,34 @@ namespace PacketComs
 		#region DoesTableExist
 
 		private bool DoesTableExist(string tableName, string dsnName)
+		{
+		using (OdbcConnection sqlConn = new OdbcConnection(dsnName))
 			{
-			var sqlConn = new OdbcConnection( dsnName);
-			bool tableExists = false;
+				bool tableExists = false;
 				{
-				try
+					try
 					{
-					DataTable dt = sqlConn.GetSchema("TABLES");
-					foreach (DataRow row in dt.Rows)
+						sqlConn.Open();
+						DataTable dt = sqlConn.GetSchema("TABLES");
+						foreach (DataRow row in dt.Rows)
 						{
-						if (row[2].ToString().ToLower() == tableName.ToLower())
+							if (row[2].ToString().ToLower() == tableName.ToLower())
 							{
-							tableExists = true;
-							break;
+								tableExists = true;
+								break;
 							}
 						}
 					}
-				catch (Exception e)
+					catch (Exception e)
 					{
-					MessageBox.Show(e.Message);
-					return false;
+						MessageBox.Show(e.Message);
+						return false;
 					}
 				}
 				return tableExists;
 			}
+		}
+
 		#endregion
 
 		#region WriteSQL
