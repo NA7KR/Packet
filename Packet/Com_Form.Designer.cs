@@ -32,6 +32,7 @@ namespace Packet
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ComForm));
             this.groupBoxBaudRate = new System.Windows.Forms.GroupBox();
             this.radioButton57600 = new System.Windows.Forms.RadioButton();
             this.radioButton38400 = new System.Windows.Forms.RadioButton();
@@ -62,12 +63,12 @@ namespace Packet
             this.radioButton_Stop_1_5 = new System.Windows.Forms.RadioButton();
             this.radioButton_Stop_1 = new System.Windows.Forms.RadioButton();
             this.groupBoxFlow = new System.Windows.Forms.GroupBox();
+            this.radioButton_Flow_RequestToSend = new System.Windows.Forms.RadioButton();
             this.radioButton_Flow_None = new System.Windows.Forms.RadioButton();
             this.radioButton_Flow_RequestToSendXOnXOff = new System.Windows.Forms.RadioButton();
             this.radioButton_Flow_Xon_Xoff = new System.Windows.Forms.RadioButton();
             this.comboBoxPort = new System.Windows.Forms.ComboBox();
             this.Port_label = new System.Windows.Forms.Label();
-            this.radioButton_Flow_RequestToSend = new System.Windows.Forms.RadioButton();
             this.groupBoxBaudRate.SuspendLayout();
             this.groupBoxDataBits.SuspendLayout();
             this.groupBoxParity.SuspendLayout();
@@ -444,6 +445,17 @@ namespace Packet
             this.groupBoxFlow.TabStop = false;
             this.groupBoxFlow.Text = "Flow Control";
             // 
+            // radioButton_Flow_RequestToSend
+            // 
+            this.radioButton_Flow_RequestToSend.AutoSize = true;
+            this.radioButton_Flow_RequestToSend.Location = new System.Drawing.Point(21, 75);
+            this.radioButton_Flow_RequestToSend.Name = "radioButton_Flow_RequestToSend";
+            this.radioButton_Flow_RequestToSend.Size = new System.Drawing.Size(103, 17);
+            this.radioButton_Flow_RequestToSend.TabIndex = 9;
+            this.radioButton_Flow_RequestToSend.TabStop = true;
+            this.radioButton_Flow_RequestToSend.Text = "RequestToSend";
+            this.radioButton_Flow_RequestToSend.UseVisualStyleBackColor = true;
+            // 
             // radioButton_Flow_None
             // 
             this.radioButton_Flow_None.AutoSize = true;
@@ -498,18 +510,7 @@ namespace Packet
             this.Port_label.TabIndex = 8;
             this.Port_label.Text = "Ports";
             // 
-            // radioButton_Flow_RequestToSend
-            // 
-            this.radioButton_Flow_RequestToSend.AutoSize = true;
-            this.radioButton_Flow_RequestToSend.Location = new System.Drawing.Point(21, 75);
-            this.radioButton_Flow_RequestToSend.Name = "radioButton_Flow_RequestToSend";
-            this.radioButton_Flow_RequestToSend.Size = new System.Drawing.Size(103, 17);
-            this.radioButton_Flow_RequestToSend.TabIndex = 9;
-            this.radioButton_Flow_RequestToSend.TabStop = true;
-            this.radioButton_Flow_RequestToSend.Text = "RequestToSend";
-            this.radioButton_Flow_RequestToSend.UseVisualStyleBackColor = true;
-            // 
-            // Com_Form
+            // ComForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -524,6 +525,7 @@ namespace Packet
             this.Controls.Add(this.groupBoxParity);
             this.Controls.Add(this.groupBoxDataBits);
             this.Controls.Add(this.groupBoxBaudRate);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ComForm";

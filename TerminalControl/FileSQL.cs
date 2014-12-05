@@ -10,57 +10,57 @@ using System.Windows.Forms;
 
 namespace PacketComs
     {
-   
+
     public class FileSql
         {
-      
-        DtoPacket packet = new DtoPacket(); 
-       
+
+        DtoPacket packet = new DtoPacket();
+
 
         public FileSql()
-        {
-        ODBC_Manager odbc = new ODBC_Manager();
-            string dsnName = "Packet"; 
-            
-            if (odbc.CheckForDSN("Packet") > 0)
             {
-            if (DoesTableExist("Packet") == false)
+            ODBC_Manager odbc = new ODBC_Manager();
+            string dsnName = "Packet";
+
+            if (odbc.CheckForDSN("Packet") > 0)
+                {
+                if (DoesTableExist("Packet") == false)
                     {
                     SQLMakeTable(
                         "CREATE TABLE  Packet ( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
-                    } 
-            }
+                    }
+                }
             else
-            {
-                  odbc.CreateDSN(dsnName);
-                  MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet","Critical Warning",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                  Environment.Exit(1);
-            }           
-        }
+                {
+                odbc.CreateDSN(dsnName);
+                MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+                }
+            }
 
         #region SQLSELECT
         public static DataSet Sqlselect(string query, string tableName)
-        {
-            try
             {
+            try
+                {
                 DataSet sqlSet = new DataSet();
                 OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
                 OdbcDataAdapter sqlAdapt = new OdbcDataAdapter();
-                sqlAdapt.SelectCommand = new OdbcCommand(query,sqlConn);
+                sqlAdapt.SelectCommand = new OdbcCommand(query, sqlConn);
                 OdbcCommandBuilder sqlCmdBuilder = new OdbcCommandBuilder(sqlAdapt);
                 sqlConn.Open();
                 sqlAdapt.Fill(sqlSet, tableName);
                 sqlAdapt.Update(sqlSet, tableName);
                 sqlConn.Close();
                 return sqlSet;
-            }
+                }
             catch (OdbcException e)
-            {
+                {
                 MessageBox.Show(e.Message);
                 return null;
+                }
+
             }
-            
-        }
         #endregion
 
         #region SQLMakeTable
@@ -72,15 +72,15 @@ namespace PacketComs
                 OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
                 OdbcCommand sqlComm = new OdbcCommand();
                 sqlComm = sqlConn.CreateCommand();
-                sqlComm.CommandText = query;        
+                sqlComm.CommandText = query;
                 sqlConn.Open();
                 sqlComm.ExecuteNonQuery();
                 sqlConn.Close();
                 }
             catch (OdbcException e)
-            {
+                {
                 MessageBox.Show(e.Message);
-            }
+                }
             }
 
         #endregion
@@ -88,51 +88,55 @@ namespace PacketComs
         #region SQLInsert
         public bool SQLInsert(DtoPacket packet)
         {
-            try
-            {
-                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-                OdbcCommand sqlComm = new OdbcCommand();
-                sqlComm = sqlConn.CreateCommand();
-                
-                sqlComm.CommandText = "INSERT INTO  Packet " +
-                          "(MSG," +
-                          "MSGTSLD," +
-                          "MSGSize," +
-                          "MSGTO," +
-                          "MSGRoute," +
-                          "MSGFrom," +
-                          "MSGDateTime," +
-                          "MSGSubject) "  +
-                          
-                          "VALUES (?,?,?,?,?,?,?,?)";
-                sqlComm.Parameters.AddWithValue("?ID1", SqlDbType.Int).Value = packet.get_MSG();
-                sqlComm.Parameters.AddWithValue("?ID2", SqlDbType.Text).Value = packet.get_MSGTSLD();
-                sqlComm.Parameters.AddWithValue("?ID3", SqlDbType.Int).Value = packet.get_MSGSize();
-                sqlComm.Parameters.AddWithValue("?ID4", SqlDbType.Text).Value = packet.get_MSGTO();
-                sqlComm.Parameters.AddWithValue("?ID5", SqlDbType.Text).Value = packet.get_MSGRoute();
-                sqlComm.Parameters.AddWithValue("?ID6", SqlDbType.Text).Value = packet.get_MSGFrom();
-                sqlComm.Parameters.AddWithValue("?ID7", SqlDbType.Text).Value = packet.get_MSGDateTime();
-                sqlComm.Parameters.AddWithValue("?ID8", SqlDbType.Text).Value = packet.get_MSGSubject();
-                sqlConn.Open();
-                sqlComm.ExecuteNonQuery();
-                sqlConn.Close();
+            using (OdbcConnection sqlConn = new OdbcConnection("DSN=Packet"))
+                {
+                    OdbcCommand sqlComm = new OdbcCommand();
+                    using (sqlComm = sqlConn.CreateCommand())
+                    {
+                        sqlConn.Open();
+                        sqlComm.CommandText = "INSERT INTO  Packet " +
+                        "(MSG," +
+                        "MSGTSLD," +
+                        "MSGSize," +
+                        "MSGTO," +
+                        "MSGRoute," +
+                        "MSGFrom," +
+                        "MSGDateTime," +
+                        "MSGSubject) " +
+
+                        "VALUES (?,?,?,?,?,?,?,?)";
+                        sqlComm.Parameters.AddWithValue("?ID1", SqlDbType.Int).Value = packet.get_MSG();
+                        sqlComm.Parameters.AddWithValue("?ID2", SqlDbType.Text).Value = packet.get_MSGTSLD();
+                        sqlComm.Parameters.AddWithValue("?ID3", SqlDbType.Int).Value = packet.get_MSGSize();
+                        sqlComm.Parameters.AddWithValue("?ID4", SqlDbType.Text).Value = packet.get_MSGTO();
+                        sqlComm.Parameters.AddWithValue("?ID5", SqlDbType.Text).Value = packet.get_MSGRoute();
+                        sqlComm.Parameters.AddWithValue("?ID6", SqlDbType.Text).Value = packet.get_MSGFrom();
+                        sqlComm.Parameters.AddWithValue("?ID7", SqlDbType.Text).Value = packet.get_MSGDateTime();
+                        sqlComm.Parameters.AddWithValue("?ID8", SqlDbType.Text).Value = packet.get_MSGSubject();
+                        try
+                        {
+                            sqlComm.ExecuteNonQuery();
+                            //sqlConn.Close();
+                        }
+                        catch (OdbcException e)
+                            {
+                                MessageBox.Show(e.Message);
+                                return false;
+                            }
+                    }
                 return true;
-            }
-            catch (OdbcException e)
-            {
-                MessageBox.Show(e.Message);
-                return false;
-            }
-       }
+                }
+       
+        }
 
         #endregion
 
         #region SQLUPDATE
 
         public bool SQLUPDATE(string Query)
-        {
-            try
             {
+            try
+                {
                 OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
                 OdbcCommand sqlComm = new OdbcCommand();
                 sqlComm = sqlConn.CreateCommand();
@@ -141,21 +145,21 @@ namespace PacketComs
                 sqlComm.ExecuteNonQuery();
                 sqlConn.Close();
                 return true;
-            }
+                }
             catch (OdbcException e)
-            {
+                {
                 MessageBox.Show(e.Message);
                 return false;
-            }  
-        }
+                }
+            }
         #endregion
 
         #region SQLDELETE
 
         public bool SQLDELETE(string Query)
-        {
-            try
             {
+            try
+                {
                 OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
                 OdbcCommand sqlComm = new OdbcCommand();
                 sqlComm = sqlConn.CreateCommand();
@@ -164,22 +168,22 @@ namespace PacketComs
                 sqlComm.ExecuteNonQuery();
                 sqlConn.Close();
                 return true;
-            }
+                }
             catch (OdbcException e)
-            {
+                {
                 MessageBox.Show(e.Message);
                 return false;
-            } 
-        }
+                }
+            }
         #endregion
 
         #region DoesTableExist
         public bool DoesTableExist(string tableName)
-        {
-        string dsnName = "DSN=Packet"; 
+            {
+            string dsnName = "DSN=Packet";
             bool tableExists = false;
             OdbcConnection dbConnection = new OdbcConnection(dsnName);
-            {
+                {
                 try
                     {
                     dbConnection.Open();
@@ -188,53 +192,53 @@ namespace PacketComs
                         {
                         if (row[2].ToString().ToLower() == tableName.ToLower())
                             {
-                                tableExists = true;
-                                break;
+                            tableExists = true;
+                            break;
                             }
                         }
                     }
                 catch (Exception e)
                     {
-                        MessageBox.Show(e.Message);
-                        return false;
+                    MessageBox.Show(e.Message);
+                    return false;
                     }
 
                 finally
                     {
                     dbConnection.Close();
                     }
-                }     
-            return tableExists;
-        }
+                }
+                return tableExists;
+            }
         #endregion
 
         #region WriteSQL
 
         public bool WriteSql(string textValue)
-        {
-        try
-        {
-                packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
-                packet.set_MSGTSLD  ( Mid(textValue, 7, 4)  );
-                packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
-                packet.set_MSGTO(Mid(  textValue, 18, 6)  );
-                packet.set_MSGRoute(Mid(textValue, 24, 8) );
-                packet.set_MSGFrom( Mid(textValue, 32, 7) );
-                packet.set_MSGDateTime( Mid(textValue, 39, 9) );
-                packet.set_MSGSubject( Mid(textValue, 49, (textValue.Length - 49)));
-
-
-            SQLInsert(packet);
-                          
-                return true;
-            } 
-        catch (Exception e)
             {
-            MessageBox.Show(e.Message);
-            return false;
+            try
+                {
+                packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
+                packet.set_MSGTSLD(Mid(textValue, 7, 4));
+                packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
+                packet.set_MSGTO(Mid(textValue, 18, 6));
+                packet.set_MSGRoute(Mid(textValue, 24, 8));
+                packet.set_MSGFrom(Mid(textValue, 32, 7));
+                packet.set_MSGDateTime(Mid(textValue, 39, 9));
+                packet.set_MSGSubject(Mid(textValue, 49, (textValue.Length - 49)));
+
+
+                SQLInsert(packet);
+
+                return true;
+                }
+            catch (Exception e)
+                {
+                MessageBox.Show(e.Message);
+                return false;
+                }
             }
-        } 
-        #endregion 
+        #endregion
 
         #region Write
         public bool Write(string textValue)
@@ -390,14 +394,14 @@ namespace PacketComs
 
         #region Mid
         public static string Mid(string param, int startIndex, int length)
-        {
-            if (param == " ")
             {
+            if (param == " ")
+                {
                 return null;
-            }
+                }
             var result = param.Substring(startIndex, length);
             return result;
-        }
+            }
         #endregion
         }
     } //end name-space

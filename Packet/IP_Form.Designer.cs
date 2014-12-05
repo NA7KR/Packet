@@ -32,6 +32,7 @@ namespace Packet
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IpForm));
             this.label_ip = new System.Windows.Forms.Label();
             this.textBox_ip = new System.Windows.Forms.TextBox();
             this.Done_button = new System.Windows.Forms.Button();
@@ -258,7 +259,7 @@ namespace Packet
             this.label_password_prompt.TabIndex = 26;
             this.label_password_prompt.Text = "BBS UserPassword Prompt";
             // 
-            // IP_Form
+            // IpForm
             // 
             this.AcceptButton = this.Done_button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -288,6 +289,7 @@ namespace Packet
             this.Controls.Add(this.label_port);
             this.Controls.Add(this.label_ip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

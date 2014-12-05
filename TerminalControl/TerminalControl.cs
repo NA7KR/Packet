@@ -1425,13 +1425,13 @@ namespace PacketComs
                             StringSplitOptions.RemoveEmptyEntries);
 
                         if (sReceived.Contains(BBSPrompt))
-                            //if (Regex.Match(sReceived,BBSPrompt).Success )
+                            
                         {
                             ForwardDone(this, new EventArgs());
                             FileActive = false;
 
                             for (int i = 1; i < lines.Length - 1;)
-                                //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
+                                
                             {
                                 _myFiles.WriteSql(lines[i] );
                                 LastNumber = lines[i].Substring(0, 5);

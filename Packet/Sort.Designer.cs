@@ -32,6 +32,7 @@ namespace Packet
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Sort));
             this.button_ok = new System.Windows.Forms.Button();
             this.button_Cancel = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -90,6 +91,7 @@ namespace Packet
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_ok);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Sort";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Sort";
