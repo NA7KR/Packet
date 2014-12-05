@@ -15,11 +15,32 @@ namespace PacketComs
         {
 
         DtoPacket packet = new DtoPacket();
+        private OdbcCommand sqlComm;
+        private OdbcConnection sqlConn;
 
 
         public FileSql()
-            {
+        {
+            sqlConn = new OdbcConnection("DSN=Packet");
+            //sqlComm = new OdbcCommand();
+            sqlConn.Open();
+            sqlComm = sqlConn.CreateCommand();
+                    
+                        
+                        sqlComm.CommandText = "INSERT INTO  Packet " +
+                        "(MSG," +
+                        "MSGTSLD," +
+                        "MSGSize," +
+                        "MSGTO," +
+                        "MSGRoute," +
+                        "MSGFrom," +
+                        "MSGDateTime," +
+                        "MSGSubject) " +
+
+                        "VALUES (?,?,?,?,?,?,?,?)";
+                        
             ODBC_Manager odbc = new ODBC_Manager();
+
             string dsnName = "Packet";
 
             if (odbc.CheckForDSN("Packet") > 0)
@@ -71,13 +92,9 @@ namespace PacketComs
 
             try
                 {
-                OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-                OdbcCommand sqlComm = new OdbcCommand();
-                sqlComm = sqlConn.CreateCommand();
-                sqlComm.CommandText = query;
-                sqlConn.Open();
-                sqlComm.ExecuteNonQuery();
-                sqlConn.Close();
+                    sqlComm.CommandText = query;
+                    sqlComm.ExecuteNonQuery();
+
                 }
             catch (OdbcException e)
                 {
@@ -91,44 +108,32 @@ namespace PacketComs
   
         public bool SQLInsert(DtoPacket packet)
         {
-            using (OdbcConnection sqlConn = new OdbcConnection("DSN=Packet"))
-                {
-                    OdbcCommand sqlComm = new OdbcCommand();
-                    using (sqlComm = sqlConn.CreateCommand())
-                    {
-                        sqlConn.Open();
-                        sqlComm.CommandText = "INSERT INTO  Packet " +
-                        "(MSG," +
-                        "MSGTSLD," +
-                        "MSGSize," +
-                        "MSGTO," +
-                        "MSGRoute," +
-                        "MSGFrom," +
-                        "MSGDateTime," +
-                        "MSGSubject) " +
+            sqlComm.Parameters.Clear();
+            
+     
+            sqlComm.Parameters.AddWithValue("@p1",  packet.get_MSG());
+            sqlComm.Parameters.AddWithValue("@p2", packet.get_MSGTSLD());
+            sqlComm.Parameters.AddWithValue("@p3",  packet.get_MSGSize());
+            sqlComm.Parameters.AddWithValue("@p4", packet.get_MSGTO());
+            sqlComm.Parameters.AddWithValue("@p5", packet.get_MSGRoute());
+            sqlComm.Parameters.AddWithValue("@p6", packet.get_MSGFrom());
+            sqlComm.Parameters.AddWithValue("@p7", packet.get_MSGDateTime());
+            sqlComm.Parameters.AddWithValue("@p8", packet.get_MSGSubject());
 
-                        "VALUES (?,?,?,?,?,?,?,?)";
-                        sqlComm.Parameters.AddWithValue("?ID1", SqlDbType.Int).Value = packet.get_MSG();
-                        sqlComm.Parameters.AddWithValue("?ID2", SqlDbType.Text).Value = packet.get_MSGTSLD();
-                        sqlComm.Parameters.AddWithValue("?ID3", SqlDbType.Int).Value = packet.get_MSGSize();
-                        sqlComm.Parameters.AddWithValue("?ID4", SqlDbType.Text).Value = packet.get_MSGTO();
-                        sqlComm.Parameters.AddWithValue("?ID5", SqlDbType.Text).Value = packet.get_MSGRoute();
-                        sqlComm.Parameters.AddWithValue("?ID6", SqlDbType.Text).Value = packet.get_MSGFrom();
-                        sqlComm.Parameters.AddWithValue("?ID7", SqlDbType.Text).Value = packet.get_MSGDateTime();
-                        sqlComm.Parameters.AddWithValue("?ID8", SqlDbType.Text).Value = packet.get_MSGSubject();
-                        try
-                        {
-                            sqlComm.ExecuteNonQuery();
-                            //sqlConn.Close();
-                        }
-                        catch (OdbcException e)
-                            {
-                                MessageBox.Show(e.Message);
-                                return false;
-                            }
-                    }
-                return true;
+            try
+            {
+            sqlComm.Prepare();
+                sqlComm.ExecuteNonQuery();
+                //sqlConn.Close();
+            }
+            catch (OdbcException e)
+                {
+                    MessageBox.Show(e.Message);
+                    return false;
                 }
+                    
+            return true;
+                
        
         }
 

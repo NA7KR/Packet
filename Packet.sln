@@ -39,6 +39,7 @@ Global
 		{95467D95-7CBA-4391-8994-488273BD9E98}.Release|ARM.ActiveCfg = Release|Any CPU
 		{95467D95-7CBA-4391-8994-488273BD9E98}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{95467D95-7CBA-4391-8994-488273BD9E98}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{95467D95-7CBA-4391-8994-488273BD9E98}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
 		{95467D95-7CBA-4391-8994-488273BD9E98}.Release|x64.ActiveCfg = Release|Any CPU
 		{95467D95-7CBA-4391-8994-488273BD9E98}.Release|x86.ActiveCfg = Release|Any CPU
 		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -72,6 +73,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Renci.SshNet1.vsmdi
