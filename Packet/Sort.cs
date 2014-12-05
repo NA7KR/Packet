@@ -10,7 +10,7 @@ namespace Packet
 {
     public partial class Sort : Form
     {
-        private static readonly FileSQL MyFiles = new FileSQL();
+        private static readonly FileSql MyFiles = new FileSql();
         public string file_Name_Select; // "SelectedTo"
         public string file_Name_Sort; // SortTo
 
@@ -35,7 +35,7 @@ namespace Packet
             }
 
 
-            MyFiles.WriteST(myString, file_Name_Select); 
+            MyFiles.WriteSt(myString, file_Name_Select); 
         }
         #endregion
 

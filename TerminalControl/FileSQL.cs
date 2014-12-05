@@ -1,7 +1,6 @@
 ﻿#region Using Directive
 
 using System;
-using System.Collections;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
@@ -12,20 +11,13 @@ using System.Windows.Forms;
 namespace PacketComs
     {
    
-    public class FileSQL
+    public class FileSql
         {
-        ArrayList rxmsg =  new ArrayList() ;
-        ArrayList rxtsld = new ArrayList() ;
-        ArrayList rxsize = new ArrayList() ;
-        ArrayList rxto =   new ArrayList() ;
-        ArrayList rxroute = new ArrayList() ;
-        ArrayList rxfrom = new ArrayList() ;
-        ArrayList rxdate = new ArrayList() ;
-        ArrayList rxsubject = new ArrayList() ;
+      
         DtoPacket packet = new DtoPacket(); 
        
 
-        public FileSQL()
+        public FileSql()
         {
         ODBC_Manager odbc = new ODBC_Manager();
             string dsnName = "Packet"; 
@@ -47,14 +39,14 @@ namespace PacketComs
         }
 
         #region SQLSELECT
-        public static DataSet Sqlselect(string Query, string tableName)
+        public static DataSet Sqlselect(string query, string tableName)
         {
             try
             {
                 DataSet sqlSet = new DataSet();
                 OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
                 OdbcDataAdapter sqlAdapt = new OdbcDataAdapter();
-                sqlAdapt.SelectCommand = new OdbcCommand(Query,sqlConn);
+                sqlAdapt.SelectCommand = new OdbcCommand(query,sqlConn);
                 OdbcCommandBuilder sqlCmdBuilder = new OdbcCommandBuilder(sqlAdapt);
                 sqlConn.Open();
                 sqlAdapt.Fill(sqlSet, tableName);
@@ -72,7 +64,7 @@ namespace PacketComs
         #endregion
 
         #region SQLMakeTable
-        private bool SQLMakeTable(String Query)
+        private void SQLMakeTable(string query)
             {
 
             try
@@ -80,17 +72,15 @@ namespace PacketComs
                 OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
                 OdbcCommand sqlComm = new OdbcCommand();
                 sqlComm = sqlConn.CreateCommand();
-                sqlComm.CommandText = Query;        
+                sqlComm.CommandText = query;        
                 sqlConn.Open();
                 sqlComm.ExecuteNonQuery();
                 sqlConn.Close();
-                return true;
                 }
             catch (OdbcException e)
-                {
+            {
                 MessageBox.Show(e.Message);
-                return false;
-                }
+            }
             }
 
         #endregion
@@ -184,21 +174,21 @@ namespace PacketComs
         #endregion
 
         #region DoesTableExist
-        public bool DoesTableExist(string TableName)
+        public bool DoesTableExist(string tableName)
         {
         string dsnName = "DSN=Packet"; 
-            bool TableExists = false;
-            OdbcConnection DbConnection = new OdbcConnection(dsnName);
+            bool tableExists = false;
+            OdbcConnection dbConnection = new OdbcConnection(dsnName);
             {
                 try
                     {
-                    DbConnection.Open();
-                    DataTable dt = DbConnection.GetSchema("TABLES");
+                    dbConnection.Open();
+                    DataTable dt = dbConnection.GetSchema("TABLES");
                     foreach (DataRow row in dt.Rows)
                         {
-                        if (row[2].ToString().ToLower() == TableName.ToLower())
+                        if (row[2].ToString().ToLower() == tableName.ToLower())
                             {
-                                TableExists = true;
+                                tableExists = true;
                                 break;
                             }
                         }
@@ -211,16 +201,16 @@ namespace PacketComs
 
                 finally
                     {
-                    DbConnection.Close();
+                    dbConnection.Close();
                     }
                 }     
-            return TableExists;
+            return tableExists;
         }
         #endregion
 
         #region WriteSQL
 
-        public bool WriteSQL(string textValue)
+        public bool WriteSql(string textValue)
         {
         try
         {
@@ -272,7 +262,7 @@ namespace PacketComs
 
         #region WriteST
 
-        public bool WriteST(string textVale, string fileName)
+        public bool WriteSt(string textVale, string fileName)
             {
 
             try
@@ -298,7 +288,7 @@ namespace PacketComs
         #endregion
 
         #region DeleteST
-        public bool? DeleteST(string fileName)
+        public bool? DeleteSt(string fileName)
             {
 
             try
@@ -329,7 +319,7 @@ namespace PacketComs
         #endregion
 
         #region checkST
-        public bool? CheckST(string fileName)
+        public bool? CheckSt(string fileName)
             {
 
             try
@@ -401,12 +391,11 @@ namespace PacketComs
         #region Mid
         public static string Mid(string param, int startIndex, int length)
         {
-            var result = " ";
             if (param == " ")
             {
                 return null;
             }
-             result = param.Substring(startIndex, length);
+            var result = param.Substring(startIndex, length);
             return result;
         }
         #endregion

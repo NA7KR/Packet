@@ -23,7 +23,7 @@ namespace PacketComs
     #region  class TerminalEmulator : Control
     public sealed class TerminalEmulator : Control
     {
-        private readonly FileSQL _myFiles = new FileSQL();
+        private readonly FileSql _myFiles = new FileSql();
         private readonly SerialPort _port = new SerialPort();
         private SshClient _client;
         private ShellStream _stream;
@@ -163,13 +163,13 @@ namespace PacketComs
             DispatchMessage(this, Environment.NewLine);
 
             
-            if (_myFiles.CheckST("ToDownLoad") == true)
+            if (_myFiles.CheckSt("ToDownLoad") == true)
             {
                 nb = "R " + _myFiles.RXST("ToDownLoad");
                 
                 DispatchMessage(this, nb);
                 DispatchMessage(this, Environment.NewLine);
-                _myFiles.DeleteST("ToDownLoad");
+                _myFiles.DeleteSt("ToDownLoad");
             }
         }
 
@@ -970,7 +970,7 @@ namespace PacketComs
                             for (int i = 1; i < lines.Length - 1; i++)
                                 //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
                             {
-                                _myFiles.WriteSQL(lines[i] );
+                                _myFiles.WriteSql(lines[i] );
                                 //LastNumber = lines[i].Substring(0, 5);
                             }
                             LastNumberevt(this, new EventArgs());
@@ -1433,7 +1433,7 @@ namespace PacketComs
                             for (int i = 1; i < lines.Length - 1;)
                                 //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
                             {
-                                _myFiles.WriteSQL(lines[i] );
+                                _myFiles.WriteSql(lines[i] );
                                 LastNumber = lines[i].Substring(0, 5);
                                 if (lines[i+1].Contains(BBSPrompt))
                                 {

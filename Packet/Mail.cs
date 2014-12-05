@@ -13,7 +13,7 @@ namespace Packet
 {
     public partial class Mail : Form
     {
-        private static readonly FileSQL MyFiles = new FileSQL();
+        private static readonly FileSql MyFiles = new FileSql();
 
         #region Mail InitializeComponent
 
@@ -41,7 +41,7 @@ namespace Packet
                     ToDownLoad += drv.Cells[0].Value.ToString();
                     firstvalue = false;
                 }
-                MyFiles.WriteST(ToDownLoad, "ToDownLoad");
+                MyFiles.WriteSt(ToDownLoad, "ToDownLoad");
             }
             Close();
         }
@@ -156,10 +156,10 @@ namespace Packet
                     DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i],
                         rxsubject[i]);
                 }
-                MyFiles.WriteST(RemovePepeatWords("SortTo", rxto), "SortTo");
-                MyFiles.WriteST(RemovePepeatWords("SortRoute", rxroute), "SortRoute");
-                MyFiles.WriteST(RemovePepeatWords("SortFrom", rxfrom), "SortFrom");
-                MyFiles.WriteST(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");
+                MyFiles.WriteSt(RemovePepeatWords("SortTo", rxto), "SortTo");
+                MyFiles.WriteSt(RemovePepeatWords("SortRoute", rxroute), "SortRoute");
+                MyFiles.WriteSt(RemovePepeatWords("SortFrom", rxfrom), "SortFrom");
+                MyFiles.WriteSt(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");
             }
             catch (IOException ex)
             {
