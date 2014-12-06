@@ -8,6 +8,7 @@ using PacketComs;
 
 namespace Packet
 {
+    #region class Sort
     public partial class Sort : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
@@ -94,4 +95,5 @@ namespace Packet
         }
         #endregion
     }
+    #endregion
 }
