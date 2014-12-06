@@ -345,7 +345,7 @@ namespace PacketComs
 		#endregion
 
 		#region RXST
-		public string RXST(string fileName)
+		public string Rxst(string fileName)
 			{
 			string myString = null;
 			string path = Directory.GetCurrentDirectory() + @"\Data";
@@ -367,7 +367,7 @@ namespace PacketComs
 		#endregion
 
 		#region RX
-		public string RX()
+		public string Rx()
 			{
 			string myString = null;
 			string path = Directory.GetCurrentDirectory() + @"\Data";

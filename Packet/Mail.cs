@@ -70,7 +70,7 @@ namespace Packet
         public static string RemovePepeatWords(string fileName, Array arrayName)
         {
             //read file
-            var str1 = MyFiles.RXST(fileName);
+            var str1 = MyFiles.Rxst(fileName);
 
             //
             foreach (string str in arrayName)
@@ -131,7 +131,7 @@ namespace Packet
                 Width = DataGridView1.Width + 50;
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
-                var myString = MyFiles.RX();
+                var myString = MyFiles.Rx();
                 var lines = myString.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
                 var rxmsg = new string[lines.Length];
                 var rxtsld = new string[lines.Length];

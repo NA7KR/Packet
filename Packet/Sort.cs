@@ -49,7 +49,7 @@ namespace Packet
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
 
-            string myString = MyFiles.RXST(file_Name_Sort);
+            string myString = MyFiles.Rxst(file_Name_Sort);
             string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray)
             {
@@ -62,7 +62,7 @@ namespace Packet
             }
             
 
-            string myString2 = MyFiles.RXST(file_Name_Sort);
+            string myString2 = MyFiles.Rxst(file_Name_Sort);
             string[] myArray2 = myString2.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray2)
             {

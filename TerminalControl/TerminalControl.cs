@@ -165,7 +165,7 @@ namespace PacketComs
             
             if (_myFiles.CheckSt("ToDownLoad") == true)
             {
-                nb = "R " + _myFiles.RXST("ToDownLoad");
+                nb = "R " + _myFiles.Rxst("ToDownLoad");
                 
                 DispatchMessage(this, nb);
                 DispatchMessage(this, Environment.NewLine);
