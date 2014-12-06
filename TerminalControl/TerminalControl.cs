@@ -970,7 +970,7 @@ namespace PacketComs
                             for (int i = 1; i < lines.Length - 1; i++)
                                 //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
                             {
-                                _myFiles.WriteSql(lines[i] );
+                                _myFiles.WriteSqlPacket(lines[i]);
                                 //LastNumber = lines[i].Substring(0, 5);
                             }
                             LastNumberevt(this, new EventArgs());
@@ -1433,7 +1433,7 @@ namespace PacketComs
                             for (int i = 1; i < lines.Length - 1;)
                                 
                             {
-                                _myFiles.WriteSql(lines[i] );
+                                _myFiles.WriteSqlPacket(lines[i]);
                                 LastNumber = lines[i].Substring(0, 5);
                                 if (lines[i+1].Contains(BBSPrompt))
                                 {

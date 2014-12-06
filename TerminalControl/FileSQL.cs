@@ -99,31 +99,30 @@ namespace PacketComs
 
 		#endregion
 
-		#region SQLInsert
+		#region SQLInsertPacket
+		private void  SqlInsertPacket(DtoPacket packetdto)
+		{
+			sqlComm.Parameters.Clear();
+			sqlComm.Parameters.AddWithValue("@p1", packetdto.get_MSG());
+			sqlComm.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
+			sqlComm.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
+			sqlComm.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
+			sqlComm.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
+			sqlComm.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
+			sqlComm.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
+			sqlComm.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
+			try
+				{
+				    sqlComm.Prepare();
+				    sqlComm.ExecuteNonQuery();
+				//sqlConn.Close();
+				}
+			catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
 
-		private void  SqlInsert(DtoPacket packetdto)
-			{
-				sqlComm.Parameters.Clear();
-				sqlComm.Parameters.AddWithValue("@p1", packetdto.get_MSG());
-				sqlComm.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
-				sqlComm.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
-				sqlComm.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
-				sqlComm.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
-				sqlComm.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
-				sqlComm.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
-				sqlComm.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
-				try
-					{
-					sqlComm.Prepare();
-					sqlComm.ExecuteNonQuery();
-					//sqlConn.Close();
-					}
-				catch (OdbcException e)
-					{
-						MessageBox.Show(e.Message);
-					}
-
-			}
+		}
 		#endregion
 
 		#region SQLUPDATE
@@ -207,11 +206,11 @@ namespace PacketComs
 
 		#endregion
 
-		#region WriteSQL
-		public bool WriteSql(string textValue)
+		#region WriteSQLPacket
+		public void WriteSqlPacket(string textValue)
+		{
+		try
 			{
-			try
-				{
 				packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
 				packet.set_MSGTSLD(Mid(textValue, 7, 4));
 				packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
@@ -220,18 +219,13 @@ namespace PacketComs
 				packet.set_MSGFrom(Mid(textValue, 32, 7));
 				packet.set_MSGDateTime(Mid(textValue, 39, 9));
 				packet.set_MSGSubject(Mid(textValue, 49, (textValue.Length - 49)));
-
-
-				SqlInsert(packet);
-
-				return true;
-				}
-			catch (Exception e)
-				{
-				MessageBox.Show(e.Message);
-				return false;
-				}
+				SqlInsertPacket(packet);
 			}
+		catch (Exception e)
+			{
+				MessageBox.Show(e.Message);
+			}
+		}
 		#endregion
 
 		#region Write

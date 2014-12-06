@@ -8,7 +8,7 @@ namespace PacketComs
     public class DtoPacket
     {
         private Int32  _msg;
-        private int    _msgSize;
+        private Int32  _msgSize;
         private string _msgtsld;
         private string _msgto;
         private string _msgRoute;
