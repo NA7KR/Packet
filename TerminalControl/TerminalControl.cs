@@ -169,7 +169,7 @@ namespace PacketComs
                 
                 DispatchMessage(this, nb);
                 DispatchMessage(this, Environment.NewLine);
-                _myFiles.DeleteSt("ToDownLoad");
+                
             }
         }
 

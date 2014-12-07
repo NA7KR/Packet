@@ -103,7 +103,7 @@ namespace Packet
         #region Mail_Load
         private void Mail_Load(object sender, EventArgs e)
         {
-            int i;
+            //int i;
             try
             {
                 DataGridView1.Columns.Add("RXMSG", "MSG");
@@ -131,6 +131,8 @@ namespace Packet
                 Width = DataGridView1.Width + 50;
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
+                MyFiles.Sqlselect("DSN=Packet");
+                /*
                 var myString = MyFiles.Rx();
                 var lines = myString.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
                 var rxmsg = new string[lines.Length];
@@ -160,6 +162,7 @@ namespace Packet
                 MyFiles.WriteSt(RemovePepeatWords("SortRoute", rxroute), "SortRoute");
                 MyFiles.WriteSt(RemovePepeatWords("SortFrom", rxfrom), "SortFrom");
                 MyFiles.WriteSt(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");
+                 */
             }
             catch (IOException ex)
             {

@@ -16,6 +16,7 @@ namespace PacketComs
 
 		DtoPacket packet = new DtoPacket();
 		private OdbcCommand sqlComm;
+        
 	
 		#region Constructor
 		public FileSql()
@@ -36,8 +37,7 @@ namespace PacketComs
 				"MSGSubject) " +
 				"VALUES (?,?,?,?,?,?,?,?)";
 
-			OdbcManager odbc = new OdbcManager();
-
+			 OdbcManager odbc = new OdbcManager();
 			if (odbc.CheckForDSN(dsnTableName) > 0)
 				{
 				if (DoesTableExist(dsnTableName, dsnName) == false)
@@ -55,31 +55,44 @@ namespace PacketComs
 			}
 		#endregion
 
-		#region SQLSELECT
-		/*
-		public static DataSet Sqlselect(string query, string tableName)
-			{
-			try
-				{
-				DataSet sqlSet = new DataSet();
-				OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-				OdbcDataAdapter sqlAdapt = new OdbcDataAdapter();
-				sqlAdapt.SelectCommand = new OdbcCommand(query, sqlConn);
-				OdbcCommandBuilder sqlCmdBuilder = new OdbcCommandBuilder(sqlAdapt);
-				sqlConn.Open();
-				sqlAdapt.Fill(sqlSet, tableName);
-				sqlAdapt.Update(sqlSet, tableName);
-				sqlConn.Close();
-				return sqlSet;
-				}
-			catch (OdbcException e)
-				{
-				MessageBox.Show(e.Message);
-				return null;
-				}
-
-			}
-		 */
+		#region SQLSELECT	
+        public void Sqlselect(string dsnName)
+        {
+            try
+            {
+	            var sqlConn = new OdbcConnection(dsnName);
+	            sqlConn.Open();
+	            sqlComm = sqlConn.CreateCommand();
+                using (OdbcCommand cmd = new OdbcCommand())
+                    {
+                    cmd.Connection = sqlConn;
+                    sqlComm.CommandText = "SELECT * FROM Packet ";
+                    sqlComm.ExecuteNonQuery();
+                    using (OdbcDataReader reader = sqlComm.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            {
+                                packet.set_MSG(Convert.ToInt32(reader.GetValue(0)));
+                                packet.set_MSGTSLD(reader.GetValue(1).ToString());
+                                packet.set_MSGSize(Convert.ToInt32(reader.GetValue(2)));
+                                packet.set_MSGTO(reader.GetValue(3).ToString());
+                                packet.set_MSGRoute(reader.GetValue(4).ToString());
+                                packet.set_MSGFrom(reader.GetValue(5).ToString());
+                                packet.set_MSGDateTime(reader.GetValue(6).ToString());
+                                packet.set_MSGSubject(reader.GetValue(7).ToString());
+                                packet.set_MSGState(reader.GetValue(8).ToString());
+                            }
+                        }
+                    }
+                    
+                    }      
+            }
+            catch (OdbcException e)
+            {
+            MessageBox.Show(e.Message);
+            }
+        }
 		#endregion
 
 		#region SQLMakeTable
@@ -228,33 +241,9 @@ namespace PacketComs
 		}
 		#endregion
 
-		#region Write
-		/*
-		public bool Write(string textValue)
-			{
-			try
-				{
-				string path = Directory.GetCurrentDirectory() + @"\Data";
-				if (!Directory.Exists(path))
-					{
-					// Try to create the directory.
-					Directory.CreateDirectory(path);
-					}
-				path = path + @"\myMailList.txt";
-				File.AppendAllText(path, textValue);
-				return true;
-				} //end try
-			catch (Exception e)
-				{
-				MessageBox.Show(e.Message);
-				return false;
-				}
-			} //end write
-		*/
-		#endregion
+
 
 		#region WriteST
-
 		public bool WriteSt(string textVale, string fileName)
 			{
 
@@ -277,38 +266,6 @@ namespace PacketComs
 				return false;
 				}
 			} //end write
-
-		#endregion
-
-		#region DeleteST
-		public bool? DeleteSt(string fileName)
-			{
-
-			try
-				{
-				string path = Directory.GetCurrentDirectory() + @"\Data";
-				if (!Directory.Exists(path))
-					{
-					// Try to create the directory.
-					Directory.CreateDirectory(path);
-					}
-				path = path + @"\" + fileName + ".txt";
-				if (File.Exists(path))
-					{
-					File.Delete(path);
-					return true;
-					}
-
-				return null;
-
-
-				} //end try
-			catch (Exception e)
-				{
-				MessageBox.Show(e.Message);
-				return false;
-				}
-			} //end delete
 		#endregion
 
 		#region checkST
@@ -360,26 +317,7 @@ namespace PacketComs
 			}
 		#endregion
 
-		#region RX
-		public string Rx()
-			{
-			string myString = null;
-			string path = Directory.GetCurrentDirectory() + @"\Data";
-			if (!Directory.Exists(path))
-				{
-				// Try to create the directory.
-				Directory.CreateDirectory(path);
-				}
-			path = path + @"\myMailList.txt";
-
-			if (File.Exists(path))
-				{
-				StreamReader myFile = new StreamReader(path);
-				myString = myFile.ReadToEnd();
-				}
-			return myString;
-			}
-		#endregion
+	
 
 		#region Mid
 		public static string Mid(string param, int startIndex, int length)
