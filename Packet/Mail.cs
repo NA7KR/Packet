@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Odbc;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -14,7 +15,8 @@ namespace Packet
     public partial class Mail : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
-
+        private OdbcCommand sqlComm;
+        
         #region Mail InitializeComponent
 
         public Mail()
@@ -41,7 +43,7 @@ namespace Packet
                     ToDownLoad += drv.Cells[0].Value.ToString();
                     firstvalue = false;
                 }
-                MyFiles.WriteSt(ToDownLoad, "ToDownLoad");
+                //MyFiles.WriteSt(ToDownLoad, "ToDownLoad");
             }
             Close();
         }
@@ -131,7 +133,8 @@ namespace Packet
                 Width = DataGridView1.Width + 50;
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
-                MyFiles.Sqlselect("DSN=Packet");
+                Sqlselect("DSN=Packet");
+
                 /*
                 var myString = MyFiles.Rx();
                 var lines = myString.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
@@ -214,6 +217,46 @@ namespace Packet
         {
             var box = new Sort("SelectedRoute", "SortRoute");
             box.ShowDialog();
+        }
+        #endregion
+
+        #region SQLSELECT
+        public void Sqlselect(string dsnName)
+        {
+            try
+            {
+                var sqlConn = new OdbcConnection(dsnName);
+                sqlConn.Open();
+                sqlComm = sqlConn.CreateCommand();
+                using (OdbcCommand cmd = new OdbcCommand())
+                {
+                    cmd.Connection = sqlConn;
+                    sqlComm.CommandText = "SELECT * FROM Packet ";
+                    sqlComm.ExecuteNonQuery();
+                    using (OdbcDataReader reader = sqlComm.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            {
+                                DataGridView1.Rows.Add(
+                                    reader.GetValue(0),
+                                    reader.GetValue(1),
+                                    reader.GetValue(2),
+                                    reader.GetValue(3),
+                                    reader.GetValue(4),
+                                    reader.GetValue(5),
+                                    reader.GetValue(6),
+                                    reader.GetValue(7));
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
         #endregion
     }

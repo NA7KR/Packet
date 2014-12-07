@@ -36,7 +36,7 @@ namespace Packet
             }
 
 
-            MyFiles.WriteSt(myString, file_Name_Select); 
+          //  MyFiles.WriteSt(myString, file_Name_Select); 
         }
         #endregion
 

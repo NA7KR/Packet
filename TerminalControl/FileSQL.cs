@@ -55,46 +55,6 @@ namespace PacketComs
 			}
 		#endregion
 
-		#region SQLSELECT	
-        public void Sqlselect(string dsnName)
-        {
-            try
-            {
-	            var sqlConn = new OdbcConnection(dsnName);
-	            sqlConn.Open();
-	            sqlComm = sqlConn.CreateCommand();
-                using (OdbcCommand cmd = new OdbcCommand())
-                    {
-                    cmd.Connection = sqlConn;
-                    sqlComm.CommandText = "SELECT * FROM Packet ";
-                    sqlComm.ExecuteNonQuery();
-                    using (OdbcDataReader reader = sqlComm.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            {
-                                packet.set_MSG(Convert.ToInt32(reader.GetValue(0)));
-                                packet.set_MSGTSLD(reader.GetValue(1).ToString());
-                                packet.set_MSGSize(Convert.ToInt32(reader.GetValue(2)));
-                                packet.set_MSGTO(reader.GetValue(3).ToString());
-                                packet.set_MSGRoute(reader.GetValue(4).ToString());
-                                packet.set_MSGFrom(reader.GetValue(5).ToString());
-                                packet.set_MSGDateTime(reader.GetValue(6).ToString());
-                                packet.set_MSGSubject(reader.GetValue(7).ToString());
-                                packet.set_MSGState(reader.GetValue(8).ToString());
-                            }
-                        }
-                    }
-                    
-                    }      
-            }
-            catch (OdbcException e)
-            {
-            MessageBox.Show(e.Message);
-            }
-        }
-		#endregion
-
 		#region SQLMakeTable
 		private void SqlMakeTable(string query)
 			{
@@ -241,8 +201,6 @@ namespace PacketComs
 		}
 		#endregion
 
-
-
 		#region WriteST
 		public bool WriteSt(string textVale, string fileName)
 			{
@@ -315,9 +273,7 @@ namespace PacketComs
 			return myString;
 
 			}
-		#endregion
-
-	
+		#endregion	
 
 		#region Mid
 		public static string Mid(string param, int startIndex, int length)
