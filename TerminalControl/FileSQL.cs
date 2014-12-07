@@ -202,7 +202,28 @@ namespace PacketComs
 		#endregion
 
 		#region WriteST
-		public bool WriteSt(string textVale, string fileName)
+        
+        public void WriteSt(string textVale, Int32 intsize, string TableName, string dsnName)
+        {
+             OdbcManager odbc = new OdbcManager();
+             if (odbc.CheckForDSN(dsnName) > 0)
+		    {
+		        if (DoesTableExist(TableName, "DSN-" + dsnName) == false)
+		        {
+		            SqlMakeTable(
+		                "CREATE TABLE " + TableName +
+                        "( MSG int PRIMARY KEY, " + textVale + "(" + intsize + ")");
+		        }
+		    }
+		    else
+		    {
+		        odbc.CreateDSN(dsnName);
+		        MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
+		            "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		        Environment.Exit(1);
+		    }
+        }
+            /*
 			{
 
 			try
@@ -224,6 +245,7 @@ namespace PacketComs
 				return false;
 				}
 			} //end write
+         */
 		#endregion
 
 		#region checkST

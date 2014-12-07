@@ -134,38 +134,6 @@ namespace Packet
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
                 Sqlselect("DSN=Packet");
-
-                /*
-                var myString = MyFiles.Rx();
-                var lines = myString.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-                var rxmsg = new string[lines.Length];
-                var rxtsld = new string[lines.Length];
-                var rxsize = new string[lines.Length];
-                var rxto = new string[lines.Length];
-                var rxroute = new string[lines.Length];
-                var rxfrom = new string[lines.Length];
-                var rxdate = new string[lines.Length];
-                var rxsubject = new string[lines.Length];
-
-                for (i = 0; i < lines.Length; i++)
-                {
-                    var line = lines[i];
-                    rxmsg[i] = Mid(line, 0, 5);
-                    rxtsld[i] = Mid(line, 7, 4);
-                    rxsize[i] = Mid(line, 13, 5);
-                    rxto[i] = Mid(line, 18, 6);
-                    rxroute[i] = Mid(line, 24, 8);
-                    rxfrom[i] = Mid(line, 32, 7);
-                    rxdate[i] = Mid(line, 39, 9);
-                    rxsubject[i] = Mid(line, 49, (line.Length - 49));
-                    DataGridView1.Rows.Add(rxmsg[i], rxtsld[i], rxsize[i], rxto[i], rxroute[i], rxfrom[i], rxdate[i],
-                        rxsubject[i]);
-                }
-                MyFiles.WriteSt(RemovePepeatWords("SortTo", rxto), "SortTo");
-                MyFiles.WriteSt(RemovePepeatWords("SortRoute", rxroute), "SortRoute");
-                MyFiles.WriteSt(RemovePepeatWords("SortFrom", rxfrom), "SortFrom");
-                MyFiles.WriteSt(RemovePepeatWords("SortSubject", rxsubject), "SortSubject");
-                 */
             }
             catch (IOException ex)
             {

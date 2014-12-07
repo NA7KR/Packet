@@ -34,9 +34,9 @@ namespace Packet
             {
                  myString += "," + anItem.Text;
             }
+            MyFiles.WriteSt(file_Name_Select, 10, file_Name_Select, "Packet");
 
-
-          //  MyFiles.WriteSt(myString, file_Name_Select); 
+            //  MyFiles.WriteSt(myString, file_Name_Select); 
         }
         #endregion
 
