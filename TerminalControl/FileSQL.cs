@@ -203,16 +203,16 @@ namespace PacketComs
 
 		#region WriteST
         
-        public void WriteSt(string textVale, Int32 intsize, string TableName, string dsnName)
+        public void SelectMakeTable(string textVale, Int32 intsize, string TableName, string dsnName)
         {
              OdbcManager odbc = new OdbcManager();
              if (odbc.CheckForDSN(dsnName) > 0)
 		    {
-		        if (DoesTableExist(TableName, "DSN-" + dsnName) == false)
+		        if (DoesTableExist(TableName, "DSN=" + dsnName) == false)
 		        {
 		            SqlMakeTable(
 		                "CREATE TABLE " + TableName +
-                        "( MSG int PRIMARY KEY, " + textVale + "(" + intsize + ")");
+                        "(  " + textVale + " CHAR(" + intsize + "))");
 		        }
 		    }
 		    else

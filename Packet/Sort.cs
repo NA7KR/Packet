@@ -27,16 +27,13 @@ namespace Packet
         #region OK
         private void button_ok_Click(object sender, EventArgs e)
         {
-            //string myString = listView1.SelectedItems;
-
             string myString = string.Empty;
             foreach (ListViewItem anItem in listView1.CheckedItems)
             {
                  myString += "," + anItem.Text;
             }
-            MyFiles.WriteSt(file_Name_Select, 10, file_Name_Select, "Packet");
-
-            //  MyFiles.WriteSt(myString, file_Name_Select); 
+            MyFiles.SelectMakeTable(file_Name_Select, 10, file_Name_Select, "Packet");
+            Close();
         }
         #endregion
 
