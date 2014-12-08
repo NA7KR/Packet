@@ -201,8 +201,7 @@ namespace PacketComs
 		}
 		#endregion
 
-		#region WriteST
-        
+        #region SelectMakeTable
         public void SelectMakeTable(string textVale, Int32 intsize, string TableName, string dsnName)
         {
              OdbcManager odbc = new OdbcManager();
@@ -223,29 +222,6 @@ namespace PacketComs
 		        Environment.Exit(1);
 		    }
         }
-            /*
-			{
-
-			try
-				{
-				string path = Directory.GetCurrentDirectory() + @"\Data";
-				if (!Directory.Exists(path))
-					{
-					// Try to create the directory.
-					Directory.CreateDirectory(path);
-					}
-				string filePath = path + @"\" + fileName + ".txt";
-
-				File.WriteAllText(filePath, textVale);
-				return true;
-				} //end try
-			catch (Exception e)
-				{
-				MessageBox.Show(e.Message);
-				return false;
-				}
-			} //end write
-         */
 		#endregion
 
 		#region checkST
