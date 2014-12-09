@@ -1,10 +1,8 @@
 ﻿#region Using Directive
 
 using System;
-using System.Collections.Generic;
 using System.Data.Odbc;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -68,39 +66,7 @@ namespace Packet
         }
         #endregion
 
-        #region RemovePepeatWords
-        public static string RemovePepeatWords(string fileName, Array arrayName)
-        {
-            //read file
-            var str1 = MyFiles.Rxst(fileName);
-
-            //
-            foreach (string str in arrayName)
-            {
-                str1 = str + "," + str1;
-            }
-            str1 = str1.Replace(Environment.NewLine, ",");
-            str1 = str1.Replace("\r", ",");
-            str1 = str1.Replace("\n", ",");
-
-            str1 = str1.Replace(" ", "");
-
-            var listofUniqueWords = new Dictionary<string, bool>();
-            var destBuilder = new StringBuilder();
-            var spilltedwords = str1.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
-            Array.Sort(spilltedwords);
-            foreach (var item in spilltedwords)
-            {
-                if (!listofUniqueWords.ContainsKey(item))
-                {
-                    destBuilder.Append(item).Append(Environment.NewLine);
-                    listofUniqueWords.Add(item, true);
-                }
-            }
-
-            return destBuilder.ToString().Trim();
-        }
-        #endregion
+        
 
         #region Mail_Load
         private void Mail_Load(object sender, EventArgs e)

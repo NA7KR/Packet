@@ -52,6 +52,7 @@ namespace Packet
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
 
+			/*	 KRR
             string myString = MyFiles.Rxst(file_Name_Sort);
             string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray)
@@ -82,6 +83,7 @@ namespace Packet
                     }
                 }
             }
+			 */
         }
         #endregion
 

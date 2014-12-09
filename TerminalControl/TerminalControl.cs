@@ -162,7 +162,7 @@ namespace PacketComs
             DispatchMessage(this, nb);
             DispatchMessage(this, Environment.NewLine);
 
-            
+            /*	 KRR
             if (_myFiles.CheckSt("ToDownLoad") == true)
             {
                 nb = "R " + _myFiles.Rxst("ToDownLoad");
@@ -171,6 +171,7 @@ namespace PacketComs
                 DispatchMessage(this, Environment.NewLine);
                 
             }
+			 */ 
         }
 
         #endregion
