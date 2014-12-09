@@ -325,7 +325,7 @@ namespace Packet
         #endregion
 
         private Button button_Cancel;
-        private DataGridView DataGridView1;
+        public DataGridView DataGridView1;
         protected Button button_OK;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;

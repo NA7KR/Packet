@@ -1,6 +1,7 @@
 ﻿#region Using Directive
 
 using System;
+using System.Collections.Generic;
 using System.Data.Odbc;
 using System.IO;
 using System.Windows.Forms;
@@ -12,8 +13,7 @@ namespace Packet
 {
     public partial class Mail : Form
     {
-        private static readonly FileSql MyFiles = new FileSql();
-        private OdbcCommand sqlComm;
+		private static readonly SQL SQL = new SQL();
         
         #region Mail InitializeComponent
 
@@ -69,7 +69,7 @@ namespace Packet
         
 
         #region Mail_Load
-        private void Mail_Load(object sender, EventArgs e)
+        public void Mail_Load(object sender, EventArgs e)
         {
             //int i;
             try
@@ -99,7 +99,21 @@ namespace Packet
                 Width = DataGridView1.Width + 50;
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
-                Sqlselect("DSN=Packet");
+                List<DtoPacket> packets = SQL.Sqlselect("DSN=Packet");
+				packets.ForEach(delegate(DtoPacket packet)
+				{
+					DataGridView1.Rows.Add(
+						packet.get_MSG(),
+						packet.get_MSGTSLD(),
+						packet.get_MSGSize(),
+						packet.get_MSGTO(),
+						packet.get_MSGRoute(),
+						packet.get_MSGFrom(),
+						packet.get_MSGDateTime(),
+						packet.get_MSGSubject());
+				}
+					);
+				
             }
             catch (IOException ex)
             {
@@ -125,7 +139,7 @@ namespace Packet
         #region toolStripMenuItem TO
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var box = new Sort("SelectedTo", "SortTo",6);
+            var box = new Sort("SelectedTo", "SortTo",6,"MSGTO");
             box.ShowDialog();
         }
         #endregion
@@ -133,7 +147,7 @@ namespace Packet
         #region toolStripMenuItem Subject
         private void configToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            var box = new Sort("SelectedSubject", "SortSubject", 30);
+            var box = new Sort("SelectedSubject", "SortSubject", 30,"MSGSubject");
             box.ShowDialog();
         }
         #endregion
@@ -141,7 +155,7 @@ namespace Packet
         #region toolStripMenuItem From
         private void configToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var box = new Sort("SelectedFrom", "SortFrom",6);
+            var box = new Sort("SelectedFrom", "SortFrom",6, "MSGFrom");
             box.ShowDialog();
         }
         #endregion
@@ -149,49 +163,11 @@ namespace Packet
         #region toolStripMenuItem Roure
         private void configToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var box = new Sort("SelectedRoute", "SortRoute",7);
+            var box = new Sort("SelectedRoute", "SortRoute",7, "MSGRoute");
             box.ShowDialog();
         }
         #endregion
 
-        #region SQLSELECT
-        public void Sqlselect(string dsnName)
-        {
-            try
-            {
-                var sqlConn = new OdbcConnection(dsnName);
-                sqlConn.Open();
-                sqlComm = sqlConn.CreateCommand();
-                using (OdbcCommand cmd = new OdbcCommand())
-                {
-                    cmd.Connection = sqlConn;
-                    sqlComm.CommandText = "SELECT * FROM Packet ";
-                    sqlComm.ExecuteNonQuery();
-                    using (OdbcDataReader reader = sqlComm.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            {
-                                DataGridView1.Rows.Add(
-                                    reader.GetValue(0),
-                                    reader.GetValue(1),
-                                    reader.GetValue(2),
-                                    reader.GetValue(3),
-                                    reader.GetValue(4),
-                                    reader.GetValue(5),
-                                    reader.GetValue(6),
-                                    reader.GetValue(7));
-                            }
-                        }
-                    }
-
-                }
-            }
-            catch (OdbcException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-        #endregion
+        
     }
 }

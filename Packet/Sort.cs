@@ -14,14 +14,16 @@ namespace Packet
         private static readonly FileSql MyFiles = new FileSql();
         public string file_Name_Select; // "SelectedTo"
         public string file_Name_Sort; // SortTo
+		public string s_MSGFrom; 
         public Int32 d_size;
 
         #region Sort
-        public Sort(string fileNameSelect, string fileNameSort, Int32 dsize)
+		public Sort(string fileNameSelect, string fileNameSort, Int32 dsize, string sMSGFrom)
         {   
             InitializeComponent();
             file_Name_Select = fileNameSelect; //local to public
             file_Name_Sort = fileNameSort; //local to public
+			s_MSGFrom = sMSGFrom;
             d_size = dsize;
         }
         #endregion
@@ -29,7 +31,7 @@ namespace Packet
         #region OK
         private void button_ok_Click(object sender, EventArgs e)
         {
-			MyFiles.SelectMakeTable(file_Name_Select, d_size, file_Name_Select, "Packet");
+			MyFiles.SelectMakeTable("MSGFROM", d_size, file_Name_Select, "Packet");
             //string myString = string.Empty;
             foreach (ListViewItem anItem in listView1.CheckedItems)
             {
@@ -45,6 +47,7 @@ namespace Packet
         #region Load
         private void Sort_Load(object sender, EventArgs e)
         {
+		MyFiles.SelectMakeTable(s_MSGFrom, d_size, s_MSGFrom, "Packet");
             listView1.Left =  5;
             listView1.Width = (Width - 30);
             listView1.Top = 5;

@@ -35,12 +35,12 @@ namespace PacketComs
         #endregion
 
         #region DTOPacket
-        public DtoPacket(int msg, string msgtsld, string msgto, int msgSize, string msgRoute, string msgFrom, string msgDateTime, string msgSubject, string msgState )
+		public DtoPacket(int msg, string msgtsld, int msgSize, string msgto, string msgRoute, string msgFrom, string msgDateTime, string msgSubject, string msgState)
         {
             _msg = msg;
             _msgtsld = msgtsld;
+			_msgSize = msgSize;
             _msgto = msgto;
-            _msgSize = msgSize;
             _msgRoute = msgRoute;
             _msgFrom = msgFrom;
             _msgDateTime = msgDateTime;
