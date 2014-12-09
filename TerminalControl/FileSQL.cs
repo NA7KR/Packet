@@ -3,7 +3,6 @@
 using System;
 using System.Data;
 using System.Data.Odbc;
-using System.IO;
 using System.Windows.Forms;
 
 #endregion
@@ -239,7 +238,7 @@ namespace PacketComs
 			sqlCommSelectInsert = sqlConn.CreateCommand();
 			sqlCommSelectInsert.CommandText = "INSERT INTO " + tableName + " (" + tableName + ") VALUES (?)";
 			if (tableName == "SelectedMSG")
-				packet.set_MSG(textValue);
+				packet.set_MSG(Convert.ToInt32(textValue));
 			else if(tableName == "SelectedTo")
 				packet.set_MSGTO(textValue);
 			else if (tableName == "SelectedRoute")
@@ -280,57 +279,10 @@ namespace PacketComs
         }
 		#endregion
 
-		#region checkST
-		public bool? CheckSt(string fileName)
-			{
 
-			try
-				{
-				string path = Directory.GetCurrentDirectory() + @"\Data";
-				if (!Directory.Exists(path))
-					{
-					// Try to create the directory.
-					Directory.CreateDirectory(path);
-					}
-				path = path + @"\" + fileName + ".txt";
-				if (File.Exists(path))
-					{
-					return true;
-					}
-				return null;
-				} //end try
-			catch (Exception e)
-				{
-				MessageBox.Show(e.Message);
-				return false;
-				}
-			} //end check
-		#endregion
-
-		#region RXST
-		public string Rxst(string fileName)
-			{
-			string myString = null;
-			string path = Directory.GetCurrentDirectory() + @"\Data";
-			if (!Directory.Exists(path))
-				{
-				// Try to create the directory.
-				Directory.CreateDirectory(path);
-				}
-			path = path + @"\" + fileName + ".txt";
-			if (File.Exists(path))
-				{
-				StreamReader myFile = new StreamReader(path);
-				myString = myFile.ReadToEnd();
-				myFile.Close();
-				}
-			return myString;
-
-			}
-		#endregion	
 
 		#region Mid
-		public static string Mid(string param, int startIndex, int length)
+		private static string Mid(string param, int startIndex, int length)
 			{
 			if (param == " ")
 				{
