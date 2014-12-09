@@ -100,6 +100,34 @@ namespace PacketComs
 		}
 		#endregion
 
+		#region SQLInsertSelect
+		private void SqlInsertSelect(DtoPacket packetdto,string tableName)
+			{
+			sqlCommSelectInsert.Parameters.Clear();
+			if (tableName == "SelectedMSG")
+				sqlCommSelectInsert.Parameters.AddWithValue("@p1", packetdto.get_MSG());
+			else if (tableName == "SelectedTo")
+				sqlCommSelectInsert.Parameters.AddWithValue("@p1", packetdto.get_MSGTO());
+			else if (tableName == "SelectedRoute")
+				sqlCommSelectInsert.Parameters.AddWithValue("@p1", packetdto.get_MSGRoute());
+			else if (tableName == "SelectedFrom")
+				sqlCommSelectInsert.Parameters.AddWithValue("@p1", packetdto.get_MSGFrom());
+			else if (tableName == "SelectedSubject")
+				sqlCommSelectInsert.Parameters.AddWithValue("@p1", packetdto.get_MSGSubject());	
+			try
+				{
+				sqlCommSelectInsert.Prepare();
+				sqlCommSelectInsert.ExecuteNonQuery();
+				//sqlConn.Close();
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				}
+
+			}
+		#endregion
+
 		#region SQLUPDATE
 		/*
 		public bool SQLUPDATE(string Query)
@@ -208,15 +236,19 @@ namespace PacketComs
 		{
 			try
 			{
-			sqlCommPacketInsert = sqlConn.CreateCommand();
-            sqlCommPacketInsert.CommandText = "INSERT INTO " + tableName + " (MSG,) VALUES (?)";
-
-			packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
-			packet.set_MSGTO(Mid(textValue, 18, 6));
-			packet.set_MSGRoute(Mid(textValue, 24, 8));
-			packet.set_MSGFrom(Mid(textValue, 32, 7));
-			packet.set_MSGSubject(Mid(textValue, 49, (textValue.Length - 49)));
-
+			sqlCommSelectInsert = sqlConn.CreateCommand();
+			sqlCommSelectInsert.CommandText = "INSERT INTO " + tableName + " (" + tableName + ") VALUES (?)";
+			if (tableName == "SelectedMSG")
+				packet.set_MSG(textValue);
+			else if(tableName == "SelectedTo")
+				packet.set_MSGTO(textValue);
+			else if (tableName == "SelectedRoute")
+				packet.set_MSGRoute(textValue);
+			else if (tableName == "SelectedFrom")
+				packet.set_MSGFrom(textValue);
+			else if (tableName == "SelectedSubject")
+			packet.set_MSGSubject(textValue);
+			SqlInsertSelect(packet,tableName);
 			}
 			catch (Exception e)
 				{
