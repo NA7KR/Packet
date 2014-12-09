@@ -14,13 +14,15 @@ namespace Packet
         private static readonly FileSql MyFiles = new FileSql();
         public string file_Name_Select; // "SelectedTo"
         public string file_Name_Sort; // SortTo
+        public Int32 dsize;
 
         #region Sort
-        public Sort(string fileNameSelect, string fileNameSort)
+        public Sort(string fileNameSelect, string fileNameSort, Int32 dSize)
         {   
             InitializeComponent();
             file_Name_Select = fileNameSelect; //local to public
             file_Name_Sort = fileNameSort; //local to public
+            dSize = dsize;
         }
         #endregion
 
@@ -32,7 +34,7 @@ namespace Packet
             {
                  myString += "," + anItem.Text;
             }
-            MyFiles.SelectMakeTable(file_Name_Select, 10, file_Name_Select, "Packet");
+            MyFiles.SelectMakeTable(file_Name_Select, dsize, file_Name_Select, "Packet");
             Close();
         }
         #endregion

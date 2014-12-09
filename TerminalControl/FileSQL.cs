@@ -209,7 +209,7 @@ namespace PacketComs
 			try
 			{
 			sqlCommPacketInsert = sqlConn.CreateCommand();
-			sqlCommPacketInsert.CommandText = "INSERT INTO  Packet (MSG,) VALUES (?)";
+            sqlCommPacketInsert.CommandText = "INSERT INTO " + tableName + " (MSG,) VALUES (?)";
 
 			packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
 			packet.set_MSGTO(Mid(textValue, 18, 6));
