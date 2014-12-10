@@ -8,52 +8,54 @@ using PacketComs;
 
 namespace Packet
 {
-    #region class Sort
+	#region class Sort
     public partial class Sort : Form
-    {
-        private static readonly FileSql MyFiles = new FileSql();
+	{
+		private static readonly FileSql MyFiles = new FileSql();
 		private static readonly SQL SQL = new SQL();
-        public string file_Name_Select; // "SelectedTo"
+		public string file_Name_Select; // "SelectedTo"
         public string file_Name_Sort; // SortTo
-		public string s_MSGFrom; 
-        public Int32 d_size;
+		public string s_MSGFrom;
+		public Int32 d_size;
 
-        #region Sort
+		#region Sort
 		public Sort(string fileNameSelect, string fileNameSort, Int32 dsize, string sMSGFrom)
-        {   
-            InitializeComponent();
-            file_Name_Select = fileNameSelect; //local to public
+		{
+			InitializeComponent();
+			file_Name_Select = fileNameSelect; //local to public
             file_Name_Sort = fileNameSort; //local to public
 			s_MSGFrom = sMSGFrom;
-            d_size = dsize;
-        }
-        #endregion
+			d_size = dsize;
+		}
+
+		#endregion
 
         #region OK
         private void button_ok_Click(object sender, EventArgs e)
-        {
+		{
 			MyFiles.SelectMakeTable("MSGFROM", d_size, file_Name_Select, "Packet");
-            //string myString = string.Empty;
-            foreach (ListViewItem anItem in listView1.CheckedItems)
-            {
-                 //myString += "," + anItem.Text;
-			MyFiles.WriteSqlSelect(anItem.Text, file_Name_Select);
-            }
-            
-			
-            Close();
-        }
-        #endregion
+			//string myString = string.Empty;
+			foreach (ListViewItem anItem in listView1.CheckedItems)
+			{
+				//myString += "," + anItem.Text;
+				MyFiles.WriteSqlSelect(anItem.Text, file_Name_Select);
+			}
+
+			Close();
+		}
+
+		#endregion
 
         #region Load
         private void Sort_Load(object sender, EventArgs e)
-        {
-		MyFiles.SelectMakeTable(s_MSGFrom, d_size, s_MSGFrom, "Packet");
-            listView1.Left =  5;
-            listView1.Width = (Width - 30);
-            listView1.Top = 5;
-            listView1.Height = (Height - 100);
-            button_ok.Top = (Height - 75);
+		{
+			MyFiles.SelectMakeTable(s_MSGFrom, d_size, s_MSGFrom, "Packet");
+			listView1.Left = 5;
+			listView1.Width = (Width - 30);
+			listView1.Top = 5;
+			listView1.Height = (Height - 100);
+			button_ok.Top = (Height - 75);
+			button_Cancel.Top = (Height - 75);
 	        SQL.SqlselectOptrion("DSN=Packet");
 	        /*	 KRR
             string myString = MyFiles.Rxst(file_Name_Sort);
