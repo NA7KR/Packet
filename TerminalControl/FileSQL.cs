@@ -264,9 +264,7 @@ namespace PacketComs
 		    {
 		        if (DoesTableExist(TableName, "DSN=" + dsnName) == false)
 		        {
-		            SqlMakeTable(
-		                "CREATE TABLE " + TableName +
-                        "(  " + textVale + " CHAR(" + intsize + "))");
+                    SqlMakeTable("CREATE TABLE " + TableName + "(  " + textVale + " CHAR(" + intsize + "), IDateTime DateTime, Selected CHAR(1))");
 		        }
 		    }
 		    else

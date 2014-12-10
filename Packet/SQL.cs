@@ -1,4 +1,6 @@
 ﻿#region Using Directive
+
+using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
 using System.Windows.Forms;
@@ -71,7 +73,7 @@ namespace Packet
 				using (OdbcCommand cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
-					sqlComm.CommandText = "Insert into MSGFrom (MSGFrom) Select DISTINCT MSGFROM from Packet Where MSGFrom not in (Select MSGFrom from MSGFrom)";
+                    sqlComm.CommandText = "Insert into MSGFrom (MSGFrom, IDateTime, Selected) Select DISTINCT MSGFROM from Packet Where MSGFrom not in (Select MSGFrom from MSGFrom," + DateTime.Now + ", '')";
 					sqlComm.ExecuteNonQuery();
 					}
 				}
