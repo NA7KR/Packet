@@ -1,12 +1,9 @@
-﻿using System;
+﻿#region Using Directive
 using System.Collections.Generic;
 using System.Data.Odbc;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PacketComs;
+#endregion
 
 namespace Packet
 	{
@@ -19,8 +16,6 @@ namespace Packet
 			{
 
 			}
-
-
 
 		#region SQLSELECT
 		public List<DtoPacket> Sqlselect(string dsnName)
@@ -52,23 +47,6 @@ namespace Packet
 								(string) reader.GetValue(7),
 								null);
 							packets.Add(packet);
-							/*
-							Mail.DataGridView1.Rows.Add(
-								reader.GetValue(0),
-								reader.GetValue(1),
-								reader.GetValue(2),
-								reader.GetValue(3),
-								reader.GetValue(4),
-								reader.GetValue(5),
-								reader.GetValue(6),
-								reader.GetValue(7));
-							 */
-
-							;
-							//);
-
-
-
 							}
 						}
 
@@ -81,6 +59,29 @@ namespace Packet
 			return packets;
 			}
 		#endregion
+
+		#region SQLSELECTOPTION
+		public void SqlselectOptrion(string dsnName)
+			{
+			try
+				{
+				var sqlConn = new OdbcConnection(dsnName);
+				sqlConn.Open();
+				sqlComm = sqlConn.CreateCommand();
+				using (OdbcCommand cmd = new OdbcCommand())
+					{
+					cmd.Connection = sqlConn;
+					sqlComm.CommandText = "Insert into MSGFrom (MSGFrom) Select DISTINCT MSGFROM from Packet Where MSGFrom not in (Select MSGFrom from MSGFrom)";
+					sqlComm.ExecuteNonQuery();
+					}
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				}
+			}
+		#endregion
+
 		}
 
 	}

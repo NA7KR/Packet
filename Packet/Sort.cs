@@ -12,6 +12,7 @@ namespace Packet
     public partial class Sort : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
+		private static readonly SQL SQL = new SQL();
         public string file_Name_Select; // "SelectedTo"
         public string file_Name_Sort; // SortTo
 		public string s_MSGFrom; 
@@ -53,9 +54,8 @@ namespace Packet
             listView1.Top = 5;
             listView1.Height = (Height - 100);
             button_ok.Top = (Height - 75);
-            button_Cancel.Top = (Height - 75);
-
-			/*	 KRR
+	        SQL.SqlselectOptrion("DSN=Packet");
+	        /*	 KRR
             string myString = MyFiles.Rxst(file_Name_Sort);
             string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in myArray)

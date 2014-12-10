@@ -155,6 +155,7 @@ namespace Packet
         #region toolStripMenuItem From
         private void configToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+	        
             var box = new Sort("SelectedFrom", "SortFrom",6, "MSGFrom");
             box.ShowDialog();
         }
