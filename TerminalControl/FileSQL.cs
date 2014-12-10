@@ -257,14 +257,20 @@ namespace PacketComs
 		#endregion
 
 		#region SelectMakeTable
-		public void SelectMakeTable(string textVale, Int32 intsize, string TableName, string dsnName)
+		public void SelectMakeTable(string textVale, Int32 intsize, string TableName, string dsnName, string systemDSN)
         {
              OdbcManager odbc = new OdbcManager();
-             if (odbc.CheckForDSN(dsnName) > 0)
+			 if (odbc.CheckForDSN(systemDSN) > 0)
 		    {
-		        if (DoesTableExist(TableName, "DSN=" + dsnName) == false)
+		        if (DoesTableExist(TableName,  dsnName) == false)
 		        {
-                    SqlMakeTable("CREATE TABLE " + TableName + "(  " + textVale + " CHAR(" + intsize + "), IDateTime DateTime, Selected CHAR(1))");
+			        
+			        SqlMakeTable("CREATE TABLE " + TableName + " (  " + textVale + " CHAR(" + intsize +
+								 "), Selected CHAR(1), DateCreate datetime  )");
+
+					sqlConn = new OdbcConnection(dsnName);
+					sqlConn.Open();
+					
 		        }
 		    }
 		    else

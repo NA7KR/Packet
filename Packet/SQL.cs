@@ -63,7 +63,7 @@ namespace Packet
 		#endregion
 
 		#region SQLSELECTOPTION
-		public void SqlselectOptrion(string dsnName)
+		public void SqlselectOptrion(string dsnName, string TableName)
 			{
 			try
 				{
@@ -73,7 +73,9 @@ namespace Packet
 				using (OdbcCommand cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
-                    sqlComm.CommandText = "Insert into MSGFrom (MSGFrom, IDateTime, Selected) Select DISTINCT MSGFROM from Packet Where MSGFrom not in (Select MSGFrom from MSGFrom," + DateTime.Now + ", '')";
+					sqlComm.CommandText = "Insert into " + TableName + " ( " + TableName + " ,DateCreate ) " +
+										  " Select DISTINCT " + TableName + " , now() from Packet Where " + TableName +
+										  " not in (Select " + TableName + " from " + TableName + " )";
 					sqlComm.ExecuteNonQuery();
 					}
 				}

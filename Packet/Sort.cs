@@ -33,12 +33,12 @@ namespace Packet
         #region OK
         private void button_ok_Click(object sender, EventArgs e)
 		{
-			MyFiles.SelectMakeTable("MSGFROM", d_size, file_Name_Select, "Packet");
+		MyFiles.SelectMakeTable(s_MSGFrom, d_size, s_MSGFrom, "DSN=Packet", "Packet");
 			//string myString = string.Empty;
 			foreach (ListViewItem anItem in listView1.CheckedItems)
 			{
 				//myString += "," + anItem.Text;
-				MyFiles.WriteSqlSelect(anItem.Text, file_Name_Select);
+			MyFiles.WriteSqlSelect(anItem.Text, s_MSGFrom);
 			}
 
 			Close();
@@ -49,14 +49,14 @@ namespace Packet
         #region Load
         private void Sort_Load(object sender, EventArgs e)
 		{
-			MyFiles.SelectMakeTable(s_MSGFrom, d_size, s_MSGFrom, "Packet");
+			MyFiles.SelectMakeTable(s_MSGFrom, d_size, s_MSGFrom, "DSN=Packet","Packet");
 			listView1.Left = 5;
 			listView1.Width = (Width - 30);
 			listView1.Top = 5;
 			listView1.Height = (Height - 100);
 			button_ok.Top = (Height - 75);
 			button_Cancel.Top = (Height - 75);
-	        SQL.SqlselectOptrion("DSN=Packet");
+			SQL.SqlselectOptrion("DSN=Packet", s_MSGFrom);
 	        /*	 KRR
             string myString = MyFiles.Rxst(file_Name_Sort);
             string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
