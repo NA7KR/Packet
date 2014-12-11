@@ -1,38 +1,39 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Packet
-	{
-#region	  
-	class DtoList_MSGTO
-	{
-
-        private string _msgto;
-        private string _selected;
+{
+    class DtoList_MSGFrom
+    {
+        private string _msgfrom;
         private DateTime _DateCreate;
-       
+        private string _Selected;
+
         #region Constructor
-        public DtoList_MSGTO()
+        public DtoList_MSGFrom()
         {
-            _msgto = "";
+            _msgfrom = "";
             _DateCreate = DateTime.Now;
-            _selected = ""; 
+            _Selected = null; 
         }
         #endregion
 
         #region DtoList
-		public DtoList_MSGTO( string msgto, DateTime dateCreate, string selected)
+		public DtoList_MSGFrom( string msgfrom, DateTime dateCreate, string selected)
         {
-            _msgto = msgto;
+            _msgfrom = msgfrom;
             _DateCreate = dateCreate;
-            _selected = selected;
+            _Selected = selected;
         }
         #endregion
 
-        #region get_MSGTO
-        public string get_MSGTO()
+        #region get_MSGFROM
+        public string get_MSGFROM()
         {
-            return _msgto;
+            return _msgfrom;
         }
         #endregion
 
@@ -46,14 +47,14 @@ namespace Packet
         #region get_Selected
         public string get_Selected()
         {
-            return _selected;
+            return _Selected;
         }
         #endregion
 
-        #region set_MSGTO
-        public void set_MSGTO(string msgto)
+        #region set_MSGFROM
+        public void set_MSGFROM(string msgfrom)
         {
-            _msgto = msgto;
+            _msgfrom = msgfrom;
         }
         #endregion
 
@@ -67,13 +68,8 @@ namespace Packet
         #region set_Selected
         public void set_Selected(string selected)
         {
-            _selected = selected;
+            _Selected = selected;
         }
         #endregion
-
     }
-    
-      
-   
 }
-#endregion 

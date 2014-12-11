@@ -1,31 +1,32 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Packet
-	{
-#region	  
-	class DtoList_MSGTO
-	{
-
+{
+    class DtoList_MSGSubject
+    {
         private string _msgto;
-        private string _selected;
         private DateTime _DateCreate;
-       
+        private string _Selected;
+
         #region Constructor
-        public DtoList_MSGTO()
+        public DtoList_MSGSubject()
         {
             _msgto = "";
             _DateCreate = DateTime.Now;
-            _selected = ""; 
+            _Selected = null; 
         }
         #endregion
 
         #region DtoList
-		public DtoList_MSGTO( string msgto, DateTime dateCreate, string selected)
+		public DtoList_MSGSubject( string msgto, DateTime dateCreate, string selected)
         {
             _msgto = msgto;
             _DateCreate = dateCreate;
-            _selected = selected;
+            _Selected = selected;
         }
         #endregion
 
@@ -46,7 +47,7 @@ namespace Packet
         #region get_Selected
         public string get_Selected()
         {
-            return _selected;
+            return _Selected;
         }
         #endregion
 
@@ -67,13 +68,8 @@ namespace Packet
         #region set_Selected
         public void set_Selected(string selected)
         {
-            _selected = selected;
+            _Selected = selected;
         }
         #endregion
-
     }
-    
-      
-   
 }
-#endregion 

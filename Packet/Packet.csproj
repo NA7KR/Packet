@@ -63,6 +63,9 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="DtoList_MSGFrom.cs" />
+    <Compile Include="DtoList_MSGRoute.cs" />
+    <Compile Include="DtoList_MSGSubject.cs" />
     <Compile Include="DtoList_MSGTO.cs" />
     <Compile Include="Encrypt.cs" />
     <Compile Include="Com_Form.cs">
