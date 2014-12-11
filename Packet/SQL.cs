@@ -1,5 +1,6 @@
 ﻿#region Using Directive
 
+using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
 using System.Windows.Forms;
@@ -9,12 +10,12 @@ using PacketComs;
 
 namespace Packet
 	{
-	class SQL
+	class Sql
 		{
+        DtoListMsgto select_list = new DtoListMsgto();
+		private OdbcCommand _sqlComm;
 
-		private OdbcCommand sqlComm;
-
-		public SQL()
+		public Sql()
 			{
 
 			}
@@ -28,14 +29,14 @@ namespace Packet
 				{
 				var sqlConn = new OdbcConnection(dsnName);
 				sqlConn.Open();
-				sqlComm = sqlConn.CreateCommand();
+				_sqlComm = sqlConn.CreateCommand();
 
 				using (OdbcCommand cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
-					sqlComm.CommandText = "SELECT * FROM Packet ";
-					sqlComm.ExecuteNonQuery();
-					using (OdbcDataReader reader = sqlComm.ExecuteReader())
+					_sqlComm.CommandText = "SELECT * FROM Packet ";
+					_sqlComm.ExecuteNonQuery();
+					using (OdbcDataReader reader = _sqlComm.ExecuteReader())
 						{
 						while (reader.Read())
 						{
@@ -62,32 +63,32 @@ namespace Packet
 			}
 		#endregion
 
-		#region SQLSELECT_ON_Lists
-		public List<DtoListMsgto> SQLSELECT_ON_Lists(string dsnName, string tableName)
+        #region SQLSELECT_ON_Lists_Msgto
+        public List<DtoListMsgto> SQLSELECT_ON_Lists_Msgto(string dsnName, string tableName)
 			{
-			List<DtoListMsgto> packets = new List<DtoListMsgto>();
+			List<DtoListMsgto> select_lists = new List<DtoListMsgto>();
 
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
 				sqlConn.Open();
-				sqlComm = sqlConn.CreateCommand();
+				_sqlComm = sqlConn.CreateCommand();
 
 				using (OdbcCommand cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
-					sqlComm.CommandText = "SELECT * FROM " + tableName;
-					sqlComm.ExecuteNonQuery();
-					using (OdbcDataReader reader = sqlComm.ExecuteReader())
+					_sqlComm.CommandText = "SELECT * FROM " + tableName;
+					_sqlComm.ExecuteNonQuery();
+					using (OdbcDataReader reader = _sqlComm.ExecuteReader())
 						{
 						while (reader.Read())
 						{
-							//DtoList packet = new DtoList(
-							//	(string) reader.GetValue(0),
-							//	(string) reader.GetValue(1),
-							//	(string) reader.GetValue(2));
+							DtoListMsgto select_list  = new DtoListMsgto(
+								(string) reader.GetValue(0),
+								(DateTime) reader.GetValue(1),
+								(string) reader.GetValue(2));
 								
-							// packets.Add(packet);
+							 select_lists.Add(select_list );
 							}
 						}
 					}
@@ -96,25 +97,25 @@ namespace Packet
 				{
 				MessageBox.Show(e.Message);
 				}
-			return packets;
+            return select_lists;
 			}
 		#endregion
 
 		#region SQLSELECTOPTION
-		public void SqlselectOptrion(string dsnName, string TableName)
+		public void SqlselectOptrion(string dsnName, string tableName)
 			{
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
 				sqlConn.Open();
-				sqlComm = sqlConn.CreateCommand();
+				_sqlComm = sqlConn.CreateCommand();
 				using (OdbcCommand cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
-					sqlComm.CommandText = "Insert into " + TableName + " ( " + TableName + " ,DateCreate ) " +
-										  " Select DISTINCT " + TableName + " , now() from Packet Where " + TableName +
-										  " not in (Select " + TableName + " from " + TableName + " )";
-					sqlComm.ExecuteNonQuery();
+					_sqlComm.CommandText = "Insert into " + tableName + " ( " + tableName + " ,DateCreate ) " +
+										  " Select DISTINCT " + tableName + " , now() from Packet Where " + tableName +
+										  " not in (Select " + tableName + " from " + tableName + " )";
+					_sqlComm.ExecuteNonQuery();
 					}
 				}
 			catch (OdbcException e)

@@ -12,7 +12,7 @@ namespace Packet
 {
     public partial class Mail : Form
     {
-		private static readonly SQL SQL = new SQL();
+		private static readonly Sql SQL = new Sql();
         
         #region Mail InitializeComponent
 
