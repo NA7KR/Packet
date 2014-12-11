@@ -15,7 +15,7 @@ namespace Packet
         {
             _msgto = "";
             _dateCreate = DateTime.Now;
-            _selected = ""; 
+            _selected = null; 
         }
         #endregion
 

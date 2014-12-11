@@ -266,7 +266,7 @@ namespace PacketComs
 		        {
 			        
 			        SqlMakeTable("CREATE TABLE " + TableName + " (  " + textVale + " CHAR(" + intsize +
-								 "), Selected CHAR(1), DateCreate datetime  )");
+								 "), DateCreate datetime, Selected CHAR(1)  )");
 
 					sqlConn = new OdbcConnection(dsnName);
 					sqlConn.Open();

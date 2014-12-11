@@ -70,7 +70,6 @@ namespace Packet
         #region Mail_Load
         public void Mail_Load(object sender, EventArgs e)
         {
-            //int i;
             try
             {
                 DataGridView1.Columns.Add("RXMSG", "MSG");
@@ -99,20 +98,21 @@ namespace Packet
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
                 List<DtoPacket> packets = SQL.Sqlselect("DSN=Packet");
-				packets.ForEach(delegate(DtoPacket packet)
-				{
-					DataGridView1.Rows.Add(
-						packet.get_MSG(),
-						packet.get_MSGTSLD(),
-						packet.get_MSGSize(),
-						packet.get_MSGTO(),
-						packet.get_MSGRoute(),
-						packet.get_MSGFrom(),
-						packet.get_MSGDateTime(),
-						packet.get_MSGSubject());
-				}
-					);
-				
+	            packets.ForEach(delegate(DtoPacket packet)
+	            {
+		            DataGridView1.Rows.Add(
+			            packet.get_MSG(),
+			            packet.get_MSGTSLD(),
+			            packet.get_MSGSize(),
+			            packet.get_MSGTO(),
+			            packet.get_MSGRoute(),
+			            packet.get_MSGFrom(),
+			            packet.get_MSGDateTime(),
+			            packet.get_MSGSubject());
+	            }
+				);
+
+
             }
             catch (IOException ex)
             {
