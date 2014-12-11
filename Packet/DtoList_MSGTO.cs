@@ -28,7 +28,7 @@ namespace Packet
         }
         #endregion
 
-        #region get_MSGTO
+        #region get_MSGSubject
         public string get_MSGTO()
         {
             return _msgto;

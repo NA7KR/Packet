@@ -4,32 +4,31 @@ namespace Packet
 {
     class DtoListMsgSubject
     {
-        private string _msgto;
+        private string _msgsubject;
         private DateTime _dateCreate;
         private string _selected;
 
         #region Constructor
         public DtoListMsgSubject()
         {
-            _msgto = "";
-            _dateCreate = DateTime.Now;
-            _selected = null; 
+            _msgsubject = "";
+			_dateCreate = DateTime.Now;
+            _selected = null;
         }
         #endregion
 
         #region DtoList
-		public DtoListMsgSubject( string msgto, DateTime dateCreate, string selected)
+		public DtoListMsgSubject( string msgsubject,  string selected)
         {
-            _msgto = msgto;
-            _dateCreate = dateCreate;
+            _msgsubject = msgsubject; 
             _selected = selected;
         }
         #endregion
 
-        #region get_MSGTO
-        public string get_MSGTO()
+        #region get_MSGSubject
+        public string get_MSGSubject()
         {
-            return _msgto;
+            return _msgsubject;
         }
         #endregion
 
@@ -48,9 +47,9 @@ namespace Packet
         #endregion
 
         #region set_MSGTO
-        public void set_MSGTO(string msgto)
+		public void set_MSGSubject(string msgsubject)
         {
-            _msgto = msgto;
+            _msgsubject = msgsubject;
         }
         #endregion
 

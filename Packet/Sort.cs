@@ -74,32 +74,65 @@ namespace Packet
 						}
 			        }
 		        }
-			        );	  //end of foreach
+			    );	  //end of foreach
 	        }
+
+			if (s_list_type == "MSGFrom")
+				{
+				List<DtoListMSGFrom> select_lists = SQL.SQLSELECT_ON_Lists_MsgFrom("DSN=Packet");
+				select_lists.ForEach(delegate(DtoListMSGFrom select_list)
+				{
+					listView1.Items.Add(select_list.get_MSGFROM());
+					if (select_list.get_Selected() == "Y")
+						{
+						ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(select_list.get_MSGFROM());
+						if (itemYouAreLookingFor != null)
+							{
+							itemYouAreLookingFor.Checked = true;
+							}
+						}
+				}
+				);	  //end of foreach
+			}
+
+			if (s_list_type == "MSGRoute")
+				{
+				List<DtoListMsgRoute> select_lists = SQL.SQLSELECT_ON_Lists_MsgRoute("DSN=Packet");
+				select_lists.ForEach(delegate(DtoListMsgRoute select_list)
+				{
+					listView1.Items.Add(select_list.get_MSGROUTE());
+					if (select_list.get_Selected() == "Y")
+						{
+						ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(select_list.get_MSGROUTE());
+						if (itemYouAreLookingFor != null)
+							{
+							itemYouAreLookingFor.Checked = true;
+							}
+						}
+				}
+				);	  //end of foreach
+				}
+
+			if (s_list_type == "MSGSubject")
+				{
+				List<DtoListMsgSubject> select_lists = SQL.SQLSELECT_ON_Lists_MsgSubject("DSN=Packet");
+				select_lists.ForEach(delegate(DtoListMsgSubject select_list)
+				{
+					listView1.Items.Add(select_list.get_MSGSubject());
+					if (select_list.get_Selected() == "Y")
+						{
+						ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(select_list.get_MSGSubject());
+						if (itemYouAreLookingFor != null)
+							{
+							itemYouAreLookingFor.Checked = true;
+							}
+						}
+				}
+				);	  //end of foreach
+				}
 	       
 
-	        /*	 KRR
-          
-            
-
-            string myString2 = MyFiles.Rxst(file_Name_Sort);
-            string[] myArray2 = myString2.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in myArray2)
-            {
-                if (s == " ")
-                {
-                }
-                else
-                {
-                    ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(s);
-                    // Did we find a match?
-                    if (itemYouAreLookingFor != null)
-                    {
-                        itemYouAreLookingFor.Checked = true;
-                    }
-                }
-            }
-			 */
+	  
         }
         #endregion
 
