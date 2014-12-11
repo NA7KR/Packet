@@ -67,8 +67,11 @@ namespace Packet
 			        listView1.Items.Add(select_list.get_MSGTO());
 			        if (select_list.get_Selected() == "Y")
 			        {
-				        ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(select_list.get_MSGTO());
+					ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(select_list.get_MSGTO());
+					if (itemYouAreLookingFor != null)
+						{
 						itemYouAreLookingFor.Checked = true;
+						}
 			        }
 		        }
 			        );	  //end of foreach
@@ -76,17 +79,7 @@ namespace Packet
 	       
 
 	        /*	 KRR
-            string myString = MyFiles.Rxst(file_Name_Sort);
-            string[] myArray = myString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in myArray)
-            {
-                if (s == " ")
-                { }
-                else
-                {
-                    listView1.Items.Add(s);
-                } 
-            }
+          
             
 
             string myString2 = MyFiles.Rxst(file_Name_Sort);
