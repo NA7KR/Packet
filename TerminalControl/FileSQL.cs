@@ -283,8 +283,6 @@ namespace PacketComs
         }
 		#endregion
 
-
-
 		#region Mid
 		private static string Mid(string param, int startIndex, int length)
 			{

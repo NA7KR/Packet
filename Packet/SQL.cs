@@ -62,6 +62,44 @@ namespace Packet
 			}
 		#endregion
 
+		#region SQLSELECT_ON_Lists
+		public List<DtoList> SQLSELECT_ON_Lists(string dsnName, string tableName)
+			{
+			List<DtoList> packets = new List<DtoList>();
+
+			try
+				{
+				var sqlConn = new OdbcConnection(dsnName);
+				sqlConn.Open();
+				sqlComm = sqlConn.CreateCommand();
+
+				using (OdbcCommand cmd = new OdbcCommand())
+					{
+					cmd.Connection = sqlConn;
+					sqlComm.CommandText = "SELECT * FROM " + tableName;
+					sqlComm.ExecuteNonQuery();
+					using (OdbcDataReader reader = sqlComm.ExecuteReader())
+						{
+						while (reader.Read())
+						{
+							//DtoList packet = new DtoList(
+							//	(string) reader.GetValue(0),
+							//	(string) reader.GetValue(1),
+							//	(string) reader.GetValue(2));
+								
+							// packets.Add(packet);
+							}
+						}
+					}
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				}
+			return packets;
+			}
+		#endregion
+
 		#region SQLSELECTOPTION
 		public void SqlselectOptrion(string dsnName, string TableName)
 			{
