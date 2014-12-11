@@ -104,9 +104,9 @@ namespace Packet
 		#endregion
 
 		#region SQLSELECT_ON_Lists_MsgFrom
-		public List<DtoListMSGFrom> SQLSELECT_ON_Lists_MsgFrom(string dsnName)
+		public List<DtoListMsgFrom> SQLSELECT_ON_Lists_MsgFrom(string dsnName)
 			{
-			List<DtoListMSGFrom> selectLists = new List<DtoListMSGFrom>();
+			List<DtoListMsgFrom> selectLists = new List<DtoListMsgFrom>();
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
@@ -122,7 +122,7 @@ namespace Packet
 						{
 						while (reader.Read())
 							{
-							DtoListMSGFrom selectList = new DtoListMSGFrom(
+							DtoListMsgFrom selectList = new DtoListMsgFrom(
 								(String)convertDBNull(reader.GetValue(0)),
 
 								(String)convertDBNull(reader.GetValue(1)));

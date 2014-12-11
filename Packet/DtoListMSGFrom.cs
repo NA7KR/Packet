@@ -2,26 +2,26 @@
 
 namespace Packet
 {
-    class DtoListMSGFrom
+    class DtoListMsgFrom
     {
         private string _msgfrom;
-        private DateTime _DateCreate;
-        private string _Selected;
+        private DateTime _dateCreate;
+        private string _selected;
 
         #region Constructor
-        public DtoListMSGFrom()
+        public DtoListMsgFrom()
         {
             _msgfrom = "";
-            _DateCreate = DateTime.Now;
-            _Selected = null; 
+            _dateCreate = DateTime.Now;
+            _selected = null; 
         }
         #endregion
 
         #region DtoList
-		public DtoListMSGFrom( string msgfrom,  string selected)
+		public DtoListMsgFrom( string msgfrom,  string selected)
         {
             _msgfrom = msgfrom;
-            _Selected = selected;
+            _selected = selected;
         }
         #endregion
 
@@ -35,14 +35,14 @@ namespace Packet
         #region get_dateCreate
         public DateTime get_dateCreate()
         {
-            return _DateCreate;
+            return _dateCreate;
         }
         #endregion
 
         #region get_Selected
         public string get_Selected()
         {
-            return _Selected;
+            return _selected;
         }
         #endregion
 
@@ -56,14 +56,14 @@ namespace Packet
         #region set_dateCreate
         public void set_dateCreate(DateTime dateCreate)
         {
-            _DateCreate = dateCreate;
+            _dateCreate = dateCreate;
         }
         #endregion
 
         #region set_Selected
         public void set_Selected(string selected)
         {
-            _Selected = selected;
+            _selected = selected;
         }
         #endregion
     }

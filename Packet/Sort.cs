@@ -73,8 +73,8 @@ namespace Packet
 
 			if (s_list_type == "MSGFrom")
 				{
-				List<DtoListMSGFrom> selectLists = Sql.SQLSELECT_ON_Lists_MsgFrom("DSN=Packet");
-				selectLists.ForEach(delegate(DtoListMSGFrom selectList)
+				List<DtoListMsgFrom> selectLists = Sql.SQLSELECT_ON_Lists_MsgFrom("DSN=Packet");
+				selectLists.ForEach(delegate(DtoListMsgFrom selectList)
 				{
 					listView1.Items.Add(selectList.get_MSGFROM());
 					if (selectList.get_Selected() == "Y")
