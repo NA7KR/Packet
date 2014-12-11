@@ -61,10 +61,15 @@ namespace Packet
 			SQL.SqlselectOptrion("DSN=Packet", s_list_type);
 	        if (s_list_type == "MSGTO")
 	        {
-		        List<DtoListMsgto> select_lists = SQL.SQLSELECT_ON_Lists_Msgto("DSN=Packet", s_list_type);
+		        List<DtoListMsgto> select_lists = SQL.SQLSELECT_ON_Lists_Msgto("DSN=Packet");
 		        select_lists.ForEach(delegate(DtoListMsgto select_list)
 		        {
 			        listView1.Items.Add(select_list.get_MSGTO());
+			        if (select_list.get_Selected() == "Y")
+			        {
+				        ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(select_list.get_MSGTO());
+						itemYouAreLookingFor.Checked = true;
+			        }
 		        }
 			        );	  //end of foreach
 	        }

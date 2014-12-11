@@ -20,10 +20,10 @@ namespace Packet
         #endregion
 
         #region DtoList
-		public DtoListMsgto( string msgto, DateTime dateCreate, string selected)
+		public DtoListMsgto( string msgto, string selected)
         {
             _msgto = msgto;
-            _dateCreate = dateCreate;
+            //_dateCreate = dateCreate;
             _selected = selected;
         }
         #endregion

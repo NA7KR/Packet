@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -64,7 +65,7 @@ namespace Packet
 		#endregion
 
         #region SQLSELECT_ON_Lists_Msgto
-        public List<DtoListMsgto> SQLSELECT_ON_Lists_Msgto(string dsnName, string tableName)
+        public List<DtoListMsgto> SQLSELECT_ON_Lists_Msgto(string dsnName)
 			{
 			List<DtoListMsgto> select_lists = new List<DtoListMsgto>();
 			try
@@ -76,16 +77,16 @@ namespace Packet
 				using (OdbcCommand cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "SELECT * FROM " + tableName;
+					_sqlComm.CommandText = "SELECT MSGTO,Selected FROM MSGTO" ;
 					_sqlComm.ExecuteNonQuery();
 					using (OdbcDataReader reader = _sqlComm.ExecuteReader())
 						{
 						while (reader.Read())
 						{
 						    DtoListMsgto select_list  = new DtoListMsgto(
-								(string) reader.GetValue(0),
-								(DateTime) reader.GetValue(1),
-								(string) reader.GetValue(2));
+								(String) convertDBNull(reader.GetValue(0)),
+
+								(String) convertDBNull(reader.GetValue(1)));
 
                             select_lists.Add(select_list);
 							}
@@ -124,6 +125,17 @@ namespace Packet
 			}
 		#endregion
 
+		private object convertDBNull(object o)
+		{
+			if (o is System.DBNull)
+			{
+				return null;
+			}
+			return o;
 		}
+
+		}
+
+	
 
 	}
