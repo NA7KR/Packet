@@ -63,7 +63,7 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="DtoList.cs" />
+    <Compile Include="DtoList_MSGTO.cs" />
     <Compile Include="Encrypt.cs" />
     <Compile Include="Com_Form.cs">
       <SubType>Form</SubType>

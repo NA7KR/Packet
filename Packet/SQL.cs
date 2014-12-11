@@ -63,9 +63,9 @@ namespace Packet
 		#endregion
 
 		#region SQLSELECT_ON_Lists
-		public List<DtoList> SQLSELECT_ON_Lists(string dsnName, string tableName)
+		public List<DtoList_MSGTO> SQLSELECT_ON_Lists(string dsnName, string tableName)
 			{
-			List<DtoList> packets = new List<DtoList>();
+			List<DtoList_MSGTO> packets = new List<DtoList_MSGTO>();
 
 			try
 				{
