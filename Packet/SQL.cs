@@ -67,7 +67,6 @@ namespace Packet
         public List<DtoListMsgto> SQLSELECT_ON_Lists_Msgto(string dsnName, string tableName)
 			{
 			List<DtoListMsgto> select_lists = new List<DtoListMsgto>();
-
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
@@ -83,12 +82,12 @@ namespace Packet
 						{
 						while (reader.Read())
 						{
-							DtoListMsgto select_list  = new DtoListMsgto(
+						    DtoListMsgto select_list  = new DtoListMsgto(
 								(string) reader.GetValue(0),
 								(DateTime) reader.GetValue(1),
 								(string) reader.GetValue(2));
-								
-							 select_lists.Add(select_list );
+
+                            select_lists.Add(select_list);
 							}
 						}
 					}
