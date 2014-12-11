@@ -138,7 +138,7 @@ namespace Packet
         #region toolStripMenuItem TO
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var box = new Sort("SelectedTo", "SortTo",6,"MSGTO");
+            var box = new Sort(6,"MSGTO");
             box.ShowDialog();
         }
         #endregion
@@ -146,7 +146,7 @@ namespace Packet
         #region toolStripMenuItem Subject
         private void configToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            var box = new Sort("SelectedSubject", "SortSubject", 30,"MSGSubject");
+            var box = new Sort( 30,"MSGSubject");
             box.ShowDialog();
         }
         #endregion
@@ -155,7 +155,7 @@ namespace Packet
         private void configToolStripMenuItem1_Click(object sender, EventArgs e)
         {
 	        
-            var box = new Sort("SelectedFrom", "SortFrom",6, "MSGFrom");
+            var box = new Sort(6, "MSGFrom");
             box.ShowDialog();
         }
         #endregion
@@ -163,7 +163,7 @@ namespace Packet
         #region toolStripMenuItem Roure
         private void configToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var box = new Sort("SelectedRoute", "SortRoute",7, "MSGRoute");
+            var box = new Sort(7, "MSGRoute");
             box.ShowDialog();
         }
         #endregion

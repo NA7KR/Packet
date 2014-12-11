@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
-using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -14,13 +13,15 @@ namespace Packet
 	#region Class
 	class Sql
 		{
-		DtoListMsgto select_list = new DtoListMsgto();
+		DtoListMsgto _selectList = new DtoListMsgto();
 		private OdbcCommand _sqlComm;
 
-		public Sql()
-			{
+		#region constructor
+		//public Sql()
+		//{
 
-			}
+		//}
+		#endregion
 
 		#region SQLSELECT
 		public List<DtoPacket> Sqlselect(string dsnName)
@@ -68,7 +69,7 @@ namespace Packet
 		#region SQLSELECT_ON_Lists_Msgto
 		public List<DtoListMsgto> SQLSELECT_ON_Lists_Msgto(string dsnName)
 			{
-			List<DtoListMsgto> select_lists = new List<DtoListMsgto>();
+			List<DtoListMsgto> selectLists = new List<DtoListMsgto>();
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
@@ -84,12 +85,12 @@ namespace Packet
 						{
 						while (reader.Read())
 							{
-							DtoListMsgto select_list = new DtoListMsgto(
+							DtoListMsgto selectList = new DtoListMsgto(
 								(String)convertDBNull(reader.GetValue(0)),
 
 								(String)convertDBNull(reader.GetValue(1)));
 
-							select_lists.Add(select_list);
+							selectLists.Add(selectList);
 							}
 						}
 					}
@@ -98,14 +99,14 @@ namespace Packet
 				{
 				MessageBox.Show(e.Message);
 				}
-			return select_lists;
+			return selectLists;
 			}
 		#endregion
 
 		#region SQLSELECT_ON_Lists_MsgFrom
 		public List<DtoListMSGFrom> SQLSELECT_ON_Lists_MsgFrom(string dsnName)
 			{
-			List<DtoListMSGFrom> select_lists = new List<DtoListMSGFrom>();
+			List<DtoListMSGFrom> selectLists = new List<DtoListMSGFrom>();
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
@@ -121,12 +122,12 @@ namespace Packet
 						{
 						while (reader.Read())
 							{
-							DtoListMSGFrom select_list = new DtoListMSGFrom(
+							DtoListMSGFrom selectList = new DtoListMSGFrom(
 								(String)convertDBNull(reader.GetValue(0)),
 
 								(String)convertDBNull(reader.GetValue(1)));
 
-							select_lists.Add(select_list);
+							selectLists.Add(selectList);
 							}
 						}
 					}
@@ -135,14 +136,14 @@ namespace Packet
 				{
 				MessageBox.Show(e.Message);
 				}
-			return select_lists;
+			return selectLists;
 			}
 		#endregion
 
 		#region SQLSELECT_ON_Lists_Route
 		public List<DtoListMsgRoute> SQLSELECT_ON_Lists_MsgRoute(string dsnName)
 			{
-			List<DtoListMsgRoute> select_lists = new List<DtoListMsgRoute>();
+			List<DtoListMsgRoute> selectLists = new List<DtoListMsgRoute>();
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
@@ -158,12 +159,12 @@ namespace Packet
 						{
 						while (reader.Read())
 							{
-							DtoListMsgRoute select_list = new DtoListMsgRoute(
+							DtoListMsgRoute selectList = new DtoListMsgRoute(
 								(String)convertDBNull(reader.GetValue(0)),
 
 								(String)convertDBNull(reader.GetValue(1)));
 
-							select_lists.Add(select_list);
+							selectLists.Add(selectList);
 							}
 						}
 					}
@@ -172,14 +173,14 @@ namespace Packet
 				{
 				MessageBox.Show(e.Message);
 				}
-			return select_lists;
+			return selectLists;
 			}
 		#endregion
 
 		#region SQLSELECT_ON_Lists_MsgSubject
 		public List<DtoListMsgSubject> SQLSELECT_ON_Lists_MsgSubject(string dsnName)
 			{
-			List<DtoListMsgSubject> select_lists = new List<DtoListMsgSubject>();
+			List<DtoListMsgSubject> selectLists = new List<DtoListMsgSubject>();
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
@@ -195,12 +196,12 @@ namespace Packet
 						{
 						while (reader.Read())
 							{
-							DtoListMsgSubject select_list = new DtoListMsgSubject(
+							DtoListMsgSubject selectList = new DtoListMsgSubject(
 								(String)convertDBNull(reader.GetValue(0)),
 
 								(String)convertDBNull(reader.GetValue(1)));
 
-							select_lists.Add(select_list);
+							selectLists.Add(selectList);
 							}
 						}
 					}
@@ -209,7 +210,7 @@ namespace Packet
 				{
 				MessageBox.Show(e.Message);
 				}
-			return select_lists;
+			return selectLists;
 			}
 		#endregion
 
@@ -240,7 +241,7 @@ namespace Packet
 		#region  convertDBNull
 		private object convertDBNull(object o)
 			{
-			if (o is System.DBNull)
+			if (o is DBNull)
 				{
 				return null;
 				}
