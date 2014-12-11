@@ -1,10 +1,10 @@
 ﻿#region Using Directive
 
-using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
 using System.Windows.Forms;
 using PacketComs;
+
 #endregion
 
 namespace Packet
@@ -63,9 +63,9 @@ namespace Packet
 		#endregion
 
 		#region SQLSELECT_ON_Lists
-		public List<DtoList_MSGTO> SQLSELECT_ON_Lists(string dsnName, string tableName)
+		public List<DtoListMsgto> SQLSELECT_ON_Lists(string dsnName, string tableName)
 			{
-			List<DtoList_MSGTO> packets = new List<DtoList_MSGTO>();
+			List<DtoListMsgto> packets = new List<DtoListMsgto>();
 
 			try
 				{

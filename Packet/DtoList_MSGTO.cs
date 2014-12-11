@@ -1,30 +1,29 @@
 ﻿using System;
 
-
 namespace Packet
 	{
 #region	  
-	class DtoList_MSGTO
+	class DtoListMsgto
 	{
 
         private string _msgto;
         private string _selected;
-        private DateTime _DateCreate;
+        private DateTime _dateCreate;
        
         #region Constructor
-        public DtoList_MSGTO()
+        public DtoListMsgto()
         {
             _msgto = "";
-            _DateCreate = DateTime.Now;
+            _dateCreate = DateTime.Now;
             _selected = ""; 
         }
         #endregion
 
         #region DtoList
-		public DtoList_MSGTO( string msgto, DateTime dateCreate, string selected)
+		public DtoListMsgto( string msgto, DateTime dateCreate, string selected)
         {
             _msgto = msgto;
-            _DateCreate = dateCreate;
+            _dateCreate = dateCreate;
             _selected = selected;
         }
         #endregion
@@ -39,7 +38,7 @@ namespace Packet
         #region get_dateCreate
         public DateTime get_dateCreate()
         {
-            return _DateCreate;
+            return _dateCreate;
         }
         #endregion
 
@@ -60,7 +59,7 @@ namespace Packet
         #region set_dateCreate
         public void set_dateCreate(DateTime dateCreate)
         {
-            _DateCreate = dateCreate;
+            _dateCreate = dateCreate;
         }
         #endregion
 
