@@ -18,10 +18,11 @@ namespace Packet
         #endregion
 
         #region DtoList
-		public DtoListMsgSubject( string msgsubject,  string selected)
+		public DtoListMsgSubject(string msgsubject, string selected, DateTime dateCreate)
         {
             _msgsubject = msgsubject; 
             _selected = selected;
+			_dateCreate = dateCreate;
         }
         #endregion
 

@@ -11,17 +11,17 @@ namespace Packet
         #region Constructor
         public DtoListMsgRoute()
         {
-            _msgroute = "";
-            _dateCreate = DateTime.Now;
-            _selected = ""; 
+			_msgroute = null;
+            _dateCreate = DateTime.MinValue;
+			_selected = null; 
         }
         #endregion
 
         #region DtoList
-		public DtoListMsgRoute( string msgroute, string selected)
+		public DtoListMsgRoute(string msgroute, string selected, DateTime dateCreate)
         {
             _msgroute = msgroute;
-           
+			_dateCreate = dateCreate;
             _selected = selected;
         }
         #endregion

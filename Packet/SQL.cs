@@ -93,9 +93,8 @@ namespace Packet
 							{
 							DtoListMsgto selectList = new DtoListMsgto(
 								(String)convertDBNull(reader.GetValue(0)),
-
-								(String)convertDBNull(reader.GetValue(1)));
-
+								(String)convertDBNull(reader.GetValue(1)),
+								DateTime.MinValue);
 							selectLists.Add(selectList);
 							}
 						}
@@ -130,9 +129,8 @@ namespace Packet
 							{
 							DtoListMsgFrom selectList = new DtoListMsgFrom(
 								(String)convertDBNull(reader.GetValue(0)),
-
-								(String)convertDBNull(reader.GetValue(1)));
-
+								(String)convertDBNull(reader.GetValue(1)),
+								 DateTime.MinValue);
 							selectLists.Add(selectList);
 							}
 						}
@@ -165,12 +163,11 @@ namespace Packet
 						{
 						while (reader.Read())
 							{
-							DtoListMsgRoute selectList = new DtoListMsgRoute(
+								DtoListMsgRoute selectList = new DtoListMsgRoute( 
 								(String)convertDBNull(reader.GetValue(0)),
-
-								(String)convertDBNull(reader.GetValue(1)));
-
-							selectLists.Add(selectList);
+								(String)convertDBNull(reader.GetValue(1)),
+								DateTime.MinValue);
+							    selectLists.Add(selectList);
 							}
 						}
 					}
@@ -204,9 +201,8 @@ namespace Packet
 							{
 							DtoListMsgSubject selectList = new DtoListMsgSubject(
 								(String)convertDBNull(reader.GetValue(0)),
-
-								(String)convertDBNull(reader.GetValue(1)));
-
+								(String)convertDBNull(reader.GetValue(1)),
+								DateTime.MinValue);
 							selectLists.Add(selectList);
 							}
 						}
