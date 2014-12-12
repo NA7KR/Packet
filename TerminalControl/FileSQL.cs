@@ -132,13 +132,13 @@ namespace PacketComs
 			{
 			try
 				{
-				OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-				OdbcCommand sqlComm = new OdbcCommand();
-				sqlComm = sqlConn.CreateCommand();
-				sqlComm.CommandText = Query;
-				sqlConn.Open();
-				sqlComm.ExecuteNonQuery();
-				sqlConn.Close();
+                _sqlConn = new OdbcConnection(dsnName);
+                _sqlConn.Open();
+                sqlCommPacketInsert = _sqlConn.CreateCommand();
+                sqlCommPacketInsert.CommandText = "INSERT INTO  Packet " +
+                sqlCommPacketInsert.Prepare();
+				sqlCommPacketInsert.ExecuteNonQuery();
+				
 				return true;
 				}
 			catch (OdbcException e)
@@ -149,7 +149,6 @@ namespace PacketComs
 			}
 		 
 		#endregion
-
 
 		#region SQLDELETEPACKET
 
