@@ -12,16 +12,21 @@ namespace Packet
 	{
 	#region Class
 	class Sql
-		{
-		DtoListMsgto _selectList = new DtoListMsgto();
+	{
 		DtoPacket packet = new DtoPacket();
 		private OdbcCommand _sqlComm;
 		private OdbcCommand _sqlCommSelectUpdate;
-		#region constructor
-		//public Sql()
-		//{
 
-		//}
+		#region constructor
+		public Sql()
+		{
+			var sqlConn = new OdbcConnection("DSN=Packet");
+			sqlConn.Open();
+			_sqlCommSelectUpdate = sqlConn.CreateCommand();
+			_sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = ? Where MSG = ?   ";
+		}
+
+	
 		#endregion
 
 		#region SQLSELECT
@@ -257,7 +262,7 @@ namespace Packet
 				{
 				packet.set_MSG(Value);
 				packet.set_MSGState(textValue);
-				SQLUPDATEPACKET(packet, "DSN=Packet");
+				Sqlupdatepacket(packet);
 				}
 			catch (Exception e)
 				{
@@ -267,45 +272,33 @@ namespace Packet
 		#endregion
 
 		#region SQLUPDATEPACKET
-
-		public void SQLUPDATEPACKET(DtoPacket packetdto,string dsnName)
+		public void Sqlupdatepacket(DtoPacket packetdto)
 		{
-
 			_sqlCommSelectUpdate.Parameters.Clear();
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_MSG());
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p9", packetdto.get_MSGState());
-			var sqlConn = new OdbcConnection(dsnName);
-			sqlConn.Open();
-			_sqlComm = sqlConn.CreateCommand();
-			_sqlCommSelectUpdate.CommandText = "Uptade INTO Packet Where MSG = (?)  (Selected ) VALUES (?)";
-			_sqlCommSelectUpdate.Prepare();
-			_sqlCommSelectUpdate.ExecuteNonQuery();
-
+			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_MSGState());
+			_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSG());
 			try
 			{
 				_sqlCommSelectUpdate.Prepare();
 				_sqlCommSelectUpdate.ExecuteNonQuery();
-					//sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
 				MessageBox.Show(e.Message);
 			}
-
 		}
-
 		#endregion
 
 		#region SQLDELETEPACKET
 
-		public bool SQLDELETEPACKET(string Query)
+		public bool Sqldeletepacket(string query)
 			{
 			try
 				{
 				OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-				OdbcCommand sqlComm = new OdbcCommand();
+				OdbcCommand sqlComm;
 				sqlComm = sqlConn.CreateCommand();
-				sqlComm.CommandText = Query;
+				sqlComm.CommandText = query;
 				sqlConn.Open();
 				sqlComm.ExecuteNonQuery();
 				sqlConn.Close();
