@@ -16,7 +16,7 @@ namespace Packet
 		DtoListMsgto _selectList = new DtoListMsgto();
 		DtoPacket packet = new DtoPacket();
 		private OdbcCommand _sqlComm;
-		private OdbcCommand _sqlCommSelectInsert;
+		private OdbcCommand _sqlCommSelectUpdate;
 		#region constructor
 		//public Sql()
 		//{
@@ -257,7 +257,7 @@ namespace Packet
 				{
 				packet.set_MSG(Value);
 				packet.set_MSGState(textValue);
-				SQLUPDATEPACKET(packet);
+				SQLUPDATEPACKET(packet, "DSN=Packet");
 				}
 			catch (Exception e)
 				{
@@ -268,24 +268,31 @@ namespace Packet
 
 		#region SQLUPDATEPACKET
 
-		public bool SQLUPDATEPACKET(DtoPacket packetdto)
+		public void SQLUPDATEPACKET(DtoPacket packetdto,string dsnName)
 		{
+
+			_sqlCommSelectUpdate.Parameters.Clear();
+			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_MSG());
+			_sqlCommSelectUpdate.Parameters.AddWithValue("@p9", packetdto.get_MSGState());
+			var sqlConn = new OdbcConnection(dsnName);
+			sqlConn.Open();
+			_sqlComm = sqlConn.CreateCommand();
+			_sqlCommSelectUpdate.CommandText = "Uptade INTO Packet Where MSG = (?)  (Selected ) VALUES (?)";
+			_sqlCommSelectUpdate.Prepare();
+			_sqlCommSelectUpdate.ExecuteNonQuery();
+
 			try
-				{
-
-				//_sqlCommSelectInsert = _sqlComm.CreateCommand();
-				_sqlCommSelectInsert.CommandText = "INSERT INTO  Packet ";
-				_sqlCommSelectInsert.Prepare();
-				_sqlCommSelectInsert.ExecuteNonQuery();
-
-				return true;
-				}
-			catch (OdbcException e)
-				{
-				MessageBox.Show(e.Message);
-				return false;
-				}
+			{
+				_sqlCommSelectUpdate.Prepare();
+				_sqlCommSelectUpdate.ExecuteNonQuery();
+					//sqlConn.Close();
 			}
+			catch (OdbcException e)
+			{
+				MessageBox.Show(e.Message);
+			}
+
+		}
 
 		#endregion
 
