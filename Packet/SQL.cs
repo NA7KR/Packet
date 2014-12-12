@@ -14,8 +14,9 @@ namespace Packet
 	class Sql
 		{
 		DtoListMsgto _selectList = new DtoListMsgto();
+		DtoPacket packet = new DtoPacket();
 		private OdbcCommand _sqlComm;
-
+		private OdbcCommand _sqlCommSelectInsert;
 		#region constructor
 		//public Sql()
 		//{
@@ -247,6 +248,69 @@ namespace Packet
 				}
 			return o;
 			}
+		#endregion
+
+		#region WriteSQLPacketUpdate
+		public void WriteSQLPacketUpdate(int Value, String textValue)
+			{
+			try
+				{
+				packet.set_MSG(Value);
+				packet.set_MSGState(textValue);
+				SQLUPDATEPACKET(packet);
+				}
+			catch (Exception e)
+				{
+				MessageBox.Show(e.Message);
+				}
+			}
+		#endregion
+
+		#region SQLUPDATEPACKET
+
+		public bool SQLUPDATEPACKET(DtoPacket packetdto)
+		{
+			try
+				{
+
+				//_sqlCommSelectInsert = _sqlComm.CreateCommand();
+				_sqlCommSelectInsert.CommandText = "INSERT INTO  Packet ";
+				_sqlCommSelectInsert.Prepare();
+				_sqlCommSelectInsert.ExecuteNonQuery();
+
+				return true;
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				return false;
+				}
+			}
+
+		#endregion
+
+		#region SQLDELETEPACKET
+
+		public bool SQLDELETEPACKET(string Query)
+			{
+			try
+				{
+				OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
+				OdbcCommand sqlComm = new OdbcCommand();
+				sqlComm = sqlConn.CreateCommand();
+				sqlComm.CommandText = Query;
+				sqlConn.Open();
+				sqlComm.ExecuteNonQuery();
+				sqlConn.Close();
+				return true;
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				return false;
+				}
+			}
+
 		#endregion
 
 		}

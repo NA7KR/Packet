@@ -28,17 +28,13 @@ namespace Packet
 		{
 			if (DataGridView1.SelectedRows != null)
 			{
-				string ToDownLoad = "";
-				//File.Delete("path");
-				var firstvalue = true;
+				
 				foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
 				{
-					if (!firstvalue)
-					{
-						ToDownLoad += " ";
-					}
-					ToDownLoad += drv.Cells[0].Value.ToString();
-					firstvalue = false;
+					
+					string ToDownLoad = drv.Cells[0].Value.ToString();
+					
+					Sql.WriteSQLPacketUpdate(ToDownLoad);
 				}
 				//MyFiles.WriteSt(ToDownLoad, "ToDownLoad");
 			}

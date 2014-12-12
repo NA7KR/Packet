@@ -3,13 +3,13 @@
 using System;
 using System.Data;
 using System.Data.Odbc;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 
 #endregion
 
 namespace PacketComs
 	{
-
 	public class FileSql
 		{
 		DtoPacket packet = new DtoPacket();
@@ -124,54 +124,6 @@ namespace PacketComs
 				}
 
 			}
-		#endregion
-
-		#region SQLUPDATEPACKET
-		
-		public bool SQLUPDATEPACKET(string Query)
-			{
-			try
-				{
-                _sqlConn = new OdbcConnection(dsnName);
-                _sqlConn.Open();
-                sqlCommPacketInsert = _sqlConn.CreateCommand();
-                sqlCommPacketInsert.CommandText = "INSERT INTO  Packet " +
-                sqlCommPacketInsert.Prepare();
-				sqlCommPacketInsert.ExecuteNonQuery();
-				
-				return true;
-				}
-			catch (OdbcException e)
-				{
-				MessageBox.Show(e.Message);
-				return false;
-				}
-			}
-		 
-		#endregion
-
-		#region SQLDELETEPACKET
-
-		public bool SQLDELETEPACKET(string Query)
-			{
-			try
-				{
-				OdbcConnection sqlConn = new OdbcConnection("DSN=Packet");
-				OdbcCommand sqlComm = new OdbcCommand();
-				sqlComm = sqlConn.CreateCommand();
-				sqlComm.CommandText = Query;
-				sqlConn.Open();
-				sqlComm.ExecuteNonQuery();
-				sqlConn.Close();
-				return true;
-				}
-			catch (OdbcException e)
-				{
-				MessageBox.Show(e.Message);
-				return false;
-				}
-			}
-		
 		#endregion
 
 		#region DoesTableExist
