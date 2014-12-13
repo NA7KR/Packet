@@ -40,14 +40,12 @@ namespace Packet
 			//		(anItem.Text);
 			else if (s_list_type == "MSGTO")
 				Sql.WriteSQLMSGTOUpdate(anItem.Text,"Y");
-			else if (s_list_type == "SelectedRoute")
-				{}
-			//		(anItem.Text);
-			else if (s_list_type == "SelectedFrom")
+			else if (s_list_type == "MSGRoute")
+                Sql.WriteSQLMSGRouteUpdate(anItem.Text, "Y");
+			else if (s_list_type == "MSGFrom")
 				Sql.WriteSQLMSGFromUpdate(anItem.Text,"Y");
-			else if (s_list_type == "SelectedSubject")
-			{ }
-			//		(anItem.Text);
+			else if (s_list_type == "MSGSubject")
+                Sql.WriteSQLMSGSubjectUpdate(anItem.Text, "Y");
 			}
 			Close();
 		}

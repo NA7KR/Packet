@@ -369,7 +369,7 @@ namespace Packet
 
 			public void SqlupdateMSGFROMUpdate(DtoListMsgFrom packetdto)
 			{
-			_sqlCommSelectUpdate.CommandText = "UPDATE MSGFROM SET  Selected = ? Where MSGFROM = ?   ";
+			_sqlCommSelectUpdate.CommandText = "UPDATE MSGFrom SET  Selected = ? Where MSGFrom = ?   ";
 				_sqlCommSelectUpdate.Parameters.Clear();
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGFROM());
@@ -406,7 +406,7 @@ namespace Packet
 
             public void SqlupdateMSGROUTEUpdate(DtoListMsgRoute packetdto)
             {
-                _sqlCommSelectUpdate.CommandText = "UPDATE MSGROUTE SET  Selected = ? Where MSGROUTE = ?   ";
+                _sqlCommSelectUpdate.CommandText = "UPDATE MSGRoute SET  Selected = ? Where MSGRoute = ?   ";
                 _sqlCommSelectUpdate.Parameters.Clear();
                 _sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
                 _sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGROUTE());
@@ -443,7 +443,7 @@ namespace Packet
 
             public void SqlupdateMSGSUBJECTUpdate(DtoListMsgSubject packetdto)
             {
-                _sqlCommSelectUpdate.CommandText = "UPDATE MSGSUBJECT SET  Selected = ? Where MSGSUBJECT = ?   ";
+                _sqlCommSelectUpdate.CommandText = "UPDATE MSGSubject SET  Selected = ? Where MSGSubject = ?   ";
                 _sqlCommSelectUpdate.Parameters.Clear();
                 _sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
                 _sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGSubject());
