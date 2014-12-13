@@ -26,7 +26,7 @@ namespace Packet
 				var sqlConn = new OdbcConnection("DSN=Packet");
 				sqlConn.Open();
 				_sqlCommSelectUpdate = sqlConn.CreateCommand();
-				_sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = ? Where MSG = ?   ";
+				
 			}
 
 
@@ -290,6 +290,7 @@ namespace Packet
 
 			public void Sqlupdatepacket(DtoPacket packetdto)
 			{
+				_sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = ? Where MSG = ?   ";
 				_sqlCommSelectUpdate.Parameters.Clear();
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_MSGState());
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSG());
@@ -328,6 +329,7 @@ namespace Packet
 
 			public void SqlupdateMSGUpdate(DtoListMsgto packetdto)
 			{
+			_sqlCommSelectUpdate.CommandText = "UPDATE MSGTO SET  Selected = ? Where MSGTO = ?   ";
 				_sqlCommSelectUpdate.Parameters.Clear();
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGTO());
