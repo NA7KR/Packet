@@ -34,7 +34,21 @@ namespace Packet
 		MyFiles.SelectMakeTable(s_list_type, d_size, s_list_type, "DSN=Packet", "Packet");
 			foreach (ListViewItem anItem in listView1.CheckedItems)
 			{
-				MyFiles.WriteSqlSelect(anItem.Text, s_list_type);
+
+			if (s_list_type == "SelectedMSG")
+				{}
+			//		(anItem.Text);
+			else if (s_list_type == "MSGTO")
+				Sql.WriteSQLMSGTOUpdate(anItem.Text,"Y");
+			else if (s_list_type == "SelectedRoute")
+				{}
+			//		(anItem.Text);
+			else if (s_list_type == "SelectedFrom")
+				{}
+			//		(anItem.Text);
+			else if (s_list_type == "SelectedSubject")
+			{ }
+			//		(anItem.Text);
 			}
 			Close();
 		}
