@@ -44,8 +44,7 @@ namespace Packet
 				{}
 			//		(anItem.Text);
 			else if (s_list_type == "SelectedFrom")
-				{}
-			//		(anItem.Text);
+				Sql.WriteSQLMSGFromUpdate(anItem.Text,"Y");
 			else if (s_list_type == "SelectedSubject")
 			{ }
 			//		(anItem.Text);

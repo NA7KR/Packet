@@ -16,6 +16,9 @@ namespace Packet
 		{
 			private DtoPacket packet = new DtoPacket();
 			private DtoListMsgto msgtodto = new DtoListMsgto();
+			private DtoListMsgFrom msgfromdto = new DtoListMsgFrom();
+			private DtoListMsgRoute msgroutedto = new DtoListMsgRoute();
+			private DtoListMsgSubject msgsubject = new DtoListMsgSubject();
 			private OdbcCommand _sqlComm;
 			private OdbcCommand _sqlCommSelectUpdate;
 
@@ -322,7 +325,6 @@ namespace Packet
 					MessageBox.Show(e.Message);
 				}
 			}
-
 			#endregion
 
 			#region SqlupdateMSGUpdate
@@ -345,6 +347,43 @@ namespace Packet
 
 			}
 
+			#endregion
+
+			#region WriteSQLMSGFromUpdate
+			public void WriteSQLMSGFromUpdate(string Value, String textValue)
+				{
+				try
+					{
+					msgfromdto.set_MSGFROM(Value);
+					msgfromdto.set_Selected(textValue);
+					SqlupdateMSGFROMUpdate(msgtodfrom);
+					}
+				catch (Exception e)
+					{
+					MessageBox.Show(e.Message);
+					}
+				}
+			#endregion
+			
+			#region SqlupdateMSGFROMUpdate
+
+			public void SqlupdateMSGFROMUpdate(DtoListMsgFrom packetdto)
+			{
+			_sqlCommSelectUpdate.CommandText = "UPDATE MSGFROM SET  Selected = ? Where MSGFROM = ?   ";
+				_sqlCommSelectUpdate.Parameters.Clear();
+				_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
+				_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGFROM());
+				try
+				{
+					_sqlCommSelectUpdate.Prepare();
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+				}
+				catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
+
+			}
 			#endregion
 		}
 
