@@ -31,22 +31,7 @@ namespace Packet
         #region OK
         private void button_ok_Click(object sender, EventArgs e)
 		{
-		MyFiles.SelectMakeTable(s_list_type, d_size, s_list_type, "DSN=Packet", "Packet");
-			foreach (ListViewItem anItem in listView1.CheckedItems)
-			{
-
-			if (s_list_type == "SelectedMSG")
-				{}
-			//		(anItem.Text);
-			else if (s_list_type == "MSGTO")
-				Sql.WriteSQLMSGTOUpdate(anItem.Text,"Y");
-			else if (s_list_type == "MSGRoute")
-                Sql.WriteSQLMSGRouteUpdate(anItem.Text, "Y");
-			else if (s_list_type == "MSGFrom")
-				Sql.WriteSQLMSGFromUpdate(anItem.Text,"Y");
-			else if (s_list_type == "MSGSubject")
-                Sql.WriteSQLMSGSubjectUpdate(anItem.Text, "Y");
-			}
+   
 			Close();
 		}
 
@@ -152,6 +137,49 @@ namespace Packet
             button_Cancel.Top = (Height - 75);
         }
         #endregion
+
+     
+
+        private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            ListView.CheckedListViewItemCollection checkedItems =  listView1.CheckedItems;
+            String ITEMS = null;
+
+            foreach (ListViewItem item in checkedItems)
+            {
+                ITEMS = item.Text;
+          
+
+                if (e.CurrentValue == CheckState.Unchecked)
+                {
+                    
+                    if (s_list_type == "MSGTO")
+                        Sql.WriteSQLMSGTOUpdate(ITEMS, "Y");
+                    else if (s_list_type == "MSGRoute")
+                        Sql.WriteSQLMSGRouteUpdate(ITEMS, "Y");
+                    else if (s_list_type == "MSGFrom")
+                        Sql.WriteSQLMSGFromUpdate(ITEMS, "Y");
+                    else if (s_list_type == "MSGSubject")
+                        Sql.WriteSQLMSGSubjectUpdate(ITEMS, "Y");
+                }
+                else if ((e.CurrentValue == CheckState.Checked))
+                {
+                    ITEMS = Text;
+                    if (s_list_type == "MSGTO")
+                        Sql.WriteSQLMSGTOUpdate(ITEMS, "N");
+                    else if (s_list_type == "MSGRoute")
+                        Sql.WriteSQLMSGRouteUpdate(ITEMS, "N");
+                    else if (s_list_type == "MSGFrom")
+                        Sql.WriteSQLMSGFromUpdate(ITEMS, "N");
+                    else if (s_list_type == "MSGSubject")
+                        Sql.WriteSQLMSGSubjectUpdate(ITEMS, "N");
+                }
+            }
+        }
+
+    
+
+
     }
     #endregion
 }

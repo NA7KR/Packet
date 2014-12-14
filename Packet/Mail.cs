@@ -34,7 +34,7 @@ namespace Packet
 					
 					string ToDownLoad = drv.Cells[0].Value.ToString();
 					int inumber = Convert.ToInt32(ToDownLoad);
-					Sql.WriteSQLPacketUpdate(inumber, "Y");
+					Sql.WriteSQLPacketUpdate(inumber, "R");
 				}
 				//MyFiles.WriteSt(ToDownLoad, "ToDownLoad");
 			}
