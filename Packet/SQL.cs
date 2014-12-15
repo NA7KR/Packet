@@ -29,7 +29,7 @@ namespace Packet
 				var sqlConn = new OdbcConnection("DSN=Packet");
 				sqlConn.Open();
 				_sqlCommSelectUpdate = sqlConn.CreateCommand();
-				
+
 			}
 
 
@@ -325,13 +325,14 @@ namespace Packet
 					MessageBox.Show(e.Message);
 				}
 			}
+
 			#endregion
 
 			#region SqlupdateMSGUpdate
 
 			public void SqlupdateMSGUpdate(DtoListMsgto packetdto)
 			{
-			_sqlCommSelectUpdate.CommandText = "UPDATE MSGTO SET  Selected = ? Where MSGTO = ?   ";
+				_sqlCommSelectUpdate.CommandText = "UPDATE MSGTO SET  Selected = ? Where MSGTO = ?   ";
 				_sqlCommSelectUpdate.Parameters.Clear();
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGTO());
@@ -350,26 +351,28 @@ namespace Packet
 			#endregion
 
 			#region WriteSQLMSGFromUpdate
+
 			public void WriteSQLMSGFromUpdate(string Value, String textValue)
-				{
+			{
 				try
-					{
+				{
 					msgfrom.set_MSGFROM(Value);
 					msgfrom.set_Selected(textValue);
 					SqlupdateMSGFROMUpdate(msgfrom);
-					}
-				catch (Exception e)
-					{
-					MessageBox.Show(e.Message);
-					}
 				}
+				catch (Exception e)
+				{
+					MessageBox.Show(e.Message);
+				}
+			}
+
 			#endregion
-			
+
 			#region SqlupdateMSGFROMUpdate
 
 			public void SqlupdateMSGFROMUpdate(DtoListMsgFrom packetdto)
 			{
-			_sqlCommSelectUpdate.CommandText = "UPDATE MSGFrom SET  Selected = ? Where MSGFrom = ?   ";
+				_sqlCommSelectUpdate.CommandText = "UPDATE MSGFrom SET  Selected = ? Where MSGFrom = ?   ";
 				_sqlCommSelectUpdate.Parameters.Clear();
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
 				_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGFROM());
@@ -384,83 +387,173 @@ namespace Packet
 				}
 
 			}
+
 			#endregion
 
-            #region WriteSQLMSGRouteUpdate
-            public void WriteSQLMSGRouteUpdate(string Value, String textValue)
-            {
-                try
-                {
-                    msgroute.set_MSGRoute(Value);
-                    msgroute.set_Selected(textValue);
-                    SqlupdateMSGROUTEUpdate(msgroute);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
-            #endregion
+			#region WriteSQLMSGRouteUpdate
 
-            #region SqlupdateMSGROUTEUpdate
+			public void WriteSQLMSGRouteUpdate(string Value, String textValue)
+			{
+				try
+				{
+					msgroute.set_MSGRoute(Value);
+					msgroute.set_Selected(textValue);
+					SqlupdateMSGROUTEUpdate(msgroute);
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show(e.Message);
+				}
+			}
 
-            public void SqlupdateMSGROUTEUpdate(DtoListMsgRoute packetdto)
-            {
-                _sqlCommSelectUpdate.CommandText = "UPDATE MSGRoute SET  Selected = ? Where MSGRoute = ?   ";
-                _sqlCommSelectUpdate.Parameters.Clear();
-                _sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
-                _sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGROUTE());
-                try
-                {
-                    _sqlCommSelectUpdate.Prepare();
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                }
-                catch (OdbcException e)
-                {
-                    MessageBox.Show(e.Message);
-                }
+			#endregion
 
-            }
-            #endregion
+			#region SqlupdateMSGROUTEUpdate
 
-            #region WriteSQLMSGSubjectUpdate
-            public void WriteSQLMSGSubjectUpdate(string Value, String textValue)
-            {
-                try
-                {
-                    msgsubject.set_MSGSubject(Value);
-                    msgsubject.set_Selected(textValue);
-                    SqlupdateMSGSUBJECTUpdate(msgsubject);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
-            #endregion
+			public void SqlupdateMSGROUTEUpdate(DtoListMsgRoute packetdto)
+			{
+				_sqlCommSelectUpdate.CommandText = "UPDATE MSGRoute SET  Selected = ? Where MSGRoute = ?   ";
+				_sqlCommSelectUpdate.Parameters.Clear();
+				_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
+				_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGROUTE());
+				try
+				{
+					_sqlCommSelectUpdate.Prepare();
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+				}
+				catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
 
-            #region SqlupdateMSGFROMUpdate
+			}
 
-            public void SqlupdateMSGSUBJECTUpdate(DtoListMsgSubject packetdto)
-            {
-                _sqlCommSelectUpdate.CommandText = "UPDATE MSGSubject SET  Selected = ? Where MSGSubject = ?   ";
-                _sqlCommSelectUpdate.Parameters.Clear();
-                _sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
-                _sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGSubject());
-                try
-                {
-                    _sqlCommSelectUpdate.Prepare();
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                }
-                catch (OdbcException e)
-                {
-                    MessageBox.Show(e.Message);
-                }
+			#endregion
 
-            }
-            #endregion
+			#region WriteSQLMSGSubjectUpdate
 
-			/*
+			public void WriteSQLMSGSubjectUpdate(string Value, String textValue)
+			{
+				try
+				{
+					msgsubject.set_MSGSubject(Value);
+					msgsubject.set_Selected(textValue);
+					SqlupdateMSGSUBJECTUpdate(msgsubject);
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show(e.Message);
+				}
+			}
+
+			#endregion
+
+			#region SqlupdateMSGFROMUpdate
+
+			public void SqlupdateMSGSUBJECTUpdate(DtoListMsgSubject packetdto)
+			{
+				_sqlCommSelectUpdate.CommandText = "UPDATE MSGSubject SET  Selected = ? Where MSGSubject = ?   ";
+				_sqlCommSelectUpdate.Parameters.Clear();
+				_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
+				_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGSubject());
+				try
+				{
+					_sqlCommSelectUpdate.Prepare();
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+				}
+				catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
+
+			}
+
+			#endregion
+
+			#region SQLPacketSubjectDelete
+
+			public void SQLPacketSubjectDelete()
+			{
+				_sqlCommSelectUpdate.CommandText = "Delete From Packet Where  MSGSubject.Selected  = D  ";
+				try
+				{
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+				}
+				catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
+
+			}
+
+			#endregion
+
+			#region SQLPacketFromDelete
+
+			public void SQLPacketFromDelete()
+			{
+				_sqlCommSelectUpdate.CommandText = "Delete From Packet Where = MSGFrom.Selected = D   ";
+				try
+				{
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+				}
+				catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
+
+			}
+
+			#endregion
+
+			#region SQLPacketRouteDelete
+
+			public void SQLPacketRouteDelete()
+			{
+				_sqlCommSelectUpdate.CommandText = "Delete From Packet Where = MSGRoute.Selected = D   ";
+				try
+				{
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+				}
+				catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
+
+			}
+
+			#endregion
+
+			#region SQLPackeToDelete
+
+			public void SQLPacketToDelete()
+			{
+				_sqlCommSelectUpdate.CommandText = "Delete From Packet Where = MSGTO.Selected = D   ";
+				
+				try
+				{
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+				}
+				catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
+
+			}
+
+			#endregion
+
+			#region SQLPacket Delete
+			public void SQLPacketDelete()
+			{
+				SQLPacketSubjectDelete();
+				SQLPacketFromDelete();
+				SQLPacketRouteDelete();
+				SQLPacketToDelete();
+			}
+			#endregion
+
+		/*
 			delete from Packet where MSGSubject = "*** UNKNOWN ROUTE ***"
 			delete from Packet where MSGSubject = "WP Update"
 			delete from Packet where MSGSubject = "*** FILE ERROR ***"
