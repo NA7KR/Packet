@@ -138,44 +138,54 @@ namespace Packet
 
 		#endregion
 
-		#region toolStripMenuItem TO
 
-		private void toolStripMenuItem1_Click(object sender, EventArgs e)
-		{
-			var box = new Sort(6, "MSGTO");
+
+		private void toolStripMenuItemTO_Click(object sender, EventArgs e)
+			{
+			var box = new Sort(6, "MSGTO",'R');
 			box.ShowDialog();
-		}
+			}
 
-		#endregion
-
-		#region toolStripMenuItem Subject
-
-		private void configToolStripMenuItem2_Click(object sender, EventArgs e)
-		{
-			var box = new Sort(30, "MSGSubject");
+		private void configToolStripMenuItem1_Click_1(object sender, EventArgs e)
+			{
+			var box = new Sort(6, "MSGFrom", 'R');
 			box.ShowDialog();
-		}
+			}
 
-		#endregion
-
-		#region toolStripMenuItem From
-
-		private void configToolStripMenuItem1_Click(object sender, EventArgs e)
-		{
-			var box = new Sort(6, "MSGFrom");
+		private void configToolStripMenuItem_Click_1(object sender, EventArgs e)
+			{
+			var box = new Sort(7, "MSGRoute", 'R');
 			box.ShowDialog();
-		}
+			}
 
-		#endregion
-
-		#region toolStripMenuItem Roure
-
-		private void configToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var box = new Sort(7, "MSGRoute");
+		private void configToolStripMenuItem2_Click_1(object sender, EventArgs e)
+			{
+			var box = new Sort(30, "MSGSubject", 'R');
 			box.ShowDialog();
-		}
+			}
 
-		#endregion
+		private void toolStripMenuItem5_Click(object sender, EventArgs e)
+			{
+			var box = new Sort(6, "MSGTO", 'D');
+			box.ShowDialog();
+			}
+
+		private void toolStripMenuItem7_Click(object sender, EventArgs e)
+			{
+			var box = new Sort(6, "MSGFrom", 'D');
+			box.ShowDialog();
+			}
+
+		private void toolStripMenuItem9_Click(object sender, EventArgs e)
+			{
+			var box = new Sort(7, "MSGRoute", 'D');
+			box.ShowDialog();
+			}
+
+		private void toolStripMenuItem2_Click(object sender, EventArgs e)
+			{
+			var box = new Sort(30, "MSGSubject", 'D');
+			box.ShowDialog();
+			}
 	}
 }

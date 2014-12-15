@@ -19,7 +19,7 @@ namespace Packet
 		public Int32 d_size;
 
 		#region Sort
-		public Sort(  Int32 dsize, string sListType)
+		public Sort(  Int32 dsize, string sListType, char Key)
 		{
 			InitializeComponent();
 			s_list_type = sListType;
