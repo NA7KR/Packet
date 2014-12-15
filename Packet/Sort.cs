@@ -148,7 +148,6 @@ namespace Packet
             foreach (ListViewItem item in checkedItems)
             {
                 ITEMS = item.Text;
-          
 
                 if (e.CurrentValue == CheckState.Unchecked)
                 {
