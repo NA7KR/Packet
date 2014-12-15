@@ -23,8 +23,10 @@ namespace PacketComs
 			string dsnName = "DSN=Packet";
 			string dsnTableName = "Packet";
 		    odbc = new OdbcManager();
-             _sqlCommPacketInsert = new OdbcCommand();
-
+			_sqlConn = new OdbcConnection(dsnName);
+            _sqlCommPacketInsert = new OdbcCommand();
+			_sqlCommPacketInsert = _sqlConn.CreateCommand();
+			_sqlConn.Open();
 
 			if (odbc.CheckForDSN(dsnTableName) > 0)
 				{
@@ -42,7 +44,7 @@ namespace PacketComs
 				}
 
 			
-			_sqlCommPacketInsert = _sqlConn.CreateCommand();
+			
 			_sqlCommPacketInsert.CommandText = "INSERT INTO  Packet " +
 				"(MSG," +
 				"MSGTSLD," +

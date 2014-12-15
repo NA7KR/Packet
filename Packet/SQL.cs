@@ -459,6 +459,15 @@ namespace Packet
 
             }
             #endregion
+
+			/*
+			delete from Packet where MSGSubject = "*** UNKNOWN ROUTE ***"
+			delete from Packet where MSGSubject = "WP Update"
+			delete from Packet where MSGSubject = "*** FILE ERROR ***"
+			 */
+
+
+
 		}
 
 		#endregion CLASS
