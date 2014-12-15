@@ -3,7 +3,6 @@
 using System;
 using System.Data;
 using System.Data.Odbc;
-using System.Reflection.Emit;
 using System.Windows.Forms;
 
 #endregion
@@ -13,8 +12,9 @@ namespace PacketComs
 	public class FileSql
 		{
 		DtoPacket packet = new DtoPacket();
-		private OdbcCommand sqlCommPacketInsert;
-		private OdbcCommand _sqlCommSelectInsert;
+	    private OdbcCommand _sqlCommPacketInsert;
+        private OdbcManager odbc;
+		private OdbcCommand _sqlCommSelectInsert ;
 		private OdbcConnection _sqlConn; 
 
 		#region Constructor
@@ -22,7 +22,10 @@ namespace PacketComs
 			{
 			string dsnName = "DSN=Packet";
 			string dsnTableName = "Packet";
-			OdbcManager odbc = new OdbcManager();
+		    odbc = new OdbcManager();
+             _sqlCommPacketInsert = new OdbcCommand();
+
+
 			if (odbc.CheckForDSN(dsnTableName) > 0)
 				{
 				if (DoesTableExist(dsnTableName, dsnName) == false)
@@ -38,10 +41,9 @@ namespace PacketComs
 				Environment.Exit(1);
 				}
 
-			_sqlConn = new OdbcConnection(dsnName);
-			_sqlConn.Open();
-			sqlCommPacketInsert = _sqlConn.CreateCommand();
-			sqlCommPacketInsert.CommandText = "INSERT INTO  Packet " +
+			
+			_sqlCommPacketInsert = _sqlConn.CreateCommand();
+			_sqlCommPacketInsert.CommandText = "INSERT INTO  Packet " +
 				"(MSG," +
 				"MSGTSLD," +
 				"MSGSize," +
@@ -60,8 +62,8 @@ namespace PacketComs
 			{
 			try
 				{
-				sqlCommPacketInsert.CommandText = query;
-				sqlCommPacketInsert.ExecuteNonQuery();
+				_sqlCommPacketInsert.CommandText = query;
+				_sqlCommPacketInsert.ExecuteNonQuery();
 
 				}
 			catch (OdbcException e)
@@ -75,19 +77,19 @@ namespace PacketComs
 		#region SQLInsertPacket
 		private void  SqlInsertPacket(DtoPacket packetdto)
 		{
-		sqlCommPacketInsert.Parameters.Clear();
-		sqlCommPacketInsert.Parameters.AddWithValue("@p1", packetdto.get_MSG());
-		sqlCommPacketInsert.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
-		sqlCommPacketInsert.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
-		sqlCommPacketInsert.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
-		sqlCommPacketInsert.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
-		sqlCommPacketInsert.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
-		sqlCommPacketInsert.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
-		sqlCommPacketInsert.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
+		_sqlCommPacketInsert.Parameters.Clear();
+		_sqlCommPacketInsert.Parameters.AddWithValue("@p1", packetdto.get_MSG());
+		_sqlCommPacketInsert.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
+		_sqlCommPacketInsert.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
+		_sqlCommPacketInsert.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
+		_sqlCommPacketInsert.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
+		_sqlCommPacketInsert.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
+		_sqlCommPacketInsert.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
+		_sqlCommPacketInsert.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
 			try
 				{
-				sqlCommPacketInsert.Prepare();
-				sqlCommPacketInsert.ExecuteNonQuery();
+				_sqlCommPacketInsert.Prepare();
+				_sqlCommPacketInsert.ExecuteNonQuery();
 				//sqlConn.Close();
 				}
 			catch (OdbcException e)
@@ -210,7 +212,7 @@ namespace PacketComs
 		#region SelectMakeTable
 		public void SelectMakeTable(string textVale, Int32 intsize, string tableName, string dsnName, string systemDsn)
         {
-             OdbcManager odbc = new OdbcManager();
+             
 			 if (odbc.CheckForDSN(systemDsn) > 0)
 		    {
 		        if (DoesTableExist(tableName,  dsnName) == false)
