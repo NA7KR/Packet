@@ -142,25 +142,25 @@ namespace Packet
 
 		private void toolStripMenuItemTO_Click(object sender, EventArgs e)
 			{
-			var box = new Sort(6, "MSGTO",'R');
+			var box = new Sort(6, "MSGTO",'Y');
 			box.ShowDialog();
 			}
 
 		private void configToolStripMenuItem1_Click_1(object sender, EventArgs e)
 			{
-			var box = new Sort(6, "MSGFrom", 'R');
+			var box = new Sort(6, "MSGFrom", 'Y');
 			box.ShowDialog();
 			}
 
 		private void configToolStripMenuItem_Click_1(object sender, EventArgs e)
 			{
-			var box = new Sort(7, "MSGRoute", 'R');
+			var box = new Sort(7, "MSGRoute", 'Y');
 			box.ShowDialog();
 			}
 
 		private void configToolStripMenuItem2_Click_1(object sender, EventArgs e)
 			{
-			var box = new Sort(30, "MSGSubject", 'R');
+			var box = new Sort(30, "MSGSubject", 'Y');
 			box.ShowDialog();
 			}
 

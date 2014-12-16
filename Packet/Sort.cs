@@ -17,13 +17,15 @@ namespace Packet
 	
 		public string s_list_type;
 		public Int32 d_size;
+        public char d_key;
 
 		#region Sort
-		public Sort(  Int32 dsize, string sListType, char Key)
+		public Sort(  Int32 dsize, string sListType, char cKey)
 		{
 			InitializeComponent();
 			s_list_type = sListType;
 			d_size = dsize;
+		    d_key = cKey;
 		}
 
 		#endregion
@@ -54,35 +56,81 @@ namespace Packet
 		        List<DtoListMsgto> selectLists = Sql.SQLSELECT_ON_Lists_Msgto("DSN=Packet");
 		        selectLists.ForEach(delegate(DtoListMsgto selectList)
 		        {
-			        listView1.Items.Add(selectList.get_MSGTO());
-			        if (selectList.get_Selected() == "Y")
-			        {
-					ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGTO());
-					if (itemYouAreLookingFor != null)
-						{
-						itemYouAreLookingFor.Checked = true;
-						}
-			        }
+		            if (d_key == 'Y')
+		            {
+		                listView1.Items.Add(selectList.get_MSGTO());
+		                if (selectList.get_Selected() == "Y")
+		                {
+		                    ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGTO());
+		                    if (itemYouAreLookingFor != null)
+		                    {
+		                        itemYouAreLookingFor.Checked = true;
+		                    }
+		                }
+		                if (selectList.get_Selected() == "D")
+		                {
+		                    ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGTO());
+		                    if (itemYouAreLookingFor != null)
+		                    {
+		                        itemYouAreLookingFor.Remove();
+		                    }
+		                }
+		            }
+                    if (d_key == 'D')
+                    {
+                        listView1.Items.Add(selectList.get_MSGTO());
+                        if (selectList.get_Selected() == "D")
+                        {
+                            ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGTO());
+                            if (itemYouAreLookingFor != null)
+                            {
+                                itemYouAreLookingFor.Checked = true;
+                            }
+                        }
+                    }
 		        }
 			    );	  //end of foreach
 	        }
 
 			if (s_list_type == "MSGFrom")
 				{
-				List<DtoListMsgFrom> selectLists = Sql.SQLSELECT_ON_Lists_MsgFrom("DSN=Packet");
-				selectLists.ForEach(delegate(DtoListMsgFrom selectList)
-				{
-					listView1.Items.Add(selectList.get_MSGFROM());
-					if (selectList.get_Selected() == "Y")
-						{
-						ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGFROM());
-						if (itemYouAreLookingFor != null)
-							{
-							itemYouAreLookingFor.Checked = true;
-							}
-						}
-				}
-				);	  //end of foreach
+                    List<DtoListMsgFrom> selectLists = Sql.SQLSELECT_ON_Lists_MsgFrom("DSN=Packet");
+                    selectLists.ForEach(delegate(DtoListMsgFrom selectList)
+                    {
+                        if (d_key == 'Y')
+                        {
+                            listView1.Items.Add(selectList.get_MSGFROM());
+                            if (selectList.get_Selected() == "Y")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGFROM());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Checked = true;
+                                }
+                            }
+                            if (selectList.get_Selected() == "D")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGFROM());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Remove();
+                                }
+                            }
+                        }
+                        if (d_key == 'D')
+                        {
+                            listView1.Items.Add(selectList.get_MSGFROM());
+                            if (selectList.get_Selected() == "D")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGFROM());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Checked = true;
+                                }
+                            }
+                        }
+                    }
+                    );	  //end of foreach
 			}
 
 			if (s_list_type == "MSGRoute")
@@ -151,15 +199,28 @@ namespace Packet
 
 				if (e.Item.Checked)
 					{
-
-					if (s_list_type == "MSGTO")
-						Sql.WriteSQLMSGTOUpdate(ITEMS, "Y");
-					else if (s_list_type == "MSGRoute")
-						Sql.WriteSQLMSGRouteUpdate(ITEMS, "Y");
-					else if (s_list_type == "MSGFrom")
-						Sql.WriteSQLMSGFromUpdate(ITEMS, "Y");
-					else if (s_list_type == "MSGSubject")
-						Sql.WriteSQLMSGSubjectUpdate(ITEMS, "Y");
+					    if (d_key == 'Y')
+					    {
+					        if (s_list_type == "MSGTO")
+					            Sql.WriteSQLMSGTOUpdate(ITEMS, "Y");
+					        else if (s_list_type == "MSGRoute")
+					            Sql.WriteSQLMSGRouteUpdate(ITEMS, "Y");
+					        else if (s_list_type == "MSGFrom")
+					            Sql.WriteSQLMSGFromUpdate(ITEMS, "Y");
+					        else if (s_list_type == "MSGSubject")
+					            Sql.WriteSQLMSGSubjectUpdate(ITEMS, "Y");
+					    }
+                        if (d_key == 'D')
+                        {
+                            if (s_list_type == "MSGTO")
+                                Sql.WriteSQLMSGTOUpdate(ITEMS, "D");
+                            else if (s_list_type == "MSGRoute")
+                                Sql.WriteSQLMSGRouteUpdate(ITEMS, "D");
+                            else if (s_list_type == "MSGFrom")
+                                Sql.WriteSQLMSGFromUpdate(ITEMS, "D");
+                            else if (s_list_type == "MSGSubject")
+                                Sql.WriteSQLMSGSubjectUpdate(ITEMS, "D");
+                        }
 					}
 				else if (!e.Item.Checked )
 					{
