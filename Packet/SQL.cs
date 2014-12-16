@@ -474,7 +474,9 @@ namespace Packet
 
 			public void SQLPacketSubjectDelete()
 			{
-				_sqlCommSelectUpdate.CommandText = "Delete From Packet Where  MSGSubject.Selected  = D  ";
+				_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+												   "Where MSGSubject in " +
+												   "(Select = MSGSubject from MSGSubject where Selected  = D)   ";
 				try
 				{
 					_sqlCommSelectUpdate.ExecuteNonQuery();
@@ -489,10 +491,11 @@ namespace Packet
 			#endregion
 
 			#region SQLPacketFromDelete
-
 			public void SQLPacketFromDelete()
 			{
-				_sqlCommSelectUpdate.CommandText = "Delete From Packet Where = MSGFrom.Selected = D   ";
+				_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+												   "Where MSGFrom in " +
+												   "(Select = MSGFrom from MSGFrom where Selected  = D)   ";                                   
 				try
 				{
 					_sqlCommSelectUpdate.ExecuteNonQuery();
@@ -501,16 +504,15 @@ namespace Packet
 				{
 					MessageBox.Show(e.Message);
 				}
-
 			}
-
 			#endregion
 
 			#region SQLPacketRouteDelete
-
 			public void SQLPacketRouteDelete()
 			{
-				_sqlCommSelectUpdate.CommandText = "Delete From Packet Where = MSGRoute.Selected = D   ";
+				_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+				                                   "Where MSGRoute in " +
+				                                   "(Select = MSGRoute from MSGRoute where Selected  = D)   ";
 				try
 				{
 					_sqlCommSelectUpdate.ExecuteNonQuery();
@@ -519,7 +521,6 @@ namespace Packet
 				{
 					MessageBox.Show(e.Message);
 				}
-
 			}
 
 			#endregion
@@ -528,7 +529,9 @@ namespace Packet
 
 			public void SQLPacketToDelete()
 			{
-				_sqlCommSelectUpdate.CommandText = "Delete From Packet Where = MSGTO.Selected = D   ";
+				_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+										   "Where MSGTO in " +
+										   "(Select = MSGTO from MSGTO where Selected  = D)   ";
 				
 				try
 				{
@@ -538,13 +541,12 @@ namespace Packet
 				{
 					MessageBox.Show(e.Message);
 				}
-
 			}
 
 			#endregion
 
 			#region SQLPacket Delete
-			public void SQLPacketDelete();
+			public void SQLPacketDelete()
 			{
 				SQLPacketSubjectDelete();
 				SQLPacketFromDelete();
