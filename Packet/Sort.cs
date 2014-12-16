@@ -138,13 +138,8 @@ namespace Packet
         }
         #endregion
 
-     
 
-        private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            
-        }
-
+		#region listView1_ItemChecked
 		private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
 			{
 			ListView.CheckedListViewItemCollection checkedItems = listView1.CheckedItems;
@@ -180,10 +175,8 @@ namespace Packet
 					}
 				}
 			}
+		#endregion
 
-    
-
-
-    }
+	}
     #endregion
 }
