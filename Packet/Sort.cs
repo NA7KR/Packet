@@ -142,39 +142,44 @@ namespace Packet
 
         private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            ListView.CheckedListViewItemCollection checkedItems =  listView1.CheckedItems;
-            String ITEMS = null;
-
-            foreach (ListViewItem item in checkedItems)
-            {
-                ITEMS = item.Text;
-
-                if (e.CurrentValue == CheckState.Unchecked)
-                {
-                    
-                    if (s_list_type == "MSGTO")
-                        Sql.WriteSQLMSGTOUpdate(ITEMS, "Y");
-                    else if (s_list_type == "MSGRoute")
-                        Sql.WriteSQLMSGRouteUpdate(ITEMS, "Y");
-                    else if (s_list_type == "MSGFrom")
-                        Sql.WriteSQLMSGFromUpdate(ITEMS, "Y");
-                    else if (s_list_type == "MSGSubject")
-                        Sql.WriteSQLMSGSubjectUpdate(ITEMS, "Y");
-                }
-                else if ((e.CurrentValue == CheckState.Checked))
-                {
-                    ITEMS = Text;
-                    if (s_list_type == "MSGTO")
-                        Sql.WriteSQLMSGTOUpdate(ITEMS, "N");
-                    else if (s_list_type == "MSGRoute")
-                        Sql.WriteSQLMSGRouteUpdate(ITEMS, "N");
-                    else if (s_list_type == "MSGFrom")
-                        Sql.WriteSQLMSGFromUpdate(ITEMS, "N");
-                    else if (s_list_type == "MSGSubject")
-                        Sql.WriteSQLMSGSubjectUpdate(ITEMS, "N");
-                }
-            }
+            
         }
+
+		private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
+			{
+			ListView.CheckedListViewItemCollection checkedItems = listView1.CheckedItems;
+			String ITEMS = null;
+
+			foreach (ListViewItem item in checkedItems)
+				{
+				ITEMS = item.Text;
+
+				if (e.Item.Checked)
+					{
+
+					if (s_list_type == "MSGTO")
+						Sql.WriteSQLMSGTOUpdate(ITEMS, "Y");
+					else if (s_list_type == "MSGRoute")
+						Sql.WriteSQLMSGRouteUpdate(ITEMS, "Y");
+					else if (s_list_type == "MSGFrom")
+						Sql.WriteSQLMSGFromUpdate(ITEMS, "Y");
+					else if (s_list_type == "MSGSubject")
+						Sql.WriteSQLMSGSubjectUpdate(ITEMS, "Y");
+					}
+				else if (!e.Item.Checked )
+					{
+
+					if (s_list_type == "MSGTO")
+						Sql.WriteSQLMSGTOUpdate(ITEMS, "N");
+					else if (s_list_type == "MSGRoute")
+						Sql.WriteSQLMSGRouteUpdate(ITEMS, "N");
+					else if (s_list_type == "MSGFrom")
+						Sql.WriteSQLMSGFromUpdate(ITEMS, "N");
+					else if (s_list_type == "MSGSubject")
+						Sql.WriteSQLMSGSubjectUpdate(ITEMS, "N");
+					}
+				}
+			}
 
     
 
