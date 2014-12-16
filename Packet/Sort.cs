@@ -135,38 +135,84 @@ namespace Packet
 
 			if (s_list_type == "MSGRoute")
 				{
-				List<DtoListMsgRoute> selectLists = Sql.SQLSELECT_ON_Lists_MsgRoute("DSN=Packet");
-				selectLists.ForEach(delegate(DtoListMsgRoute selectList)
-				{
-					listView1.Items.Add(selectList.get_MSGROUTE());
-					if (selectList.get_Selected() == "Y")
-						{
-						ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGROUTE());
-						if (itemYouAreLookingFor != null)
-							{
-							itemYouAreLookingFor.Checked = true;
-							}
-						}
-				}
-				);	  //end of foreach
+                    List<DtoListMsgRoute> selectLists = Sql.SQLSELECT_ON_Lists_MsgRoute("DSN=Packet");
+                    selectLists.ForEach(delegate(DtoListMsgRoute selectList)
+                    {
+                        if (d_key == 'Y')
+                        {
+                            listView1.Items.Add(selectList.get_MSGROUTE());
+                            if (selectList.get_Selected() == "Y")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGROUTE());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Checked = true;
+                                }
+                            }
+                            if (selectList.get_Selected() == "D")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGROUTE());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Remove();
+                                }
+                            }
+                        }
+                        if (d_key == 'D')
+                        {
+                            listView1.Items.Add(selectList.get_MSGROUTE());
+                            if (selectList.get_Selected() == "D")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGROUTE());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Checked = true;
+                                }
+                            }
+                        }
+                    }
+                    );	  //end of foreach
 				}
 
 			if (s_list_type == "MSGSubject")
 				{
-				List<DtoListMsgSubject> selectLists = Sql.SQLSELECT_ON_Lists_MsgSubject("DSN=Packet");
-				selectLists.ForEach(delegate(DtoListMsgSubject selectList)
-				{
-					listView1.Items.Add(selectList.get_MSGSubject());
-					if (selectList.get_Selected() == "Y")
-						{
-						ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGSubject());
-						if (itemYouAreLookingFor != null)
-							{
-							itemYouAreLookingFor.Checked = true;
-							}
-						}
-				}
-				);	  //end of foreach
+                    List<DtoListMsgSubject> selectLists = Sql.SQLSELECT_ON_Lists_MsgSubject("DSN=Packet");
+                    selectLists.ForEach(delegate(DtoListMsgSubject selectList)
+                    {
+                        if (d_key == 'Y')
+                        {
+                            listView1.Items.Add(selectList.get_MSGSubject());
+                            if (selectList.get_Selected() == "Y")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGSubject());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Checked = true;
+                                }
+                            }
+                            if (selectList.get_Selected() == "D")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGSubject());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Remove();
+                                }
+                            }
+                        }
+                        if (d_key == 'D')
+                        {
+                            listView1.Items.Add(selectList.get_MSGSubject());
+                            if (selectList.get_Selected() == "D")
+                            {
+                                ListViewItem itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGSubject());
+                                if (itemYouAreLookingFor != null)
+                                {
+                                    itemYouAreLookingFor.Checked = true;
+                                }
+                            }
+                        }
+                    }
+                    );	  //end of foreach
 				}
 	       
 
