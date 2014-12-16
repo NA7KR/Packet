@@ -544,7 +544,7 @@ namespace Packet
 			#endregion
 
 			#region SQLPacket Delete
-			public void SQLPacketDelete()
+			public void SQLPacketDelete();
 			{
 				SQLPacketSubjectDelete();
 				SQLPacketFromDelete();
