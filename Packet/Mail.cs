@@ -138,54 +138,68 @@ namespace Packet
 
 		#endregion
 
-
-
-		private void toolStripMenuItemTO_Click(object sender, EventArgs e)
+        #region TO Y
+        private void toolStripMenuItemTO_Click(object sender, EventArgs e)
 			{
 			var box = new Sort(6, "MSGTO",'Y');
 			box.ShowDialog();
 			}
+        #endregion
 
-		private void configToolStripMenuItem1_Click_1(object sender, EventArgs e)
+        #region From Y
+        private void configToolStripMenuItem1_Click_1(object sender, EventArgs e)
 			{
 			var box = new Sort(6, "MSGFrom", 'Y');
 			box.ShowDialog();
 			}
+        #endregion
 
-		private void configToolStripMenuItem_Click_1(object sender, EventArgs e)
+        #region Route Y
+        private void configToolStripMenuItem_Click_1(object sender, EventArgs e)
 			{
 			var box = new Sort(7, "MSGRoute", 'Y');
 			box.ShowDialog();
 			}
+        #endregion
 
-		private void configToolStripMenuItem2_Click_1(object sender, EventArgs e)
+        #region Subject Y
+        private void configToolStripMenuItem2_Click_1(object sender, EventArgs e)
 			{
 			var box = new Sort(30, "MSGSubject", 'Y');
 			box.ShowDialog();
 			}
+        #endregion
 
-		private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        #region To D
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
 			{
 			var box = new Sort(6, "MSGTO", 'D');
 			box.ShowDialog();
 			}
+        #endregion
 
-		private void toolStripMenuItem7_Click(object sender, EventArgs e)
+        #region From D
+        private void toolStripMenuItem7_Click(object sender, EventArgs e)
 			{
 			var box = new Sort(6, "MSGFrom", 'D');
 			box.ShowDialog();
 			}
+        #endregion
 
-		private void toolStripMenuItem9_Click(object sender, EventArgs e)
+        #region Route D
+        private void toolStripMenuItem9_Click(object sender, EventArgs e)
 			{
 			var box = new Sort(7, "MSGRoute", 'D');
 			box.ShowDialog();
 			}
+        #endregion
 
-		private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        #region Subject D
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
 			{
 			var box = new Sort(30, "MSGSubject", 'D');
 			box.ShowDialog();
-			}
-	}
+            }
+        #endregion
+    }
 }
