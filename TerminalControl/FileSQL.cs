@@ -132,7 +132,7 @@ namespace PacketComs
 
 		#region DoesTableExist
 
-		private bool DoesTableExist(string tableName, string dsnName)
+		public bool DoesTableExist(string tableName, string dsnName)
 		{
 		using (OdbcConnection sqlConn = new OdbcConnection(dsnName))
 			{

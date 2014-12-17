@@ -18,7 +18,7 @@ namespace Packet
     public partial class Form1 : Form
     {
         #region private TelnetConnection
-
+        private static readonly Sql Sql = new Sql();
       
         private Boolean _bBeep = true;
         private Color _backgroundColor = Color.Black;
@@ -325,6 +325,7 @@ namespace Packet
 
         private void forward_button_Click(object sender, EventArgs e)
         {
+            Sql.SqlPacketDelete();
             terminalEmulator1.FileActive = true;
             forward_button.Enabled = false;
             forward_button.Text = "Forward active";

@@ -16,6 +16,7 @@ namespace Packet
     internal class Sql
     {
         private OdbcCommand _sqlComm;
+        private static FileSql FileSql = new FileSql();
         private readonly OdbcCommand _sqlCommSelectUpdate;
         private readonly DtoListMsgFrom msgfrom = new DtoListMsgFrom();
         private readonly DtoListMsgRoute msgroute = new DtoListMsgRoute();
@@ -468,9 +469,12 @@ namespace Packet
 
         public void SQLPacketSubjectDelete()
         {
-            _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
-                                               "Where MSGSubject in " +
-                                               "(Select = MSGSubject from MSGSubject where Selected  = D)   ";
+            if (FileSql.DoesTableExist("MSGSubject", "Packet"))
+            {
+                _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+                                                   "Where MSGSubject in " +
+                                                   "(Select = MSGSubject from MSGSubject where Selected  = D)   ";
+            }
             try
             {
                 _sqlCommSelectUpdate.ExecuteNonQuery();
@@ -487,9 +491,12 @@ namespace Packet
 
         public void SQLPacketFromDelete()
         {
-            _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
-                                               "Where MSGFrom in " +
-                                               "(Select = MSGFrom from MSGFrom where Selected  = D)   ";
+            if (FileSql.DoesTableExist("MSGFrom", "Packet"))
+            {
+                _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+                                                   "Where MSGFrom in " +
+                                                   "(Select = MSGFrom from MSGFrom where Selected  = D)   ";
+            }
             try
             {
                 _sqlCommSelectUpdate.ExecuteNonQuery();
@@ -506,9 +513,12 @@ namespace Packet
 
         public void SQLPacketRouteDelete()
         {
-            _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
-                                               "Where MSGRoute in " +
-                                               "(Select = MSGRoute from MSGRoute where Selected  = D)   ";
+            if (FileSql.DoesTableExist("MSGRoute", "Packet"))
+            {
+                _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+                                                   "Where MSGRoute in " +
+                                                   "(Select = MSGRoute from MSGRoute where Selected  = D)   ";
+            }
             try
             {
                 _sqlCommSelectUpdate.ExecuteNonQuery();
@@ -525,10 +535,12 @@ namespace Packet
 
         public void SQLPacketToDelete()
         {
-            _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
-                                               "Where MSGTO in " +
-                                               "(Select = MSGTO from MSGTO where Selected  = D)   ";
-
+            if (FileSql.DoesTableExist("MSGTO", "Packet"))
+            {
+                _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+                                                   "Where MSGTO in " +
+                                                   "(Select = MSGTO from MSGTO where Selected  = D)   ";
+            }
             try
             {
                 _sqlCommSelectUpdate.ExecuteNonQuery();
@@ -543,7 +555,7 @@ namespace Packet
 
         #region SQLPacket Delete
 
-        public void SQLPacketDelete()
+        public void SqlPacketDelete()
         {
             SQLPacketSubjectDelete();
             SQLPacketFromDelete();

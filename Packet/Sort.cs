@@ -29,7 +29,7 @@ namespace Packet
         #region OK
         private void button_ok_Click(object sender, EventArgs e)
         {
-            Sql.SQLPacketDelete();
+            Sql.SqlPacketDelete();
             Close();
         }
         #endregion
