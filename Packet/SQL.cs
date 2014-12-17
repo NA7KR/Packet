@@ -554,7 +554,6 @@ namespace Packet
         #endregion
 
         #region SQLPacket Delete
-
         public void SqlPacketDelete()
         {
             SQLPacketSubjectDelete();
@@ -562,8 +561,16 @@ namespace Packet
             SQLPacketRouteDelete();
             SQLPacketToDelete();
         }
-
         #endregion
+
+		#region SQLSelectMail
+		public void SQLSelectMail()
+			{
+			
+			}
+
+		#endregion
+
     }
 
     #endregion CLASS

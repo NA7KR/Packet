@@ -325,12 +325,14 @@ namespace Packet
 
         private void forward_button_Click(object sender, EventArgs e)
         {
-            Sql.SqlPacketDelete();
+            
             terminalEmulator1.FileActive = true;
             forward_button.Enabled = false;
             forward_button.Text = "Forward active";
             terminalEmulator1.LastNumber = _myRegistryBbs.Read("Start Number");
             terminalEmulator1.Startforward();
+			Sql.SqlPacketDelete();
+			Sql.SQLSelectMail();
         }
 
         #endregion
