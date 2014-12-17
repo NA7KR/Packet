@@ -469,7 +469,7 @@ namespace Packet
 
         public void SQLPacketSubjectDelete()
         {
-            if (FileSql.DoesTableExist("MSGSubject", "Packet"))
+            if (FileSql.DoesTableExist("MSGSubject", "DSN=Packet"))
             {
                 _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
                                                    "Where MSGSubject in " +
@@ -491,7 +491,7 @@ namespace Packet
 
         public void SQLPacketFromDelete()
         {
-            if (FileSql.DoesTableExist("MSGFrom", "Packet"))
+		if (FileSql.DoesTableExist("MSGFrom", "DSN=Packet"))
             {
                 _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
                                                    "Where MSGFrom in " +
@@ -513,7 +513,7 @@ namespace Packet
 
         public void SQLPacketRouteDelete()
         {
-            if (FileSql.DoesTableExist("MSGRoute", "Packet"))
+		if (FileSql.DoesTableExist("MSGRoute", "DSN=Packet"))
             {
                 _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
                                                    "Where MSGRoute in " +
@@ -535,7 +535,7 @@ namespace Packet
 
         public void SQLPacketToDelete()
         {
-            if (FileSql.DoesTableExist("MSGTO", "Packet"))
+		if (FileSql.DoesTableExist("MSGTO", "DSN=Packet"))
             {
                 _sqlCommSelectUpdate.CommandText = "Delete From Packet " +
                                                    "Where MSGTO in " +
