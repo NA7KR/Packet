@@ -8,154 +8,149 @@ using Microsoft.Win32;
 
 namespace Packet
 {
-    // An useful class to read/write/delete registry keys
+	// An useful class to read/write/delete registry keys
 
-    #region ModifyRegistry
+	#region ModifyRegistry
 
-    public class ModifyRegistry
-    {
-        private RegistryKey _baseRegistryKey = Registry.CurrentUser;
-        private bool _showError;
-        private string _subKey = "SOFTWARE\\" + Application.ProductName;
+	public class ModifyRegistry
+	{
+		private RegistryKey _baseRegistryKey = Registry.CurrentUser;
+		private string _subKey = "SOFTWARE\\" + Application.ProductName;
 
-        #region Show Error
+		#region Show Error
 
-        public bool ShowError
-        {
-            get { return _showError; }
-            set { _showError = value; }
-        }
+		public bool ShowError { get; set; }
 
-        #endregion
+		#endregion
 
-        #region SubKey
+		#region SubKey
 
-        public string SubKey
-        {
-            get { return _subKey; }
-            set { _subKey = value; }
-        }
+		public string SubKey
+		{
+			get { return _subKey; }
+			set { _subKey = value; }
+		}
 
-        #endregion
+		#endregion
 
-        #region BaseRegistryKey
+		#region BaseRegistryKey
 
-        public RegistryKey BaseRegistryKey
-        {
-            get { return _baseRegistryKey; }
-            set { _baseRegistryKey = value; }
-        }
+		public RegistryKey BaseRegistryKey
+		{
+			get { return _baseRegistryKey; }
+			set { _baseRegistryKey = value; }
+		}
 
-        #endregion
+		#endregion
 
-        #region Read
+		#region Read
 
-        public string Read(string keyName)
-        {
-            RegistryKey rk = _baseRegistryKey;
-            RegistryKey sk1 = rk.OpenSubKey(_subKey);
-            if (sk1 == null)
-            {
-                return null;
-            }
-            try
-            {
-                return (string) sk1.GetValue(keyName);
-            }
-            catch (Exception e)
-            {
-                ShowErrorMessage(e, "Reading registry " + keyName);
-                return null;
-            }
-        }
+		public string Read(string keyName)
+		{
+			var rk = _baseRegistryKey;
+			var sk1 = rk.OpenSubKey(_subKey);
+			if (sk1 == null)
+			{
+				return null;
+			}
+			try
+			{
+				return (string) sk1.GetValue(keyName);
+			}
+			catch (Exception e)
+			{
+				ShowErrorMessage(e, "Reading registry " + keyName);
+				return null;
+			}
+		}
 
-        #endregion
+		#endregion
 
-        #region BRead
+		#region BRead
 
-        public string BRead(string keyName)
-        {
-            RegistryKey rk = _baseRegistryKey;
-            RegistryKey sk1 = rk.OpenSubKey(_subKey);
-            string regkey;
-            if (sk1 == null)
-            {
-                return null;
-            }
-            try
-            {
-                regkey = (string) sk1.GetValue(keyName);
-                if (regkey == "")
-                {
-                    return "BlanKey!!";
-                }
-                return (string) sk1.GetValue(keyName);
-            }
-            catch (Exception e)
-            {
-                ShowErrorMessage(e, "Reading registry " + keyName);
-                return null;
-            }
-        }
+		public string BRead(string keyName)
+		{
+			var rk = _baseRegistryKey;
+			var sk1 = rk.OpenSubKey(_subKey);
+			string regkey;
+			if (sk1 == null)
+			{
+				return null;
+			}
+			try
+			{
+				regkey = (string) sk1.GetValue(keyName);
+				if (regkey == "")
+				{
+					return "BlanKey!!";
+				}
+				return (string) sk1.GetValue(keyName);
+			}
+			catch (Exception e)
+			{
+				ShowErrorMessage(e, "Reading registry " + keyName);
+				return null;
+			}
+		}
 
-        #endregion
+		#endregion
 
-        #region Write
+		#region Write
 
-        public bool Write(string keyName, object value)
-        {
-            try
-            {
-                RegistryKey rk = _baseRegistryKey;
-                RegistryKey sk1 = rk.CreateSubKey(_subKey);
-                // Save the value
-                if (sk1 != null) sk1.SetValue(keyName, value);
-                return true;
-            }
-            catch (Exception e)
-            {
-                ShowErrorMessage(e, "Writing registry " + keyName);
-                return false;
-            }
-        }
+		public bool Write(string keyName, object value)
+		{
+			try
+			{
+				var rk = _baseRegistryKey;
+				var sk1 = rk.CreateSubKey(_subKey);
+				// Save the value
+				if (sk1 != null) sk1.SetValue(keyName, value);
+				return true;
+			}
+			catch (Exception e)
+			{
+				ShowErrorMessage(e, "Writing registry " + keyName);
+				return false;
+			}
+		}
 
-        #endregion
+		#endregion
 
-        #region DeleteKey
+		#region DeleteKey
 
-        public bool DeleteKey(string keyName)
-        {
-            try
-            {
-                // Setting
-                RegistryKey rk = _baseRegistryKey;
-                RegistryKey sk1 = rk.CreateSubKey(_subKey);
-                // If the RegistrySubKey doesn't exists -> (true)
-                if (sk1 == null)
-                    return true;
-                sk1.DeleteValue(keyName);
+		public bool DeleteKey(string keyName)
+		{
+			try
+			{
+				// Setting
+				var rk = _baseRegistryKey;
+				var sk1 = rk.CreateSubKey(_subKey);
+				// If the RegistrySubKey doesn't exists -> (true)
+				if (sk1 == null)
+					return true;
+				sk1.DeleteValue(keyName);
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                ShowErrorMessage(e, "Deleting SubKey " + _subKey);
-                return false;
-            }
-        }
+				return true;
+			}
+			catch (Exception e)
+			{
+				ShowErrorMessage(e, "Deleting SubKey " + _subKey);
+				return false;
+			}
+		}
 
-        #endregion
+		#endregion
 
-        #region ShowErrorMessage
+		#region ShowErrorMessage
 
-        private void ShowErrorMessage(Exception e, string title)
-        {
-            if (_showError)
-                MessageBox.Show(e.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+		private void ShowErrorMessage(Exception e, string title)
+		{
+			if (ShowError)
+				MessageBox.Show(e.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 
-    #endregion
+	#endregion
 }

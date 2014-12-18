@@ -28,12 +28,10 @@ namespace Packet
 		{
 			if (DataGridView1.SelectedRows != null)
 			{
-				
 				foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
 				{
-					
-					string ToDownLoad = drv.Cells[0].Value.ToString();
-					int inumber = Convert.ToInt32(ToDownLoad);
+					var ToDownLoad = drv.Cells[0].Value.ToString();
+					var inumber = Convert.ToInt32(ToDownLoad);
 					Sql.WriteSQLPacketUpdate(inumber, "R");
 				}
 				//MyFiles.WriteSt(ToDownLoad, "ToDownLoad");
@@ -138,68 +136,84 @@ namespace Packet
 
 		#endregion
 
-        #region TO Y
-        private void toolStripMenuItemTO_Click(object sender, EventArgs e)
-			{
-			var box = new Sort(6, "MSGTO",'Y');
-			box.ShowDialog();
-			}
-        #endregion
+		#region TO Y
 
-        #region From Y
-        private void configToolStripMenuItem1_Click_1(object sender, EventArgs e)
-			{
+		private void toolStripMenuItemTO_Click(object sender, EventArgs e)
+		{
+			var box = new Sort(6, "MSGTO", 'Y');
+			box.ShowDialog();
+		}
+
+		#endregion
+
+		#region From Y
+
+		private void configToolStripMenuItem1_Click_1(object sender, EventArgs e)
+		{
 			var box = new Sort(6, "MSGFrom", 'Y');
 			box.ShowDialog();
-			}
-        #endregion
+		}
 
-        #region Route Y
-        private void configToolStripMenuItem_Click_1(object sender, EventArgs e)
-			{
+		#endregion
+
+		#region Route Y
+
+		private void configToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
 			var box = new Sort(7, "MSGRoute", 'Y');
 			box.ShowDialog();
-			}
-        #endregion
+		}
 
-        #region Subject Y
-        private void configToolStripMenuItem2_Click_1(object sender, EventArgs e)
-			{
+		#endregion
+
+		#region Subject Y
+
+		private void configToolStripMenuItem2_Click_1(object sender, EventArgs e)
+		{
 			var box = new Sort(30, "MSGSubject", 'Y');
 			box.ShowDialog();
-			}
-        #endregion
+		}
 
-        #region To D
-        private void toolStripMenuItem5_Click(object sender, EventArgs e)
-			{
+		#endregion
+
+		#region To D
+
+		private void toolStripMenuItem5_Click(object sender, EventArgs e)
+		{
 			var box = new Sort(6, "MSGTO", 'D');
 			box.ShowDialog();
-			}
-        #endregion
+		}
 
-        #region From D
-        private void toolStripMenuItem7_Click(object sender, EventArgs e)
-			{
+		#endregion
+
+		#region From D
+
+		private void toolStripMenuItem7_Click(object sender, EventArgs e)
+		{
 			var box = new Sort(6, "MSGFrom", 'D');
 			box.ShowDialog();
-			}
-        #endregion
+		}
 
-        #region Route D
-        private void toolStripMenuItem9_Click(object sender, EventArgs e)
-			{
+		#endregion
+
+		#region Route D
+
+		private void toolStripMenuItem9_Click(object sender, EventArgs e)
+		{
 			var box = new Sort(7, "MSGRoute", 'D');
 			box.ShowDialog();
-			}
-        #endregion
+		}
 
-        #region Subject D
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-			{
+		#endregion
+
+		#region Subject D
+
+		private void toolStripMenuItem2_Click(object sender, EventArgs e)
+		{
 			var box = new Sort(30, "MSGSubject", 'D');
 			box.ShowDialog();
-            }
-        #endregion
-    }
+		}
+
+		#endregion
+	}
 }
