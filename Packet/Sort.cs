@@ -251,36 +251,36 @@ namespace Packet
 					if (d_key == 'Y')
 					{
 						if (s_list_type == "MSGTO")
-							Sql.WriteSQLMSGTOUpdate(ITEMS, "Y");
+							Sql.WriteSqlmsgtoUpdate(ITEMS, "Y");
 						else if (s_list_type == "MSGRoute")
-							Sql.WriteSQLMSGRouteUpdate(ITEMS, "Y");
+							Sql.WriteSqlmsgRouteUpdate(ITEMS, "Y");
 						else if (s_list_type == "MSGFrom")
-							Sql.WriteSQLMSGFromUpdate(ITEMS, "Y");
+							Sql.WriteSqlmsgFromUpdate(ITEMS, "Y");
 						else if (s_list_type == "MSGSubject")
-							Sql.WriteSQLMSGSubjectUpdate(ITEMS, "Y");
+							Sql.WriteSqlmsgSubjectUpdate(ITEMS, "Y");
 					}
 					if (d_key == 'D')
 					{
 						if (s_list_type == "MSGTO")
-							Sql.WriteSQLMSGTOUpdate(ITEMS, "D");
+							Sql.WriteSqlmsgtoUpdate(ITEMS, "D");
 						else if (s_list_type == "MSGRoute")
-							Sql.WriteSQLMSGRouteUpdate(ITEMS, "D");
+							Sql.WriteSqlmsgRouteUpdate(ITEMS, "D");
 						else if (s_list_type == "MSGFrom")
-							Sql.WriteSQLMSGFromUpdate(ITEMS, "D");
+							Sql.WriteSqlmsgFromUpdate(ITEMS, "D");
 						else if (s_list_type == "MSGSubject")
-							Sql.WriteSQLMSGSubjectUpdate(ITEMS, "D");
+							Sql.WriteSqlmsgSubjectUpdate(ITEMS, "D");
 					}
 				}
 				else if (!e.Item.Checked)
 				{
 					if (s_list_type == "MSGTO")
-						Sql.WriteSQLMSGTOUpdate(ITEMS, "N");
+						Sql.WriteSqlmsgtoUpdate(ITEMS, "N");
 					else if (s_list_type == "MSGRoute")
-						Sql.WriteSQLMSGRouteUpdate(ITEMS, "N");
+						Sql.WriteSqlmsgRouteUpdate(ITEMS, "N");
 					else if (s_list_type == "MSGFrom")
-						Sql.WriteSQLMSGFromUpdate(ITEMS, "N");
+						Sql.WriteSqlmsgFromUpdate(ITEMS, "N");
 					else if (s_list_type == "MSGSubject")
-						Sql.WriteSQLMSGSubjectUpdate(ITEMS, "N");
+						Sql.WriteSqlmsgSubjectUpdate(ITEMS, "N");
 				}
 			}
 		}

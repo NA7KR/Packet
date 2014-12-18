@@ -18,11 +18,11 @@ namespace Packet
 		private static readonly FileSql FileSql = new FileSql();
 		private OdbcCommand _sqlComm;
 		private readonly OdbcCommand _sqlCommSelectUpdate;
-		private readonly DtoListMsgFrom msgfrom = new DtoListMsgFrom();
-		private readonly DtoListMsgRoute msgroute = new DtoListMsgRoute();
-		private readonly DtoListMsgSubject msgsubject = new DtoListMsgSubject();
-		private readonly DtoListMsgto msgtodto = new DtoListMsgto();
-		private readonly DtoPacket packet = new DtoPacket();
+		private readonly DtoListMsgFrom _msgfrom = new DtoListMsgFrom();
+		private readonly DtoListMsgRoute _msgroute = new DtoListMsgRoute();
+		private readonly DtoListMsgSubject _msgsubject = new DtoListMsgSubject();
+		private readonly DtoListMsgto _msgtodto = new DtoListMsgto();
+		private readonly DtoPacket _packet = new DtoPacket();
 
 		#region constructor
 
@@ -272,13 +272,13 @@ namespace Packet
 
 		#region WriteSQLPacketUpdate
 
-		public void WriteSQLPacketUpdate(int Value, String textValue)
+		public void WriteSqlPacketUpdate(int value, String textValue)
 		{
 			try
 			{
-				packet.set_MSG(Value);
-				packet.set_MSGState(textValue);
-				Sqlupdatepacket(packet);
+				_packet.set_MSG(value);
+				_packet.set_MSGState(textValue);
+				Sqlupdatepacket(_packet);
 			}
 			catch (Exception e)
 			{
@@ -311,13 +311,13 @@ namespace Packet
 
 		#region WriteSQLMSGTOUpdate
 
-		public void WriteSQLMSGTOUpdate(string Value, String textValue)
+		public void WriteSqlmsgtoUpdate(string value, String textValue)
 		{
 			try
 			{
-				msgtodto.set_MSGTO(Value);
-				msgtodto.set_Selected(textValue);
-				SqlupdateMSGUpdate(msgtodto);
+				_msgtodto.set_MSGTO(value);
+				_msgtodto.set_Selected(textValue);
+				SqlupdateMsgUpdate(_msgtodto);
 			}
 			catch (Exception e)
 			{
@@ -329,7 +329,7 @@ namespace Packet
 
 		#region SqlupdateMSGUpdate
 
-		public void SqlupdateMSGUpdate(DtoListMsgto packetdto)
+		public void SqlupdateMsgUpdate(DtoListMsgto packetdto)
 		{
 			_sqlCommSelectUpdate.CommandText = "UPDATE MSGTO SET  Selected = ? Where MSGTO = ?   ";
 			_sqlCommSelectUpdate.Parameters.Clear();
@@ -350,13 +350,13 @@ namespace Packet
 
 		#region WriteSQLMSGFromUpdate
 
-		public void WriteSQLMSGFromUpdate(string Value, String textValue)
+		public void WriteSqlmsgFromUpdate(string value, String textValue)
 		{
 			try
 			{
-				msgfrom.set_MSGFROM(Value);
-				msgfrom.set_Selected(textValue);
-				SqlupdateMSGFROMUpdate(msgfrom);
+				_msgfrom.set_MSGFROM(value);
+				_msgfrom.set_Selected(textValue);
+				SqlupdateMsgfromUpdate(_msgfrom);
 			}
 			catch (Exception e)
 			{
@@ -368,7 +368,7 @@ namespace Packet
 
 		#region SqlupdateMSGFROMUpdate
 
-		public void SqlupdateMSGFROMUpdate(DtoListMsgFrom packetdto)
+		public void SqlupdateMsgfromUpdate(DtoListMsgFrom packetdto)
 		{
 			_sqlCommSelectUpdate.CommandText = "UPDATE MSGFrom SET  Selected = ? Where MSGFrom = ?   ";
 			_sqlCommSelectUpdate.Parameters.Clear();
@@ -389,13 +389,13 @@ namespace Packet
 
 		#region WriteSQLMSGRouteUpdate
 
-		public void WriteSQLMSGRouteUpdate(string Value, String textValue)
+		public void WriteSqlmsgRouteUpdate(string value, String textValue)
 		{
 			try
 			{
-				msgroute.set_MSGRoute(Value);
-				msgroute.set_Selected(textValue);
-				SqlupdateMSGROUTEUpdate(msgroute);
+				_msgroute.set_MSGRoute(value);
+				_msgroute.set_Selected(textValue);
+				SqlupdateMsgrouteUpdate(_msgroute);
 			}
 			catch (Exception e)
 			{
@@ -407,7 +407,7 @@ namespace Packet
 
 		#region SqlupdateMSGROUTEUpdate
 
-		public void SqlupdateMSGROUTEUpdate(DtoListMsgRoute packetdto)
+		public void SqlupdateMsgrouteUpdate(DtoListMsgRoute packetdto)
 		{
 			_sqlCommSelectUpdate.CommandText = "UPDATE MSGRoute SET  Selected = ? Where MSGRoute = ?   ";
 			_sqlCommSelectUpdate.Parameters.Clear();
@@ -428,13 +428,13 @@ namespace Packet
 
 		#region WriteSQLMSGSubjectUpdate
 
-		public void WriteSQLMSGSubjectUpdate(string Value, String textValue)
+		public void WriteSqlmsgSubjectUpdate(string value, String textValue)
 		{
 			try
 			{
-				msgsubject.set_MSGSubject(Value);
-				msgsubject.set_Selected(textValue);
-				SqlupdateMSGSUBJECTUpdate(msgsubject);
+				_msgsubject.set_MSGSubject(value);
+				_msgsubject.set_Selected(textValue);
+				SqlupdateMsgsubjectUpdate(_msgsubject);
 			}
 			catch (Exception e)
 			{
@@ -446,7 +446,7 @@ namespace Packet
 
 		#region SqlupdateMSGFROMUpdate
 
-		public void SqlupdateMSGSUBJECTUpdate(DtoListMsgSubject packetdto)
+		public void SqlupdateMsgsubjectUpdate(DtoListMsgSubject packetdto)
 		{
 			_sqlCommSelectUpdate.CommandText = "UPDATE MSGSubject SET  Selected = ? Where MSGSubject = ?   ";
 			_sqlCommSelectUpdate.Parameters.Clear();
@@ -467,7 +467,7 @@ namespace Packet
 
 		#region SQLPacketSubjectDelete
 
-		public void SQLPacketSubjectDelete()
+		public void SqlPacketSubjectDelete()
 		{
 			if (FileSql.DoesTableExist("MSGSubject", "DSN=Packet"))
 			{
@@ -489,7 +489,7 @@ namespace Packet
 
 		#region SQLPacketFromDelete
 
-		public void SQLPacketFromDelete()
+		public void SqlPacketFromDelete()
 		{
 			if (FileSql.DoesTableExist("MSGFrom", "DSN=Packet"))
 			{
@@ -511,7 +511,7 @@ namespace Packet
 
 		#region SQLPacketRouteDelete
 
-		public void SQLPacketRouteDelete()
+		public void SqlPacketRouteDelete()
 		{
 			if (FileSql.DoesTableExist("MSGRoute", "DSN=Packet"))
 			{
@@ -533,7 +533,7 @@ namespace Packet
 
 		#region SQLPackeToDelete
 
-		public void SQLPacketToDelete()
+		public void SqlPacketToDelete()
 		{
 			if (FileSql.DoesTableExist("MSGTO", "DSN=Packet"))
 			{
@@ -557,17 +557,17 @@ namespace Packet
 
 		public void SqlPacketDelete()
 		{
-			SQLPacketSubjectDelete();
-			SQLPacketFromDelete();
-			SQLPacketRouteDelete();
-			SQLPacketToDelete();
+			SqlPacketSubjectDelete();
+			SqlPacketFromDelete();
+			SqlPacketRouteDelete();
+			SqlPacketToDelete();
 		}
 
 		#endregion
 
 		#region SQLSelectMail
 
-		public void SQLSelectMail()
+		public void SqlSelectMail()
 		{
 		}
 

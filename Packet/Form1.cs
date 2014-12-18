@@ -320,7 +320,7 @@ namespace Packet
 			terminalEmulator1.LastNumber = _myRegistryBbs.Read("Start Number");
 			terminalEmulator1.Startforward();
 			Sql.SqlPacketDelete();
-			Sql.SQLSelectMail();
+			Sql.SqlSelectMail();
 		}
 
 		#endregion
