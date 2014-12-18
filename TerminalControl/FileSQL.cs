@@ -12,6 +12,7 @@ namespace PacketComs
 	public class FileSql
 	{
 		private OdbcCommand _sqlCommSelectInsert;
+		private OdbcCommand _sqlComm;
 		private OdbcConnection _sqlConn;
 		private readonly OdbcCommand _sqlCommPacketInsert;
 		private readonly OdbcManager odbc;
@@ -271,7 +272,7 @@ namespace PacketComs
 					{
 					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
 													   "Where MSGSubject in " +
-													   "(Select MSGSubject from MSGSubject where Selected  = 'D')   ";
+													   "(Select MSGSubject from MSGSubject where Selected  = "D")   ";
 					}
 					try
 						{
@@ -295,7 +296,7 @@ namespace PacketComs
 					{
 					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
 													   "Where MSGFrom in " +
-													   "(Select MSGFrom from MSGFrom where Selected  = 'D')   ";
+													   "(Select MSGFrom from MSGFrom where Selected  = "D")   ";
 					}
 					try
 						{
@@ -319,7 +320,7 @@ namespace PacketComs
 					{
 					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
 													   "Where MSGRoute in " +
-													   "(Select MSGRoute from MSGRoute where Selected  = 'D')   ";
+													   "(Select MSGRoute from MSGRoute where Selected  = "D")   ";
 					}
 					try
 						{
@@ -343,7 +344,7 @@ namespace PacketComs
 					{
 					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
 													   "Where MSGTO in " +
-													   "(Select = MSGTO from MSGTO where Selected  = 'D')   ";
+													   "(Select = MSGTO from MSGTO where Selected  = "D")   ";
 					}
 					try
 						{
@@ -372,10 +373,57 @@ namespace PacketComs
 
 		#region SQLSelectMail
 
-		public void SqlSelectMail()
+		public string SqlSelectMail()
 			{
+			string selectLists = "";
+			try
+				{
+				var sqlConn = new OdbcConnection(dsnName);
+				sqlConn.Open();
+				_sqlComm = sqlConn.CreateCommand();
+					
+				using (var cmd = new OdbcCommand())
+					{
+					cmd.Connection = sqlConn;
+					_sqlComm.CommandText = "SELECT MSG FROM FROM where MSGState = R";
+					_sqlComm.ExecuteNonQuery();
+					using (var reader = _sqlComm.ExecuteReader())
+						{
+						while (reader.Read())
+						{
+						selectLists = reader.GetString(0);
+
+						}
+						}
+					}
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				}
+			return selectLists;
 			}
 
 		#endregion
+
+		
+
+		#region SqlupdateMSGUpdate
+
+		public void SqlupdateMSGUpdate()
+			{
+			_sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = "R" Where MSGTO in (Select = MSGTO from MSGTO where Selected  = 'Y')  ";
+			try
+				{
+				_sqlCommSelectUpdate.ExecuteNonQuery();
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				}
+			}
+
+		#endregion
+
 	}
 } //end name-space

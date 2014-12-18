@@ -189,7 +189,11 @@ namespace PacketComs
 			DispatchMessage(this, nb);
 			DispatchMessage(this, Environment.NewLine);
 			FileSql.SqlPacketDelete();
-			FileSql.SqlSelectMail();
+			FileSql.SqlupdateMSGUpdate();
+			nb = ("R " + FileSql.SqlSelectMail());
+			DispatchMessage(this, nb);
+			DispatchMessage(this, Environment.NewLine);
+			
 
 			/*	 KRR
             if (_myFiles.CheckSt("ToDownLoad") == true)
