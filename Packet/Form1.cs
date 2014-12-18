@@ -19,8 +19,7 @@ namespace Packet
 	{
 		#region Form1
 
-        public const string dsnName = "DSN=Packet";
-
+        public const string dsnName = "DSN=Packet";	
 	   
 		public Form1()
 		{
@@ -322,9 +321,7 @@ namespace Packet
 			forward_button.Enabled = false;
 			forward_button.Text = "Forward active";
 			terminalEmulator1.LastNumber = _myRegistryBbs.Read("Start Number");
-			terminalEmulator1.Startforward();
-			Sql.SqlPacketDelete();
-			Sql.SqlSelectMail();
+			terminalEmulator1.Startforward();		
 		}
 
 		#endregion

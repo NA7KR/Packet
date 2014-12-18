@@ -16,13 +16,14 @@ namespace PacketComs
 		private readonly OdbcCommand _sqlCommPacketInsert;
 		private readonly OdbcManager odbc;
 		private readonly DtoPacket packet = new DtoPacket();
-        
+		public const string dsnName = "DSN=Packet";
+		private readonly OdbcCommand _sqlCommSelectUpdate;
 
 		#region Constructor
 
 		public FileSql()
 		{
-            var dsnName = "DSN=Packet";
+            
 			var dsnTableName = "Packet";
 			odbc = new OdbcManager();
             _sqlConn = new OdbcConnection(dsnName);
@@ -48,6 +49,7 @@ namespace PacketComs
 			}
 			_sqlConn.Open(); // must be after DSN check.
 
+			_sqlCommSelectUpdate = _sqlConn.CreateCommand();
 
 			_sqlCommPacketInsert.CommandText = "INSERT INTO  Packet " +
 			                                   "(MSG," +
@@ -257,6 +259,122 @@ namespace PacketComs
 			var result = param.Substring(startIndex, length);
 			return result;
 		}
+
+		#endregion
+
+		#region SQLPacketSubjectDelete
+
+		public void SqlPacketSubjectDelete()
+			{
+			if (DoesTableExist("MSGSubject", dsnName))
+				{
+					{
+					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+													   "Where MSGSubject in " +
+													   "(Select MSGSubject from MSGSubject where Selected  = 'D')   ";
+					}
+					try
+						{
+						_sqlCommSelectUpdate.ExecuteNonQuery();
+						}
+					catch (OdbcException e)
+						{
+						MessageBox.Show(e.Message);
+						}
+				}
+			}
+
+		#endregion
+
+		#region SQLPacketFromDelete
+
+		public void SqlPacketFromDelete()
+			{
+			if (DoesTableExist("MSGFrom", dsnName))
+				{
+					{
+					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+													   "Where MSGFrom in " +
+													   "(Select MSGFrom from MSGFrom where Selected  = 'D')   ";
+					}
+					try
+						{
+						_sqlCommSelectUpdate.ExecuteNonQuery();
+						}
+					catch (OdbcException e)
+						{
+						MessageBox.Show(e.Message);
+						}
+				}
+			}
+
+		#endregion
+
+		#region SQLPacketRouteDelete
+
+		public void SqlPacketRouteDelete()
+			{
+			if (DoesTableExist("MSGRoute", dsnName))
+				{
+					{
+					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+													   "Where MSGRoute in " +
+													   "(Select MSGRoute from MSGRoute where Selected  = 'D')   ";
+					}
+					try
+						{
+						_sqlCommSelectUpdate.ExecuteNonQuery();
+						}
+					catch (OdbcException e)
+						{
+						MessageBox.Show(e.Message);
+						}
+				}
+			}
+
+		#endregion
+
+		#region SQLPackeToDelete
+
+		public void SqlPacketToDelete()
+			{
+			if (DoesTableExist("MSGTO", "DSN=Packet"))
+				{
+					{
+					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
+													   "Where MSGTO in " +
+													   "(Select = MSGTO from MSGTO where Selected  = 'D')   ";
+					}
+					try
+						{
+						_sqlCommSelectUpdate.ExecuteNonQuery();
+						}
+					catch (OdbcException e)
+						{
+						MessageBox.Show(e.Message);
+						}
+				}
+			}
+
+		#endregion
+
+		#region SQLPacket Delete
+
+		public void SqlPacketDelete()
+			{
+			SqlPacketSubjectDelete();
+			SqlPacketFromDelete();
+			SqlPacketRouteDelete();
+			SqlPacketToDelete();
+			}
+
+		#endregion
+
+		#region SQLSelectMail
+
+		public void SqlSelectMail()
+			{
+			}
 
 		#endregion
 	}

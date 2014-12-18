@@ -35,7 +35,7 @@ namespace Packet
 
 		private void button_ok_Click(object sender, EventArgs e)
 		{
-			Sql.SqlPacketDelete();
+			MyFiles.SqlPacketDelete();
 			Close();
 		}
 

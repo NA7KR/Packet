@@ -28,7 +28,7 @@ namespace Packet
 
 		public Sql()
 		{
-			var sqlConn = new OdbcConnection("DSN=Packet");
+			var sqlConn = new OdbcConnection(Form1.dsnName);
 			sqlConn.Open();
 			_sqlCommSelectUpdate = sqlConn.CreateCommand();
 		}
@@ -465,113 +465,7 @@ namespace Packet
 
 		#endregion
 
-		#region SQLPacketSubjectDelete
-
-		public void SqlPacketSubjectDelete()
-		{
-			if (FileSql.DoesTableExist("MSGSubject", "DSN=Packet"))
-			{
-				_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
-				                                   "Where MSGSubject in " +
-				                                   "(Select = MSGSubject from MSGSubject where Selected  = D)   ";
-			}
-			try
-			{
-				_sqlCommSelectUpdate.ExecuteNonQuery();
-			}
-			catch (OdbcException e)
-			{
-				MessageBox.Show(e.Message);
-			}
-		}
-
-		#endregion
-
-		#region SQLPacketFromDelete
-
-		public void SqlPacketFromDelete()
-		{
-			if (FileSql.DoesTableExist("MSGFrom", "DSN=Packet"))
-			{
-				_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
-				                                   "Where MSGFrom in " +
-				                                   "(Select = MSGFrom from MSGFrom where Selected  = D)   ";
-			}
-			try
-			{
-				_sqlCommSelectUpdate.ExecuteNonQuery();
-			}
-			catch (OdbcException e)
-			{
-				MessageBox.Show(e.Message);
-			}
-		}
-
-		#endregion
-
-		#region SQLPacketRouteDelete
-
-		public void SqlPacketRouteDelete()
-		{
-			if (FileSql.DoesTableExist("MSGRoute", "DSN=Packet"))
-			{
-				_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
-				                                   "Where MSGRoute in " +
-				                                   "(Select = MSGRoute from MSGRoute where Selected  = D)   ";
-			}
-			try
-			{
-				_sqlCommSelectUpdate.ExecuteNonQuery();
-			}
-			catch (OdbcException e)
-			{
-				MessageBox.Show(e.Message);
-			}
-		}
-
-		#endregion
-
-		#region SQLPackeToDelete
-
-		public void SqlPacketToDelete()
-		{
-			if (FileSql.DoesTableExist("MSGTO", "DSN=Packet"))
-			{
-				_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
-				                                   "Where MSGTO in " +
-				                                   "(Select = MSGTO from MSGTO where Selected  = D)   ";
-			}
-			try
-			{
-				_sqlCommSelectUpdate.ExecuteNonQuery();
-			}
-			catch (OdbcException e)
-			{
-				MessageBox.Show(e.Message);
-			}
-		}
-
-		#endregion
-
-		#region SQLPacket Delete
-
-		public void SqlPacketDelete()
-		{
-			SqlPacketSubjectDelete();
-			SqlPacketFromDelete();
-			SqlPacketRouteDelete();
-			SqlPacketToDelete();
-		}
-
-		#endregion
-
-		#region SQLSelectMail
-
-		public void SqlSelectMail()
-		{
-		}
-
-		#endregion
+	
 	}
 
 	#endregion CLASS

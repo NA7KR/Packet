@@ -22,7 +22,7 @@ namespace PacketComs
 
 		#region CreateDSN
 
-		public void CreateDSN(string strDsnName)
+		public void CreateDSN(string dsnName)
 		{
 			try
 			{
@@ -45,11 +45,11 @@ namespace PacketComs
 
 		#region CheckForDSN
 
-		public int CheckForDSN(string strDsnName)
+		public int CheckForDSN(string dsnName)
 		{
 			int iData;
 			var strRetBuff = "";
-			iData = SQLGetPrivateProfileString("ODBC Data Sources", strDsnName, "", strRetBuff, 200, "odbc.ini");
+			iData = SQLGetPrivateProfileString("ODBC Data Sources", dsnName, "", strRetBuff, 200, "odbc.ini");
 			return iData;
 		}
 

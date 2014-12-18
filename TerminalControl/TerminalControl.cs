@@ -29,6 +29,7 @@ namespace PacketComs
 		private ShellStream _stream;
 		private readonly FileSql _myFiles = new FileSql();
 		private readonly SerialPort _port = new SerialPort();
+		private static readonly FileSql FileSql = new FileSql();
 
 		#region TerminalEmulator
 
@@ -187,6 +188,8 @@ namespace PacketComs
 			var nb = ("LR " + ln + "-999999");
 			DispatchMessage(this, nb);
 			DispatchMessage(this, Environment.NewLine);
+			FileSql.SqlPacketDelete();
+			FileSql.SqlSelectMail();
 
 			/*	 KRR
             if (_myFiles.CheckSt("ToDownLoad") == true)
