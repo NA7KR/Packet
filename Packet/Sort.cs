@@ -53,10 +53,10 @@ namespace Packet
 			button_ok.Top = (Height - 75);
 			button_Cancel.Top = (Height - 75);
 
-			Sql.SqlselectOptrion("DSN=Packet", s_list_type);
+			Sql.SqlselectOptrion( s_list_type);
 			if (s_list_type == "MSGTO")
 			{
-				var selectLists = Sql.SQLSELECT_ON_Lists_Msgto("DSN=Packet");
+				var selectLists = Sql.SQLSELECT_ON_Lists_Msgto();
 				selectLists.ForEach(delegate(DtoListMsgto selectList)
 				{
 					if (d_key == 'Y')
@@ -97,7 +97,7 @@ namespace Packet
 
 			if (s_list_type == "MSGFrom")
 			{
-				var selectLists = Sql.SQLSELECT_ON_Lists_MsgFrom("DSN=Packet");
+				var selectLists = Sql.SQLSELECT_ON_Lists_MsgFrom();
 				selectLists.ForEach(delegate(DtoListMsgFrom selectList)
 				{
 					if (d_key == 'Y')
@@ -138,7 +138,7 @@ namespace Packet
 
 			if (s_list_type == "MSGRoute")
 			{
-				var selectLists = Sql.SQLSELECT_ON_Lists_MsgRoute("DSN=Packet");
+				var selectLists = Sql.SQLSELECT_ON_Lists_MsgRoute();
 				selectLists.ForEach(delegate(DtoListMsgRoute selectList)
 				{
 					if (d_key == 'Y')
@@ -179,7 +179,7 @@ namespace Packet
 
 			if (s_list_type == "MSGSubject")
 			{
-				var selectLists = Sql.SQLSELECT_ON_Lists_MsgSubject("DSN=Packet");
+				var selectLists = Sql.SQLSELECT_ON_Lists_MsgSubject();
 				selectLists.ForEach(delegate(DtoListMsgSubject selectList)
 				{
 					if (d_key == 'Y')

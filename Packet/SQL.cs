@@ -37,13 +37,13 @@ namespace Packet
 
 		#region SQLSELECT
 
-		public List<DtoPacket> Sqlselect(string dsnName)
+		public List<DtoPacket> Sqlselect()
 		{
 			var packets = new List<DtoPacket>();
 
 			try
 			{
-				var sqlConn = new OdbcConnection(dsnName);
+				var sqlConn = new OdbcConnection(Form1.dsnName);
 				sqlConn.Open();
 				_sqlComm = sqlConn.CreateCommand();
 
@@ -81,12 +81,12 @@ namespace Packet
 
 		#region SQLSELECT_ON_Lists_Msgto
 
-		public List<DtoListMsgto> SQLSELECT_ON_Lists_Msgto(string dsnName)
+		public List<DtoListMsgto> SQLSELECT_ON_Lists_Msgto()
 		{
 			var selectLists = new List<DtoListMsgto>();
 			try
 			{
-				var sqlConn = new OdbcConnection(dsnName);
+				var sqlConn = new OdbcConnection(Form1.dsnName);
 				sqlConn.Open();
 				_sqlComm = sqlConn.CreateCommand();
 
@@ -119,12 +119,12 @@ namespace Packet
 
 		#region SQLSELECT_ON_Lists_MsgFrom
 
-		public List<DtoListMsgFrom> SQLSELECT_ON_Lists_MsgFrom(string dsnName)
+		public List<DtoListMsgFrom> SQLSELECT_ON_Lists_MsgFrom()
 		{
 			var selectLists = new List<DtoListMsgFrom>();
 			try
 			{
-				var sqlConn = new OdbcConnection(dsnName);
+				var sqlConn = new OdbcConnection(Form1.dsnName);
 				sqlConn.Open();
 				_sqlComm = sqlConn.CreateCommand();
 
@@ -157,12 +157,12 @@ namespace Packet
 
 		#region SQLSELECT_ON_Lists_Route
 
-		public List<DtoListMsgRoute> SQLSELECT_ON_Lists_MsgRoute(string dsnName)
+		public List<DtoListMsgRoute> SQLSELECT_ON_Lists_MsgRoute()
 		{
 			var selectLists = new List<DtoListMsgRoute>();
 			try
 			{
-				var sqlConn = new OdbcConnection(dsnName);
+				var sqlConn = new OdbcConnection(Form1.dsnName);
 				sqlConn.Open();
 				_sqlComm = sqlConn.CreateCommand();
 
@@ -195,12 +195,12 @@ namespace Packet
 
 		#region SQLSELECT_ON_Lists_MsgSubject
 
-		public List<DtoListMsgSubject> SQLSELECT_ON_Lists_MsgSubject(string dsnName)
+		public List<DtoListMsgSubject> SQLSELECT_ON_Lists_MsgSubject()
 		{
 			var selectLists = new List<DtoListMsgSubject>();
 			try
 			{
-				var sqlConn = new OdbcConnection(dsnName);
+				var sqlConn = new OdbcConnection(Form1.dsnName);
 				sqlConn.Open();
 				_sqlComm = sqlConn.CreateCommand();
 
@@ -233,11 +233,11 @@ namespace Packet
 
 		#region SQLSELECTOPTION
 
-		public void SqlselectOptrion(string dsnName, string tableName)
+		public void SqlselectOptrion( string tableName)
 		{
 			try
 			{
-				var sqlConn = new OdbcConnection(dsnName);
+				var sqlConn = new OdbcConnection(Form1.dsnName);
 				sqlConn.Open();
 				_sqlComm = sqlConn.CreateCommand();
 				using (var cmd = new OdbcCommand())

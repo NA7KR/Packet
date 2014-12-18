@@ -19,6 +19,9 @@ namespace Packet
 	{
 		#region Form1
 
+        public const string dsnName = "DSN=Packet";
+
+	   
 		public Form1()
 		{
 			InitializeComponent();
@@ -93,6 +96,7 @@ namespace Packet
 
 			mail_button.Left = 690;
 			mail_button.Top = 40;
+		    terminalEmulator1.dnsName = dsnName;
 		}
 
 		#endregion
@@ -117,9 +121,9 @@ namespace Packet
 
 		#endregion
 
-		#region
+        #region toolStripComboBox1_SelectedIndexChanged
 
-		private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			switch (toolStripComboBox1.SelectedIndex)
 			{

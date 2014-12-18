@@ -4812,12 +4812,15 @@ namespace PacketComs
 			set { }
 		}
 
+       
+
 		public int Columns
 		{
 			get { return _cols; }
 			set { }
 		}
 
+        public string dnsName {  get; set; }
 		public string LastNumber { get; set; }
 
 		public ConnectionTypes ConnectionType { get; set; }

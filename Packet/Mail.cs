@@ -95,7 +95,7 @@ namespace Packet
 				Width = DataGridView1.Width + 50;
 				DataGridView1.Visible = true;
 				DataGridView1.Rows.Clear();
-				var packets = Sql.Sqlselect("DSN=Packet");
+				var packets = Sql.Sqlselect();
 				packets.ForEach(delegate(DtoPacket packet)
 				{
 					DataGridView1.Rows.Add(

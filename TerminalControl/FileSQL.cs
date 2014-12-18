@@ -16,15 +16,16 @@ namespace PacketComs
 		private readonly OdbcCommand _sqlCommPacketInsert;
 		private readonly OdbcManager odbc;
 		private readonly DtoPacket packet = new DtoPacket();
+        
 
 		#region Constructor
 
 		public FileSql()
 		{
-			var dsnName = "DSN=Packet";
+            var dsnName = "DSN=Packet";
 			var dsnTableName = "Packet";
 			odbc = new OdbcManager();
-			_sqlConn = new OdbcConnection(dsnName);
+            _sqlConn = new OdbcConnection(dsnName);
 			_sqlCommPacketInsert = new OdbcCommand();
 			_sqlCommPacketInsert = _sqlConn.CreateCommand();
 
