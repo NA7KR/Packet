@@ -25,6 +25,7 @@ namespace PacketComs
 		public FileSql()
 			{
 
+
 			var dsnTableName = "Packet";
 			odbc = new OdbcManager();
 			_sqlConn = new OdbcConnection(dsnName);
@@ -35,10 +36,9 @@ namespace PacketComs
 			if (odbc.CheckForDSN(dsnTableName) > 0)
 				{
 				if (DoesTableExist(dsnTableName, dsnName) == false)
-					{
-					SqlMakeTable(
-						"CREATE TABLE " + dsnTableName +
-						"( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
+				{
+				    _sqlConn.Open();
+					SqlMakeTable("CREATE TABLE " + dsnTableName + "( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
 					}
 				}
 			else
@@ -53,7 +53,7 @@ namespace PacketComs
 			_sqlCommSelectUpdate = _sqlConn.CreateCommand();
 
 			_sqlCommPacketInsert.CommandText = "INSERT INTO  Packet " +
-											   "(MSG," +
+				    							   "(MSG," +
 											   "MSGTSLD," +
 											   "MSGSize," +
 											   "MSGTO," +
@@ -73,7 +73,8 @@ namespace PacketComs
 			try
 				{
 				_sqlCommPacketInsert.CommandText = query;
-				_sqlCommPacketInsert.ExecuteNonQuery();
+                _sqlCommPacketInsert.ExecuteNonQuery();
+                _sqlConn.Close();
 				}
 			catch (OdbcException e)
 				{
@@ -385,7 +386,7 @@ namespace PacketComs
 				using (var cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "SELECT MSG FROM FROM where MSGState = R";
+					_sqlComm.CommandText = "SELECT MSG FROM FROM Packet where MSGState = R";
 					_sqlComm.ExecuteNonQuery();
 					using (var reader = _sqlComm.ExecuteReader())
 						{

@@ -190,7 +190,7 @@ namespace PacketComs
 			DispatchMessage(this, Environment.NewLine);
 			FileSql.SqlPacketDelete();
 			FileSql.SqlupdateMSGUpdate();
-			nb = ("R " + FileSql.SqlSelectMail());
+			//nb = ("R " + FileSql.SqlSelectMail());
 			DispatchMessage(this, nb);
 			DispatchMessage(this, Environment.NewLine);
 			

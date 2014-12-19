@@ -843,7 +843,7 @@ namespace Packet
 
 		#region private TelnetConnection
 
-		private static readonly Sql Sql = new Sql();
+		//private static readonly Sql Sql = new Sql();
 
 		private Boolean _bBeep = true;
 		private Color _backgroundColor = Color.Black;
