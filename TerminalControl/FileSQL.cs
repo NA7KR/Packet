@@ -8,9 +8,9 @@ using System.Windows.Forms;
 #endregion
 
 namespace PacketComs
-{
-	public class FileSql
 	{
+	public class FileSql
+		{
 		private OdbcCommand _sqlCommSelectInsert;
 		private OdbcCommand _sqlComm;
 		private OdbcConnection _sqlConn;
@@ -23,70 +23,70 @@ namespace PacketComs
 		#region Constructor
 
 		public FileSql()
-		{
-            
+			{
+
 			var dsnTableName = "Packet";
 			odbc = new OdbcManager();
-            _sqlConn = new OdbcConnection(dsnName);
+			_sqlConn = new OdbcConnection(dsnName);
 			_sqlCommPacketInsert = new OdbcCommand();
 			_sqlCommPacketInsert = _sqlConn.CreateCommand();
 
 
 			if (odbc.CheckForDSN(dsnTableName) > 0)
-			{
-				if (DoesTableExist(dsnTableName, dsnName) == false)
 				{
+				if (DoesTableExist(dsnTableName, dsnName) == false)
+					{
 					SqlMakeTable(
 						"CREATE TABLE " + dsnTableName +
 						"( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
+					}
 				}
-			}
 			else
-			{
+				{
 				odbc.CreateDSN(dsnName);
 				MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
 					"Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(1);
-			}
+				}
 			_sqlConn.Open(); // must be after DSN check.
 
 			_sqlCommSelectUpdate = _sqlConn.CreateCommand();
 
 			_sqlCommPacketInsert.CommandText = "INSERT INTO  Packet " +
-			                                   "(MSG," +
-			                                   "MSGTSLD," +
-			                                   "MSGSize," +
-			                                   "MSGTO," +
-			                                   "MSGRoute," +
-			                                   "MSGFrom," +
-			                                   "MSGDateTime," +
-			                                   "MSGSubject) " +
-			                                   "VALUES (?,?,?,?,?,?,?,?)";
-		}
+											   "(MSG," +
+											   "MSGTSLD," +
+											   "MSGSize," +
+											   "MSGTO," +
+											   "MSGRoute," +
+											   "MSGFrom," +
+											   "MSGDateTime," +
+											   "MSGSubject) " +
+											   "VALUES (?,?,?,?,?,?,?,?)";
+			}
 
 		#endregion
 
 		#region SQLMakeTable
 
 		private void SqlMakeTable(string query)
-		{
-			try
 			{
+			try
+				{
 				_sqlCommPacketInsert.CommandText = query;
 				_sqlCommPacketInsert.ExecuteNonQuery();
-			}
+				}
 			catch (OdbcException e)
-			{
+				{
 				MessageBox.Show(e.Message);
+				}
 			}
-		}
 
 		#endregion
 
 		#region SQLInsertPacket
 
 		private void SqlInsertPacket(DtoPacket packetdto)
-		{
+			{
 			_sqlCommPacketInsert.Parameters.Clear();
 			_sqlCommPacketInsert.Parameters.AddWithValue("@p1", packetdto.get_MSG());
 			_sqlCommPacketInsert.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
@@ -97,23 +97,23 @@ namespace PacketComs
 			_sqlCommPacketInsert.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
 			_sqlCommPacketInsert.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
 			try
-			{
+				{
 				_sqlCommPacketInsert.Prepare();
 				_sqlCommPacketInsert.ExecuteNonQuery();
 				//sqlConn.Close();
-			}
+				}
 			catch (OdbcException e)
-			{
+				{
 				MessageBox.Show(e.Message);
+				}
 			}
-		}
 
 		#endregion
 
 		#region SQLInsertSelect
 
 		private void SqlInsertSelect(DtoPacket packetdto, string tableName)
-		{
+			{
 			_sqlCommSelectInsert.Parameters.Clear();
 			if (tableName == "SelectedMSG")
 				_sqlCommSelectInsert.Parameters.AddWithValue("@p1", packetdto.get_MSG());
@@ -126,58 +126,58 @@ namespace PacketComs
 			else if (tableName == "SelectedSubject")
 				_sqlCommSelectInsert.Parameters.AddWithValue("@p1", packetdto.get_MSGSubject());
 			try
-			{
+				{
 				_sqlCommSelectInsert.Prepare();
 				_sqlCommSelectInsert.ExecuteNonQuery();
 				//sqlConn.Close();
-			}
+				}
 			catch (OdbcException e)
-			{
+				{
 				MessageBox.Show(e.Message);
+				}
 			}
-		}
 
 		#endregion
 
 		#region DoesTableExist
 
 		public bool DoesTableExist(string tableName, string dsnName)
-		{
-			using (var sqlConn = new OdbcConnection(dsnName))
 			{
-				var tableExists = false;
+			using (var sqlConn = new OdbcConnection(dsnName))
 				{
-					try
+				var tableExists = false;
 					{
+					try
+						{
 						sqlConn.Open();
 						var dt = sqlConn.GetSchema("TABLES");
 						foreach (DataRow row in dt.Rows)
-						{
-							if (row[2].ToString().ToLower() == tableName.ToLower())
 							{
+							if (row[2].ToString().ToLower() == tableName.ToLower())
+								{
 								tableExists = true;
 								break;
+								}
 							}
 						}
-					}
 					catch (Exception e)
-					{
+						{
 						MessageBox.Show(e.Message);
 						return false;
+						}
 					}
+					return tableExists;
 				}
-				return tableExists;
 			}
-		}
 
 		#endregion
 
 		#region WriteSQLPacket
 
 		public void WriteSqlPacket(string textValue)
-		{
-			try
 			{
+			try
+				{
 				packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
 				packet.set_MSGTSLD(Mid(textValue, 7, 4));
 				packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
@@ -187,21 +187,21 @@ namespace PacketComs
 				packet.set_MSGDateTime(Mid(textValue, 39, 9));
 				packet.set_MSGSubject(Mid(textValue, 49, (textValue.Length - 49)));
 				SqlInsertPacket(packet);
-			}
+				}
 			catch (Exception e)
-			{
+				{
 				MessageBox.Show(e.Message);
+				}
 			}
-		}
 
 		#endregion
 
 		#region	   WriteSQLSelect
 
 		public void WriteSqlSelect(string textValue, string tableName)
-		{
-			try
 			{
+			try
+				{
 				_sqlCommSelectInsert = _sqlConn.CreateCommand();
 				_sqlCommSelectInsert.CommandText = "INSERT INTO " + tableName + " (" + tableName + ") VALUES (?)";
 				if (tableName == "SelectedMSG")
@@ -215,51 +215,51 @@ namespace PacketComs
 				else if (tableName == "SelectedSubject")
 					packet.set_MSGSubject(textValue);
 				SqlInsertSelect(packet, tableName);
-			}
+				}
 			catch (Exception e)
-			{
+				{
 				MessageBox.Show(e.Message);
+				}
 			}
-		}
 
 		#endregion
 
 		#region SelectMakeTable
 
 		public void SelectMakeTable(string textVale, Int32 intsize, string tableName, string dsnName, string systemDsn)
-		{
-			if (odbc.CheckForDSN(systemDsn) > 0)
 			{
-				if (DoesTableExist(tableName, dsnName) == false)
+			if (odbc.CheckForDSN(systemDsn) > 0)
 				{
+				if (DoesTableExist(tableName, dsnName) == false)
+					{
 					SqlMakeTable("CREATE TABLE " + tableName + " (  " + textVale + " CHAR(" + intsize +
-					             "), DateCreate datetime, Selected CHAR(1)  )");
+								 "), DateCreate datetime, Selected CHAR(1)  )");
 					_sqlConn = new OdbcConnection(dsnName);
 					_sqlConn.Open();
+					}
 				}
-			}
 			else
-			{
+				{
 				odbc.CreateDSN(dsnName);
 				MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
 					"Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(1);
+				}
 			}
-		}
 
 		#endregion
 
 		#region Mid
 
 		private static string Mid(string param, int startIndex, int length)
-		{
-			if (param == " ")
 			{
+			if (param == " ")
+				{
 				return null;
-			}
+				}
 			var result = param.Substring(startIndex, length);
 			return result;
-		}
+			}
 
 		#endregion
 
@@ -272,7 +272,7 @@ namespace PacketComs
 					{
 					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
 													   "Where MSGSubject in " +
-													   "(Select MSGSubject from MSGSubject where Selected  = "D")   ";
+													   "(Select MSGSubject from MSGSubject where Selected  = \"D\")   ";
 					}
 					try
 						{
@@ -296,7 +296,7 @@ namespace PacketComs
 					{
 					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
 													   "Where MSGFrom in " +
-													   "(Select MSGFrom from MSGFrom where Selected  = "D")   ";
+													   "(Select MSGFrom from MSGFrom where Selected  = \"D\")   ";
 					}
 					try
 						{
@@ -320,7 +320,7 @@ namespace PacketComs
 					{
 					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
 													   "Where MSGRoute in " +
-													   "(Select MSGRoute from MSGRoute where Selected  = "D")   ";
+													   "(Select MSGRoute from MSGRoute where Selected  = \"D\")   ";
 					}
 					try
 						{
@@ -339,12 +339,12 @@ namespace PacketComs
 
 		public void SqlPacketToDelete()
 			{
-			if (DoesTableExist("MSGTO", "DSN=Packet"))
+			if (DoesTableExist("MSGTO", dsnName))
 				{
 					{
 					_sqlCommSelectUpdate.CommandText = "Delete From Packet " +
 													   "Where MSGTO in " +
-													   "(Select = MSGTO from MSGTO where Selected  = "D")   ";
+													   "(Select = MSGTO from MSGTO where Selected  = \"D\")   ";
 					}
 					try
 						{
@@ -381,7 +381,7 @@ namespace PacketComs
 				var sqlConn = new OdbcConnection(dsnName);
 				sqlConn.Open();
 				_sqlComm = sqlConn.CreateCommand();
-					
+
 				using (var cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
@@ -390,10 +390,10 @@ namespace PacketComs
 					using (var reader = _sqlComm.ExecuteReader())
 						{
 						while (reader.Read())
-						{
-						selectLists = reader.GetString(0);
+							{
+							selectLists = reader.GetString(0);
 
-						}
+							}
 						}
 					}
 				}
@@ -406,24 +406,102 @@ namespace PacketComs
 
 		#endregion
 
-		
+
 
 		#region SqlupdateMSGUpdate
 
 		public void SqlupdateMSGUpdate()
 			{
-			_sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = "R" Where MSGTO in (Select = MSGTO from MSGTO where Selected  = 'Y')  ";
-			try
+			SqlupdateMSGUpdateTO();
+			SqlupdateMSGUpdateFROM();
+			SqlupdateMSGUpdateRoute();
+			SqlupdateMSGUpdateSubject();
+			}
+
+		#endregion
+
+		#region SqlupdateMSGUpdateTO
+
+		public void SqlupdateMSGUpdateTO()
+			{
+			if (DoesTableExist("MSGTO", dsnName))
 				{
-				_sqlCommSelectUpdate.ExecuteNonQuery();
+				_sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGTO in (Select = MSGTO from MSGTO where Selected  = \"Y\")  ";
+				try
+					{
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+					}
+				catch (OdbcException e)
+					{
+					MessageBox.Show(e.Message);
+					}
 				}
-			catch (OdbcException e)
+			}
+
+
+		#endregion
+
+		#region SqlupdateMSGUpdateFROM
+
+		public void SqlupdateMSGUpdateFROM()
+			{
+			if (DoesTableExist("MSGFrom", dsnName))
 				{
-				MessageBox.Show(e.Message);
+				_sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGFrom in (Select = MSGFROM from MSGFROM where Selected  = \"Y\")  ";
+				try
+					{
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+					}
+				catch (OdbcException e)
+					{
+					MessageBox.Show(e.Message);
+					}
 				}
 			}
 
 		#endregion
 
-	}
-} //end name-space
+		#region SqlupdateMSGUpdateRoure
+
+		public void SqlupdateMSGUpdateRoute()
+			{
+			if (DoesTableExist("MSGRoute", dsnName))
+				{
+				_sqlCommSelectUpdate.CommandText =
+					"UPDATE Packet SET  MSGState = \"R\" Where MSGROUTE in (Select = MSGROUTE from MSGROUTE where Selected  = \"Y\")  ";
+				try
+					{
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+					}
+				catch (OdbcException e)
+					{
+					MessageBox.Show(e.Message);
+					}
+				}
+			}
+
+		#endregion
+
+		#region SqlupdateMSGUpdateSubject
+
+		public void SqlupdateMSGUpdateSubject()
+			{
+			if (DoesTableExist("MSGSubject", dsnName))
+				{
+				_sqlCommSelectUpdate.CommandText =
+					"UPDATE Packet SET  MSGState = \"R\" Where MSGSubject in (Select = MSGSubject from MSGSubject where Selected  = \"Y\")  ";
+				try
+					{
+					_sqlCommSelectUpdate.ExecuteNonQuery();
+					}
+				catch (OdbcException e)
+					{
+					MessageBox.Show(e.Message);
+					}
+				}
+			}
+
+		#endregion
+
+		}
+	} //end name-space
