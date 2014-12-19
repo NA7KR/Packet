@@ -190,21 +190,6 @@ namespace PacketComs
 			DispatchMessage(this, Environment.NewLine);
 			FileSql.SqlPacketDelete();
 			FileSql.SqlupdateMSGUpdate();
-			//nb = ("R " + FileSql.SqlSelectMail());
-			DispatchMessage(this, nb);
-			DispatchMessage(this, Environment.NewLine);
-			
-
-			/*	 KRR
-            if (_myFiles.CheckSt("ToDownLoad") == true)
-            {
-                nb = "R " + _myFiles.Rxst("ToDownLoad");
-                
-                DispatchMessage(this, nb);
-                DispatchMessage(this, Environment.NewLine);
-                
-            }
-			 */
 		}
 
 		#endregion
@@ -975,6 +960,14 @@ namespace PacketComs
 							}
 							LastNumberevt(this, new EventArgs());
 							_dataFile = "";
+						    if (sReceived.Contains(BBSPrompt))
+						    {
+						        //KRR
+						        string nb;
+						        nb = FileSql.SqlSelectMail();
+                                DispatchMessage(this, nb);
+                                DispatchMessage(this, Environment.NewLine);
+						    }
 						}
 					}
 					Invoke(RxdTextEvent, String.Copy(sReceived));

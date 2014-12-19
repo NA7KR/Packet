@@ -74,7 +74,7 @@ namespace PacketComs
 				{
 				_sqlCommPacketInsert.CommandText = query;
                 _sqlCommPacketInsert.ExecuteNonQuery();
-                _sqlConn.Close();
+                //_sqlConn.Close();
 				}
 			catch (OdbcException e)
 				{
@@ -380,13 +380,13 @@ namespace PacketComs
 			try
 				{
 				var sqlConn = new OdbcConnection(dsnName);
-				sqlConn.Open();
+				//sqlConn.Open();
 				_sqlComm = sqlConn.CreateCommand();
 
 				using (var cmd = new OdbcCommand())
 					{
 					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "SELECT MSG FROM FROM Packet where MSGState = R";
+					_sqlComm.CommandText = "SELECT MSG FROM Packet where MSGState = \"R\" ";
 					_sqlComm.ExecuteNonQuery();
 					using (var reader = _sqlComm.ExecuteReader())
 						{
