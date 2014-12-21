@@ -14,11 +14,6 @@ namespace PacketComs
         
         private OdbcCommand _sqlComm;
 
-
-        private OdbcConnection _sqlConnSqlPacketTODelete;
-        private OdbcCommand _sqlCommSqlPacketTODelete;
-
-
         private OdbcConnection _sqlConn;
 
         private OdbcManager odbc;
@@ -284,19 +279,22 @@ namespace PacketComs
         {
             if (DoesTableExist("MSGTO", dsnName))
             {
-                _sqlConnSqlPacketTODelete = new OdbcConnection(dsnName);
-                _sqlCommSqlPacketTODelete = new OdbcCommand();
-                _sqlCommSqlPacketTODelete = _sqlConnSqlPacketTODelete.CreateCommand();
-                _sqlCommSqlPacketTODelete.CommandText = "Delete From Packet Where MSGTO in (Select = MSGTO from MSGTO where Selected  = \"D\")   ";
-                
                 try
                 {
-                    _sqlConnSqlPacketTODelete.Open();
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                    _sqlConnSqlPacketTODelete.Close(); 
-
+                    using (var con = new OdbcConnection(dsnName))
+                    {
+                        using (var cmd = new OdbcCommand())
+                        {
+                            cmd.Connection = con;
+                            cmd.CommandText = "Delete From Packet Where MSGTO in (Select = MSGTO from MSGTO where Selected  = \"D\")   ";
+                            con.Open();
+                            _sqlCommSelectUpdate.ExecuteNonQuery();
+                            con.Close();
+                        }
+                    }
                 }
-                catch (OdbcException e)
+                catch
+                    (OdbcException e)
                 {
                     MessageBox.Show(e.Message);
                 }
