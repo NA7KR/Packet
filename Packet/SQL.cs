@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -23,13 +24,13 @@ namespace Packet
 		private readonly DtoListMsgSubject _msgsubject = new DtoListMsgSubject();
 		private readonly DtoListMsgto _msgtodto = new DtoListMsgto();
 		private readonly DtoPacket _packet = new DtoPacket();
-
+        OdbcConnection sqlConn = new OdbcConnection(Form1.dsnName);
 		#region constructor
 
 		public Sql()
 		{
-			var sqlConn = new OdbcConnection(Form1.dsnName);
-			sqlConn.Open();
+			
+			//sqlConn.Open();
 			_sqlCommSelectUpdate = sqlConn.CreateCommand();
 		}
 
@@ -69,6 +70,7 @@ namespace Packet
 						}
 					}
 				}
+                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -107,6 +109,7 @@ namespace Packet
 						}
 					}
 				}
+                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -183,6 +186,7 @@ namespace Packet
 						}
 					}
 				}
+                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -221,6 +225,7 @@ namespace Packet
 						}
 					}
 				}
+                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -248,6 +253,7 @@ namespace Packet
 					                       " not in (Select " + tableName + " from " + tableName + " )";
 					_sqlComm.ExecuteNonQuery();
 				}
+                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -375,9 +381,11 @@ namespace Packet
 			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
 			_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGFROM());
 			try
-			{
+            {
+               sqlConn.Open();
 				_sqlCommSelectUpdate.Prepare();
 				_sqlCommSelectUpdate.ExecuteNonQuery();
+                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
