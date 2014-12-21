@@ -14,17 +14,6 @@ namespace PacketComs
         
         private OdbcCommand _sqlComm;
 
- 
-        private OdbcConnection _sqlConnMake;
-        private OdbcCommand _sqlCommMakeTable;
-
-       
-
-        private OdbcConnection _sqlConnSqlPacketFromDelete;
-        private OdbcCommand _sqlCommSqlPacketFromDelete;
-
-        private OdbcConnection _sqlConnSqlPacketRouteDelete;
-        private OdbcCommand _sqlCommSqlPacketRouteDelete;
 
         private OdbcConnection _sqlConnSqlPacketTODelete;
         private OdbcCommand _sqlCommSqlPacketTODelete;
@@ -68,13 +57,17 @@ namespace PacketComs
         {
             try
             {
-                _sqlConnMake = new OdbcConnection(dsnName);
-                _sqlCommMakeTable = new OdbcCommand();
-                _sqlCommMakeTable = _sqlConnMake.CreateCommand();
-                _sqlCommMakeTable.CommandText = query;
-                _sqlConnMake.Open();
-                _sqlCommMakeTable.ExecuteNonQuery();
-                _sqlConnMake.Close();
+                using (var con = new OdbcConnection(dsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        cmd.Connection = con;
+                        cmd.CommandText = query;
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                }
             }
             catch (OdbcException e)
             {
@@ -233,17 +226,22 @@ namespace PacketComs
         {
             if (DoesTableExist("MSGFrom", dsnName))
             {
-                _sqlConnSqlPacketFromDelete = new OdbcConnection(dsnName);
-                _sqlCommSqlPacketFromDelete = new OdbcCommand();
-                _sqlCommSqlPacketFromDelete = _sqlConnSqlPacketFromDelete.CreateCommand();
-                _sqlCommSqlPacketFromDelete.CommandText = "Delete From Packet  Where MSGFrom in  ( Select MSGFrom from MSGFrom where Selected  = \"D\" )   ";
                 try
                 {
-                    _sqlConnSqlPacketFromDelete.Open();
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                    _sqlConnSqlPacketFromDelete.Close(); 
+                    using (var con = new OdbcConnection(dsnName))
+                    {
+                        using (var cmd = new OdbcCommand())
+                        {
+                            cmd.Connection = con;
+                            cmd.CommandText = "Delete From Packet  Where MSGFrom in  ( Select MSGFrom from MSGFrom where Selected  = \"D\" )   ";
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                        }
+                    }
                 }
-                catch (OdbcException e)
+                catch
+                (OdbcException e)
                 {
                     _sqlConn.Close();
                     MessageBox.Show(e.Message);
@@ -257,17 +255,23 @@ namespace PacketComs
         {
             if (DoesTableExist("MSGRoute", dsnName))
             {
-                _sqlConnSqlPacketRouteDelete = new OdbcConnection(dsnName);
-                _sqlCommSqlPacketRouteDelete = new OdbcCommand();
-                _sqlCommSqlPacketRouteDelete = _sqlConnSqlPacketRouteDelete.CreateCommand();
-                _sqlCommSqlPacketRouteDelete.CommandText = "Delete From Packet Where MSGRoute in (Select MSGRoute from MSGRoute where Selected  = \"D\")   "; 
                 try
                 {
-                    _sqlConnSqlPacketRouteDelete.Open();
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                    _sqlConnSqlPacketRouteDelete.Close(); 
+                    using (var con = new OdbcConnection(dsnName))
+                    {
+                        using (var cmd = new OdbcCommand())
+                        {
+                            cmd.Connection = con;
+                            cmd.CommandText =  "Delete From Packet Where MSGRoute in (Select MSGRoute from MSGRoute where Selected  = \"D\")   ";
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+
+                        }
+                    }
                 }
-                catch (OdbcException e)
+                catch
+                    (OdbcException e)
                 {
                     MessageBox.Show(e.Message);
                 }
