@@ -18,7 +18,7 @@ namespace Packet
 		public char d_key;
 		public Int32 d_size;
 		public string s_list_type;
-
+		public bool loaded = false;
 		#region Sort
 
 		public Sort(Int32 dsize, string sListType, char cKey)
@@ -70,7 +70,7 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
-						if (selectList.get_Selected() == "D")
+						 if (selectList.get_Selected() == "D")
 						{
 							var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGTO());
 							if (itemYouAreLookingFor != null)
@@ -78,6 +78,7 @@ namespace Packet
 								itemYouAreLookingFor.Remove();
 							}
 						}
+						
 					}
 					if (d_key == 'D')
 					{
@@ -90,6 +91,7 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
+
 					}
 				}
 					); //end of foreach
@@ -111,6 +113,7 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
+					
 						if (selectList.get_Selected() == "D")
 						{
 							var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGFROM());
@@ -119,6 +122,7 @@ namespace Packet
 								itemYouAreLookingFor.Remove();
 							}
 						}
+					
 					}
 					if (d_key == 'D')
 					{
@@ -152,6 +156,7 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
+					
 						if (selectList.get_Selected() == "D")
 						{
 							var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGROUTE());
@@ -160,6 +165,7 @@ namespace Packet
 								itemYouAreLookingFor.Remove();
 							}
 						}
+						
 					}
 					if (d_key == 'D')
 					{
@@ -193,6 +199,7 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
+						
 						if (selectList.get_Selected() == "D")
 						{
 							var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGSubject());
@@ -201,6 +208,7 @@ namespace Packet
 								itemYouAreLookingFor.Remove();
 							}
 						}
+						
 					}
 					if (d_key == 'D')
 					{
@@ -217,6 +225,7 @@ namespace Packet
 				}
 					); //end of foreach
 			}
+			loaded = true;
 		}
 
 		#endregion
@@ -238,52 +247,54 @@ namespace Packet
 		#region listView1_ItemChecked
 
 		private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
-		{
+			{
 			var checkedItems = listView1.CheckedItems;
 			String ITEMS = null;
-
-			foreach (ListViewItem item in checkedItems)
-			{
-				ITEMS = item.Text;
-
-				if (e.Item.Checked)
+			if (loaded)
 				{
-					if (d_key == 'Y')
+				foreach (ListViewItem item in checkedItems)
 					{
+					ITEMS = item.Text;
+
+					if (e.Item.Checked)
+						{
+						if (d_key == 'Y')
+							{
+							if (s_list_type == "MSGTO")
+								Sql.WriteSqlmsgtoUpdate(ITEMS, "Y");
+							else if (s_list_type == "MSGRoute")
+								Sql.WriteSqlmsgRouteUpdate(ITEMS, "Y");
+							else if (s_list_type == "MSGFrom")
+								Sql.WriteSqlmsgFromUpdate(ITEMS, "Y");
+							else if (s_list_type == "MSGSubject")
+								Sql.WriteSqlmsgSubjectUpdate(ITEMS, "Y");
+							}
+						if (d_key == 'D')
+							{
+							if (s_list_type == "MSGTO")
+								Sql.WriteSqlmsgtoUpdate(ITEMS, "D");
+							else if (s_list_type == "MSGRoute")
+								Sql.WriteSqlmsgRouteUpdate(ITEMS, "D");
+							else if (s_list_type == "MSGFrom")
+								Sql.WriteSqlmsgFromUpdate(ITEMS, "D");
+							else if (s_list_type == "MSGSubject")
+								Sql.WriteSqlmsgSubjectUpdate(ITEMS, "D");
+							}
+						}
+					else if (!e.Item.Checked)
+						{
 						if (s_list_type == "MSGTO")
-							Sql.WriteSqlmsgtoUpdate(ITEMS, "Y");
+							Sql.WriteSqlmsgtoUpdate(ITEMS, "N");
 						else if (s_list_type == "MSGRoute")
-							Sql.WriteSqlmsgRouteUpdate(ITEMS, "Y");
+							Sql.WriteSqlmsgRouteUpdate(ITEMS, "N");
 						else if (s_list_type == "MSGFrom")
-							Sql.WriteSqlmsgFromUpdate(ITEMS, "Y");
+							Sql.WriteSqlmsgFromUpdate(ITEMS, "N");
 						else if (s_list_type == "MSGSubject")
-							Sql.WriteSqlmsgSubjectUpdate(ITEMS, "Y");
+							Sql.WriteSqlmsgSubjectUpdate(ITEMS, "N");
+						}
 					}
-					if (d_key == 'D')
-					{
-						if (s_list_type == "MSGTO")
-							Sql.WriteSqlmsgtoUpdate(ITEMS, "D");
-						else if (s_list_type == "MSGRoute")
-							Sql.WriteSqlmsgRouteUpdate(ITEMS, "D");
-						else if (s_list_type == "MSGFrom")
-							Sql.WriteSqlmsgFromUpdate(ITEMS, "D");
-						else if (s_list_type == "MSGSubject")
-							Sql.WriteSqlmsgSubjectUpdate(ITEMS, "D");
-					}
-				}
-				else if (!e.Item.Checked)
-				{
-					if (s_list_type == "MSGTO")
-						Sql.WriteSqlmsgtoUpdate(ITEMS, "N");
-					else if (s_list_type == "MSGRoute")
-						Sql.WriteSqlmsgRouteUpdate(ITEMS, "N");
-					else if (s_list_type == "MSGFrom")
-						Sql.WriteSqlmsgFromUpdate(ITEMS, "N");
-					else if (s_list_type == "MSGSubject")
-						Sql.WriteSqlmsgSubjectUpdate(ITEMS, "N");
 				}
 			}
-		}
 
 		#endregion
 	}
