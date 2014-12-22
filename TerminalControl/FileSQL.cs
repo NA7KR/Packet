@@ -11,39 +11,33 @@ namespace PacketComs
 {
     public class FileSql
     {
-        
-        private OdbcCommand _sqlComm;
-
-        private OdbcConnection _sqlConn;
-
-        private OdbcManager odbc;
-        private OdbcCommand _sqlCommSelectUpdate;
-
         private DtoPacket packet = new DtoPacket();
-
         public const string dsnName = "DSN=Packet";
-
+		private OdbcManager odbc;
 
         #region Constructor
         public FileSql()
         {
             var dsnTableName = "Packet";
             odbc = new OdbcManager();
-            if (odbc.CheckForDSN(dsnTableName) > 0)
-            {
-                if (DoesTableExist(dsnTableName, dsnName) == false)
-                {
-                    SqlMakeTable("CREATE TABLE " + dsnTableName +
-                                 "( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
-                }
-            }
-            else
-            {
-                odbc.CreateDSN(dsnName);
-                MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
-                    "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(1);
-            }
+	        
+	        {
+		        if (odbc.CheckForDSN(dsnTableName) > 0)
+		        {
+			        if (DoesTableExist(dsnTableName, dsnName) == false)
+			        {
+				        SqlMakeTable("CREATE TABLE " + dsnTableName +
+				                     "( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
+			        }
+		        }
+		        else
+		        {
+			        odbc.CreateDSN(dsnName);
+			        MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
+				        "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			        Environment.Exit(1);
+		        }
+	        }
         }
         #endregion
 
@@ -203,7 +197,7 @@ namespace PacketComs
                         try
                         {
                             con.Open();
-                            _sqlCommSelectUpdate.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
                             con.Close();
                         }
                         catch (OdbcException e)
@@ -238,7 +232,6 @@ namespace PacketComs
                 catch
                 (OdbcException e)
                 {
-                    _sqlConn.Close();
                     MessageBox.Show(e.Message);
                 }
             }
@@ -288,7 +281,7 @@ namespace PacketComs
                             cmd.Connection = con;
                             cmd.CommandText = "Delete From Packet Where MSGTO in (Select = MSGTO from MSGTO where Selected  = \"D\")   ";
                             con.Open();
-                            _sqlCommSelectUpdate.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
                             con.Close();
                         }
                     }
@@ -326,7 +319,7 @@ namespace PacketComs
                         cmd.CommandText = "SELECT MSG FROM Packet where MSGState = \"R\" ";
                         con.Open();
                         cmd.ExecuteNonQuery();
-                        using (var reader = _sqlComm.ExecuteReader())
+                        using (var reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
@@ -364,16 +357,25 @@ namespace PacketComs
         {
             if (DoesTableExist("MSGTO", dsnName))
             {
-                _sqlCommSelectUpdate = _sqlConn.CreateCommand();
-                _sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGTO in (Select = MSGTO from MSGTO where Selected  = \"Y\")  ";
-                try
-                {
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                }
-                catch (OdbcException e)
-                {
-                    MessageBox.Show(e.Message);
-                }
+	            try
+	            {
+		            using (var con = new OdbcConnection(dsnName))
+		            {
+			            using (var cmd = new OdbcCommand())
+			            {
+				            cmd.Connection = con;
+				            cmd.CommandText =
+					            "UPDATE Packet SET  MSGState = \"R\" Where MSGTO in (Select = MSGTO from MSGTO where Selected  = \"Y\")  ";
+				            con.Open();
+							cmd.ExecuteNonQuery();
+			            }
+		            }
+	            }
+			   catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
+		    
             }
         }
 
@@ -386,16 +388,23 @@ namespace PacketComs
         {
             if (DoesTableExist("MSGFrom", dsnName))
             {
-                _sqlCommSelectUpdate = _sqlConn.CreateCommand();
-                _sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGFrom in (Select = MSGFROM from MSGFROM where Selected  = \"Y\")  ";
-                try
-                {
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                }
-                catch (OdbcException e)
-                {
-                    MessageBox.Show(e.Message);
-                }
+			try
+				{
+				using (var con = new OdbcConnection(dsnName))
+					{
+					using (var cmd = new OdbcCommand())
+						{
+						cmd.Connection = con;
+						cmd.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGFrom in (Select = MSGFROM from MSGFROM where Selected  = \"Y\")  ";
+						con.Open();
+						cmd.ExecuteNonQuery();
+						}
+					}
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				}
             }
         }
 
@@ -405,21 +414,29 @@ namespace PacketComs
 
         public void SqlupdateMSGUpdateRoute()
         {
-            if (DoesTableExist("MSGRoute", dsnName))
-            {
-                _sqlCommSelectUpdate = _sqlConn.CreateCommand();
-                _sqlCommSelectUpdate.CommandText =
-                    "UPDATE Packet SET  MSGState = \"R\" Where MSGROUTE in (Select = MSGROUTE from MSGROUTE where Selected  = \"Y\")  ";
-                try
-                {
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                }
-                catch (OdbcException e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
+	        if (DoesTableExist("MSGRoute", dsnName))
+	        {
+		        try
+		        {
+			        using (var con = new OdbcConnection(dsnName))
+			        {
+				        using (var cmd = new OdbcCommand())
+				        {
+					        cmd.Connection = con;
+					        cmd.CommandText =
+						        "UPDATE Packet SET  MSGState = \"R\" Where MSGROUTE in (Select = MSGROUTE from MSGROUTE where Selected  = \"Y\")  ";
+					        con.Open();
+					        cmd.ExecuteNonQuery();
+				        }
+			        }
+		        }
+		        catch (OdbcException e)
+		        {
+			        MessageBox.Show(e.Message);
+		        }
+	        }
         }
+        
 
         #endregion
 
@@ -429,16 +446,23 @@ namespace PacketComs
         {
             if (DoesTableExist("MSGSubject", dsnName))
             {
-                _sqlCommSelectUpdate.CommandText =
-                    "UPDATE Packet SET  MSGState = \"R\" Where MSGSubject in (Select = MSGSubject from MSGSubject where Selected  = \"Y\")  ";
-                try
-                {
-                    _sqlCommSelectUpdate.ExecuteNonQuery();
-                }
-                catch (OdbcException e)
-                {
-                    MessageBox.Show(e.Message);
-                }
+			try
+				{
+				using (var con = new OdbcConnection(dsnName))
+					{
+					using (var cmd = new OdbcCommand())
+						{
+						cmd.Connection = con;
+						cmd.CommandText ="UPDATE Packet SET  MSGState = \"R\" Where MSGSubject in (Select = MSGSubject from MSGSubject where Selected  = \"Y\")  ";
+						con.Open();
+						cmd.ExecuteNonQuery();
+						}
+					}
+				}
+			catch (OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				} 
             }
         }
 
