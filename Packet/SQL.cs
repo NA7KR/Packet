@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -17,21 +16,16 @@ namespace Packet
 	internal class Sql
 	{
 		private static readonly FileSql FileSql = new FileSql();
-		private OdbcCommand _sqlComm;
-		private readonly OdbcCommand _sqlCommSelectUpdate;
 		private readonly DtoListMsgFrom _msgfrom = new DtoListMsgFrom();
 		private readonly DtoListMsgRoute _msgroute = new DtoListMsgRoute();
 		private readonly DtoListMsgSubject _msgsubject = new DtoListMsgSubject();
 		private readonly DtoListMsgto _msgtodto = new DtoListMsgto();
 		private readonly DtoPacket _packet = new DtoPacket();
-        OdbcConnection sqlConn = new OdbcConnection(Form1.dsnName);
 		#region constructor
 
 		public Sql()
 		{
-			
-			//sqlConn.Open();
-			_sqlCommSelectUpdate = sqlConn.CreateCommand();
+
 		}
 
 		#endregion
@@ -44,33 +38,36 @@ namespace Packet
 
 			try
 			{
-				var sqlConn = new OdbcConnection(Form1.dsnName);
-				sqlConn.Open();
-				_sqlComm = sqlConn.CreateCommand();
-
-				using (var cmd = new OdbcCommand())
+				using (var con = new OdbcConnection(Form1.dsnName))
 				{
-					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "SELECT * FROM Packet ";
-					_sqlComm.ExecuteNonQuery();
-					using (var reader = _sqlComm.ExecuteReader())
+					using (var cmd = new OdbcCommand())
 					{
-						while (reader.Read())
 						{
-							var packet = new DtoPacket((int) reader.GetValue(0),
-								(string) reader.GetValue(1),
-								(int) reader.GetValue(2),
-								(string) reader.GetValue(3),
-								(string) reader.GetValue(4),
-								(string) reader.GetValue(5),
-								(string) reader.GetValue(6),
-								(string) reader.GetValue(7),
-								null);
-							packets.Add(packet);
+							cmd.Connection = con;
+							cmd.CommandText = "SELECT * FROM Packet ";
+							con.Open();
+							cmd.ExecuteNonQuery();
+							using (var reader = cmd.ExecuteReader())
+							{
+								while (reader.Read())
+								{
+									var packet = new DtoPacket((int) reader.GetValue(0),
+										(string) reader.GetValue(1),
+										(int) reader.GetValue(2),
+										(string) reader.GetValue(3),
+										(string) reader.GetValue(4),
+										(string) reader.GetValue(5),
+										(string) reader.GetValue(6),
+										(string) reader.GetValue(7),
+										null);
+									packets.Add(packet);
+								}
+							}
+							con.Close();
 						}
+						
 					}
 				}
-                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -88,28 +85,28 @@ namespace Packet
 			var selectLists = new List<DtoListMsgto>();
 			try
 			{
-				var sqlConn = new OdbcConnection(Form1.dsnName);
-				sqlConn.Open();
-				_sqlComm = sqlConn.CreateCommand();
-
-				using (var cmd = new OdbcCommand())
+				using (var con = new OdbcConnection(Form1.dsnName))
 				{
-					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "SELECT MSGTO,Selected FROM MSGTO";
-					_sqlComm.ExecuteNonQuery();
-					using (var reader = _sqlComm.ExecuteReader())
+					using (var cmd = new OdbcCommand())
 					{
-						while (reader.Read())
+						cmd.Connection = con;
+						cmd.CommandText = "SELECT MSGTO,Selected FROM MSGTO";
+						con.Open();
+						cmd.ExecuteNonQuery();
+						using (var reader = cmd.ExecuteReader())
 						{
-							var selectList = new DtoListMsgto(
-								(String) convertDBNull(reader.GetValue(0)),
-								(String) convertDBNull(reader.GetValue(1)),
-								DateTime.MinValue);
-							selectLists.Add(selectList);
+							while (reader.Read())
+							{
+								var selectList = new DtoListMsgto(
+									(String) convertDBNull(reader.GetValue(0)),
+									(String) convertDBNull(reader.GetValue(1)),
+									DateTime.MinValue);
+								selectLists.Add(selectList);
+							}
 						}
 					}
+					con.Close();
 				}
-                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -128,15 +125,14 @@ namespace Packet
 			try
 			{
 				var sqlConn = new OdbcConnection(Form1.dsnName);
-				sqlConn.Open();
-				_sqlComm = sqlConn.CreateCommand();
 
 				using (var cmd = new OdbcCommand())
 				{
 					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "SELECT MSGFROM,Selected FROM MSGFROM";
-					_sqlComm.ExecuteNonQuery();
-					using (var reader = _sqlComm.ExecuteReader())
+					cmd.CommandText = "SELECT MSGFROM,Selected FROM MSGFROM";
+					sqlConn.Open();
+					cmd.ExecuteNonQuery();
+					using (var reader = cmd.ExecuteReader())
 					{
 						while (reader.Read())
 						{
@@ -147,6 +143,7 @@ namespace Packet
 							selectLists.Add(selectList);
 						}
 					}
+					sqlConn.Close();
 				}
 			}
 			catch (OdbcException e)
@@ -165,28 +162,28 @@ namespace Packet
 			var selectLists = new List<DtoListMsgRoute>();
 			try
 			{
-				var sqlConn = new OdbcConnection(Form1.dsnName);
-				sqlConn.Open();
-				_sqlComm = sqlConn.CreateCommand();
-
-				using (var cmd = new OdbcCommand())
+				using (var con = new OdbcConnection(Form1.dsnName))
 				{
-					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "SELECT MSGROUTE,Selected FROM MSGROUTE";
-					_sqlComm.ExecuteNonQuery();
-					using (var reader = _sqlComm.ExecuteReader())
+					using (var cmd = new OdbcCommand())
 					{
-						while (reader.Read())
+						cmd.Connection = con;
+						cmd.CommandText = "SELECT MSGROUTE,Selected FROM MSGROUTE";
+						con.Open();
+						cmd.ExecuteNonQuery();
+						using (var reader = cmd.ExecuteReader())
 						{
-							var selectList = new DtoListMsgRoute(
-								(String) convertDBNull(reader.GetValue(0)),
-								(String) convertDBNull(reader.GetValue(1)),
-								DateTime.MinValue);
-							selectLists.Add(selectList);
+							while (reader.Read())
+							{
+								var selectList = new DtoListMsgRoute(
+									(String) convertDBNull(reader.GetValue(0)),
+									(String) convertDBNull(reader.GetValue(1)),
+									DateTime.MinValue);
+								selectLists.Add(selectList);
+							}
 						}
+						con.Close();
 					}
-				}
-                sqlConn.Close();
+				}			
 			}
 			catch (OdbcException e)
 			{
@@ -204,28 +201,28 @@ namespace Packet
 			var selectLists = new List<DtoListMsgSubject>();
 			try
 			{
-				var sqlConn = new OdbcConnection(Form1.dsnName);
-				sqlConn.Open();
-				_sqlComm = sqlConn.CreateCommand();
-
-				using (var cmd = new OdbcCommand())
+				using (var con = new OdbcConnection(Form1.dsnName))
 				{
-					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "SELECT MSGSUBJECT,Selected FROM MSGSUBJECT";
-					_sqlComm.ExecuteNonQuery();
-					using (var reader = _sqlComm.ExecuteReader())
+					using (var cmd = new OdbcCommand())
 					{
-						while (reader.Read())
+						cmd.Connection = con;
+						cmd.CommandText = "SELECT MSGSUBJECT,Selected FROM MSGSUBJECT";
+						con.Open();
+						cmd.ExecuteNonQuery();
+						using (var reader = cmd.ExecuteReader())
 						{
-							var selectList = new DtoListMsgSubject(
-								(String) convertDBNull(reader.GetValue(0)),
-								(String) convertDBNull(reader.GetValue(1)),
-								DateTime.MinValue);
-							selectLists.Add(selectList);
+							while (reader.Read())
+							{
+								var selectList = new DtoListMsgSubject(
+									(String) convertDBNull(reader.GetValue(0)),
+									(String) convertDBNull(reader.GetValue(1)),
+									DateTime.MinValue);
+								selectLists.Add(selectList);
+							}
 						}
+						con.Close();
 					}
 				}
-                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -242,18 +239,19 @@ namespace Packet
 		{
 			try
 			{
-				var sqlConn = new OdbcConnection(Form1.dsnName);
-				sqlConn.Open();
-				_sqlComm = sqlConn.CreateCommand();
-				using (var cmd = new OdbcCommand())
+				using (var con = new OdbcConnection(Form1.dsnName))
 				{
-					cmd.Connection = sqlConn;
-					_sqlComm.CommandText = "Insert into " + tableName + " ( " + tableName + " ,DateCreate ) " +
-					                       " Select DISTINCT " + tableName + " , now() from Packet Where " + tableName +
-					                       " not in (Select " + tableName + " from " + tableName + " )";
-					_sqlComm.ExecuteNonQuery();
+					using (var cmd = new OdbcCommand())
+					{
+						cmd.Connection = con;
+						cmd.CommandText = "Insert into " + tableName + " ( " + tableName + " ,DateCreate ) " +
+						                  " Select DISTINCT " + tableName + " , now() from Packet Where " + tableName +
+						                  " not in (Select " + tableName + " from " + tableName + " )";
+						con.Open();
+						cmd.ExecuteNonQuery();
+					}
+					con.Close();
 				}
-                sqlConn.Close();
 			}
 			catch (OdbcException e)
 			{
@@ -298,14 +296,24 @@ namespace Packet
 
 		public void Sqlupdatepacket(DtoPacket packetdto)
 		{
-			_sqlCommSelectUpdate.CommandText = "UPDATE Packet SET  MSGState = ? Where MSG = ?   ";
-			_sqlCommSelectUpdate.Parameters.Clear();
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_MSGState());
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSG());
 			try
 			{
-				_sqlCommSelectUpdate.Prepare();
-				_sqlCommSelectUpdate.ExecuteNonQuery();
+				using (var con = new OdbcConnection(Form1.dsnName))
+				{
+					using (var cmd = new OdbcCommand())
+					{
+						cmd.Connection = con;
+						cmd.CommandText = "UPDATE Packet SET  MSGState = ? Where MSG = ?   ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", packetdto.get_MSGState());
+						cmd.Parameters.AddWithValue("@p2", packetdto.get_MSG());
+
+						cmd.Prepare();
+						con.Open();
+						cmd.ExecuteNonQuery();
+						con.Close();
+					}
+				}
 			}
 			catch (OdbcException e)
 			{
@@ -319,16 +327,9 @@ namespace Packet
 
 		public void WriteSqlmsgtoUpdate(string value, String textValue)
 		{
-			try
-			{
-				_msgtodto.set_MSGTO(value);
-				_msgtodto.set_Selected(textValue);
-				SqlupdateMsgUpdate(_msgtodto);
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show(e.Message);
-			}
+			_msgtodto.set_MSGTO(value);
+			_msgtodto.set_Selected(textValue);
+			SqlupdateMsgUpdate(_msgtodto);
 		}
 
 		#endregion
@@ -336,15 +337,24 @@ namespace Packet
 		#region SqlupdateMSGUpdate
 
 		public void SqlupdateMsgUpdate(DtoListMsgto packetdto)
-		{
-			_sqlCommSelectUpdate.CommandText = "UPDATE MSGTO SET  Selected = ? Where MSGTO = ?   ";
-			_sqlCommSelectUpdate.Parameters.Clear();
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGTO());
+		{ 
 			try
 			{
-				_sqlCommSelectUpdate.Prepare();
-				_sqlCommSelectUpdate.ExecuteNonQuery();
+				using (var con = new OdbcConnection(Form1.dsnName))
+				{
+					using (var cmd = new OdbcCommand())
+					{
+						cmd.CommandText = "UPDATE MSGTO SET  Selected = ? Where MSGTO = ?   ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", packetdto.get_Selected());
+						cmd.Parameters.AddWithValue("@p2", packetdto.get_MSGTO());
+						cmd.Connection = con;
+						con.Open();
+						cmd.Prepare();
+						cmd.ExecuteNonQuery();
+						con.Close();
+					}
+				}
 			}
 			catch (OdbcException e)
 			{
@@ -358,16 +368,9 @@ namespace Packet
 
 		public void WriteSqlmsgFromUpdate(string value, String textValue)
 		{
-			try
-			{
-				_msgfrom.set_MSGFROM(value);
-				_msgfrom.set_Selected(textValue);
-				SqlupdateMsgfromUpdate(_msgfrom);
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show(e.Message);
-			}
+			_msgfrom.set_MSGFROM(value);
+			_msgfrom.set_Selected(textValue);
+			SqlupdateMsgfromUpdate(_msgfrom);
 		}
 
 		#endregion
@@ -376,16 +379,23 @@ namespace Packet
 
 		public void SqlupdateMsgfromUpdate(DtoListMsgFrom packetdto)
 		{
-			_sqlCommSelectUpdate.CommandText = "UPDATE MSGFrom SET  Selected = ? Where MSGFrom = ?   ";
-			_sqlCommSelectUpdate.Parameters.Clear();
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGFROM());
 			try
-            {
-               sqlConn.Open();
-				_sqlCommSelectUpdate.Prepare();
-				_sqlCommSelectUpdate.ExecuteNonQuery();
-                sqlConn.Close();
+			{
+				using (var con = new OdbcConnection(Form1.dsnName))
+				{
+					using (var cmd = new OdbcCommand())
+					{
+						cmd.CommandText = "UPDATE MSGFrom SET  Selected = ? Where MSGFrom = ?   ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", packetdto.get_Selected());
+						cmd.Parameters.AddWithValue("@p2", packetdto.get_MSGFROM());
+						cmd.Connection = con;
+						con.Open();
+						cmd.Prepare();
+						cmd.ExecuteNonQuery();
+						con.Close();
+					}
+				}
 			}
 			catch (OdbcException e)
 			{
@@ -399,16 +409,9 @@ namespace Packet
 
 		public void WriteSqlmsgRouteUpdate(string value, String textValue)
 		{
-			try
-			{
-				_msgroute.set_MSGRoute(value);
-				_msgroute.set_Selected(textValue);
-				SqlupdateMsgrouteUpdate(_msgroute);
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show(e.Message);
-			}
+			_msgroute.set_MSGRoute(value);
+			_msgroute.set_Selected(textValue);
+			SqlupdateMsgrouteUpdate(_msgroute);
 		}
 
 		#endregion
@@ -417,14 +420,23 @@ namespace Packet
 
 		public void SqlupdateMsgrouteUpdate(DtoListMsgRoute packetdto)
 		{
-			_sqlCommSelectUpdate.CommandText = "UPDATE MSGRoute SET  Selected = ? Where MSGRoute = ?   ";
-			_sqlCommSelectUpdate.Parameters.Clear();
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGROUTE());
 			try
 			{
-				_sqlCommSelectUpdate.Prepare();
-				_sqlCommSelectUpdate.ExecuteNonQuery();
+				using (var con = new OdbcConnection(Form1.dsnName))
+				{
+					using (var cmd = new OdbcCommand())
+					{
+						cmd.CommandText = "UPDATE MSGRoute SET  Selected = ? Where MSGRoute = ?   ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", packetdto.get_Selected());
+						cmd.Parameters.AddWithValue("@p2", packetdto.get_MSGROUTE());
+						cmd.Connection = con;
+						con.Open();
+						cmd.Prepare();
+						cmd.ExecuteNonQuery();
+						con.Close();
+					}
+				}
 			}
 			catch (OdbcException e)
 			{
@@ -438,16 +450,9 @@ namespace Packet
 
 		public void WriteSqlmsgSubjectUpdate(string value, String textValue)
 		{
-			try
-			{
 				_msgsubject.set_MSGSubject(value);
 				_msgsubject.set_Selected(textValue);
 				SqlupdateMsgsubjectUpdate(_msgsubject);
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show(e.Message);
-			}
 		}
 
 		#endregion
@@ -456,14 +461,23 @@ namespace Packet
 
 		public void SqlupdateMsgsubjectUpdate(DtoListMsgSubject packetdto)
 		{
-			_sqlCommSelectUpdate.CommandText = "UPDATE MSGSubject SET  Selected = ? Where MSGSubject = ?   ";
-			_sqlCommSelectUpdate.Parameters.Clear();
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p1", packetdto.get_Selected());
-			_sqlCommSelectUpdate.Parameters.AddWithValue("@p2", packetdto.get_MSGSubject());
 			try
 			{
-				_sqlCommSelectUpdate.Prepare();
-				_sqlCommSelectUpdate.ExecuteNonQuery();
+				using (var con = new OdbcConnection(Form1.dsnName))
+				{
+					using (var cmd = new OdbcCommand())
+					{
+						cmd.CommandText = "UPDATE MSGSubject SET  Selected = ? Where MSGSubject = ?   ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", packetdto.get_Selected());
+						cmd.Parameters.AddWithValue("@p2", packetdto.get_MSGSubject());
+						cmd.Connection = con;
+						con.Open();
+						cmd.Prepare();
+						cmd.ExecuteNonQuery();
+						con.Close();
+					}
+				}
 			}
 			catch (OdbcException e)
 			{

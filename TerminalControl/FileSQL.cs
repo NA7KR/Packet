@@ -12,7 +12,7 @@ namespace PacketComs
     public class FileSql
     {
         private DtoPacket packet = new DtoPacket();
-        public const string dsnName = "DSN=Packet";
+        public const string DsnName = "DSN=Packet";
 		private OdbcManager odbc;
 
         #region Constructor
@@ -24,7 +24,7 @@ namespace PacketComs
 	        {
 		        if (odbc.CheckForDSN(dsnTableName) > 0)
 		        {
-			        if (DoesTableExist(dsnTableName, dsnName) == false)
+			        if (DoesTableExist(dsnTableName, DsnName) == false)
 			        {
 				        SqlMakeTable("CREATE TABLE " + dsnTableName +
 				                     "( MSG int PRIMARY KEY, MSGTSLD CHAR(3), MSGSize int, MSGTO CHAR(6), MSGRoute CHAR(7),MSGFrom CHAR(6), MSGDateTime CHAR(9), MSGSubject CHAR(30), MSGState CHAR(8) )");
@@ -32,7 +32,7 @@ namespace PacketComs
 		        }
 		        else
 		        {
-			        odbc.CreateDSN(dsnName);
+			        odbc.CreateDSN(DsnName);
 			        MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
 				        "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			        Environment.Exit(1);
@@ -46,7 +46,7 @@ namespace PacketComs
         {
             try
             {
-                using (var con = new OdbcConnection(dsnName))
+                using (var con = new OdbcConnection(DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -68,7 +68,7 @@ namespace PacketComs
         #region SQLInsertPacket
         private void SqlInsertPacket(DtoPacket packetdto)
         {
-            using (var con = new OdbcConnection(dsnName))
+            using (var con = new OdbcConnection(DsnName))
             {
                 using (var cmd = new OdbcCommand())
                 {
@@ -186,46 +186,48 @@ namespace PacketComs
         #region SQLPacketSubjectDelete
         public void SqlPacketSubjectDelete()
         {
-            if (DoesTableExist("MSGSubject", dsnName))
-            {
-                using (var con = new OdbcConnection(dsnName))
-                {
-                    using (var cmd = new OdbcCommand())
-                    {
-                        cmd.Connection = con;
-                        cmd.CommandText = "Delete From Packet Where MSGSubject in (Select MSGSubject from MSGSubject where Selected  = \"D\")   ";
-                        try
-                        {
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
-                        }
-                        catch (OdbcException e)
-                        {
-                            MessageBox.Show(e.Message);
-                        }
-                    }
-                }
-            }
+		try
+			{
+			if (DoesTableExist("MSGSubject", DsnName))
+				{
+				using (var con = new OdbcConnection(DsnName))
+					{
+					using (var cmd = new OdbcCommand())
+						{
+						cmd.Connection = con;
+						cmd.CommandText = "Delete From Packet Where MSGSubject in (Select MSGSubject from MSGSubject where Selected  = ?)   ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", "D");
+						con.Open();
+						cmd.Prepare();
+						}
+					}
+				}
+			}
+		catch (OdbcException e)
+			{
+			MessageBox.Show(e.Message);
+			}
         }
         #endregion
 
         #region SQLPacketFromDelete
         public void SqlPacketFromDelete()
         {
-            if (DoesTableExist("MSGFrom", dsnName))
+            if (DoesTableExist("MSGFrom", DsnName))
             {
                 try
                 {
-                    using (var con = new OdbcConnection(dsnName))
+                    using (var con = new OdbcConnection(DsnName))
                     {
                         using (var cmd = new OdbcCommand())
                         {
                             cmd.Connection = con;
-                            cmd.CommandText = "Delete From Packet  Where MSGFrom in  ( Select MSGFrom from MSGFrom where Selected  = \"D\" )   ";
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                            cmd.CommandText = "Delete From Packet  Where MSGFrom in  ( Select MSGFrom from MSGFrom where Selected  = ? )   ";
+							cmd.Parameters.Clear();
+							cmd.Parameters.AddWithValue("@p1", "D");
+							con.Open();
+							cmd.Prepare();
                         }
                     }
                 }
@@ -241,19 +243,20 @@ namespace PacketComs
         #region SQLPacketRouteDelete
         public void SqlPacketRouteDelete()
         {
-            if (DoesTableExist("MSGRoute", dsnName))
+            if (DoesTableExist("MSGRoute", DsnName))
             {
                 try
                 {
-                    using (var con = new OdbcConnection(dsnName))
+                    using (var con = new OdbcConnection(DsnName))
                     {
                         using (var cmd = new OdbcCommand())
                         {
                             cmd.Connection = con;
-                            cmd.CommandText =  "Delete From Packet Where MSGRoute in (Select MSGRoute from MSGRoute where Selected  = \"D\")   ";
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                            cmd.CommandText =  "Delete From Packet Where MSGRoute in (Select MSGRoute from MSGRoute where Selected  = ?)   ";
+							cmd.Parameters.Clear();
+							cmd.Parameters.AddWithValue("@p1", "D");
+							con.Open();
+							cmd.Prepare();
 
                         }
                     }
@@ -270,17 +273,21 @@ namespace PacketComs
         #region SQLPackeToDelete
         public void SqlPacketToDelete()
         {
-            if (DoesTableExist("MSGTO", dsnName))
+            if (DoesTableExist("MSGTO", DsnName))
             {
                 try
                 {
-                    using (var con = new OdbcConnection(dsnName))
+                    using (var con = new OdbcConnection(DsnName))
                     {
                         using (var cmd = new OdbcCommand())
                         {
                             cmd.Connection = con;
-                            cmd.CommandText = "Delete From Packet Where MSGTO in (Select = MSGTO from MSGTO where Selected  = \"D\")   ";
-                            con.Open();
+                            cmd.CommandText = "Delete From Packet Where MSGTO in (Select = MSGTO from MSGTO where Selected  = ?)   ";
+							cmd.Parameters.Clear();
+							cmd.Parameters.AddWithValue("@p1", "D");
+							con.Open();
+							cmd.Prepare();
+                            
                             cmd.ExecuteNonQuery();
                             con.Close();
                         }
@@ -311,7 +318,7 @@ namespace PacketComs
             string selectLists = "";
             try
             {
-                using (var con = new OdbcConnection(dsnName))
+                using (var con = new OdbcConnection(DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -341,33 +348,35 @@ namespace PacketComs
 
         #region SqlupdateMSGUpdate
 
-        public void SqlupdateMSGUpdate()
+        public void SqlupdateMsgUpdate()
         {
-            SqlupdateMSGUpdateTO();
-            SqlupdateMSGUpdateFROM();
-            SqlupdateMSGUpdateRoute();
-            SqlupdateMSGUpdateSubject();
+            SqlupdateMsgUpdateTo();
+            SqlupdateMsgUpdateFrom();
+            SqlupdateMsgUpdateRoute();
+            SqlupdateMsgUpdateSubject();
         }
 
         #endregion
 
         #region SqlupdateMSGUpdateTO
 
-        public void SqlupdateMSGUpdateTO()
+        public void SqlupdateMsgUpdateTo()
         {
-            if (DoesTableExist("MSGTO", dsnName))
+            if (DoesTableExist("MSGTO", DsnName))
             {
 	            try
 	            {
-		            using (var con = new OdbcConnection(dsnName))
+		            using (var con = new OdbcConnection(DsnName))
 		            {
 			            using (var cmd = new OdbcCommand())
 			            {
 				            cmd.Connection = con;
 				            cmd.CommandText =
-					            "UPDATE Packet SET  MSGState = \"R\" Where MSGTO in (Select = MSGTO from MSGTO where Selected  = \"Y\")  ";
-				            con.Open();
-							cmd.ExecuteNonQuery();
+					            "UPDATE Packet SET  MSGState = \"R\" Where MSGTO in (Select = MSGTO from MSGTO where Selected  = ?)  ";
+							cmd.Parameters.Clear();
+							cmd.Parameters.AddWithValue("@p1", "Y");
+							con.Open();
+							cmd.Prepare();
 			            }
 		            }
 	            }
@@ -384,20 +393,22 @@ namespace PacketComs
 
         #region SqlupdateMSGUpdateFROM
 
-        public void SqlupdateMSGUpdateFROM()
+        public void SqlupdateMsgUpdateFrom()
         {
-            if (DoesTableExist("MSGFrom", dsnName))
+            if (DoesTableExist("MSGFrom", DsnName))
             {
 			try
 				{
-				using (var con = new OdbcConnection(dsnName))
+				using (var con = new OdbcConnection(DsnName))
 					{
 					using (var cmd = new OdbcCommand())
 						{
 						cmd.Connection = con;
-						cmd.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGFrom in (Select = MSGFROM from MSGFROM where Selected  = \"Y\")  ";
+						cmd.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGFrom in (Select = MSGFROM from MSGFROM where Selected  = ?)  ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", "Y");
 						con.Open();
-						cmd.ExecuteNonQuery();
+						cmd.Prepare();
 						}
 					}
 				}
@@ -412,21 +423,23 @@ namespace PacketComs
 
         #region SqlupdateMSGUpdateRoure
 
-        public void SqlupdateMSGUpdateRoute()
+        public void SqlupdateMsgUpdateRoute()
         {
-	        if (DoesTableExist("MSGRoute", dsnName))
+	        if (DoesTableExist("MSGRoute", DsnName))
 	        {
 		        try
 		        {
-			        using (var con = new OdbcConnection(dsnName))
+			        using (var con = new OdbcConnection(DsnName))
 			        {
 				        using (var cmd = new OdbcCommand())
 				        {
 					        cmd.Connection = con;
 					        cmd.CommandText =
-						        "UPDATE Packet SET  MSGState = \"R\" Where MSGROUTE in (Select = MSGROUTE from MSGROUTE where Selected  = \"Y\")  ";
-					        con.Open();
-					        cmd.ExecuteNonQuery();
+						        "UPDATE Packet SET  MSGState = \"R\" Where MSGROUTE in (Select = MSGROUTE from MSGROUTE where Selected  = ?)  ";
+							cmd.Parameters.Clear();
+							cmd.Parameters.AddWithValue("@p1", "Y");
+							con.Open();
+							cmd.Prepare();
 				        }
 			        }
 		        }
@@ -442,20 +455,22 @@ namespace PacketComs
 
         #region SqlupdateMSGUpdateSubject
 
-        public void SqlupdateMSGUpdateSubject()
+        public void SqlupdateMsgUpdateSubject()
         {
-            if (DoesTableExist("MSGSubject", dsnName))
+            if (DoesTableExist("MSGSubject", DsnName))
             {
 			try
 				{
-				using (var con = new OdbcConnection(dsnName))
+				using (var con = new OdbcConnection(DsnName))
 					{
 					using (var cmd = new OdbcCommand())
 						{
 						cmd.Connection = con;
-						cmd.CommandText ="UPDATE Packet SET  MSGState = \"R\" Where MSGSubject in (Select = MSGSubject from MSGSubject where Selected  = \"Y\")  ";
+						cmd.CommandText ="UPDATE Packet SET  MSGState = \"R\" Where MSGSubject in (Select = MSGSubject from MSGSubject where Selected  = ?)  ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", "Y");
 						con.Open();
-						cmd.ExecuteNonQuery();
+						cmd.Prepare();
 						}
 					}
 				}

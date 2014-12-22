@@ -189,7 +189,7 @@ namespace PacketComs
 			DispatchMessage(this, nb);
 			DispatchMessage(this, Environment.NewLine);
 			FileSql.SqlPacketDelete();
-			FileSql.SqlupdateMSGUpdate();
+			FileSql.SqlupdateMsgUpdate();
 		}
 
 		#endregion
