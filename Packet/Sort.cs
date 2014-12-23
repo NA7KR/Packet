@@ -1,6 +1,7 @@
 ﻿#region Using Directive
 
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -91,6 +92,18 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
+						 if (selectList.get_Selected() == "Y")
+						{
+							var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGTO());
+							if (itemYouAreLookingFor != null)
+							{
+								itemYouAreLookingFor.Remove();
+								listView1.ForeColor = SystemColors.GrayText;
+								listView1.BackColor = SystemColors.InactiveBorder;
+								listView1.CheckedItems = false;
+							}
+						}
+			
 
 					}
 				}
