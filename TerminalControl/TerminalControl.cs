@@ -963,6 +963,10 @@ namespace PacketComs
 										i++;
 									}
 								}
+								else
+								{
+									i++;
+								}
 							}
 							LastNumberevt(this, new EventArgs());
 							_dataFile = "";
