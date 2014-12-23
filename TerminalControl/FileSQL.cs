@@ -14,13 +14,17 @@ namespace PacketComs
         private DtoPacket packet = new DtoPacket();
         public const string DsnName = "DSN=Packet";
 		private OdbcManager odbc;
-
+		private OdbcConnection conp = new OdbcConnection(DsnName);  
+		private OdbcCommand cmdp = new OdbcCommand();
+         
         #region Constructor
         public FileSql()
         {
             var dsnTableName = "Packet";
             odbc = new OdbcManager();
-	        
+			cmdp.Connection = conp;
+			conp.Open();
+
 	        {
 		        if (odbc.CheckForDSN(dsnTableName) > 0)
 		        {
@@ -52,7 +56,7 @@ namespace PacketComs
                     {
                         cmd.Connection = con;
                         cmd.CommandText = query;
-                        con.Open();
+						con.Open();
                         cmd.ExecuteNonQuery();
                         con.Close();
                     }
@@ -70,28 +74,24 @@ namespace PacketComs
         {
             try
             {
-
-                using (var con = new OdbcConnection(DsnName))
-                {
-                    using (var cmd = new OdbcCommand())
-                    {
-                        cmd.CommandText =  "INSERT INTO  Packet (MSG, MSGTSLD, MSGSize, MSGTO, MSGRoute, MSGFrom, MSGDateTime, MSGSubject) VALUES (?,?,?,?,?,?,?,?)";
-                        cmd.Parameters.Clear();
-                        cmd.Parameters.AddWithValue("@p1", packetdto.get_MSG());
-                        cmd.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
-                        cmd.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
-                        cmd.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
-                        cmd.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
-                        cmd.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
-                        cmd.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
-                        cmd.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
-                        cmd.Connection = con;
-                        con.Open();
-                        cmd.Prepare();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-                }
+                        cmdp.CommandText =  "INSERT INTO  Packet (MSG, MSGTSLD, MSGSize, MSGTO, MSGRoute, MSGFrom, MSGDateTime, MSGSubject) VALUES (?,?,?,?,?,?,?,?)";
+                        cmdp.Parameters.Clear();
+                        cmdp.Parameters.AddWithValue("@p1", packetdto.get_MSG());
+                        cmdp.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
+                        cmdp.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
+                        cmdp.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
+                        cmdp.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
+                        cmdp.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
+                        cmdp.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
+                        cmdp.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
+                        //cmd.Connection = conp;
+	                   
+		                //con.Open();
+	                    
+	                    cmdp.Prepare();
+                        cmdp.ExecuteNonQuery();
+	                   
+		                //con.Close();
             }
             catch
                 (OdbcException e)
@@ -326,8 +326,11 @@ namespace PacketComs
                     using (var cmd = new OdbcCommand())
                     {
                         cmd.Connection = con;
-                        cmd.CommandText = "SELECT MSG FROM Packet where MSGState = \"R\" ";
+                        cmd.CommandText = "SELECT MSG FROM Packet where MSGState = ? ";
                         con.Open();
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", "R");
+						cmd.Prepare();
                         cmd.ExecuteNonQuery();
                         using (var reader = cmd.ExecuteReader())
                         {

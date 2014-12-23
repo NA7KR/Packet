@@ -9,6 +9,7 @@ using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.IO.Ports;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -947,15 +948,20 @@ namespace PacketComs
 							for (var i = 1; i < lines.Length - 1;)
 
 							{
-								FileSql.WriteSqlPacket(lines[i]);
-								LastNumber = lines[i].Substring(0, 5);
-								if (lines[i + 1].Contains(BBSPrompt))
+								string checkstring = lines[i];
+								char checknumber = checkstring[0];
+								if (Char.IsNumber(checknumber))
 								{
-									i = lines.Length;
-								}
-								else
-								{
-									i++;
+									FileSql.WriteSqlPacket(lines[i]);
+									LastNumber = lines[i].Substring(0, 5);
+									if (lines[i + 1].Contains(BBSPrompt))
+									{
+										i = lines.Length;
+									}
+									else
+									{
+										i++;
+									}
 								}
 							}
 							LastNumberevt(this, new EventArgs());
