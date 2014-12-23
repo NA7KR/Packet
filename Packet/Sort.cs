@@ -92,19 +92,14 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
-						 if (selectList.get_Selected() == "Y")
-						{
-							var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGTO());
-							if (itemYouAreLookingFor != null)
-							{
-								itemYouAreLookingFor.Remove();
-								listView1.ForeColor = SystemColors.GrayText;
-								listView1.BackColor = SystemColors.InactiveBorder;
-								listView1.CheckedItems = false;
-							}
-						}
-			
-
+                        if (selectList.get_Selected() == "Y")
+                        {
+                            var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGTO());
+                            if (itemYouAreLookingFor != null)
+                            {
+                                itemYouAreLookingFor.Remove();
+                            }
+                        }
 					}
 				}
 					); //end of foreach
@@ -148,6 +143,14 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
+                        if (selectList.get_Selected() == "Y")
+                        {
+                            var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGFROM());
+                            if (itemYouAreLookingFor != null)
+                            {
+                                itemYouAreLookingFor.Remove();
+                            }
+                        }
 					}
 				}
 					); //end of foreach
@@ -191,6 +194,15 @@ namespace Packet
 								itemYouAreLookingFor.Checked = true;
 							}
 						}
+                        if (selectList.get_Selected() == "Y")
+                        {
+                            var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGROUTE());
+                            if (itemYouAreLookingFor != null)
+                            {
+                                itemYouAreLookingFor.Remove();
+                            }
+                        }
+						
 					}
 				}
 					); //end of foreach

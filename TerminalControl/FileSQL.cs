@@ -287,7 +287,6 @@ namespace PacketComs
 							cmd.Parameters.AddWithValue("@p1", "D");
 							con.Open();
 							cmd.Prepare();
-                            
                             cmd.ExecuteNonQuery();
                             con.Close();
                         }
