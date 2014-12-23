@@ -68,33 +68,37 @@ namespace PacketComs
         #region SQLInsertPacket
         private void SqlInsertPacket(DtoPacket packetdto)
         {
-            using (var con = new OdbcConnection(DsnName))
+            try
             {
-                using (var cmd = new OdbcCommand())
+
+                using (var con = new OdbcConnection(DsnName))
                 {
-                    cmd.CommandText = "INSERT INTO  Packet (MSG, MSGTSLD, MSGSize, MSGTO, MSGRoute, MSGFrom, MSGDateTime, MSGSubject) VALUES (?,?,?,?,?,?,?,?)";
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("@p1", packetdto.get_MSG());
-                    cmd.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
-                    cmd.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
-                    cmd.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
-                    cmd.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
-                    cmd.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
-                    cmd.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
-                    cmd.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
-                    try
+                    using (var cmd = new OdbcCommand())
                     {
+                        cmd.CommandText =  "INSERT INTO  Packet (MSG, MSGTSLD, MSGSize, MSGTO, MSGRoute, MSGFrom, MSGDateTime, MSGSubject) VALUES (?,?,?,?,?,?,?,?)";
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@p1", packetdto.get_MSG());
+                        cmd.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
+                        cmd.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
+                        cmd.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
+                        cmd.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
+                        cmd.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
+                        cmd.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
+                        cmd.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
+                        cmd.Connection = con;
                         con.Open();
                         cmd.Prepare();
                         cmd.ExecuteNonQuery();
                         con.Close();
                     }
-                    catch (OdbcException e)
-                    {
-                        MessageBox.Show(e.Message);
-                    }
                 }
             }
+            catch
+                (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
         }
         #endregion
 

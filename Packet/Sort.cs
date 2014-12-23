@@ -274,9 +274,9 @@ namespace Packet
 		private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
 			{
 			var checkedItems = listView1.CheckedItems;
-			String ITEMS = null;
 			if (loaded)
 				{
+                String ITEMS = null;
 				foreach (ListViewItem item in checkedItems)
 					{
 					ITEMS = item.Text;
