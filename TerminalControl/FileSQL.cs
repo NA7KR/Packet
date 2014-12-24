@@ -3,6 +3,7 @@
 using System;
 using System.Data;
 using System.Data.Odbc;
+using System.IO;
 using System.Windows.Forms;
 
 #endregion
@@ -487,6 +488,144 @@ namespace PacketComs
             }
         }
 
+        #endregion
+
+        #region WriteST
+
+        public bool WriteST(string textVale, string fileName)
+        {
+
+            try
+            {
+                string path = Directory.GetCurrentDirectory() + @"\Data";
+                if (!Directory.Exists(path))
+                {
+                    // Try to create the directory.
+                    Directory.CreateDirectory(path);
+                }
+                string filePath = path + @"\" + fileName + ".txt";
+
+                File.WriteAllText(filePath, textVale);
+                return true;
+            } //end try
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+        } //end write
+
+        #endregion
+
+        #region DeleteST
+        public bool? DeleteST(string fileName)
+        {
+
+            try
+            {
+                string path = Directory.GetCurrentDirectory() + @"\Data";
+                if (!Directory.Exists(path))
+                {
+                    // Try to create the directory.
+                    Directory.CreateDirectory(path);
+                }
+                string filePath = path + @"\" + fileName + ".txt";
+                path = path + @"\" + fileName + ".txt";
+                if (File.Exists(path))
+                {
+                    File.Delete(filePath);
+                    return null;
+                }
+                else
+                {
+                    File.Delete(path);
+                    return true;
+                }
+
+                return null;
+
+
+            } //end try
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+        } //end write
+
+        #endregion
+
+        #region RXST
+        public string RXST(string fileName)
+        {
+            string myString = null;
+            string path = Directory.GetCurrentDirectory() + @"\Data";
+            if (!Directory.Exists(path))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(path);
+            }
+            path = path + @"\" + fileName + ".txt";
+            if (File.Exists(path))
+            {
+                StreamReader myFile = new StreamReader(path);
+                myString = myFile.ReadToEnd();
+                myFile.Close();
+            }
+            return myString;
+
+        }
+        #endregion
+
+        #region RX
+        public string RX()
+        {
+            string myString = null;
+            string path = Directory.GetCurrentDirectory() + @"\Data";
+            if (!Directory.Exists(path))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(path);
+            }
+            path = path + @"\myMailList.txt";
+
+            if (File.Exists(path))
+            {
+                StreamReader myFile = new StreamReader(path);
+                myString = myFile.ReadToEnd();
+            }
+            return myString;
+        }
+        #endregion
+
+        #region
+
+        public void UpdateSQLTO()
+        {
+            try
+            {
+                using (var con = new OdbcConnection(DsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        cmd.CommandText = "UPDATE MSGTO SET  Selected = ? Where Selected not = ? or   Where Selected not = ? not in (Select MSGTO From MSGTO )";
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@p1", "P");
+                        cmd.Parameters.AddWithValue("@p2", "R");
+                        cmd.Parameters.AddWithValue("@p3", "D");
+                        cmd.Connection = con;
+                        con.Open();
+                        cmd.Prepare();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                }
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
         #endregion
 
     }

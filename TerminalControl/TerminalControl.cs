@@ -973,6 +973,7 @@ namespace PacketComs
 						    if (sReceived.Contains(BBSPrompt))
 						    {
 						        //KRR
+						        FileSql.UpdateSQLTO();
 						        string nb;
 						        nb = FileSql.SqlSelectMail();
                                 DispatchMessage(this, nb);
