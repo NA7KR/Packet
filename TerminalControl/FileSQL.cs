@@ -379,7 +379,7 @@ namespace PacketComs
 			            {
 				            cmd.Connection = con;
 				            cmd.CommandText =
-					            "UPDATE Packet SET  MSGState = \"R\" Where MSGTO in (Select = MSGTO from MSGTO where Selected  = ?)  ";
+					            "UPDATE Packet SET  MSGState = \"R\" Where MSGTO in (Select  MSGTO from MSGTO where Selected  = ?)  ";
 							cmd.Parameters.Clear();
 							cmd.Parameters.AddWithValue("@p1", "Y");
 							con.Open();
@@ -411,7 +411,7 @@ namespace PacketComs
 					using (var cmd = new OdbcCommand())
 						{
 						cmd.Connection = con;
-						cmd.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGFrom in (Select = MSGFROM from MSGFROM where Selected  = ?)  ";
+						cmd.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGFrom in (Select  MSGFROM from MSGFROM where Selected  = ?)  ";
 						cmd.Parameters.Clear();
 						cmd.Parameters.AddWithValue("@p1", "Y");
 						con.Open();
@@ -442,7 +442,7 @@ namespace PacketComs
 				        {
 					        cmd.Connection = con;
 					        cmd.CommandText =
-						        "UPDATE Packet SET  MSGState = \"R\" Where MSGROUTE in (Select = MSGROUTE from MSGROUTE where Selected  = ?)  ";
+						        "UPDATE Packet SET  MSGState = \"R\" Where MSGROUTE in (Select  MSGROUTE from MSGROUTE where Selected  = ?)  ";
 							cmd.Parameters.Clear();
 							cmd.Parameters.AddWithValue("@p1", "Y");
 							con.Open();
@@ -473,7 +473,7 @@ namespace PacketComs
 					using (var cmd = new OdbcCommand())
 						{
 						cmd.Connection = con;
-						cmd.CommandText ="UPDATE Packet SET  MSGState = \"R\" Where MSGSubject in (Select = MSGSubject from MSGSubject where Selected  = ?)  ";
+						cmd.CommandText ="UPDATE Packet SET  MSGState = \"R\" Where MSGSubject in (Select  MSGSubject from MSGSubject where Selected  = ?)  ";
 						cmd.Parameters.Clear();
 						cmd.Parameters.AddWithValue("@p1", "Y");
 						con.Open();
@@ -618,6 +618,10 @@ namespace PacketComs
                         cmd.Prepare();
                         cmd.ExecuteNonQuery();
                         con.Close();
+                       /* UPDATE MSGTO SET  Selected = "P"
+Where Selected <> "R" or Selected <> "D"
+not in
+(Select MSGTO From MSGTO )   */
                     }
                 }
             }
