@@ -597,9 +597,9 @@ namespace PacketComs
         }
         #endregion
 
-        #region
+		#region	   UpdateSqlto
 
-        public void UpdateSqlto()
+		public void UpdateSqlto()
         {
             try
             {
@@ -607,28 +607,20 @@ namespace PacketComs
                 {
                     using (var cmd = new OdbcCommand())
                     {
-                        cmd.CommandText = "UPDATE MSGTO SET  Selected = ? Where Selected not = ? or   Where Selected not = ? not in (Select MSGTO From MSGTO )";
+                        cmd.CommandText = "UPDATE Packet SET Packet.MSGState = ? Where Exists (Select MSGTO.Selected From MSGTO Where MSGTO.MSGTO = Packet.MSGTO and Selected = ? )";
                         cmd.Parameters.Clear();
                         
                         cmd.Parameters.AddWithValue("@p1", "P");
-                        cmd.Parameters.AddWithValue("@p2", "R");
-                        cmd.Parameters.AddWithValue("@p3", "D");
+                        cmd.Parameters.AddWithValue("@p2", "Y");
                         cmd.Connection = con;
                         con.Open();
                         cmd.Prepare();
 
-                        string tmp = cmd.CommandText.ToString();
-                        foreach (OdbcParameter p in cmd.Parameters)
-                        {
-                            tmp = tmp.Replace('@' + p.ParameterName.ToString(), "'" + p.Value.ToString() + "'");
-                        }
+              
 
                         cmd.ExecuteNonQuery();
                         con.Close();
-                       /* UPDATE MSGTO SET  Selected = "P"
-Where Selected <> "R" or Selected <> "D"
-not in
-(Select MSGTO From MSGTO )   */
+
                     }
                 }
             }
