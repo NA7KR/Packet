@@ -3,6 +3,7 @@
 using System;
 using System.Data;
 using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Forms;
 
@@ -428,6 +429,7 @@ namespace PacketComs
 
         #endregion
 
+        
         #region SqlupdateMSGUpdateRoure
 
         public void SqlupdateMsgUpdateRoute()
@@ -492,7 +494,7 @@ namespace PacketComs
 
         #region WriteST
 
-        public bool WriteST(string textVale, string fileName)
+        public bool WriteSt(string textVale, string fileName)
         {
 
             try
@@ -518,7 +520,7 @@ namespace PacketComs
         #endregion
 
         #region DeleteST
-        public bool? DeleteST(string fileName)
+        public bool? DeleteSt(string fileName)
         {
 
             try
@@ -541,10 +543,7 @@ namespace PacketComs
                     File.Delete(path);
                     return true;
                 }
-
-                return null;
-
-
+               
             } //end try
             catch (Exception e)
             {
@@ -556,7 +555,7 @@ namespace PacketComs
         #endregion
 
         #region RXST
-        public string RXST(string fileName)
+        public string Rxst(string fileName)
         {
             string myString = null;
             string path = Directory.GetCurrentDirectory() + @"\Data";
@@ -578,7 +577,7 @@ namespace PacketComs
         #endregion
 
         #region RX
-        public string RX()
+        public string Rx()
         {
             string myString = null;
             string path = Directory.GetCurrentDirectory() + @"\Data";
@@ -600,7 +599,7 @@ namespace PacketComs
 
         #region
 
-        public void UpdateSQLTO()
+        public void UpdateSqlto()
         {
             try
             {
@@ -610,12 +609,20 @@ namespace PacketComs
                     {
                         cmd.CommandText = "UPDATE MSGTO SET  Selected = ? Where Selected not = ? or   Where Selected not = ? not in (Select MSGTO From MSGTO )";
                         cmd.Parameters.Clear();
+                        
                         cmd.Parameters.AddWithValue("@p1", "P");
                         cmd.Parameters.AddWithValue("@p2", "R");
                         cmd.Parameters.AddWithValue("@p3", "D");
                         cmd.Connection = con;
                         con.Open();
                         cmd.Prepare();
+
+                        string tmp = cmd.CommandText.ToString();
+                        foreach (OdbcParameter p in cmd.Parameters)
+                        {
+                            tmp = tmp.Replace('@' + p.ParameterName.ToString(), "'" + p.Value.ToString() + "'");
+                        }
+
                         cmd.ExecuteNonQuery();
                         con.Close();
                        /* UPDATE MSGTO SET  Selected = "P"

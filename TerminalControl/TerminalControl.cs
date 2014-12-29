@@ -189,8 +189,7 @@ namespace PacketComs
 			var nb = ("LR " + ln + "-999999");
 			DispatchMessage(this, nb);
 			DispatchMessage(this, Environment.NewLine);
-			FileSql.SqlPacketDelete();
-			FileSql.SqlupdateMsgUpdate();
+	
 		}
 
 		#endregion
@@ -973,7 +972,9 @@ namespace PacketComs
 						    if (sReceived.Contains(BBSPrompt))
 						    {
 						        //KRR
-						        FileSql.UpdateSQLTO();
+						        FileSql.UpdateSqlto();
+                                FileSql.SqlPacketDelete();
+                                FileSql.SqlupdateMsgUpdate();
 						        string nb;
 						        nb = FileSql.SqlSelectMail();
                                 DispatchMessage(this, nb);
@@ -1209,10 +1210,10 @@ namespace PacketComs
 
 		#region AssignColors
 
-		private void AssignColors(CharAttribStruct curAttribs, ref Color curFgColor, ref Color curBGColor)
+		private void AssignColors(CharAttribStruct curAttribs, ref Color curFgColor, ref Color curBgColor)
 		{
 			curFgColor = ForeColor;
-			curBGColor = BackColor;
+			curBgColor = BackColor;
 
 			if (curAttribs.IsBlinking)
 			{
@@ -1233,14 +1234,14 @@ namespace PacketComs
 			// alternate color takes precedence over the bold color
 			if (curAttribs.UseAltBGColor)
 			{
-				curBGColor = curAttribs.AltBgColor;
+				curBgColor = curAttribs.AltBgColor;
 			}
 
 			if (curAttribs.IsInverse)
 			{
-				var tmpColor = curBGColor;
+				var tmpColor = curBgColor;
 
-				curBGColor = curFgColor;
+				curBgColor = curFgColor;
 				curFgColor = tmpColor;
 			}
 
@@ -1249,9 +1250,9 @@ namespace PacketComs
 			if ((_modes.Flags & UcMode.LightBackground) > 0 &&
 			    curAttribs.UseAltColor == false && curAttribs.UseAltBGColor == false)
 			{
-				var tmpColor = curBGColor;
+				var tmpColor = curBgColor;
 
-				curBGColor = curFgColor;
+				curBgColor = curFgColor;
 				curFgColor = tmpColor;
 			}
 		}
@@ -1595,15 +1596,15 @@ namespace PacketComs
 						continue;
 					}
 
-					var CurPoint = new Point(
+					var curPoint = new Point(
 						x*_charSize.Width,
 						y*_charSize.Height);
 
 					ShowChar(
 						curGraphics,
 						CurChar,
-						CurPoint.Y,
-						CurPoint.X,
+						curPoint.Y,
+						curPoint.X,
 						_attribGrid[y][x]);
 				}
 			}

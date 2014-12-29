@@ -305,11 +305,10 @@ namespace Packet
 						cmd.Connection = con;
 						cmd.CommandText = "UPDATE Packet SET  MSGState = ? Where MSG = ?   ";
 						cmd.Parameters.Clear();
+                        con.Open();
 						cmd.Parameters.AddWithValue("@p1", packetdto.get_MSGState());
 						cmd.Parameters.AddWithValue("@p2", packetdto.get_MSG());
-
 						cmd.Prepare();
-						con.Open();
 						cmd.ExecuteNonQuery();
 						con.Close();
 					}
@@ -348,8 +347,8 @@ namespace Packet
 						cmd.Parameters.Clear();
 						cmd.Parameters.AddWithValue("@p1", packetdto.get_Selected());
 						cmd.Parameters.AddWithValue("@p2", packetdto.get_MSGTO());
-						cmd.Connection = con;
 						con.Open();
+                        cmd.Connection = con;
 						cmd.Prepare();
 						cmd.ExecuteNonQuery();
 						con.Close();
