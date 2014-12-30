@@ -309,86 +309,66 @@ namespace PacketComs
         #endregion
 
         #region SQLPacket Delete
-        public void SqlPacketDelete()
+        public void SqlPacketDelete(String tableName)
         {
-            SqlPacketSubjectDelete();
-            SqlPacketFromDelete();
-            SqlPacketRouteDelete();
-            SqlPacketToDelete();
+		if (DoesTableExist(tableName, DsnName))
+			{
+			try
+				{
+				using (var con = new OdbcConnection(DsnName))
+					{
+					using (var cmd = new OdbcCommand())
+						{
+						cmd.Connection = con;
+						cmd.CommandText = "Delete From Packet  Where "+ tableName + " in  ( Select "+ tableName +" from "+ tableName +" where Selected  = ? )   ";
+						cmd.Parameters.Clear();
+						cmd.Parameters.AddWithValue("@p1", "D");
+						con.Open();
+						cmd.Prepare();
+						}
+					}
+				}
+			catch
+			(OdbcException e)
+				{
+				MessageBox.Show(e.Message);
+				}
+			}
         }
         #endregion
 
         #region SQLSelectMail
-        public string SqlSelectMail()
+		public string[] SqlSelectMail()
         {
-            string selectLists = "";
-            try
-            {
-                using (var con = new OdbcConnection(DsnName))
-                {
-                    using (var cmd = new OdbcCommand())
-                    {
-                        cmd.Connection = con;
-                        cmd.CommandText = "SELECT MSG FROM Packet where MSGState = ? ";
-                        con.Open();
-						cmd.Parameters.Clear();
-						cmd.Parameters.AddWithValue("@p1", "P");
-						cmd.Prepare();
-                        cmd.ExecuteNonQuery();
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                selectLists = selectLists + reader.GetString(0);
-                            }
-                        }
-                        con.Close();
-                    }
-                }
-            }
-            catch (OdbcException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            //return selectLists;
-            //return new []{ selectLists };
-
-            return selectLists;
-        }
-
-        #endregion
-
-        public string[] PatientChatList()
-        {
-            //Method returns patient's list in Array form
             using (var con = new OdbcConnection(DsnName))
             {
-                String sessionId;
-                String patientName;
+                String msgId; 
                 con.Open();
-                String queryChatList = "select patientName,sessionId from tmpChatTable";
-                SqlCommand comm = new SqlCommand(queryChatList, con);
-                SqlDataAdapter da = new SqlDataAdapter(comm);
+				String msgList = "SELECT MSG FROM Packet where MSGState = ?";
+				OdbcCommand cmd = new OdbcCommand(msgList, con);
+				OdbcDataAdapter da = new OdbcDataAdapter(cmd);
+				cmd.Parameters.Clear();
+				cmd.Parameters.AddWithValue("@p1", "P");
+				cmd.Prepare();
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 int no = dt.Rows.Count;
-                //MessageBox.Show(no.ToString());
-                String[] PatientList = new String[no];
+                String[] MsgList = new String[no];
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    sessionId = dt.Rows[i]["sessionId"].ToString();
-                    patientName = dt.Rows[i]["patientName"].ToString();
-                    PatientList[i] = sessionId + " " + patientName;
+                    msgId = dt.Rows[i]["MSG"].ToString(); 
+                    MsgList[i] = msgId ;
                 }
                 da.Dispose();
                 con.Close();
-                return PatientList;
+                return MsgList;
             }
         }
+		#endregion
 
-        #region SqlupdateRead
+		#region SqlupdateRead
 
-        public void SqlupdateRead(Int32 msgNumber)
+		public void SqlupdateRead(Int32 msgNumber)
         {
             if (DoesTableExist("MSGTO", DsnName))
             {

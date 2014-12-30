@@ -36,7 +36,17 @@ namespace Packet
 
 		private void button_ok_Click(object sender, EventArgs e)
 		{
-			MyFiles.SqlPacketDelete();
+			
+			MyFiles.UpdateSqlto("MSGTO");
+			MyFiles.UpdateSqlto("MSGFrom");
+			MyFiles.UpdateSqlto("MSGRoute");
+			MyFiles.UpdateSqlto("MSGSubject");
+
+			MyFiles.SqlPacketDelete("MSGTO");
+			MyFiles.SqlPacketDelete("MSGFrom");
+			MyFiles.SqlPacketDelete("MSGRoute");
+			MyFiles.SqlPacketDelete("MSGSubject");
+
 			Close();
 		}
 

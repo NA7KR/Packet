@@ -976,11 +976,15 @@ namespace PacketComs
 								FileSql.UpdateSqlto("MSGFrom");
 								FileSql.UpdateSqlto("MSGRoute");
 								FileSql.UpdateSqlto("MSGSubject");
-                                FileSql.SqlPacketDelete(); 
-						        string nb;
-						        nb = FileSql.SqlSelectMail();
-						        nb = "R " + nb;
-                                DispatchMessage(this, nb);
+                                
+								FileSql.SqlPacketDelete("MSGTO");
+								FileSql.SqlPacketDelete("MSGFrom");
+								FileSql.SqlPacketDelete("MSGRoute");
+								FileSql.SqlPacketDelete("MSGSubject");
+						        //string nb[];
+						         FileSql.SqlSelectMail();
+						        //nb = "R " + nb;
+                                //DispatchMessage(this, nb);
                                 DispatchMessage(this, Environment.NewLine);
 						    }
 						}
