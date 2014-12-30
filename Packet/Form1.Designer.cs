@@ -384,7 +384,7 @@ namespace Packet
             this.terminalEmulator1.Header = null;
             this.terminalEmulator1.Hostname = null;
             this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.terminalEmulator1.LastNumber = null;
+            this.terminalEmulator1.LastNumber = 0;
             this.terminalEmulator1.LocalEcho = false;
             this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";

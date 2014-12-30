@@ -338,11 +338,11 @@ namespace PacketComs
         #endregion
 
         #region SQLSelectMail
-		public string[] SqlSelectMail()
+		public int[] SqlSelectMail()
         {
             using (var con = new OdbcConnection(DsnName))
             {
-                String msgId; 
+                int msgId; 
                 con.Open();
 				String msgList = "SELECT MSG FROM Packet where MSGState = ?";
 	            using (var cmd = new OdbcCommand(msgList, con))
@@ -356,10 +356,10 @@ namespace PacketComs
 			            {
 				            da.Fill(dt);
 				            int no = dt.Rows.Count;
-				            String[] MsgList = new String[no];
+				            int[] MsgList = new int[no];
 				            for (int i = 0; i < dt.Rows.Count; i++)
 				            {
-					            msgId = dt.Rows[i]["MSG"].ToString();
+					            msgId = Convert.ToInt32(dt.Rows[i]["MSG"]);
 					            MsgList[i] = msgId;
 				            }
 				            con.Close();
@@ -406,12 +406,12 @@ namespace PacketComs
 
         #region WriteST
 
-        public bool WriteSt(string textVale, string fileName)
+        public bool WriteSt(string textVale, string fileName,string pathNo)
         {
 
             try
             {
-                string path = Directory.GetCurrentDirectory() + @"\Data";
+                string path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
                 if (!Directory.Exists(path))
                 {
                     // Try to create the directory.

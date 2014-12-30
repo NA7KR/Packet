@@ -320,7 +320,7 @@ namespace Packet
 			terminalEmulator1.FileActive = true;
 			forward_button.Enabled = false;
 			forward_button.Text = "Forward active";
-			terminalEmulator1.LastNumber = _myRegistryBbs.Read("Start Number");
+			terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.Read("Start Number"));
 			terminalEmulator1.Startforward();		
 		}
 
@@ -825,8 +825,8 @@ namespace Packet
 
 		private void terminalEmulator1_LastNumberevt(object sender, EventArgs e)
 		{
-			var number = (terminalEmulator1.LastNumber);
-			_myRegistryBbs.Write("Start Number", number);
+			int number = (terminalEmulator1.LastNumber);
+			_myRegistryBbs.Write("Start Number", number.ToString());
 		}
 
 		#endregion
