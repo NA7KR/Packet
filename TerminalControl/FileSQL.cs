@@ -599,35 +599,34 @@ namespace PacketComs
 
 		#region	   UpdateSqlto
 
-		public void UpdateSqlto()
+		public void UpdateSqlto(string tableName)
         {
-            try
-            {
-                using (var con = new OdbcConnection(DsnName))
-                {
-                    using (var cmd = new OdbcCommand())
-                    {
-                        cmd.CommandText = "UPDATE Packet SET Packet.MSGState = ? Where Exists (Select MSGTO.Selected From MSGTO Where MSGTO.MSGTO = Packet.MSGTO and Selected = ? )";
-                        cmd.Parameters.Clear();
-                        
-                        cmd.Parameters.AddWithValue("@p1", "P");
-                        cmd.Parameters.AddWithValue("@p2", "Y");
-                        cmd.Connection = con;
-                        con.Open();
-                        cmd.Prepare();
-
-              
-
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-
-                    }
-                }
-            }
-            catch (OdbcException e)
-            {
-                MessageBox.Show(e.Message);
-            }
+		if (DoesTableExist(tableName, DsnName))
+			{
+				try
+				{
+					using (var con = new OdbcConnection(DsnName))
+					{
+						using (var cmd = new OdbcCommand())
+						{
+							cmd.CommandText =
+								"UPDATE Packet SET Packet.MSGState = ? Where Exists (Select " + tableName + ".Selected From "+ tableName + " Where "+ tableName + "." + tableName + " = Packet." + tableName +" and Selected = ? )";
+							cmd.Parameters.Clear();
+							cmd.Parameters.AddWithValue("@p1", "P");
+							cmd.Parameters.AddWithValue("@p2", "Y");
+							cmd.Connection = con;
+							con.Open();
+							cmd.Prepare();
+							cmd.ExecuteNonQuery();
+							con.Close();
+						}
+					}
+				}
+				catch (OdbcException e)
+				{
+					MessageBox.Show(e.Message);
+				}
+			}
         }
         #endregion
 

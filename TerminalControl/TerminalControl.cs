@@ -972,7 +972,10 @@ namespace PacketComs
 						    if (sReceived.Contains(BBSPrompt))
 						    {
 						        //KRR
-						        FileSql.UpdateSqlto();
+						        FileSql.UpdateSqlto("MSGTO");
+								FileSql.UpdateSqlto("MSGFrom");
+								FileSql.UpdateSqlto("MSGRoute");
+								FileSql.UpdateSqlto("MSGSubject");
                                 FileSql.SqlPacketDelete();
                                 FileSql.SqlupdateMsgUpdate();
 						        string nb;
