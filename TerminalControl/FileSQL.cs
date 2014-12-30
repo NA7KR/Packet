@@ -354,21 +354,11 @@ namespace PacketComs
 
         #endregion
 
-        #region SqlupdateMSGUpdate
+   
 
-        public void SqlupdateMsgUpdate()
-        {
-            SqlupdateMsgUpdateTo();
-            SqlupdateMsgUpdateFrom();
-            SqlupdateMsgUpdateRoute();
-            SqlupdateMsgUpdateSubject();
-        }
+        #region SqlupdateRead
 
-        #endregion
-
-        #region SqlupdateMSGUpdateTO
-
-        public void SqlupdateMsgUpdateTo()
+        public void SqlupdateRead(Int32 msgNumber)
         {
             if (DoesTableExist("MSGTO", DsnName))
             {
@@ -380,9 +370,9 @@ namespace PacketComs
 			            {
 				            cmd.Connection = con;
 				            cmd.CommandText =
-					            "UPDATE Packet SET  MSGState = \"R\" Where MSGTO in (Select  MSGTO from MSGTO where Selected  = ?)  ";
+					            "UPDATE Packet SET  MSGState = \"R\" Where MSG = ?)  ";
 							cmd.Parameters.Clear();
-							cmd.Parameters.AddWithValue("@p1", "Y");
+							cmd.Parameters.AddWithValue("@p1", msgNumber);
 							con.Open();
 							cmd.Prepare();
 			            }
@@ -399,98 +389,12 @@ namespace PacketComs
 
         #endregion
 
-        #region SqlupdateMSGUpdateFROM
 
-        public void SqlupdateMsgUpdateFrom()
-        {
-            if (DoesTableExist("MSGFrom", DsnName))
-            {
-			try
-				{
-				using (var con = new OdbcConnection(DsnName))
-					{
-					using (var cmd = new OdbcCommand())
-						{
-						cmd.Connection = con;
-						cmd.CommandText = "UPDATE Packet SET  MSGState = \"R\" Where MSGFrom in (Select  MSGFROM from MSGFROM where Selected  = ?)  ";
-						cmd.Parameters.Clear();
-						cmd.Parameters.AddWithValue("@p1", "Y");
-						con.Open();
-						cmd.Prepare();
-						}
-					}
-				}
-			catch (OdbcException e)
-				{
-				MessageBox.Show(e.Message);
-				}
-            }
-        }
-
-        #endregion
 
         
-        #region SqlupdateMSGUpdateRoure
 
-        public void SqlupdateMsgUpdateRoute()
-        {
-	        if (DoesTableExist("MSGRoute", DsnName))
-	        {
-		        try
-		        {
-			        using (var con = new OdbcConnection(DsnName))
-			        {
-				        using (var cmd = new OdbcCommand())
-				        {
-					        cmd.Connection = con;
-					        cmd.CommandText =
-						        "UPDATE Packet SET  MSGState = \"R\" Where MSGROUTE in (Select  MSGROUTE from MSGROUTE where Selected  = ?)  ";
-							cmd.Parameters.Clear();
-							cmd.Parameters.AddWithValue("@p1", "Y");
-							con.Open();
-							cmd.Prepare();
-				        }
-			        }
-		        }
-		        catch (OdbcException e)
-		        {
-			        MessageBox.Show(e.Message);
-		        }
-	        }
-        }
-        
 
-        #endregion
 
-        #region SqlupdateMSGUpdateSubject
-
-        public void SqlupdateMsgUpdateSubject()
-        {
-            if (DoesTableExist("MSGSubject", DsnName))
-            {
-			try
-				{
-				using (var con = new OdbcConnection(DsnName))
-					{
-					using (var cmd = new OdbcCommand())
-						{
-						cmd.Connection = con;
-						cmd.CommandText ="UPDATE Packet SET  MSGState = \"R\" Where MSGSubject in (Select  MSGSubject from MSGSubject where Selected  = ?)  ";
-						cmd.Parameters.Clear();
-						cmd.Parameters.AddWithValue("@p1", "Y");
-						con.Open();
-						cmd.Prepare();
-						}
-					}
-				}
-			catch (OdbcException e)
-				{
-				MessageBox.Show(e.Message);
-				} 
-            }
-        }
-
-        #endregion
 
         #region WriteST
 

@@ -976,8 +976,7 @@ namespace PacketComs
 								FileSql.UpdateSqlto("MSGFrom");
 								FileSql.UpdateSqlto("MSGRoute");
 								FileSql.UpdateSqlto("MSGSubject");
-                                FileSql.SqlPacketDelete();
-                                FileSql.SqlupdateMsgUpdate();
+                                FileSql.SqlPacketDelete(); 
 						        string nb;
 						        nb = FileSql.SqlSelectMail();
                                 DispatchMessage(this, nb);
