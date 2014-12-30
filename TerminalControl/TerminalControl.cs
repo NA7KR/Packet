@@ -979,6 +979,7 @@ namespace PacketComs
                                 FileSql.SqlPacketDelete(); 
 						        string nb;
 						        nb = FileSql.SqlSelectMail();
+						        nb = "R " + nb;
                                 DispatchMessage(this, nb);
                                 DispatchMessage(this, Environment.NewLine);
 						    }

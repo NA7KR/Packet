@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 #endregion
@@ -331,14 +332,14 @@ namespace PacketComs
                         cmd.CommandText = "SELECT MSG FROM Packet where MSGState = ? ";
                         con.Open();
 						cmd.Parameters.Clear();
-						cmd.Parameters.AddWithValue("@p1", "R");
+						cmd.Parameters.AddWithValue("@p1", "P");
 						cmd.Prepare();
                         cmd.ExecuteNonQuery();
                         using (var reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                selectLists = reader.GetString(0);
+                                selectLists = selectLists + reader.GetString(0);
                             }
                         }
                         con.Close();
@@ -349,12 +350,41 @@ namespace PacketComs
             {
                 MessageBox.Show(e.Message);
             }
+            //return selectLists;
+            //return new []{ selectLists };
+
             return selectLists;
         }
 
         #endregion
 
-   
+        public string[] PatientChatList()
+        {
+            //Method returns patient's list in Array form
+            using (var con = new OdbcConnection(DsnName))
+            {
+                String sessionId;
+                String patientName;
+                con.Open();
+                String queryChatList = "select patientName,sessionId from tmpChatTable";
+                SqlCommand comm = new SqlCommand(queryChatList, con);
+                SqlDataAdapter da = new SqlDataAdapter(comm);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                int no = dt.Rows.Count;
+                //MessageBox.Show(no.ToString());
+                String[] PatientList = new String[no];
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    sessionId = dt.Rows[i]["sessionId"].ToString();
+                    patientName = dt.Rows[i]["patientName"].ToString();
+                    PatientList[i] = sessionId + " " + patientName;
+                }
+                da.Dispose();
+                con.Close();
+                return PatientList;
+            }
+        }
 
         #region SqlupdateRead
 
@@ -388,13 +418,6 @@ namespace PacketComs
 
 
         #endregion
-
-
-
-        
-
-
-
 
         #region WriteST
 
