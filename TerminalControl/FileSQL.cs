@@ -345,23 +345,28 @@ namespace PacketComs
                 String msgId; 
                 con.Open();
 				String msgList = "SELECT MSG FROM Packet where MSGState = ?";
-				OdbcCommand cmd = new OdbcCommand(msgList, con);
-				OdbcDataAdapter da = new OdbcDataAdapter(cmd);
-				cmd.Parameters.Clear();
-				cmd.Parameters.AddWithValue("@p1", "P");
-				cmd.Prepare();
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                int no = dt.Rows.Count;
-                String[] MsgList = new String[no];
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    msgId = dt.Rows[i]["MSG"].ToString(); 
-                    MsgList[i] = msgId ;
-                }
-                da.Dispose();
-                con.Close();
-                return MsgList;
+	            using (var cmd = new OdbcCommand(msgList, con))
+	            {
+		            using (var da = new OdbcDataAdapter(cmd))
+		            {
+			            cmd.Parameters.Clear();
+			            cmd.Parameters.AddWithValue("@p1", "P");
+			            cmd.Prepare();
+			            using (var dt = new DataTable())
+			            {
+				            da.Fill(dt);
+				            int no = dt.Rows.Count;
+				            String[] MsgList = new String[no];
+				            for (int i = 0; i < dt.Rows.Count; i++)
+				            {
+					            msgId = dt.Rows[i]["MSG"].ToString();
+					            MsgList[i] = msgId;
+				            }
+				            con.Close();
+				            return MsgList;
+			            }
+		            }
+	            }
             }
         }
 		#endregion
