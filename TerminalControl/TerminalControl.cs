@@ -1000,7 +1000,7 @@ namespace PacketComs
                             if (_msgstate == "file")
                             {
 
-                                DispatchMessage(this, "R " + _nb[_msgno].ToString());
+                                DispatchMessage(this, "R " + _nb[_msgno]);
                                 DispatchMessage(this, Environment.NewLine);
                                 _msgstate = "prompt";
                                 Invoke(RxdTextEvent, String.Copy(sReceived));
@@ -1013,11 +1013,15 @@ namespace PacketComs
                             }
                             if (sReceived.Contains(BBSPrompt))
                             {
-                                FileSql.WriteSt(_dataFile, _nb[_msgno].ToString(), "0");
-                                DispatchMessage(this, "R " + _nb[_msgno]);
-                                DispatchMessage(this, Environment.NewLine);
-                                _dataFile = "";
-                                _msgno++;
+                                if (_msgstate == "prompt")
+                                {
+                                    FileSql.WriteSt(_dataFile, _nb[_msgno].ToString(), "0");
+                                    //DispatchMessage(this, "R " + _nb[_msgno]);
+                                    //DispatchMessage(this, Environment.NewLine);
+                                    _dataFile = "";
+                                    _msgno++;
+                                    _msgstate = "file";
+                                }
 
                             }
                             //ForwardDone(this, new EventArgs());
