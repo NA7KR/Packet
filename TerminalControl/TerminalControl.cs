@@ -1015,7 +1015,8 @@ namespace PacketComs
                             {
                                 if (_msgstate == "prompt")
                                 {
-                                    FileSql.WriteSt(_dataFile, _nb[_msgno].ToString(), "0");
+								Int32 lastNumber = _nb[_msgno] % 10;
+									FileSql.WriteSt(_dataFile, _nb[_msgno].ToString(), lastNumber.ToString());
                                     //DispatchMessage(this, "R " + _nb[_msgno]);
                                     DispatchMessage(this, Environment.NewLine);
 									FileSql.SqlupdateRead(_nb[_msgno]);
@@ -1025,10 +1026,13 @@ namespace PacketComs
                                 }
 
                             }
-                            //ForwardDone(this, new EventArgs());
-                            //FileActive = false;
-
-                            //nb = FileSql.SqlSelectMail();
+	                        if (_msgno == _nb.Length )
+	                        {
+		                        ForwardDone(this, new EventArgs());
+		                        FileActive = false;
+								//DispatchMessage(this, Environment.NewLine);
+	                        }
+	                        //nb = FileSql.SqlSelectMail();
                             //nb = "R " + nb;
                             //DispatchMessage(this, nb);
                             //DispatchMessage(this, Environment.NewLine);
