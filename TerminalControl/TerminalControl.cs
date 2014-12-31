@@ -186,7 +186,7 @@ namespace PacketComs
 		public void Startforward()
 			{
 			_msgstate = "First";
-			_msgno = 1;
+			_msgno = 0;
 			var ln = LastNumber;
 			ln = ln + 1;
 			var nb = ("LR " + ln + "-999999");
