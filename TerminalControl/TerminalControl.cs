@@ -1011,13 +1011,14 @@ namespace PacketComs
                                 return;
 
                             }
-                            if (sReceived.Contains(BBSPrompt))
+                            //if (sReceived.Contains(BBSPrompt))
                             {
                                 if (_msgstate == "prompt")
                                 {
                                     FileSql.WriteSt(_dataFile, _nb[_msgno].ToString(), "0");
                                     //DispatchMessage(this, "R " + _nb[_msgno]);
-                                    //DispatchMessage(this, Environment.NewLine);
+                                    DispatchMessage(this, Environment.NewLine);
+									FileSql.SqlupdateRead(_nb[_msgno]);
                                     _dataFile = "";
                                     _msgno++;
                                     _msgstate = "file";

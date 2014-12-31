@@ -87,14 +87,8 @@ namespace PacketComs
                         cmdp.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
                         cmdp.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
                         cmdp.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
-                        //cmd.Connection = conp;
-	                   
-		                //con.Open();
-	                    
 	                    cmdp.Prepare();
-                        cmdp.ExecuteNonQuery();
-	                   
-		                //con.Close();
+                        cmdp.ExecuteNonQuery();       
             }
             catch
                 (OdbcException e)
@@ -207,6 +201,8 @@ namespace PacketComs
 						cmd.Parameters.AddWithValue("@p1", "D");
 						con.Open();
 						cmd.Prepare();
+						cmd.ExecuteNonQuery();
+						con.Close();
 						}
 					}
 				}
@@ -235,6 +231,8 @@ namespace PacketComs
 							cmd.Parameters.AddWithValue("@p1", "D");
 							con.Open();
 							cmd.Prepare();
+							cmd.ExecuteNonQuery();
+							con.Close();
                         }
                     }
                 }
@@ -264,7 +262,8 @@ namespace PacketComs
 							cmd.Parameters.AddWithValue("@p1", "D");
 							con.Open();
 							cmd.Prepare();
-
+							cmd.ExecuteNonQuery();
+							con.Close();
                         }
                     }
                 }
@@ -325,6 +324,8 @@ namespace PacketComs
 						cmd.Parameters.AddWithValue("@p1", "D");
 						con.Open();
 						cmd.Prepare();
+						cmd.ExecuteNonQuery();
+						con.Close();
 						}
 					}
 				}
@@ -375,7 +376,7 @@ namespace PacketComs
 
 		public void SqlupdateRead(Int32 msgNumber)
         {
-            if (DoesTableExist("MSGTO", DsnName))
+            if (DoesTableExist("Packet", DsnName))
             {
 	            try
 	            {
@@ -385,11 +386,14 @@ namespace PacketComs
 			            {
 				            cmd.Connection = con;
 				            cmd.CommandText =
-					            "UPDATE Packet SET  MSGState = \"R\" Where MSG = ?)  ";
+					            "UPDATE Packet SET  MSGState = ? Where MSG = ?  ";
 							cmd.Parameters.Clear();
-							cmd.Parameters.AddWithValue("@p1", msgNumber);
+							cmd.Parameters.AddWithValue("@p1", "R");
+							cmd.Parameters.AddWithValue("@p2", msgNumber);
 							con.Open();
 							cmd.Prepare();
+							cmd.ExecuteNonQuery();
+							con.Close();
 			            }
 		            }
 	            }
