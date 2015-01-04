@@ -948,7 +948,7 @@ namespace PacketComs
 
                                 for (var i = 1; i < lines.Length - 1; )
                                 {
-                                    string checkstring = lines[i];
+                                    string checkstring = lines[i].Substring(0, 5);
                                     int result;
                                     if (Int32.TryParse(checkstring, out result))
                                     {
@@ -974,15 +974,10 @@ namespace PacketComs
                                 _msgstate = "Second";
                             }
 
-
-                            //_dataFile = "";
-
-
                             if (_msgstate == "Second")
                             {
                                 if (sReceived.Contains(BBSPrompt))
                                 {
-                                    //KRR
                                     FileSql.UpdateSqlto("MSGTO");
                                     FileSql.UpdateSqlto("MSGFrom");
                                     FileSql.UpdateSqlto("MSGRoute");
@@ -999,26 +994,38 @@ namespace PacketComs
                             }
                             if (_msgstate == "file")
                             {
+                                if (_nb == null || _nb.Length == 0)
+                                {
 
-                                DispatchMessage(this, "R " + _nb[_msgno]);
-                                DispatchMessage(this, Environment.NewLine);
-                                _msgstate = "prompt";
-                                Invoke(RxdTextEvent, String.Copy(sReceived));
-                                Invoke(RefreshEvent);
-                                // Re-Establish the next asyncronous receveived data callback as
-                                stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
-                                    SocketFlags.None, OnReceivedData, stateObject);
-                                return;
-
+                                }
+                                else
+                                {     
+                                DispatchMessage(this, "R " + _nb[_msgno].ToString());
+                                    DispatchMessage(this, Environment.NewLine);
+                                    _msgstate = "prompt";
+                                    Invoke(RxdTextEvent, String.Copy(sReceived));
+                                    Invoke(RefreshEvent);
+                                    // Re-Establish the next asyncronous receveived data callback as
+                                    stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
+                                        SocketFlags.None, OnReceivedData, stateObject);
+                                    return;
+                                }
                             }
                             //if (sReceived.Contains(BBSPrompt))
                             {
                                 if (_msgstate == "prompt")
                                 {
-								Int32 lastNumber = _nb[_msgno] % 10;
-									FileSql.WriteSt(_dataFile, _nb[_msgno].ToString(), lastNumber.ToString());
+                                    string dfile = "";
+                                    Int32 lastNumber = _nb[_msgno]%10;
+                               
+                                    for (var i = 0; i < lines.Length - 1; i++)
+                                    {
+                                        dfile = dfile + lines[i] + Environment.NewLine;
+                                    }
+
+                                    FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
                                     //DispatchMessage(this, "R " + _nb[_msgno]);
-                                    DispatchMessage(this, Environment.NewLine);
+                                    //DispatchMessage(this, Environment.NewLine);
 									FileSql.SqlupdateRead(_nb[_msgno]);
                                     _dataFile = "";
                                     _msgno++;
@@ -1060,6 +1067,7 @@ namespace PacketComs
         }
 
         #endregion
+
 
         #region  DispatchMessage
 
