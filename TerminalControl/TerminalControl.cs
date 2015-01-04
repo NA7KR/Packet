@@ -948,9 +948,9 @@ namespace PacketComs
 
                                 for (var i = 1; i < lines.Length - 1; )
                                 {
-                                    //string checkstring = lines[i];
-                                    //int result;
-                                    //if (Int32.TryParse(checkstring, out result))
+                                    string checkstring = lines[i];
+                                    int result;
+                                    if (Int32.TryParse(checkstring, out result))
                                     {
                                         FileSql.WriteSqlPacket(lines[i]);
                                         LastNumber = Convert.ToInt32(lines[i].Substring(0, 5));
@@ -964,22 +964,21 @@ namespace PacketComs
                                         }
 
                                     }
-                                    //else
-                                    //{
-                                    //    i++;
-                                    //}
+                                    else
+                                    {
+                                        i++;
+                                    }
 
                                 }
-								Invoke(RxdTextEvent, String.Copy(sReceived));
-								Invoke(RefreshEvent);
-								// Re-Establish the next asyncronous receveived data callback as
-								stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
-									SocketFlags.None, OnReceivedData, stateObject);
                                 LastNumberevt(this, new EventArgs());
                                 _msgstate = "Second";
                             }
 
-                            else if (_msgstate == "Second")
+
+                            //_dataFile = "";
+
+
+                            if (_msgstate == "Second")
                             {
                                 if (sReceived.Contains(BBSPrompt))
                                 {
@@ -988,6 +987,7 @@ namespace PacketComs
                                     FileSql.UpdateSqlto("MSGFrom");
                                     FileSql.UpdateSqlto("MSGRoute");
                                     FileSql.UpdateSqlto("MSGSubject");
+
                                     FileSql.SqlPacketDelete("MSGTO");
                                     FileSql.SqlPacketDelete("MSGFrom");
                                     FileSql.SqlPacketDelete("MSGRoute");
@@ -997,8 +997,9 @@ namespace PacketComs
                                     _dataFile = "";
                                 }
                             }
-                            else if (_msgstate == "file")
+                            if (_msgstate == "file")
                             {
+
                                 DispatchMessage(this, "R " + _nb[_msgno]);
                                 DispatchMessage(this, Environment.NewLine);
                                 _msgstate = "prompt";
@@ -1008,31 +1009,34 @@ namespace PacketComs
                                 stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
                                     SocketFlags.None, OnReceivedData, stateObject);
                                 return;
+
                             }
                             //if (sReceived.Contains(BBSPrompt))
-                           
-                            else if (_msgstate == "prompt")
                             {
-	                            Int32 lastNumber = _nb[_msgno]%10;
-	                            FileSql.WriteSt(_dataFile, _nb[_msgno].ToString(), lastNumber.ToString());
-	                            DispatchMessage(this, Environment.NewLine);
-	                            FileSql.SqlupdateRead(_nb[_msgno]);
-	                            _dataFile = "";
-	                            sReceived = "";
-	                            _msgno++;
-	                            _msgstate = "file";
-                            }
-                            else
-                            {
-								ForwardDone(this, new EventArgs());
-								FileActive = false;		 
-                            }
+                                if (_msgstate == "prompt")
+                                {
+								Int32 lastNumber = _nb[_msgno] % 10;
+									FileSql.WriteSt(_dataFile, _nb[_msgno].ToString(), lastNumber.ToString());
+                                    //DispatchMessage(this, "R " + _nb[_msgno]);
+                                    DispatchMessage(this, Environment.NewLine);
+									FileSql.SqlupdateRead(_nb[_msgno]);
+                                    _dataFile = "";
+                                    _msgno++;
+                                    _msgstate = "file";
+                                }
 
+                            }
 	                        if (_msgno == _nb.Length )
 	                        {
 		                        ForwardDone(this, new EventArgs());
-		                        FileActive = false;							
+		                        FileActive = false;
+								//DispatchMessage(this, Environment.NewLine);
 	                        }
+	                        //nb = FileSql.SqlSelectMail();
+                            //nb = "R " + nb;
+                            //DispatchMessage(this, nb);
+                            //DispatchMessage(this, Environment.NewLine);
+
                         }
                     }
                     Invoke(RxdTextEvent, String.Copy(sReceived));
