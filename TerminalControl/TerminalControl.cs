@@ -1015,7 +1015,7 @@ namespace PacketComs
                                     string dfile = "";
                                     Int32 lastNumber = _nb[_msgno]%10;
                                
-                                    for (var i = 0; i < lines.Length - 1; i++)
+                                    for (var i = 0; i < (lines.Length - 2); i++)
                                     {
                                         dfile = dfile + lines[i] + Environment.NewLine;
                                     }
