@@ -30,9 +30,9 @@ namespace Packet
 
 		#endregion
 
-		#region SQLSELECT
+		#region SQLSELECTRD
 
-		public List<DtoPacket> Sqlselect()
+		public List<DtoPacket> SqlselectRD()
 		{
 			var packets = new List<DtoPacket>();
 
@@ -44,7 +44,7 @@ namespace Packet
 					{
 						{
 							cmd.Connection = con;
-							cmd.CommandText = "SELECT * FROM Packet ";
+							cmd.CommandText = "SELECT * FROM Packet Where MSGState = 'R' or MSGState = 'P' ";
 							con.Open();
 							cmd.ExecuteNonQuery();
 							using (var reader = cmd.ExecuteReader())
@@ -59,7 +59,7 @@ namespace Packet
 										(string) reader.GetValue(5),
 										(string) reader.GetValue(6),
 										(string) reader.GetValue(7),
-										null);
+                                        (string)reader.GetValue(8));
 									packets.Add(packet);
 								}
 							}
@@ -77,6 +77,54 @@ namespace Packet
 		}
 
 		#endregion
+
+        #region SQLSELECT
+
+        public List<DtoPacket> Sqlselect()
+        {
+            var packets = new List<DtoPacket>();
+
+            try
+            {
+                using (var con = new OdbcConnection(Main.dsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        {
+                            cmd.Connection = con;
+                            cmd.CommandText = "SELECT * FROM Packet ";
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var packet = new DtoPacket((int)reader.GetValue(0),
+                                        (string)reader.GetValue(1),
+                                        (int)reader.GetValue(2),
+                                        (string)reader.GetValue(3),
+                                        (string)reader.GetValue(4),
+                                        (string)reader.GetValue(5),
+                                        (string)reader.GetValue(6),
+                                        (string)reader.GetValue(7),
+                                        null);
+                                    packets.Add(packet);
+                                }
+                            }
+                            con.Close();
+                        }
+
+                    }
+                }
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return packets;
+        }
+
+        #endregion
 
 		#region SQLSELECT_ON_Lists_Msgto
 
