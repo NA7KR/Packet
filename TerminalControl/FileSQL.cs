@@ -402,7 +402,9 @@ namespace PacketComs
 					{
 						using (var cmd = new OdbcCommand())
 						{
-							cmd.CommandText ="UPDATE Packet SET Packet.MSGState = ? Where (MSGState <> ? and  MSGState <> ?) and Exists( Select " + tableName+ ".Selected From " + tableName + " Where " + tableName + "." + tableName + " = Packet." + tableName + " and Selected = ? )  ";
+						    cmd.CommandText =
+                                "UPDATE Packet INNER JOIN MSGTO ON MSGTO.MSGTO = Packet.MSGTO and  MSGTO.Selected = 'Y' SET MSGState = 'P' Where (Packet.MSGState <>'R' and  Packet.MSGState <> 'D')";
+                            //UPDATE Packet SET Packet.MSGState = ? Where (MSGState <> ? and  MSGState <> ?) and Exists( Select " + tableName+ ".Selected From " + tableName + " Where " + tableName + "." + tableName + " = Packet." + tableName + " and Selected = ? )  ";
 							cmd.Parameters.Clear();
 							cmd.Parameters.AddWithValue("@p1", "P");
 							cmd.Parameters.AddWithValue("@p2", "R");

@@ -15,13 +15,13 @@ namespace Packet
 
 	#region partial class Form1
 
-	public partial class Form1 : Form
+	public partial class Main : Form
 	{
 		#region Form1
 
         public const string dsnName = "DSN=Packet";	
 	   
-		public Form1()
+		public Main()
 		{
 			InitializeComponent();
 			_myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
@@ -95,6 +95,9 @@ namespace Packet
 
 			mail_button.Left = 690;
 			mail_button.Top = 40;
+
+		    button_read.Left = 800;
+		    button_read.Top = 40;
 		    terminalEmulator1.dnsName = dsnName;
 		}
 
@@ -848,6 +851,12 @@ namespace Packet
 		private Boolean _bBeep = true;
 		private Color _backgroundColor = Color.Black;
 		private Color _textColor = Color.Yellow;
+
+        private void button_read_Click(object sender, EventArgs e)
+        {
+            var box = new Read();
+            box.ShowDialog();
+        }
 		//string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
 		//string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
 

@@ -74,11 +74,17 @@
     <Compile Include="Com_Form.Designer.cs">
       <DependentUpon>Com_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Read.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Read.Designer.cs">
+      <DependentUpon>Read.cs</DependentUpon>
     </Compile>
     <Compile Include="Sort.cs">
       <SubType>Form</SubType>
@@ -108,8 +114,8 @@
     <EmbeddedResource Include="Com_Form.resx">
       <DependentUpon>Com_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IP_Form.resx">
       <DependentUpon>IP_Form.cs</DependentUpon>
@@ -126,6 +132,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Read.resx">
+      <DependentUpon>Read.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sort.resx">
       <DependentUpon>Sort.cs</DependentUpon>
     </EmbeddedResource>

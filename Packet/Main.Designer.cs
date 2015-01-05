@@ -4,7 +4,7 @@ using PacketComs;
 
 namespace Packet
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,7 @@ namespace Packet
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.bbs_button = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,6 +69,7 @@ namespace Packet
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mail_button = new System.Windows.Forms.Button();
             this.terminalEmulator1 = new PacketComs.TerminalEmulator();
+            this.button_read = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -292,7 +293,7 @@ namespace Packet
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(808, 42);
+            this.textBox1.Location = new System.Drawing.Point(997, 44);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(250, 20);
@@ -363,7 +364,7 @@ namespace Packet
             this.mail_button.Size = new System.Drawing.Size(94, 23);
             this.mail_button.TabIndex = 8;
             this.mail_button.TabStop = false;
-            this.mail_button.Text = "Mail";
+            this.mail_button.Text = "Mail Config";
             this.toolTip1.SetToolTip(this.mail_button, "Mail List");
             this.mail_button.UseVisualStyleBackColor = true;
             this.mail_button.Click += new System.EventHandler(this.mail_button_Click);
@@ -378,6 +379,7 @@ namespace Packet
             this.terminalEmulator1.Columns = 172;
             this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
             this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.dnsName = null;
             this.terminalEmulator1.FileActive = false;
             this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
@@ -404,11 +406,24 @@ namespace Packet
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
-            // Form1
+            // button_read
+            // 
+            this.button_read.Location = new System.Drawing.Point(785, 40);
+            this.button_read.Name = "button_read";
+            this.button_read.Size = new System.Drawing.Size(94, 23);
+            this.button_read.TabIndex = 9;
+            this.button_read.TabStop = false;
+            this.button_read.Text = "Mail Read";
+            this.toolTip1.SetToolTip(this.button_read, "Mail List");
+            this.button_read.UseVisualStyleBackColor = true;
+            this.button_read.Click += new System.EventHandler(this.button_read_Click);
+            // 
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 637);
+            this.Controls.Add(this.button_read);
             this.Controls.Add(this.mail_button);
             this.Controls.Add(this.terminalEmulator1);
             this.Controls.Add(this.ssh_button);
@@ -421,7 +436,7 @@ namespace Packet
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Text = "Packet Radio";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize_1);
@@ -476,6 +491,7 @@ namespace Packet
         private readonly ModifyRegistry _myRegistryCom = new ModifyRegistry();
         private readonly ModifyRegistry _myRegistryNode = new ModifyRegistry();
         private readonly ModifyRegistry _myRegistrySsh = new ModifyRegistry();
+        private Button button_read;
     }
 }
 

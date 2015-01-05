@@ -38,7 +38,7 @@ namespace Packet
 
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -85,7 +85,7 @@ namespace Packet
 			var selectLists = new List<DtoListMsgto>();
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -124,7 +124,7 @@ namespace Packet
 			var selectLists = new List<DtoListMsgFrom>();
 			try
 			{
-				var sqlConn = new OdbcConnection(Form1.dsnName);
+				var sqlConn = new OdbcConnection(Main.dsnName);
 
 				using (var cmd = new OdbcCommand())
 				{
@@ -162,7 +162,7 @@ namespace Packet
 			var selectLists = new List<DtoListMsgRoute>();
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -201,7 +201,7 @@ namespace Packet
 			var selectLists = new List<DtoListMsgSubject>();
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -239,7 +239,7 @@ namespace Packet
 		{
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -298,7 +298,7 @@ namespace Packet
 		{
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -339,7 +339,7 @@ namespace Packet
 		{ 
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -380,7 +380,7 @@ namespace Packet
 		{
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -421,7 +421,7 @@ namespace Packet
 		{
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{
@@ -462,7 +462,7 @@ namespace Packet
 		{
 			try
 			{
-				using (var con = new OdbcConnection(Form1.dsnName))
+				using (var con = new OdbcConnection(Main.dsnName))
 				{
 					using (var cmd = new OdbcCommand())
 					{

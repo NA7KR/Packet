@@ -945,7 +945,6 @@ namespace PacketComs
                         {
                             if (_msgstate == "First")
                             {
-
                                 for (var i = 1; i < lines.Length - 1; )
                                 {
                                     string checkstring = lines[i].Substring(0, 5);
@@ -968,7 +967,6 @@ namespace PacketComs
                                     {
                                         i++;
                                     }
-
                                 }
                                 LastNumberevt(this, new EventArgs());
                                 _msgstate = "Second";
@@ -982,7 +980,6 @@ namespace PacketComs
                                     FileSql.UpdateSqlto("MSGFrom");
                                     FileSql.UpdateSqlto("MSGRoute");
                                     FileSql.UpdateSqlto("MSGSubject");
-
                                     FileSql.SqlPacketDelete("MSGTO");
                                     FileSql.SqlPacketDelete("MSGFrom");
                                     FileSql.SqlPacketDelete("MSGRoute");
@@ -1024,8 +1021,6 @@ namespace PacketComs
                                     }
 
                                     FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
-                                    //DispatchMessage(this, "R " + _nb[_msgno]);
-                                    //DispatchMessage(this, Environment.NewLine);
 									FileSql.SqlupdateRead(_nb[_msgno]);
                                     _dataFile = "";
                                     _msgno++;
@@ -1037,13 +1032,7 @@ namespace PacketComs
 	                        {
 		                        ForwardDone(this, new EventArgs());
 		                        FileActive = false;
-								//DispatchMessage(this, Environment.NewLine);
 	                        }
-	                        //nb = FileSql.SqlSelectMail();
-                            //nb = "R " + nb;
-                            //DispatchMessage(this, nb);
-                            //DispatchMessage(this, Environment.NewLine);
-
                         }
                     }
                     Invoke(RxdTextEvent, String.Copy(sReceived));
