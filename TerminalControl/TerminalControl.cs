@@ -945,6 +945,7 @@ namespace PacketComs
                         {
                             if (_msgstate == "First")
                             {
+	                            fstmsg = 0;
                                 for (var i = 1; i < lines.Length - 1; )
                                 {
                                     string checkstring = lines[i].Substring(0, 5);
@@ -1015,8 +1016,8 @@ namespace PacketComs
                                 {
                                     string dfile = "";
                                     Int32 lastNumber = _nb[_msgno]%10;
-                               
-                                    for (var i = 0; i < (lines.Length - 1); i++)
+
+									for (var i = fstmsg; i < (lines.Length - 1); i++)
                                     {
                                         dfile = dfile + lines[i] + Environment.NewLine;
                                     }
@@ -1024,6 +1025,7 @@ namespace PacketComs
                                     FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
 									FileSql.SqlupdateRead(_nb[_msgno]);
                                     _dataFile = "";
+	                                fstmsg = 1;
                                     _msgno++;
                                     _msgstate = "file";
                                 }
@@ -5016,6 +5018,7 @@ namespace PacketComs
         private Int32 _bottomMargin;
         private string _cType;
         private string _msgstate;
+	    private int fstmsg;
         private int[] _nb;
         private int _msgno;
         private AsyncCallback _callbackEndDispatch;
