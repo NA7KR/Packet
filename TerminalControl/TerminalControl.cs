@@ -969,6 +969,7 @@ namespace PacketComs
                                     }
                                 }
                                 LastNumberevt(this, new EventArgs());
+								
                                 _msgstate = "Second";
                             }
 
@@ -1005,7 +1006,7 @@ namespace PacketComs
                                     // Re-Establish the next asyncronous receveived data callback as
                                     stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
                                         SocketFlags.None, OnReceivedData, stateObject);
-                                    return;
+                                   // return;
                                 }
                             }
                             //if (sReceived.Contains(BBSPrompt))
@@ -1015,7 +1016,7 @@ namespace PacketComs
                                     string dfile = "";
                                     Int32 lastNumber = _nb[_msgno]%10;
                                
-                                    for (var i = 0; i < (lines.Length - 2); i++)
+                                    for (var i = 0; i < (lines.Length - 1); i++)
                                     {
                                         dfile = dfile + lines[i] + Environment.NewLine;
                                     }
