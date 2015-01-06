@@ -995,7 +995,7 @@ namespace PacketComs
                             {
                                 if (_nb == null || _nb.Length == 0)
                                 {
-
+									_msgstate = "exit";
                                 }
                                 else
                                 {     
@@ -1032,6 +1032,11 @@ namespace PacketComs
 
                             }
 	                        if (_msgno == _nb.Length )
+	                        {
+		                        ForwardDone(this, new EventArgs());
+		                        FileActive = false;
+	                        }
+	                        if (_msgstate == "exit")
 	                        {
 		                        ForwardDone(this, new EventArgs());
 		                        FileActive = false;
