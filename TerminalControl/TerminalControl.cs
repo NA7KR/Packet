@@ -1045,8 +1045,11 @@ namespace PacketComs
                     Invoke(RxdTextEvent, String.Copy(sReceived));
                     Invoke(RefreshEvent);
                     // Re-Establish the next asyncronous receveived data callback as
-                    stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
-                        SocketFlags.None, OnReceivedData, stateObject);
+                    if (stateObject.Socket.Connected)
+                    {
+                        stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
+                            SocketFlags.None, OnReceivedData, stateObject);
+                    }
                 }
                 else
                 {
