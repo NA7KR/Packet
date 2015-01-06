@@ -970,7 +970,6 @@ namespace PacketComs
                                     }
                                 }
                                 LastNumberevt(this, new EventArgs());
-								
                                 _msgstate = "Second";
                             }
 
