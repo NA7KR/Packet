@@ -64,6 +64,21 @@ namespace Packet
                         packet.get_MSGDateTime(),
                         packet.get_MSGSubject(),
                         packet.get_MSGState() ) ;
+                    foreach (DataGridViewRow row in DataGridView1.Rows)
+                    {
+                        string RowType = row.Cells[0].Value.ToString();
+
+                        if (packet.get_MSGState().Trim() == "R")
+                        {
+                            row.DefaultCellStyle.BackColor = Color.Red;
+                            row.DefaultCellStyle.ForeColor = Color.White;
+                        }
+                        if (packet.get_MSGState().Trim() == "P")
+                        {
+                            row.DefaultCellStyle.BackColor = Color.Yellow;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                        }
+                    }
                 }
                     );
             }
