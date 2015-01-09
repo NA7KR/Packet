@@ -64,21 +64,7 @@ namespace Packet
                         packet.get_MSGDateTime(),
                         packet.get_MSGSubject(),
                         packet.get_MSGState() ) ;
-                    foreach (DataGridViewRow row in DataGridView1.Rows)
-                    {
-                        string RowType = row.Cells[0].Value.ToString();
-
-                        if (packet.get_MSGState().Trim() == "R")
-                        {
-                            row.DefaultCellStyle.BackColor = Color.Red;
-                            row.DefaultCellStyle.ForeColor = Color.White;
-                        }
-                        if (packet.get_MSGState().Trim() == "P")
-                        {
-                            row.DefaultCellStyle.BackColor = Color.Yellow;
-                            row.DefaultCellStyle.ForeColor = Color.Black;
-                        }
-                    }
+                    
                 }
                     );
             }
@@ -100,6 +86,26 @@ namespace Packet
                 button_Cancel.Left = ((Width / 2) + (button_OK.Width / 2));
                 button_OK.Left = ((Width / 3) - (button_OK.Width / 2));
             } 
+        }
+
+        private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            foreach (DataGridViewRow row in DataGridView1.Rows)
+            {
+                string RowType = row.Cells[8].Value.ToString();
+
+                if (RowType.Trim() == "R")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red;
+                    row.DefaultCellStyle.ForeColor = Color.White;
+                }
+                else if (RowType.Trim() == "P")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Yellow;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+    
         }
     }
 }

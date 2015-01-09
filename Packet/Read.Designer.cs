@@ -63,6 +63,7 @@
             this.DataGridView1.Name = "DataGridView1";
             this.DataGridView1.Size = new System.Drawing.Size(240, 150);
             this.DataGridView1.TabIndex = 2;
+            this.DataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.DataGridView1_RowPostPaint);
             // 
             // Read
             // 
