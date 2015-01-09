@@ -1,11 +1,14 @@
-﻿namespace Packet
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Packet
 {
     partial class Read
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -72,7 +75,7 @@
             this.DataGridView1.TabIndex = 2;
             this.DataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentDoubleClick);
             this.DataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.DataGridView1_RowPostPaint);
-            this.DataGridView1.DoubleClick += new System.EventHandler(this.DataGridView1_DoubleClick);
+            
             // 
             // richTextBox1
             // 
@@ -124,11 +127,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_OK;
-        private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.DataGridView DataGridView1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button button_Relpy;
-        private System.Windows.Forms.Button button_Delete;
+        private Button button_OK;
+        private Button button_Cancel;
+        private DataGridView DataGridView1;
+        private RichTextBox richTextBox1;
+        private Button button_Relpy;
+        private Button button_Delete;
     }
 }

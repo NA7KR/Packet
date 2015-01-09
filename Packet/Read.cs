@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -87,9 +81,9 @@ namespace Packet
                 button_Delete.Top = DataGridView1.Height + 50;
 
                 button_OK.Left =     ((Width - (button_OK.Width * 4))/5);
-                button_Cancel.Left = (((Width - (button_OK.Width * 4))/5) + button_OK.Left);
-                button_Relpy.Left =  (((Width - (button_OK.Width * 4)) / 5) + button_Cancel.Left);
-                button_Delete.Left = (((Width - (button_OK.Width * 4)) / 5) + button_Relpy.Left);
+                button_Cancel.Left = (((Width - (button_OK.Width * 4)) / 5) + button_OK.Right);
+                button_Relpy.Left = (((Width - (button_OK.Width * 4)) / 5) + button_Cancel.Right);
+                button_Delete.Left = (((Width - (button_OK.Width * 4)) / 5) + button_Relpy.Right);
 
                 richTextBox1.Left = 10;
                 richTextBox1.Width = Width - 40;
@@ -103,19 +97,19 @@ namespace Packet
         {
             foreach (DataGridViewRow row in DataGridView1.Rows)
             {
-                string RowType = row.Cells[8].Value.ToString();
+                string rowType = row.Cells[8].Value.ToString();
 
-                if (RowType.Trim() == "P")
+                if (rowType.Trim() == "P")
                 {
                     row.DefaultCellStyle.BackColor = Color.Red;
                     row.DefaultCellStyle.ForeColor = Color.White;
                 }
-                else if (RowType.Trim() == "R")
+                else if (rowType.Trim() == "R")
                 {
                     row.DefaultCellStyle.BackColor = Color.Yellow;
                     row.DefaultCellStyle.ForeColor = Color.Black;
                 }
-                else if (RowType.Trim() == "V")
+                else if (rowType.Trim() == "V")
                 {
                     row.DefaultCellStyle.BackColor = Color.Gray;
                     row.DefaultCellStyle.ForeColor = Color.Black;
@@ -124,25 +118,26 @@ namespace Packet
     
         }
 
-        private void DataGridView1_DoubleClick(object sender, EventArgs e)
-        {
-            foreach (DataGridViewRow row in DataGridView1.Rows)
-            {
-               
-            }
-
-        }
+       
 
         private void DataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
             {
                 string number = DataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
-                string lastNumber = (Convert.ToInt32(number) % 10).ToString();
-                richTextBox1.Text=Sql.Rxst(number, lastNumber);
-                DataGridView1.Visible = false;
-                richTextBox1.Visible = true;
-                ;
+                string check = DataGridView1.Rows[e.RowIndex].Cells[8].Value.ToString();
+                if (check.Trim() == "R")
+                {
+                    string lastNumber = (Convert.ToInt32(number) % 10).ToString();
+                    richTextBox1.Text = Sql.Rxst(number, lastNumber);
+                    DataGridView1.Visible = false;
+                    richTextBox1.Visible = true;
+                }
+                if (check.Trim() == "P")
+                {
+                    MessageBox.Show("Not Downloaded yet");
+                }
+
             }
         }
 
