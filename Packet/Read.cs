@@ -84,10 +84,12 @@ namespace Packet
                 button_Cancel.Top = DataGridView1.Height + 50;
                 button_OK.Top = DataGridView1.Height + 50;
                 button_Relpy.Top = DataGridView1.Height + 50;
+                button_Delete.Top = DataGridView1.Height + 50;
 
-                button_Cancel.Left = ((Width / 4) + (button_OK.Width / 3));
-                button_OK.Left =     ((Width / 2) - (button_OK.Width / 2));
-                button_Relpy.Left = ((Width / 4) - (button_OK.Width / 3) + button_OK.Left);
+                button_OK.Left =      ((Width / 5) + (button_OK.Width / 4));
+                button_Cancel.Left =  ((Width / 3) - (button_OK.Width / 4));
+                button_Relpy.Left =   ((Width / 5) - (button_OK.Width / 4) + button_Cancel.Left);
+                button_Delete.Left =  ((Width / 5) - (button_OK.Width / 4) + button_Relpy.Left);
 
                 richTextBox1.Left = 10;
                 richTextBox1.Width = Width - 40;

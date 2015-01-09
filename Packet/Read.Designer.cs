@@ -33,6 +33,7 @@
             this.DataGridView1 = new System.Windows.Forms.DataGridView();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.button_Relpy = new System.Windows.Forms.Button();
+            this.button_Delete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,12 +92,22 @@
             this.button_Relpy.Text = "Reply";
             this.button_Relpy.UseVisualStyleBackColor = true;
             // 
+            // button_Delete
+            // 
+            this.button_Delete.Location = new System.Drawing.Point(592, 201);
+            this.button_Delete.Name = "button_Delete";
+            this.button_Delete.Size = new System.Drawing.Size(75, 23);
+            this.button_Delete.TabIndex = 5;
+            this.button_Delete.Text = "Delete";
+            this.button_Delete.UseVisualStyleBackColor = true;
+            // 
             // Read
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_Cancel;
             this.ClientSize = new System.Drawing.Size(1162, 615);
+            this.Controls.Add(this.button_Delete);
             this.Controls.Add(this.button_Relpy);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.DataGridView1);
@@ -118,5 +129,6 @@
         private System.Windows.Forms.DataGridView DataGridView1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button_Relpy;
+        private System.Windows.Forms.Button button_Delete;
     }
 }
