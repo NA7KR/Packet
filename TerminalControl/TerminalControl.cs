@@ -1005,7 +1005,7 @@ namespace PacketComs
                                 else
                                 {     
                                     DispatchMessage(this, "R " + _nb[_msgno].ToString());
-                                    //DispatchMessage(this, Environment.NewLine);
+                                    DispatchMessage(this, Environment.NewLine);
                                     _msgstate = "prompt";
                                     Invoke(RxdTextEvent, String.Copy(sReceived));
                                     Invoke(RefreshEvent);

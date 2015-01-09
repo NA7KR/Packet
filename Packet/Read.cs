@@ -16,7 +16,12 @@ namespace Packet
 
         private void Read_Load(object sender, EventArgs e)
         {
-            try
+            Loader();
+        }
+
+        private void Loader()
+        {
+             try
             {
                 DataGridView1.Columns.Add("RXMSG", "MSG");
                 DataGridView1.Columns.Add("RXTSLD", "TSLD");
@@ -149,7 +154,10 @@ namespace Packet
 
         private void button_Delete_Click(object sender, EventArgs e)
         {
-
+            Sql.DeleteSt("102", "1");
+            Sql.deleteRow("Packet", "MSG", "102");
+            
+            Loader();
         }
     }
 }

@@ -536,12 +536,12 @@ namespace Packet
 		#endregion
 
         #region DeleteST
-        public bool? DeleteSt(string fileName)
+        public bool? DeleteSt(string fileName, string pathNo)
         {
 
             try
             {
-                string path = Directory.GetCurrentDirectory() + @"\Data";
+                string path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
                 if (!Directory.Exists(path))
                 {
                     // Try to create the directory.
@@ -593,26 +593,27 @@ namespace Packet
         }
         #endregion
 
-        #region RX
-        public string Rx()
+        public static void deleteRow(string table, string columnName, string IDNumber)
         {
-            string myString = null;
-            string path = Directory.GetCurrentDirectory() + @"\Data";
-            if (!Directory.Exists(path))
+            try
             {
-                // Try to create the directory.
-                Directory.CreateDirectory(path);
+                using (var con = new OdbcConnection(Main.dsnName))
+                {
+                    con.Open();
+                    using (var cmd = new OdbcCommand())
+					{
+                        cmd.CommandText =("DELETE FROM " + table + " WHERE " + columnName + " = " + IDNumber );
+                        cmd.Connection = con;
+                        cmd.ExecuteNonQuery();
+                    }
+                    con.Close();
+                }
             }
-            path = path + @"\myMailList.txt";
-
-            if (File.Exists(path))
+            catch (SystemException ex)
             {
-                StreamReader myFile = new StreamReader(path);
-                myString = myFile.ReadToEnd();
+                MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
             }
-            return myString;
         }
-        #endregion
 
     }
 
