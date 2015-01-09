@@ -215,6 +215,7 @@ namespace Packet
 
 		#endregion
 
+        #region Resize
         private void Mail_Resize(object sender, EventArgs e)
         {
             DataGridView1.Left = 10;
@@ -225,6 +226,7 @@ namespace Packet
             button_OK.Top = DataGridView1.Height + 50;
             button_Cancel.Left = ((Width/2) + (button_OK.Width/2));
             button_OK.Left = ((Width / 3 ) - (button_OK.Width / 2));
-        }              
-	}
+        }
+        #endregion
+    }
 }

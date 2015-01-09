@@ -593,6 +593,7 @@ namespace Packet
         }
         #endregion
 
+        #region SQL delete row
         public static void deleteRow(string table, string columnName, string IDNumber)
         {
             try
@@ -614,6 +615,7 @@ namespace Packet
                 MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
             }
         }
+        #endregion
 
     }
 

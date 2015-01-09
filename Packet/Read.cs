@@ -1,24 +1,31 @@
-﻿using System;
+﻿#region Using Directive
+using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using PacketComs;
+#endregion
 
 namespace Packet
 {
     public partial class Read : Form
     {
         private static readonly Sql Sql = new Sql();
+        #region Read
         public Read()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region Read_Load
         private void Read_Load(object sender, EventArgs e)
         {
             Loader();
         }
+        #endregion
 
+        #region Loader
         private void Loader()
         {
              try
@@ -72,7 +79,9 @@ namespace Packet
                 MessageBox.Show("Error in file read" + " " + ex.Source);
             }
         }
-                                                          
+        #endregion
+
+        #region resize
         private void Read_Resize(object sender, EventArgs e)
         {
             {
@@ -97,7 +106,9 @@ namespace Packet
 
             } 
         }
+        #endregion
 
+        #region RowPost
         private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             foreach (DataGridViewRow row in DataGridView1.Rows)
@@ -122,9 +133,9 @@ namespace Packet
             }
     
         }
+        #endregion
 
-       
-
+        #region CellContentDoubleClick
         private void DataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
@@ -145,13 +156,17 @@ namespace Packet
 
             }
         }
+        #endregion
 
+        #region OK
         private void button_OK_Click(object sender, EventArgs e)
         {
             DataGridView1.Visible = true;
             richTextBox1.Visible = false;
         }
+        #endregion
 
+        #region Delete
         private void button_Delete_Click(object sender, EventArgs e)
         {
             if (DataGridView1.SelectedRows != null)
@@ -164,11 +179,8 @@ namespace Packet
                     Sql.deleteRow("Packet", "MSG", number);
                 }
             }
-
-            Sql.DeleteSt("102", "1");
-            Sql.deleteRow("Packet", "MSG", "102");
-            
             Loader();
         }
+        #endregion
     }
 }
