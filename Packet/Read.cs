@@ -154,6 +154,17 @@ namespace Packet
 
         private void button_Delete_Click(object sender, EventArgs e)
         {
+            if (DataGridView1.SelectedRows != null)
+            {
+                foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
+                {
+                    var number = drv.Cells[0].Value.ToString();
+                    string lastNumber = (Convert.ToInt32(number) % 10).ToString();
+                    Sql.DeleteSt(number, lastNumber);
+                    Sql.deleteRow("Packet", "MSG", number);
+                }
+            }
+
             Sql.DeleteSt("102", "1");
             Sql.deleteRow("Packet", "MSG", "102");
             
