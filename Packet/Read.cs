@@ -83,8 +83,17 @@ namespace Packet
                 DataGridView1.Height = Height - 150;
                 button_Cancel.Top = DataGridView1.Height + 50;
                 button_OK.Top = DataGridView1.Height + 50;
-                button_Cancel.Left = ((Width / 2) + (button_OK.Width / 2));
-                button_OK.Left = ((Width / 3) - (button_OK.Width / 2));
+                button_Relpy.Top = DataGridView1.Height + 50;
+
+                button_Cancel.Left = ((Width / 4) + (button_OK.Width / 3));
+                button_OK.Left =     ((Width / 2) - (button_OK.Width / 2));
+                button_Relpy.Left = ((Width / 4) - (button_OK.Width / 3) + button_OK.Left);
+
+                richTextBox1.Left = 10;
+                richTextBox1.Width = Width - 40;
+                richTextBox1.Top = 30;
+                richTextBox1.Height = Height - 150;
+
             } 
         }
 
@@ -94,18 +103,51 @@ namespace Packet
             {
                 string RowType = row.Cells[8].Value.ToString();
 
-                if (RowType.Trim() == "R")
+                if (RowType.Trim() == "P")
                 {
                     row.DefaultCellStyle.BackColor = Color.Red;
                     row.DefaultCellStyle.ForeColor = Color.White;
                 }
-                else if (RowType.Trim() == "P")
+                else if (RowType.Trim() == "R")
                 {
                     row.DefaultCellStyle.BackColor = Color.Yellow;
                     row.DefaultCellStyle.ForeColor = Color.Black;
                 }
+                else if (RowType.Trim() == "V")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Gray;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
             }
     
+        }
+
+        private void DataGridView1_DoubleClick(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in DataGridView1.Rows)
+            {
+               
+            }
+
+        }
+
+        private void DataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+            {
+                string number = DataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
+                string lastNumber = (Convert.ToInt32(number) % 10).ToString();
+                richTextBox1.Text=Sql.Rxst(number, lastNumber);
+                DataGridView1.Visible = false;
+                richTextBox1.Visible = true;
+                ;
+            }
+        }
+
+        private void button_OK_Click(object sender, EventArgs e)
+        {
+            DataGridView1.Visible = true;
+            richTextBox1.Visible = false;
         }
     }
 }

@@ -298,6 +298,7 @@ namespace PacketComs
                     // Try to create the directory.
                     Directory.CreateDirectory(path);
                 }
+                
                 string filePath = path + @"\" + fileName + ".txt";
 
                 File.WriteAllText(filePath, textVale);
@@ -310,84 +311,6 @@ namespace PacketComs
             }
         } //end write
 
-        #endregion
-
-        #region DeleteST
-        public bool? DeleteSt(string fileName)
-        {
-
-            try
-            {
-                string path = Directory.GetCurrentDirectory() + @"\Data";
-                if (!Directory.Exists(path))
-                {
-                    // Try to create the directory.
-                    Directory.CreateDirectory(path);
-                }
-                string filePath = path + @"\" + fileName + ".txt";
-                path = path + @"\" + fileName + ".txt";
-                if (File.Exists(path))
-                {
-                    File.Delete(filePath);
-                    return null;
-                }
-                else
-                {
-                    File.Delete(path);
-                    return true;
-                }
-               
-            } //end try
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                return false;
-            }
-        } //end write
-
-        #endregion
-
-        #region RXST
-        public string Rxst(string fileName)
-        {
-            string myString = null;
-            string path = Directory.GetCurrentDirectory() + @"\Data";
-            if (!Directory.Exists(path))
-            {
-                // Try to create the directory.
-                Directory.CreateDirectory(path);
-            }
-            path = path + @"\" + fileName + ".txt";
-            if (File.Exists(path))
-            {
-                StreamReader myFile = new StreamReader(path);
-                myString = myFile.ReadToEnd();
-                myFile.Close();
-            }
-            return myString;
-
-        }
-        #endregion
-
-        #region RX
-        public string Rx()
-        {
-            string myString = null;
-            string path = Directory.GetCurrentDirectory() + @"\Data";
-            if (!Directory.Exists(path))
-            {
-                // Try to create the directory.
-                Directory.CreateDirectory(path);
-            }
-            path = path + @"\myMailList.txt";
-
-            if (File.Exists(path))
-            {
-                StreamReader myFile = new StreamReader(path);
-                myString = myFile.ReadToEnd();
-            }
-            return myString;
-        }
         #endregion
 
 		#region	   UpdateSqlto
@@ -403,17 +326,18 @@ namespace PacketComs
 						using (var cmd = new OdbcCommand())
 						{
 						    cmd.CommandText =
-"UPDATE Packet " +
-" INNER JOIN " + tableName + " ON Packet." + tableName + " = " + tableName + "." + tableName +
-" SET Packet.MSGState = ? " +
-" where (Packet.MSGState is null    " +
-" or (Packet.MSGState<> ? And Packet.MSGState<> ?) ) " +
-" and  " + tableName + ".Selected = ?" ;
+                            "UPDATE Packet " +
+                            " INNER JOIN " + tableName + " ON Packet." + tableName + " = " + tableName + "." + tableName +
+                            " SET Packet.MSGState = ? " +
+                            " where (Packet.MSGState is null    " +
+                            " or (Packet.MSGState<> ? And Packet.MSGState<> ?) ) " +
+                            " and  " + tableName + ".Selected = ?" ;
 
-                              //  "UPDATE Packet SET Packet.MSGState = ? Where (MSGState <> ? and  MSGState <> ?) and Exists( Select " + tableName+ ".Selected From " + tableName + " Where " + tableName + "." + tableName + " = Packet." + tableName + " and Selected = ? )  ";
+                            //  "UPDATE Packet SET Packet.MSGState = ? Where (MSGState <> ? and  MSGState <> ? and  MSGState <> ?) and Exists( Select " + tableName+ ".Selected From " + tableName + " Where " + tableName + "." + tableName + " = Packet." + tableName + " and Selected = ? )  ";
 							cmd.Parameters.Clear();
 							cmd.Parameters.AddWithValue("@p1", "P");
 							cmd.Parameters.AddWithValue("@p2", "R");
+                            cmd.Parameters.AddWithValue("@p2", "V");
 							cmd.Parameters.AddWithValue("@p3", "D");
 							cmd.Parameters.AddWithValue("@p4", "Y");
 							cmd.Connection = con;

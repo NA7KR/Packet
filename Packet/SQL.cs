@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
+using System.IO;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -44,7 +45,7 @@ namespace Packet
 					{
 						{
 							cmd.Connection = con;
-							cmd.CommandText = "SELECT * FROM Packet Where MSGState = 'R' or MSGState = 'P' ";
+                            cmd.CommandText = "SELECT * FROM Packet Where MSGState = 'R' or MSGState = 'P'  or MSGState = 'V'";
 							con.Open();
 							cmd.ExecuteNonQuery();
 							using (var reader = cmd.ExecuteReader())
@@ -534,7 +535,84 @@ namespace Packet
 
 		#endregion
 
-        
+        #region DeleteST
+        public bool? DeleteSt(string fileName)
+        {
+
+            try
+            {
+                string path = Directory.GetCurrentDirectory() + @"\Data";
+                if (!Directory.Exists(path))
+                {
+                    // Try to create the directory.
+                    Directory.CreateDirectory(path);
+                }
+                string filePath = path + @"\" + fileName + ".txt";
+                path = path + @"\" + fileName + ".txt";
+                if (File.Exists(path))
+                {
+                    File.Delete(filePath);
+                    return null;
+                }
+                else
+                {
+                    File.Delete(path);
+                    return true;
+                }
+
+            } //end try
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+        } //end write
+
+        #endregion
+
+        #region RXST
+        public string Rxst(string fileName, string pathNo)
+        {
+            string myString = null;
+            string path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
+            if (!Directory.Exists(path))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(path);
+            }
+            string filePath = path + @"\" + fileName + ".txt";
+            //path = path + @"\" + fileName + ".txt";
+            if (File.Exists(filePath))
+            {
+                StreamReader myFile = new StreamReader(filePath);
+                myString = myFile.ReadToEnd();
+                myFile.Close();
+            }
+            return myString;
+
+        }
+        #endregion
+
+        #region RX
+        public string Rx()
+        {
+            string myString = null;
+            string path = Directory.GetCurrentDirectory() + @"\Data";
+            if (!Directory.Exists(path))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(path);
+            }
+            path = path + @"\myMailList.txt";
+
+            if (File.Exists(path))
+            {
+                StreamReader myFile = new StreamReader(path);
+                myString = myFile.ReadToEnd();
+            }
+            return myString;
+        }
+        #endregion
 
     }
 
