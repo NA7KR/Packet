@@ -1005,13 +1005,13 @@ namespace PacketComs
                                 else
                                 {     
                                     DispatchMessage(this, "R " + _nb[_msgno].ToString());
-                                    DispatchMessage(this, Environment.NewLine);
+                                    //DispatchMessage(this, Environment.NewLine);
                                     _msgstate = "prompt";
                                     Invoke(RxdTextEvent, String.Copy(sReceived));
                                     Invoke(RefreshEvent);
                                     // Re-Establish the next asyncronous receveived data callback as
                                     stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length, SocketFlags.None, OnReceivedData, stateObject);
-                                    //return;
+                                    return;
                                 }
                             }
                             //if (sReceived.Contains(BBSPrompt))
@@ -1020,7 +1020,7 @@ namespace PacketComs
                                 {
                                     string dfile = "";
                                     Int32 lastNumber = _nb[_msgno]%10;
-
+                                    
 									for (var i = fstmsg; i < (lines.Length - 1); i++)
                                     {
                                         dfile = dfile + lines[i] + Environment.NewLine;
@@ -1068,6 +1068,11 @@ namespace PacketComs
             {
                 //MessageBox.Show("OnReceivedData");
             }
+            if (_msgstate == "prompt")
+            {
+                DispatchMessage(this, Environment.NewLine);
+            }
+            
         }
 
         #endregion
