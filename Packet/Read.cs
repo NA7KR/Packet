@@ -135,7 +135,7 @@ namespace Packet
                 }
                 if (check.Trim() == "P")
                 {
-                    MessageBox.Show("Not Downloaded yet");
+                    MessageBox.Show("Not downloaded yet");
                 }
 
             }
@@ -145,6 +145,11 @@ namespace Packet
         {
             DataGridView1.Visible = true;
             richTextBox1.Visible = false;
+        }
+
+        private void button_Delete_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

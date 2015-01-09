@@ -75,7 +75,6 @@ namespace Packet
             this.DataGridView1.TabIndex = 2;
             this.DataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentDoubleClick);
             this.DataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.DataGridView1_RowPostPaint);
-            
             // 
             // richTextBox1
             // 
@@ -103,6 +102,7 @@ namespace Packet
             this.button_Delete.TabIndex = 5;
             this.button_Delete.Text = "Delete";
             this.button_Delete.UseVisualStyleBackColor = true;
+            this.button_Delete.Click += new System.EventHandler(this.button_Delete_Click);
             // 
             // Read
             // 

@@ -940,8 +940,14 @@ namespace PacketComs
 
                         var lines = _dataFile.Split(new[] { Environment.NewLine },
                             StringSplitOptions.RemoveEmptyEntries);
+                        if (sReceived.Contains("There are no such messages"))
+                        {
+                            _msgstate = "Second";
+                        }
 
                         if (sReceived.Contains(BBSPrompt))
+
+                        
                         {
                             if (_msgstate == "First")
                             {
@@ -998,15 +1004,14 @@ namespace PacketComs
                                 }
                                 else
                                 {     
-                                DispatchMessage(this, "R " + _nb[_msgno].ToString());
+                                    DispatchMessage(this, "R " + _nb[_msgno].ToString());
                                     DispatchMessage(this, Environment.NewLine);
                                     _msgstate = "prompt";
                                     Invoke(RxdTextEvent, String.Copy(sReceived));
                                     Invoke(RefreshEvent);
                                     // Re-Establish the next asyncronous receveived data callback as
-                                    stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
-                                        SocketFlags.None, OnReceivedData, stateObject);
-                                   // return;
+                                    stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length, SocketFlags.None, OnReceivedData, stateObject);
+                                    //return;
                                 }
                             }
                             //if (sReceived.Contains(BBSPrompt))
