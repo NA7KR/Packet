@@ -148,12 +148,13 @@ namespace Packet
                     richTextBox1.Text = Sql.Rxst(number, lastNumber);
                     DataGridView1.Visible = false;
                     richTextBox1.Visible = true;
+                    Sql.WriteSqlPacketUpdate(Convert.ToInt32(number), "V");
                 }
                 if (check.Trim() == "P")
                 {
                     MessageBox.Show("Not downloaded yet");
                 }
-
+                Loader();
             }
         }
         #endregion

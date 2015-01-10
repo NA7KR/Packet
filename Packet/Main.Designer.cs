@@ -60,7 +60,6 @@ namespace Packet
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.forward_button = new System.Windows.Forms.Button();
             this.cluster_button = new System.Windows.Forms.Button();
             this.node_button = new System.Windows.Forms.Button();
@@ -68,8 +67,9 @@ namespace Packet
             this.ssh_button = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mail_button = new System.Windows.Forms.Button();
-            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
             this.button_read = new System.Windows.Forms.Button();
+            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
+            this.button_personal = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -291,16 +291,6 @@ namespace Packet
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(997, 44);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(250, 20);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.TabStop = false;
-            this.textBox1.Visible = false;
-            // 
             // forward_button
             // 
             this.forward_button.Location = new System.Drawing.Point(149, 41);
@@ -369,6 +359,18 @@ namespace Packet
             this.mail_button.UseVisualStyleBackColor = true;
             this.mail_button.Click += new System.EventHandler(this.mail_button_Click);
             // 
+            // button_read
+            // 
+            this.button_read.Location = new System.Drawing.Point(785, 40);
+            this.button_read.Name = "button_read";
+            this.button_read.Size = new System.Drawing.Size(94, 23);
+            this.button_read.TabIndex = 9;
+            this.button_read.TabStop = false;
+            this.button_read.Text = "Mail Read";
+            this.toolTip1.SetToolTip(this.button_read, "Mail List");
+            this.button_read.UseVisualStyleBackColor = true;
+            this.button_read.Click += new System.EventHandler(this.button_read_Click);
+            // 
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
@@ -406,23 +408,23 @@ namespace Packet
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
-            // button_read
+            // button_personal
             // 
-            this.button_read.Location = new System.Drawing.Point(785, 40);
-            this.button_read.Name = "button_read";
-            this.button_read.Size = new System.Drawing.Size(94, 23);
-            this.button_read.TabIndex = 9;
-            this.button_read.TabStop = false;
-            this.button_read.Text = "Mail Read";
-            this.toolTip1.SetToolTip(this.button_read, "Mail List");
-            this.button_read.UseVisualStyleBackColor = true;
-            this.button_read.Click += new System.EventHandler(this.button_read_Click);
+            this.button_personal.Location = new System.Drawing.Point(897, 40);
+            this.button_personal.Name = "button_personal";
+            this.button_personal.Size = new System.Drawing.Size(94, 23);
+            this.button_personal.TabIndex = 10;
+            this.button_personal.TabStop = false;
+            this.button_personal.Text = "Personal Mail";
+            this.toolTip1.SetToolTip(this.button_personal, "Mail List");
+            this.button_personal.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 637);
+            this.Controls.Add(this.button_personal);
             this.Controls.Add(this.button_read);
             this.Controls.Add(this.mail_button);
             this.Controls.Add(this.terminalEmulator1);
@@ -431,7 +433,6 @@ namespace Packet
             this.Controls.Add(this.node_button);
             this.Controls.Add(this.cluster_button);
             this.Controls.Add(this.forward_button);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.bbs_button);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -454,7 +455,6 @@ namespace Packet
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
-        private TextBox textBox1;
         private ToolStripMenuItem fileToolStripMenuItem1;
         private ToolStripMenuItem exitToolStripMenuItem1;
         private ToolStripMenuItem setupToolStripMenuItem;
@@ -492,6 +492,7 @@ namespace Packet
         private readonly ModifyRegistry _myRegistryNode = new ModifyRegistry();
         private readonly ModifyRegistry _myRegistrySsh = new ModifyRegistry();
         private Button button_read;
+        private Button button_personal;
     }
 }
 

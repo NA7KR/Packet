@@ -68,36 +68,7 @@ namespace Packet
 			toolStripComboBoxBGC.Items.Add("Cyan");
 			toolStripComboBoxBGC.Items.Add("White");
 
-			bbs_button.Width = 90;
-			bbs_button.Left = 20;
-			bbs_button.Top = 40;
-
-			forward_button.Width = 90;
-			forward_button.Left = 130;
-			forward_button.Top = 40;
-
-			cluster_button.Width = 90;
-			cluster_button.Left = 250;
-			cluster_button.Top = 40;
-
-			node_button.Width = 90;
-			node_button.Left = 360;
-			node_button.Top = 40;
-
-			disconnect_button.Width = 90;
-			disconnect_button.Left = 470;
-			disconnect_button.Top = 40;
-			disconnect_button.Enabled = false;
-			ssh_button.Width = 90;
-
-			ssh_button.Left = 580;
-			ssh_button.Top = 40;
-
-			mail_button.Left = 690;
-			mail_button.Top = 40;
-
-		    button_read.Left = 800;
-		    button_read.Top = 40;
+            this.OnResize(EventArgs.Empty);
 		    terminalEmulator1.dnsName = dsnName;
 		}
 
@@ -312,6 +283,45 @@ namespace Packet
 			terminalEmulator1.Top = 80;
 			terminalEmulator1.Height = (Height - 20);
 			terminalEmulator1.Width = (Width - 60);
+
+            int bwidth = ((Width - (9 * 90)) / 10);
+            bbs_button.Width = 90;
+            bbs_button.Left = bwidth;
+            bbs_button.Top = 40;
+
+            forward_button.Width = 90 ;
+            forward_button.Left = bwidth + bbs_button.Right;
+            forward_button.Top = 40;
+
+            cluster_button.Width = 90;
+            cluster_button.Left = bwidth + forward_button.Right;
+            cluster_button.Top = 40;
+
+            node_button.Width = 90;
+		    node_button.Left = bwidth + cluster_button.Right;
+            node_button.Top = 40;
+
+            disconnect_button.Width = 90;
+		    disconnect_button.Left = bwidth + node_button.Right;
+            disconnect_button.Top = 40;
+            disconnect_button.Enabled = false;
+
+
+		    ssh_button.Left = bwidth + disconnect_button.Right;
+            ssh_button.Top = 40;
+            ssh_button.Width = 90;
+
+		    mail_button.Left = bwidth + ssh_button.Right;
+            mail_button.Top = 40;
+            mail_button.Width = 90;
+
+		    button_read.Left = bwidth + mail_button.Right;
+            button_read.Top = 40;
+            button_read.Width = 90;
+
+		    button_personal.Left = bwidth + button_read.Right;
+		    button_personal.Top = 40;
+            button_personal.Width = 90;
 		}
 
 		#endregion
