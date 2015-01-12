@@ -13,7 +13,7 @@ namespace Packet
 	public partial class Mail : Form
 	{
 		private static readonly Sql Sql = new Sql();
-        ModifyRegistry _myRegistry = new ModifyRegistry();
+        ModifyRegistry _myRegistryKeep = new ModifyRegistry();
 
 		#region Mail InitializeComponent
 
@@ -70,8 +70,8 @@ namespace Packet
 
 		public void Mail_Load(object sender, EventArgs e)
 		{
-            _myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
-            _myRegistry.ShowError = true;
+            _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
+            _myRegistryKeep.ShowError = true;
             toolStripComboBox1.Items.Clear();
             toolStripComboBox1.Items.Add("Off");
             toolStripComboBox1.Items.Add("30");
@@ -79,28 +79,28 @@ namespace Packet
             toolStripComboBox1.Items.Add("90");
             toolStripComboBox1.Items.Add("180");
             toolStripComboBox1.Items.Add("365");
-            if (_myRegistry.Read("BBS-Mode") == "Off")
+            if (_myRegistryKeep.Read("DaystoKeep") == "Off")
             {
                 toolStripComboBox1.SelectedIndex = 0;
                 
             }
-            else if (_myRegistry.Read("DaystoKeep") == "30")
+            else if (_myRegistryKeep.Read("DaystoKeep") == "30")
             {
                 toolStripComboBox1.SelectedIndex = 1; 
             }
-            else if (_myRegistry.Read("DaystoKeep") == "60")
+            else if (_myRegistryKeep.Read("DaystoKeep") == "60")
             {
                 toolStripComboBox1.SelectedIndex = 2;
             }
-            else if (_myRegistry.Read("DaystoKeep") == "90")
+            else if (_myRegistryKeep.Read("DaystoKeep") == "90")
             {
                 toolStripComboBox1.SelectedIndex = 3;
             }
-            else if (_myRegistry.Read("DaystoKeep") == "180")
+            else if (_myRegistryKeep.Read("DaystoKeep") == "180")
             {
                 toolStripComboBox1.SelectedIndex = 4;
             }
-            else if (_myRegistry.Read("DaystoKeep") == "365")
+            else if (_myRegistryKeep.Read("DaystoKeep") == "365")
             {
                 toolStripComboBox1.SelectedIndex = 5;
             }
@@ -277,26 +277,26 @@ namespace Packet
             switch (toolStripComboBox1.SelectedIndex)
             {
                 case 0:
-                    _myRegistry.Write("DaystoKeep", "Off");
+                    _myRegistryKeep.Write("DaystoKeep", "Off");
                     break;
                 case 1:
-                    _myRegistry.Write("DaystoKeep", "30");
+                    _myRegistryKeep.Write("DaystoKeep", "30");
                     Sql.deletedays(30);
                     break;
                 case 2:
-                    _myRegistry.Write("DaystoKeep", "60");
+                    _myRegistryKeep.Write("DaystoKeep", "60");
                     Sql.deletedays(60);
                     break;
                 case 4:
-                    _myRegistry.Write("DaystoKeep", "90");
+                    _myRegistryKeep.Write("DaystoKeep", "90");
                     Sql.deletedays(90);
                     break;
                 case 5:
-                    _myRegistry.Write("DaystoKeep", "180");
+                    _myRegistryKeep.Write("DaystoKeep", "180");
                     Sql.deletedays(180);
                     break;
                 case 6:
-                    _myRegistry.Write("DaystoKeep", "365");
+                    _myRegistryKeep.Write("DaystoKeep", "365");
                     Sql.deletedays(365);
                     break;
             }

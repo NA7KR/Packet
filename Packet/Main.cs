@@ -19,7 +19,8 @@ namespace Packet
 	{
 		#region Form1
 
-        public const string dsnName = "DSN=Packet";	
+        public const string dsnName = "DSN=Packet";
+        ModifyRegistry _myRegistryKeep = new ModifyRegistry();
 	   
 		public Main()
 		{
@@ -31,6 +32,8 @@ namespace Packet
 			_myRegistryNode.SubKey = "SOFTWARE\\NA7KR\\Packet\\Node";
 			_myRegistryCluster.SubKey = "SOFTWARE\\NA7KR\\Packet\\Cluster";
 			_myRegistrySsh.SubKey = "SOFTWARE\\NA7KR\\Packet\\SSH";
+            _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
+            _myRegistryKeep.ShowError = true;
 			_myRegistryCom.ShowError = true;
 			_myRegistryBbs.ShowError = true;
 			_myRegistryNode.ShowError = true;
@@ -334,8 +337,33 @@ namespace Packet
 		#region forward_button_Click
 
 		private void forward_button_Click(object sender, EventArgs e)
-		{
-			terminalEmulator1.FileActive = true;
+        {
+            if (_myRegistryKeep.Read("DaystoKeep") == "Off")
+            {
+                
+            }
+            else if (_myRegistryKeep.Read("DaystoKeep") == "30")
+            {
+                Sql.deletedays(30);
+            }
+            else if (_myRegistryKeep.Read("DaystoKeep") == "60")
+            {
+                Sql.deletedays(60);
+            }
+            else if (_myRegistryKeep.Read("DaystoKeep") == "90")
+            {
+                Sql.deletedays(90);
+            }
+            else if (_myRegistryKeep.Read("DaystoKeep") == "180")
+            {
+                Sql.deletedays(1800);
+            }
+            else if (_myRegistryKeep.Read("DaystoKeep") == "365")
+            {
+                Sql.deletedays(365);
+            }
+
+            terminalEmulator1.FileActive = true;
 			forward_button.Enabled = false;
 			forward_button.Text = "Forward active";
 			terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.Read("Start Number"));
