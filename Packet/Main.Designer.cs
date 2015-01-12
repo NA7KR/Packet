@@ -418,6 +418,7 @@ namespace Packet
             this.button_personal.Text = "Personal Mail";
             this.toolTip1.SetToolTip(this.button_personal, "Mail List");
             this.button_personal.UseVisualStyleBackColor = true;
+            this.button_personal.Click += new System.EventHandler(this.button_personal_Click);
             // 
             // Main
             // 

@@ -93,6 +93,7 @@ namespace Packet
             this.button_Relpy.TabIndex = 4;
             this.button_Relpy.Text = "Reply";
             this.button_Relpy.UseVisualStyleBackColor = true;
+            this.button_Relpy.Click += new System.EventHandler(this.button_Relpy_Click);
             // 
             // button_Delete
             // 

@@ -228,5 +228,34 @@ namespace Packet
             button_OK.Left = ((Width / 3 ) - (button_OK.Width / 2));
         }
         #endregion
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("To come soon");
+        }
+
+        private void toolStripComboBox1_Click(object sender, EventArgs e)
+        {
+            
+         
+
+            
+            Sql.deletedays(90);
+        }                                
+
+        private void toolStripComboBox2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("To come soon");
+        }
+
+        private void cleanListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("To come soon");
+        }
+
+        private void cleanSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("To come soon");
+        }
     }
 }

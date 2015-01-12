@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Windows.Forms;
@@ -616,6 +617,54 @@ namespace Packet
             }
         }
         #endregion
+
+	    public static void deletedays(int days)
+	    {
+        //    string myConnectionString =
+        //@"Provider=Microsoft.ACE.OLEDB.12.0;" +
+        //@"Data Source=C:\Users\Public\Database1.accdb;";
+            using (var con = new OdbcConnection(Main.dsnName))
+            {
+                //con.ConnectionString = myConnectionString;
+                con.Open();
+                using (var da = new OdbcDataAdapter("SELECT MSG, MSGDateTime FROM Packet", con))
+                {
+                    var cb = new OdbcCommandBuilder(da);
+                    cb.QuotePrefix = "[";
+                    cb.QuoteSuffix = "]";
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    DateTime dateNow = DateTime.Now;
+                    var now =  (TimeZoneInfo.ConvertTimeToUtc(dateNow));
+                    // DateTime.Now;
+                 
+                    // leapyear help
+                    //
+                    // save current date/time (without seconds) for comparison
+                    var currDateTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        string mdhm = r["MSGDateTime"].ToString();
+                        // evaluate as current year
+                        DateTime rowDateTime = new DateTime(
+                                currDateTime.Year, Convert.ToInt32(mdhm.Substring(0, 2)), Convert.ToInt32(mdhm.Substring(2, 2)),
+                                Convert.ToInt32(mdhm.Substring(5, 2)), Convert.ToInt32(mdhm.Substring(7, 2)), 0);
+                        // if in future then convert to previous year
+                        if (rowDateTime > currDateTime)
+                        {
+                            rowDateTime = rowDateTime.AddYears(-1);
+                        }
+                        if (rowDateTime.AddDays(90) < currDateTime)
+                        {
+                            r.Delete();
+                           // MessageBox.Show("{0} - row deleted" + rowDateTime);
+                        }
+                    }
+                    da.Update(dt);  // write changes back to database
+                }
+                con.Close();
+            }
+	    }
 
     }
 
