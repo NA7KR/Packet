@@ -624,7 +624,7 @@ namespace Packet
             using (var con = new OdbcConnection(Main.dsnName))
             {
                 con.Open();
-                using (var da = new OdbcDataAdapter("SELECT MSG, MSGDateTime FROM Packet", con))
+                using (var da = new OdbcDataAdapter("SELECT MSG, MSGDateTime FROM Packet ", con))
                 {
                     var cb = new OdbcCommandBuilder(da);
                     cb.QuotePrefix = "[";

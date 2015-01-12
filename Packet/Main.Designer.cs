@@ -68,8 +68,8 @@ namespace Packet
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mail_button = new System.Windows.Forms.Button();
             this.button_read = new System.Windows.Forms.Button();
-            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
             this.button_personal = new System.Windows.Forms.Button();
+            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -169,6 +169,7 @@ namespace Packet
             this.toolStripComboBox2.Name = "toolStripComboBox2";
             this.toolStripComboBox2.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBox2.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox2_SelectedIndexChanged);
+            
             // 
             // clusterIPConfigToolStripMenuItem
             // 
@@ -371,6 +372,18 @@ namespace Packet
             this.button_read.UseVisualStyleBackColor = true;
             this.button_read.Click += new System.EventHandler(this.button_read_Click);
             // 
+            // button_personal
+            // 
+            this.button_personal.Location = new System.Drawing.Point(897, 40);
+            this.button_personal.Name = "button_personal";
+            this.button_personal.Size = new System.Drawing.Size(94, 23);
+            this.button_personal.TabIndex = 10;
+            this.button_personal.TabStop = false;
+            this.button_personal.Text = "Personal Mail";
+            this.toolTip1.SetToolTip(this.button_personal, "Mail List");
+            this.button_personal.UseVisualStyleBackColor = true;
+            this.button_personal.Click += new System.EventHandler(this.button_personal_Click);
+            // 
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
@@ -407,18 +420,6 @@ namespace Packet
             this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
-            // 
-            // button_personal
-            // 
-            this.button_personal.Location = new System.Drawing.Point(897, 40);
-            this.button_personal.Name = "button_personal";
-            this.button_personal.Size = new System.Drawing.Size(94, 23);
-            this.button_personal.TabIndex = 10;
-            this.button_personal.TabStop = false;
-            this.button_personal.Text = "Personal Mail";
-            this.toolTip1.SetToolTip(this.button_personal, "Mail List");
-            this.button_personal.UseVisualStyleBackColor = true;
-            this.button_personal.Click += new System.EventHandler(this.button_personal_Click);
             // 
             // Main
             // 

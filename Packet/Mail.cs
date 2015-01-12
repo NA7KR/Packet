@@ -67,6 +67,13 @@ namespace Packet
 
 		public void Mail_Load(object sender, EventArgs e)
 		{
+            toolStripComboBox1.Items.Clear();
+            toolStripComboBox1.Items.Add("Off");
+            toolStripComboBox1.Items.Add("30");
+            toolStripComboBox1.Items.Add("60");
+            toolStripComboBox1.Items.Add("90");
+            toolStripComboBox1.Items.Add("180");
+            toolStripComboBox1.Items.Add("365");
 			try
 			{
 				DataGridView1.Columns.Add("RXMSG", "MSG");
@@ -234,15 +241,31 @@ namespace Packet
             MessageBox.Show("To come soon");
         }
 
-        private void toolStripComboBox1_Click(object sender, EventArgs e)
+       
+        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            switch (toolStripComboBox1.SelectedIndex)
+            {
+                case 0:
+                    break;
+                case 1:
+                    Sql.deletedays(30);
+                    break;
+                case 2:
+                    Sql.deletedays(60);
+                    break;
+                case 4:
+                    Sql.deletedays(90);
+                    break;
+                case 5:
+                    Sql.deletedays(180);
+                    break;
+                case 6:
+                    Sql.deletedays(365);
+                    break;
+            }
+        }
          
-
-            
-            Sql.deletedays(90);
-        }                                
-
         private void toolStripComboBox2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("To come soon");
