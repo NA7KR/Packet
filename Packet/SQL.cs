@@ -625,7 +625,7 @@ namespace Packet
             using (var con = new OdbcConnection(Main.dsnName))
             {
                 con.Open();
-                using (var da = new OdbcDataAdapter("SELECT MSG, MSGDateTime FROM Packet ", con))
+                using (var da = new OdbcDataAdapter("SELECT MSG, MSGDateTime FROM Packet Where MSGState is null", con))
                 {
                     var cb = new OdbcCommandBuilder(da);
                     cb.QuotePrefix = "[";
@@ -659,8 +659,7 @@ namespace Packet
                         }
                         if (rowDateTime.AddDays(days) < currDateTime)
                         {
-                            r.Delete();
-                            //MessageBox.Show("row deleted " + rowDateTime);
+                            r.Delete();   
                         }
                     }
                     da.Update(dt);  // write changes back to database
