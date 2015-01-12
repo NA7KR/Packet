@@ -637,7 +637,11 @@ namespace Packet
                     DateTime dateNow = DateTime.Now;
                     var now =  (TimeZoneInfo.ConvertTimeToUtc(dateNow));
                     // DateTime.Now;
-                 
+                    //if (DateTime.IsLeapYear(year))
+                    //{
+                    //    Note: Sharp-eyed observers may notice that this code can fail if the timestamp values include February 29 and the current year
+                    //    is not a leap year. Error handling for that special case is left as "an exercise for the reader". :)
+                    //}
                     // leapyear help
                     //
                     // save current date/time (without seconds) for comparison
