@@ -48,7 +48,6 @@ namespace Packet
             this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
             this.cleanListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cleanSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mailConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSubject = new System.Windows.Forms.ToolStripMenuItem();
@@ -177,13 +176,11 @@ namespace Packet
             // 
             this.toolStripComboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.toolStripComboBox1.AutoToolTip = true;
-            this.toolStripComboBox1.Items.AddRange(new object[] { });
             this.toolStripComboBox1.MergeIndex = 0;
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBox1.Text = "Off";
             this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
-            
             // 
             // keepQTYToolStripMenuItem
             // 
@@ -207,13 +204,12 @@ namespace Packet
             this.toolStripComboBox2.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBox2.Text = "Off";
             this.toolStripComboBox2.ToolTipText = "how log to keep list";
-            this.toolStripComboBox2.Click += new System.EventHandler(this.toolStripComboBox2_Click);
+            this.toolStripComboBox2.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox2_SelectedIndexChanged);
             // 
             // cleanListToolStripMenuItem
             // 
             this.cleanListToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.allToolStripMenuItem,
-            this.cleanSelectedToolStripMenuItem});
+            this.allToolStripMenuItem});
             this.cleanListToolStripMenuItem.Name = "cleanListToolStripMenuItem";
             this.cleanListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cleanListToolStripMenuItem.Text = "Clean List";
@@ -222,15 +218,9 @@ namespace Packet
             // allToolStripMenuItem
             // 
             this.allToolStripMenuItem.Name = "allToolStripMenuItem";
-            this.allToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.allToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.allToolStripMenuItem.Text = "All";
-            // 
-            // cleanSelectedToolStripMenuItem
-            // 
-            this.cleanSelectedToolStripMenuItem.Name = "cleanSelectedToolStripMenuItem";
-            this.cleanSelectedToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
-            this.cleanSelectedToolStripMenuItem.Text = "Clean Selected";
-            this.cleanSelectedToolStripMenuItem.Click += new System.EventHandler(this.cleanSelectedToolStripMenuItem_Click);
+            this.allToolStripMenuItem.Click += new System.EventHandler(this.allToolStripMenuItem_Click);
             // 
             // mailConfigToolStripMenuItem
             // 
@@ -438,7 +428,6 @@ namespace Packet
         private ToolStripMenuItem cleanListToolStripMenuItem;
 		private ToolStripMenuItem mailConfigToolStripMenuItem;
         private ToolStripMenuItem allToolStripMenuItem;
-		private ToolStripMenuItem cleanSelectedToolStripMenuItem;
 		private ToolStripMenuItem downloadToolStripMenuItem;
 		private ToolStripMenuItem ToolStripMenuItemSubject;
 		private ToolStripMenuItem configToolStripMenuItem2;

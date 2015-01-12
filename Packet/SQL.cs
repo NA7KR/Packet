@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using PacketComs;
 
 #endregion
@@ -629,21 +630,28 @@ namespace Packet
                     var cb = new OdbcCommandBuilder(da);
                     cb.QuotePrefix = "[";
                     cb.QuoteSuffix = "]";
+                    int s_year = 2000;
                     var dt = new DataTable();
                     da.Fill(dt);
                     DateTime dateNow = DateTime.Now;
                     var now =  (TimeZoneInfo.ConvertTimeToUtc(dateNow));
                     // save current date/time (without seconds) for comparison
-                    var currDateTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+                    var currDateTime = new DateTime(s_year, now.Month, now.Day, now.Hour, now.Minute, 0);
                     foreach (DataRow r in dt.Rows)
                     {
                         string mdhm = r["MSGDateTime"].ToString();
                         // evaluate as current year
                         var s_month = Convert.ToInt32(mdhm.Substring(0, 2));
-                        var s_day = Convert.ToInt32(mdhm.Substring(2, 2));
+                        var s_day = Convert.ToInt32(mdhm.Substring(2, 2));  
                         var s_hr = Convert.ToInt32(mdhm.Substring(5, 2));
                         var s_min = Convert.ToInt32(mdhm.Substring(7, 2));
-                        DateTime rowDateTime = new DateTime(currDateTime.Year, s_month, s_day, s_hr, s_min, 0);
+
+                        if (s_day == 29 && s_month == 2)
+                        {
+                            
+                        }
+
+                        DateTime rowDateTime = new DateTime(s_year, s_month, s_day, s_hr, s_min, 0);
                         // if in future then convert to previous year
                         if (rowDateTime > currDateTime)
                         {
@@ -652,7 +660,7 @@ namespace Packet
                         if (rowDateTime.AddDays(days) < currDateTime)
                         {
                             r.Delete();
-                            MessageBox.Show("{0} - row deleted" + rowDateTime);
+                            //MessageBox.Show("row deleted " + rowDateTime);
                         }
                     }
                     da.Update(dt);  // write changes back to database

@@ -1,6 +1,7 @@
 ﻿#region Using Directive
 
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using PacketComs;
@@ -12,12 +13,14 @@ namespace Packet
 	public partial class Mail : Form
 	{
 		private static readonly Sql Sql = new Sql();
+        ModifyRegistry _myRegistry = new ModifyRegistry();
 
 		#region Mail InitializeComponent
 
 		public Mail()
 		{
 			InitializeComponent();
+            
 		}
 
 		#endregion
@@ -67,6 +70,8 @@ namespace Packet
 
 		public void Mail_Load(object sender, EventArgs e)
 		{
+            _myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
+            _myRegistry.ShowError = true;
             toolStripComboBox1.Items.Clear();
             toolStripComboBox1.Items.Add("Off");
             toolStripComboBox1.Items.Add("30");
@@ -74,6 +79,31 @@ namespace Packet
             toolStripComboBox1.Items.Add("90");
             toolStripComboBox1.Items.Add("180");
             toolStripComboBox1.Items.Add("365");
+            if (_myRegistry.Read("BBS-Mode") == "Off")
+            {
+                toolStripComboBox1.SelectedIndex = 0;
+                
+            }
+            else if (_myRegistry.Read("DaystoKeep") == "30")
+            {
+                toolStripComboBox1.SelectedIndex = 1; 
+            }
+            else if (_myRegistry.Read("DaystoKeep") == "60")
+            {
+                toolStripComboBox1.SelectedIndex = 2;
+            }
+            else if (_myRegistry.Read("DaystoKeep") == "90")
+            {
+                toolStripComboBox1.SelectedIndex = 3;
+            }
+            else if (_myRegistry.Read("DaystoKeep") == "180")
+            {
+                toolStripComboBox1.SelectedIndex = 4;
+            }
+            else if (_myRegistry.Read("DaystoKeep") == "365")
+            {
+                toolStripComboBox1.SelectedIndex = 5;
+            }
 			try
 			{
 				DataGridView1.Columns.Add("RXMSG", "MSG");
@@ -241,35 +271,38 @@ namespace Packet
             MessageBox.Show("To come soon");
         }
 
-       
+        #region Date 
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBox1.SelectedIndex)
             {
                 case 0:
+                    _myRegistry.Write("DaystoKeep", "Off");
                     break;
                 case 1:
+                    _myRegistry.Write("DaystoKeep", "30");
                     Sql.deletedays(30);
                     break;
                 case 2:
+                    _myRegistry.Write("DaystoKeep", "60");
                     Sql.deletedays(60);
                     break;
                 case 4:
+                    _myRegistry.Write("DaystoKeep", "90");
                     Sql.deletedays(90);
                     break;
                 case 5:
+                    _myRegistry.Write("DaystoKeep", "180");
                     Sql.deletedays(180);
                     break;
                 case 6:
+                    _myRegistry.Write("DaystoKeep", "365");
                     Sql.deletedays(365);
                     break;
             }
         }
-         
-        private void toolStripComboBox2_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("To come soon");
-        }
+        #endregion
+       
 
         private void cleanListToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -278,6 +311,19 @@ namespace Packet
 
         private void cleanSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("To come soon");
+        }
+
+        #region QTY
+        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show("To come soon");
+        }
+        #endregion
+
+        private void allToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Sure you want to do this?", "Important Query", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             MessageBox.Show("To come soon");
         }
     }
