@@ -14,7 +14,7 @@ namespace Packet
 	{
 		private static readonly Sql Sql = new Sql();
         ModifyRegistry _myRegistryKeep = new ModifyRegistry();
-        ModifyRegistry _myRegistrydw = new ModifyRegistry();
+         
 
 		#region Mail InitializeComponent
 
@@ -71,44 +71,122 @@ namespace Packet
 
 		public void Mail_Load(object sender, EventArgs e)
 		{
+		    try
+		    {
+                toolStripComboBoxTime.Items.Clear();
+                toolStripComboBoxTime.Items.Add("Off");
+                toolStripComboBoxTime.Items.Add("30");
+                toolStripComboBoxTime.Items.Add("60");
+                toolStripComboBoxTime.Items.Add("90");
+                toolStripComboBoxTime.Items.Add("180");
+
+                toolStripComboBoxQTY.Items.Clear();
+                toolStripComboBoxQTY.Items.Add("Off");
+                toolStripComboBoxQTY.Items.Add("100");
+                toolStripComboBoxQTY.Items.Add("500");
+                toolStripComboBoxQTY.Items.Add("1000");
+                toolStripComboBoxQTY.Items.Add("1500");
+                toolStripComboBoxQTY.Items.Add("2000");
+                toolStripComboBoxQTY.Items.Add("5000");
+                toolStripComboBoxQTY.Items.Add("10000");
+                toolStripComboBoxQTY.Items.Add("20000");
+
+                _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
+                _myRegistryKeep.ShowError = true;
+
+		        int idays = _myRegistryKeep.ReadDW("DaystoKeep");
+		        Sql.deletedays(idays);
+                    
+                Loader();
+		    }
+		    catch (Exception)
+		    {
+		        
+		        throw;
+		    }
+           
+        }
+        #endregion
+
+        #region Loader
+        private void Loader()
+        {
             _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
             _myRegistryKeep.ShowError = true;
-            _myRegistrydw.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
-		    _myRegistrydw.ShowError = true;
-            toolStripComboBoxTime.Items.Clear();
-            toolStripComboBoxTime.Items.Add("Off");
-            toolStripComboBoxTime.Items.Add("30");
-            toolStripComboBoxTime.Items.Add("60");
-            toolStripComboBoxTime.Items.Add("90");
-            toolStripComboBoxTime.Items.Add("180");
-            toolStripComboBoxTime.Items.Add("365");
-            if (_myRegistryKeep.Read("DaystoKeep") == "Off")
+            
+          
+
+            int QTYtoKeep = _myRegistryKeep.ReadDW("QTYtoKeep");
+            if (QTYtoKeep == 0)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 0;   
+            }
+            else if (QTYtoKeep == 100)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 1; 
+            }
+            else if (QTYtoKeep == 500)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 2;
+            }
+            else if (QTYtoKeep == 1000)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 3;
+            }
+            else if (QTYtoKeep == 1500)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 4;
+            }
+            else if (QTYtoKeep == 2000)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 5;
+            }
+            else if (QTYtoKeep == 5000)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 6;
+            }
+            else if (QTYtoKeep == 10000)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 7;
+            }
+            else if (QTYtoKeep == 20000)
+            {
+                toolStripComboBoxQTY.SelectedIndex = 8;
+            }
+            else
+            {
+                _myRegistryKeep.Write("DaystoKeep", 0);
+            }
+
+            int DaystoKeep = _myRegistryKeep.ReadDW("DaystoKeep");
+            if (DaystoKeep == 0)
             {
                 toolStripComboBoxTime.SelectedIndex = 0;
-                
             }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "30")
+            else if (DaystoKeep == 30)
             {
-                toolStripComboBoxTime.SelectedIndex = 1; 
+                toolStripComboBoxTime.SelectedIndex = 1;
             }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "60")
+            else if (DaystoKeep == 60)
             {
                 toolStripComboBoxTime.SelectedIndex = 2;
             }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "90")
+            else if (DaystoKeep == 90)
             {
                 toolStripComboBoxTime.SelectedIndex = 3;
             }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "180")
+            else if (DaystoKeep == 180)
             {
                 toolStripComboBoxTime.SelectedIndex = 4;
             }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "365")
+            else
             {
-                toolStripComboBoxTime.SelectedIndex = 5;
+                _myRegistryKeep.Write("DaystoKeep", 0);
             }
+
 			try
 			{
+                
 				DataGridView1.Columns.Add("RXMSG", "MSG");
 				DataGridView1.Columns.Add("RXTSLD", "TSLD");
 				DataGridView1.Columns.Add("RXSIZE", "SIZE");
@@ -280,55 +358,69 @@ namespace Packet
             switch (toolStripComboBoxTime.SelectedIndex)
             {
                 case 0:
-                    _myRegistryKeep.Write("DaystoKeep", "Off");
+                    _myRegistryKeep.Write("DaystoKeep", 0);
                     break;
                 case 1:
-                    _myRegistryKeep.Write("DaystoKeep", "30");
-                    Sql.deletedays(30);
+                    _myRegistryKeep.Write("DaystoKeep", 30);
                     break;
                 case 2:
-                    _myRegistryKeep.Write("DaystoKeep", "60");
-                    Sql.deletedays(60);
+                    _myRegistryKeep.Write("DaystoKeep", 60);
                     break;
                 case 4:
-                    _myRegistryKeep.Write("DaystoKeep", "90");
-                    Sql.deletedays(90);
+                    _myRegistryKeep.Write("DaystoKeep", 90);
+                    
                     break;
                 case 5:
-                    _myRegistryKeep.Write("DaystoKeep", "180");
-                    Sql.deletedays(180);
+                    _myRegistryKeep.Write("DaystoKeep", 180);
                     break;
-                case 6:
-                    _myRegistryKeep.Write("DaystoKeep", "365");
-                    Sql.deletedays(365);
-                    break;
+                
             }
+            Loader();
         }
         #endregion
        
 
-        private void cleanListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("To come soon");
-        }
-
-       
-
         private void allToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+
             MessageBox.Show("Sure you want to do this?", "Important Query", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             MessageBox.Show("To come soon");
         }
 
-        private void toolStripTextBox1_Leave(object sender, EventArgs e)
-        {
-            
-        }
 
-        private void toolStripTextBox1_Enter(object sender, EventArgs e)
+        private void toolStripComboBoxQTY_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            switch (toolStripComboBoxQTY.SelectedIndex)
+            {
+                case 0:
+                    _myRegistryKeep.Write("QTYtoKeep", 0);
+                    break;
+                case 1:
+                    _myRegistryKeep.Write("QTYtoKeep", 100);
+                    break;
+                case 2:
+                    _myRegistryKeep.Write("QTYtoKeep", 500);
+                    break;
+                case 4:
+                    _myRegistryKeep.Write("QTYtoKeep", 1000);
+                    break;
+                case 5:
+                    _myRegistryKeep.Write("QTYtoKeep", 1500);
+                    break;
+                case 6:
+                    _myRegistryKeep.Write("QTYtoKeep", 2000);
+                    break;
+                case 7:
+                    _myRegistryKeep.Write("QTYtoKeep", 5000);
+                    break;
+                case 8:
+                    _myRegistryKeep.Write("QTYtoKeep", 10000);
+                    break;
+                case 9:
+                    _myRegistryKeep.Write("QTYtoKeep", 20000);
+                    break;
+            }
+            Loader();
         }
     }
 }

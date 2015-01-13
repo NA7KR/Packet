@@ -17,6 +17,8 @@ namespace Packet
 
 	public partial class Main : Form
 	{
+        ModifyRegistry _myRegistryKeep = new ModifyRegistry();
+
 		#region Form1
 
         public const string dsnName = "DSN=Packet";	
@@ -31,6 +33,8 @@ namespace Packet
 			_myRegistryNode.SubKey = "SOFTWARE\\NA7KR\\Packet\\Node";
 			_myRegistryCluster.SubKey = "SOFTWARE\\NA7KR\\Packet\\Cluster";
 			_myRegistrySsh.SubKey = "SOFTWARE\\NA7KR\\Packet\\SSH";
+            _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
+            _myRegistryKeep.ShowError = true;
 			_myRegistryCom.ShowError = true;
 			_myRegistryBbs.ShowError = true;
 			_myRegistryNode.ShowError = true;
@@ -335,10 +339,12 @@ namespace Packet
 
 		private void forward_button_Click(object sender, EventArgs e)
 		{
+            Sql.deletedays(_myRegistryKeep.ReadDW("DaystoKeep"));
+            Sql.deleteCount(_myRegistryKeep.ReadDW("QTYtoKeep"));
 			terminalEmulator1.FileActive = true;
 			forward_button.Enabled = false;
 			forward_button.Text = "Forward active";
-			terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.Read("Start Number"));
+			terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.ReadDW("Start Number"));
 			terminalEmulator1.Startforward();		
 		}
 
@@ -844,7 +850,7 @@ namespace Packet
 		private void terminalEmulator1_LastNumberevt(object sender, EventArgs e)
 		{
 			int number = (terminalEmulator1.LastNumber);
-			_myRegistryBbs.Write("Start Number", number.ToString());
+			_myRegistryBbs.Write("Start Number", number);
 		}
 
 		#endregion

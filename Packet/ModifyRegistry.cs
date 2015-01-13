@@ -66,6 +66,29 @@ namespace Packet
 
 		#endregion
 
+        #region ReadDW
+
+        public Int32 ReadDW(string keyName)
+        {
+            var rk = _baseRegistryKey;
+            var sk1 = rk.OpenSubKey(_subKey);
+            if (sk1 == null)
+            {
+                return 0;
+            }
+            try
+            {
+                return Convert.ToInt32(sk1.GetValue(keyName));
+            }
+            catch (Exception e)
+            {
+                ShowErrorMessage(e, "Reading registry " + keyName);
+                return 0;
+            }
+        }
+
+        #endregion
+
 		#region BRead
 
 		public string BRead(string keyName)

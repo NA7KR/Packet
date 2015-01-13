@@ -45,6 +45,7 @@ namespace Packet
             this.keepTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBoxTime = new System.Windows.Forms.ToolStripComboBox();
             this.keepQTYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxQTY = new System.Windows.Forms.ToolStripComboBox();
             this.cleanListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allToolStripMenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
             this.mailConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,6 @@ namespace Packet
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripComboBoxQTY = new System.Windows.Forms.ToolStripComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -190,6 +190,12 @@ namespace Packet
             this.keepQTYToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.keepQTYToolStripMenuItem.Text = "Keep QTY";
             // 
+            // toolStripComboBoxQTY
+            // 
+            this.toolStripComboBoxQTY.Name = "toolStripComboBoxQTY";
+            this.toolStripComboBoxQTY.Size = new System.Drawing.Size(100, 23);
+            this.toolStripComboBoxQTY.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxQTY_SelectedIndexChanged);
+            // 
             // cleanListToolStripMenuItem
             // 
             this.cleanListToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -201,7 +207,7 @@ namespace Packet
             // allToolStripMenuItemClear
             // 
             this.allToolStripMenuItemClear.Name = "allToolStripMenuItemClear";
-            this.allToolStripMenuItemClear.Size = new System.Drawing.Size(152, 22);
+            this.allToolStripMenuItemClear.Size = new System.Drawing.Size(88, 22);
             this.allToolStripMenuItemClear.Text = "All";
             this.allToolStripMenuItemClear.Click += new System.EventHandler(this.allToolStripMenuItem_Click);
             // 
@@ -222,7 +228,7 @@ namespace Packet
             this.ToolStripMenuItemFrom,
             this.ToolStripMenuItemRoute});
             this.downloadToolStripMenuItem.Name = "downloadToolStripMenuItem";
-            this.downloadToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.downloadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.downloadToolStripMenuItem.Text = "To Download";
             // 
             // ToolStripMenuItemSubject
@@ -300,7 +306,7 @@ namespace Packet
             this.toolStripMenuItem6,
             this.toolStripMenuItem8});
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deleteToolStripMenuItem.Text = "To Delete";
             // 
             // toolStripMenuItem1
@@ -370,13 +376,6 @@ namespace Packet
             this.toolStripMenuItem9.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem9.Text = "Config";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.toolStripMenuItem9_Click);
-            // 
-            // toolStripComboBoxQTY
-            // 
-            this.toolStripComboBoxQTY.Name = "toolStripComboBoxQTY";
-            this.toolStripComboBoxQTY.Size = new System.Drawing.Size(100, 23);
-            this.toolStripComboBoxQTY.Enter += new System.EventHandler(this.toolStripTextBox1_Enter);
-            this.toolStripComboBoxQTY.Leave += new System.EventHandler(this.toolStripTextBox1_Leave);
             // 
             // Mail
             // 
