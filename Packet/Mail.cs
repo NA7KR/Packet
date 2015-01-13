@@ -349,7 +349,8 @@ namespace Packet
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("To come soon");
+            var box = new Custom();
+            box.ShowDialog();
         }
 
         #region Date 
