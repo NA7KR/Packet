@@ -383,8 +383,16 @@ namespace Packet
         private void allToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            MessageBox.Show("Sure you want to do this?", "Important Query", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            MessageBox.Show("To come soon");
+           DialogResult result1 = MessageBox.Show("Sure you want to do this?", "Important Query", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result1 == DialogResult.Yes )
+            {
+                Sql.Sqlupdateclear("MSGTO");
+                Sql.Sqlupdateclear("MSGFrom");
+                Sql.Sqlupdateclear("MSGRoute");
+                Sql.Sqlupdateclear("MSGSubject");
+                Close();
+            }
+
         }
 
 

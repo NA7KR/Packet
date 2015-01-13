@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using PacketComs;
@@ -678,7 +679,30 @@ namespace Packet
 
         #endregion
 
+        #region clear 
+        public void Sqlupdateclear(String sTable )
+        {
+            try
+            {
+                using (var con = new OdbcConnection(Main.dsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        cmd.CommandText = "UPDATE " + sTable + " SET  Selected = null Where Selected <> null";
+                        con.Open();
+                        cmd.Connection = con;
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                }
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
 
+        #endregion
 
         #region SQL delete count
 
