@@ -75,37 +75,37 @@ namespace Packet
             _myRegistryKeep.ShowError = true;
             _myRegistrydw.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
 		    _myRegistrydw.ShowError = true;
-            toolStripComboBox1.Items.Clear();
-            toolStripComboBox1.Items.Add("Off");
-            toolStripComboBox1.Items.Add("30");
-            toolStripComboBox1.Items.Add("60");
-            toolStripComboBox1.Items.Add("90");
-            toolStripComboBox1.Items.Add("180");
-            toolStripComboBox1.Items.Add("365");
+            toolStripComboBoxTime.Items.Clear();
+            toolStripComboBoxTime.Items.Add("Off");
+            toolStripComboBoxTime.Items.Add("30");
+            toolStripComboBoxTime.Items.Add("60");
+            toolStripComboBoxTime.Items.Add("90");
+            toolStripComboBoxTime.Items.Add("180");
+            toolStripComboBoxTime.Items.Add("365");
             if (_myRegistryKeep.Read("DaystoKeep") == "Off")
             {
-                toolStripComboBox1.SelectedIndex = 0;
+                toolStripComboBoxTime.SelectedIndex = 0;
                 
             }
             else if (_myRegistryKeep.Read("DaystoKeep") == "30")
             {
-                toolStripComboBox1.SelectedIndex = 1; 
+                toolStripComboBoxTime.SelectedIndex = 1; 
             }
             else if (_myRegistryKeep.Read("DaystoKeep") == "60")
             {
-                toolStripComboBox1.SelectedIndex = 2;
+                toolStripComboBoxTime.SelectedIndex = 2;
             }
             else if (_myRegistryKeep.Read("DaystoKeep") == "90")
             {
-                toolStripComboBox1.SelectedIndex = 3;
+                toolStripComboBoxTime.SelectedIndex = 3;
             }
             else if (_myRegistryKeep.Read("DaystoKeep") == "180")
             {
-                toolStripComboBox1.SelectedIndex = 4;
+                toolStripComboBoxTime.SelectedIndex = 4;
             }
             else if (_myRegistryKeep.Read("DaystoKeep") == "365")
             {
-                toolStripComboBox1.SelectedIndex = 5;
+                toolStripComboBoxTime.SelectedIndex = 5;
             }
 			try
 			{
@@ -277,7 +277,7 @@ namespace Packet
         #region Date 
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (toolStripComboBox1.SelectedIndex)
+            switch (toolStripComboBoxTime.SelectedIndex)
             {
                 case 0:
                     _myRegistryKeep.Write("DaystoKeep", "Off");
