@@ -14,6 +14,7 @@ namespace Packet
 	{
 		private static readonly Sql Sql = new Sql();
         ModifyRegistry _myRegistryKeep = new ModifyRegistry();
+        ModifyRegistry _myRegistrydw = new ModifyRegistry();
 
 		#region Mail InitializeComponent
 
@@ -72,6 +73,8 @@ namespace Packet
 		{
             _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
             _myRegistryKeep.ShowError = true;
+            _myRegistrydw.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
+		    _myRegistrydw.ShowError = true;
             toolStripComboBox1.Items.Clear();
             toolStripComboBox1.Items.Add("Off");
             toolStripComboBox1.Items.Add("30");
@@ -309,22 +312,23 @@ namespace Packet
             MessageBox.Show("To come soon");
         }
 
-        private void cleanSelectedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("To come soon");
-        }
-
-        #region QTY
-        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            MessageBox.Show("To come soon");
-        }
-        #endregion
+       
 
         private void allToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            
             MessageBox.Show("Sure you want to do this?", "Important Query", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             MessageBox.Show("To come soon");
+        }
+
+        private void toolStripTextBox1_Leave(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void toolStripTextBox1_Enter(object sender, EventArgs e)
+        {
+            
         }
     }
 }

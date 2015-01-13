@@ -19,8 +19,7 @@ namespace Packet
 	{
 		#region Form1
 
-        public const string dsnName = "DSN=Packet";
-        ModifyRegistry _myRegistryKeep = new ModifyRegistry();
+        public const string dsnName = "DSN=Packet";	
 	   
 		public Main()
 		{
@@ -32,8 +31,6 @@ namespace Packet
 			_myRegistryNode.SubKey = "SOFTWARE\\NA7KR\\Packet\\Node";
 			_myRegistryCluster.SubKey = "SOFTWARE\\NA7KR\\Packet\\Cluster";
 			_myRegistrySsh.SubKey = "SOFTWARE\\NA7KR\\Packet\\SSH";
-            _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
-            _myRegistryKeep.ShowError = true;
 			_myRegistryCom.ShowError = true;
 			_myRegistryBbs.ShowError = true;
 			_myRegistryNode.ShowError = true;
@@ -337,33 +334,8 @@ namespace Packet
 		#region forward_button_Click
 
 		private void forward_button_Click(object sender, EventArgs e)
-        {
-            if (_myRegistryKeep.Read("DaystoKeep") == "Off")
-            {
-                
-            }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "30")
-            {
-                Sql.deletedays(30);
-            }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "60")
-            {
-                Sql.deletedays(60);
-            }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "90")
-            {
-                Sql.deletedays(90);
-            }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "180")
-            {
-                Sql.deletedays(1800);
-            }
-            else if (_myRegistryKeep.Read("DaystoKeep") == "365")
-            {
-                Sql.deletedays(365);
-            }
-
-            terminalEmulator1.FileActive = true;
+		{
+			terminalEmulator1.FileActive = true;
 			forward_button.Enabled = false;
 			forward_button.Text = "Forward active";
 			terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.Read("Start Number"));
@@ -903,12 +875,8 @@ namespace Packet
 
         private void button_personal_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("To come soon");
+
         }
-
-        
-
-        
 		//string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
 		//string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
 

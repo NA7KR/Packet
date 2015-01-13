@@ -45,7 +45,6 @@ namespace Packet
             this.keepTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.keepQTYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
             this.cleanListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mailConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,6 +68,7 @@ namespace Packet
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -185,26 +185,10 @@ namespace Packet
             // keepQTYToolStripMenuItem
             // 
             this.keepQTYToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBox2});
+            this.toolStripTextBox1});
             this.keepQTYToolStripMenuItem.Name = "keepQTYToolStripMenuItem";
             this.keepQTYToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.keepQTYToolStripMenuItem.Text = "Keep QTY";
-            // 
-            // toolStripComboBox2
-            // 
-            this.toolStripComboBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.toolStripComboBox2.AutoToolTip = true;
-            this.toolStripComboBox2.Items.AddRange(new object[] {
-            "Off",
-            "1000",
-            "10000",
-            "Custom"});
-            this.toolStripComboBox2.MergeIndex = 0;
-            this.toolStripComboBox2.Name = "toolStripComboBox2";
-            this.toolStripComboBox2.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBox2.Text = "Off";
-            this.toolStripComboBox2.ToolTipText = "how log to keep list";
-            this.toolStripComboBox2.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox2_SelectedIndexChanged);
             // 
             // cleanListToolStripMenuItem
             // 
@@ -213,7 +197,6 @@ namespace Packet
             this.cleanListToolStripMenuItem.Name = "cleanListToolStripMenuItem";
             this.cleanListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cleanListToolStripMenuItem.Text = "Clean List";
-            this.cleanListToolStripMenuItem.Click += new System.EventHandler(this.cleanListToolStripMenuItem_Click);
             // 
             // allToolStripMenuItem
             // 
@@ -388,6 +371,13 @@ namespace Packet
             this.toolStripMenuItem9.Text = "Config";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.toolStripMenuItem9_Click);
             // 
+            // toolStripTextBox1
+            // 
+            this.toolStripTextBox1.Name = "toolStripTextBox1";
+            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox1.Enter += new System.EventHandler(this.toolStripTextBox1_Enter);
+            this.toolStripTextBox1.Leave += new System.EventHandler(this.toolStripTextBox1_Leave);
+            // 
             // Mail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -424,7 +414,6 @@ namespace Packet
         private ToolStripMenuItem keepTimeToolStripMenuItem;
         private ToolStripComboBox toolStripComboBox1;
         private ToolStripMenuItem keepQTYToolStripMenuItem;
-        private ToolStripComboBox toolStripComboBox2;
         private ToolStripMenuItem cleanListToolStripMenuItem;
 		private ToolStripMenuItem mailConfigToolStripMenuItem;
         private ToolStripMenuItem allToolStripMenuItem;
@@ -448,5 +437,6 @@ namespace Packet
 		private ToolStripMenuItem toolStripMenuItem7;
 		private ToolStripMenuItem toolStripMenuItem8;
 		private ToolStripMenuItem toolStripMenuItem9;
+        private ToolStripTextBox toolStripTextBox1;
     }
 }
