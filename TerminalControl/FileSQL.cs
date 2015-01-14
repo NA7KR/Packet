@@ -172,6 +172,25 @@ namespace PacketComs
         }
         #endregion
 
+        #region SelectMakeCustomTable
+        public void SelectMakeCustomTable(string textVale, Int32 intsize, string tableName, string dsnName, string systemDsn)
+        {
+            if (odbc.CheckForDSN(systemDsn) > 0)
+            {
+                if (DoesTableExist(tableName, dsnName) == false)
+                {
+                    SqlMakeTable("CREATE TABLE " + tableName + " (  " + textVale + " CHAR(" + intsize + "), TableName CHAR(20), Enable CHAR(1)  )");
+                }
+            }
+            else
+            {
+                odbc.CreateDSN(dsnName);
+                MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+            }
+        }
+        #endregion
+
         #region Mid
         private static string Mid(string param, int startIndex, int length)
         {

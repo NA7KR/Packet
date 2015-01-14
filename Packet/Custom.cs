@@ -1,29 +1,36 @@
 ﻿#region Using Directive
-
 using System;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using PacketComs;
-
 #endregion
 
 namespace Packet
 {
-
     public partial class Custom : Form
-   {
-        private static readonly
-            FileSql MyFiles = new FileSql();
-            private static readonly
-            Sql Sql = new Sql();
-           
-            public bool loaded = false;
+    {
         
+        private static readonly FileSql MyFiles = new FileSql();
 
-        #region Load
-        private void Custom_Load_1(object sender, EventArgs e)
+        public Custom()
         {
-            MyFiles.SelectMakeTable("CustomList", 50, "CustomList", "DSN=Packet", "Packet");
+            InitializeComponent();
+        }
+
+        #region Custom Loader
+        private void Custom_Load(object sender, EventArgs e)
+        {
+            Loader();
         }
         #endregion
-   }
+
+        #region Loader
+        private void Loader()
+        {
+            MyFiles.SelectMakeCustomTable("CustomList", 50, "CustomList", "DSN=Packet", "Packet");
+        }
+        #endregion
+
+    }
 }

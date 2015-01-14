@@ -63,12 +63,6 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Custom.Designer.cs">
-      <DependentUpon>Custom.cs</DependentUpon>
-    </Compile>
     <Compile Include="DtoListMSGFrom.cs" />
     <Compile Include="DtoList_MSGRoute.cs" />
     <Compile Include="DtoList_MSGSubject.cs" />
@@ -79,6 +73,12 @@
     </Compile>
     <Compile Include="Com_Form.Designer.cs">
       <DependentUpon>Com_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Custom.Designer.cs">
+      <DependentUpon>Custom.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
