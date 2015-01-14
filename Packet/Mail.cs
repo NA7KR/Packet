@@ -347,12 +347,7 @@ namespace Packet
         }
         #endregion
 
-        private void toolStripMenuItem3_Click(object sender, EventArgs e)
-        {
-            var box = new Custom();
-            box.ShowDialog();
-        }
-
+ 
         #region Date 
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -379,8 +374,8 @@ namespace Packet
             Loader();
         }
         #endregion
-       
 
+        #region  Clear
         private void allToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -395,8 +390,9 @@ namespace Packet
             }
 
         }
+        #endregion
 
-
+        #region QTY to keep
         private void toolStripComboBoxQTY_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxQTY.SelectedIndex)
@@ -431,5 +427,14 @@ namespace Packet
             }
             Loader();
         }
+        #endregion
+
+        #region Custom
+        private void customToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var box = new Custom();
+            box.ShowDialog();
+        }
+        #endregion
     }
 }

@@ -1,20 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Using Directive
+
+using System;
 using System.Windows.Forms;
+using PacketComs;
+
+#endregion
 
 namespace Packet
 {
+
     public partial class Custom : Form
-    {
-        public Custom()
+   {
+        private static readonly
+            FileSql MyFiles = new FileSql();
+            private static readonly
+            Sql Sql = new Sql();
+           
+            public bool loaded = false;
+        
+
+        #region Load
+        private void Custom_Load_1(object sender, EventArgs e)
         {
-            InitializeComponent();
+            MyFiles.SelectMakeTable("CustomList", 50, "CustomList", "DSN=Packet", "Packet");
         }
-    }
+        #endregion
+   }
 }

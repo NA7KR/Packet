@@ -120,6 +120,9 @@
     <EmbeddedResource Include="Com_Form.resx">
       <DependentUpon>Com_Form.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Custom.resx">
+      <DependentUpon>Custom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>

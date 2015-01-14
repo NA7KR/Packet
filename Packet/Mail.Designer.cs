@@ -62,7 +62,6 @@ namespace Packet
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemToDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
@@ -150,7 +149,7 @@ namespace Packet
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -207,7 +206,7 @@ namespace Packet
             // allToolStripMenuItemClear
             // 
             this.allToolStripMenuItemClear.Name = "allToolStripMenuItemClear";
-            this.allToolStripMenuItemClear.Size = new System.Drawing.Size(152, 22);
+            this.allToolStripMenuItemClear.Size = new System.Drawing.Size(88, 22);
             this.allToolStripMenuItemClear.Text = "All";
             this.allToolStripMenuItemClear.Click += new System.EventHandler(this.allToolStripMenuItem_Click);
             // 
@@ -237,28 +236,29 @@ namespace Packet
             this.configToolStripMenuItem2,
             this.customToolStripMenuItem});
             this.ToolStripMenuItemSubject.Name = "ToolStripMenuItemSubject";
-            this.ToolStripMenuItemSubject.Size = new System.Drawing.Size(113, 22);
+            this.ToolStripMenuItemSubject.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItemSubject.Text = "Subject";
             // 
             // configToolStripMenuItem2
             // 
             this.configToolStripMenuItem2.Name = "configToolStripMenuItem2";
-            this.configToolStripMenuItem2.Size = new System.Drawing.Size(116, 22);
+            this.configToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.configToolStripMenuItem2.Text = "Config";
             this.configToolStripMenuItem2.Click += new System.EventHandler(this.configToolStripMenuItem2_Click_1);
             // 
             // customToolStripMenuItem
             // 
             this.customToolStripMenuItem.Name = "customToolStripMenuItem";
-            this.customToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.customToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.customToolStripMenuItem.Text = "Custom";
+            this.customToolStripMenuItem.Click += new System.EventHandler(this.customToolStripMenuItem_Click);
             // 
             // toToolStripMenuItem
             // 
             this.toToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemTO});
             this.toToolStripMenuItem.Name = "toToolStripMenuItem";
-            this.toToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.toToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.toToolStripMenuItem.Text = "To";
             // 
             // toolStripMenuItemTO
@@ -273,7 +273,7 @@ namespace Packet
             this.ToolStripMenuItemFrom.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configToolStripMenuItem1});
             this.ToolStripMenuItemFrom.Name = "ToolStripMenuItemFrom";
-            this.ToolStripMenuItemFrom.Size = new System.Drawing.Size(113, 22);
+            this.ToolStripMenuItemFrom.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItemFrom.Text = "From";
             // 
             // configToolStripMenuItem1
@@ -288,7 +288,7 @@ namespace Packet
             this.ToolStripMenuItemRoute.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configToolStripMenuItem});
             this.ToolStripMenuItemRoute.Name = "ToolStripMenuItemRoute";
-            this.ToolStripMenuItemRoute.Size = new System.Drawing.Size(113, 22);
+            this.ToolStripMenuItemRoute.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItemRoute.Text = "Route";
             // 
             // configToolStripMenuItem
@@ -312,8 +312,7 @@ namespace Packet
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3});
+            this.toolStripMenuItem2});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem1.Text = "Subject";
@@ -324,13 +323,6 @@ namespace Packet
             this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem2.Text = "Config";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem3.Text = "Custom";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -428,8 +420,7 @@ namespace Packet
 		private ToolStripMenuItem configToolStripMenuItem;
 		private ToolStripMenuItem deleteToolStripMenuItem;
 		private ToolStripMenuItem toolStripMenuItem1;
-		private ToolStripMenuItem toolStripMenuItem2;
-		private ToolStripMenuItem toolStripMenuItem3;
+        private ToolStripMenuItem toolStripMenuItem2;
 		private ToolStripMenuItem toolStripMenuItem4;
 		private ToolStripMenuItem toolStripMenuItemToDelete;
 		private ToolStripMenuItem toolStripMenuItem6;
