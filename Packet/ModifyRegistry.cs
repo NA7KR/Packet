@@ -68,7 +68,7 @@ namespace Packet
 
         #region ReadDW
 
-        public Int32 ReadDW(string keyName)
+        public Int32 ReadDw(string keyName)
         {
             var rk = _baseRegistryKey;
             var sk1 = rk.OpenSubKey(_subKey);

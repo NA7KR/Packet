@@ -16,7 +16,7 @@ namespace Packet
 
 		#region IP_Form2
 
-		public IpForm(string var1, string _var2)
+		public IpForm(string var1, string var2)
 		{
 			if (var1 == null) throw new ArgumentNullException("var1");
 			var key = "SOFTWARE\\NA7KR\\Packet\\" + var1;
@@ -24,7 +24,7 @@ namespace Packet
 			_myRegistry.SubKey = key;
 			_myRegistry.ShowError = true;
 			_var1 = var1;
-			this._var2 = _var2;
+			_var2 = var2;
 		}
 
 		#endregion
@@ -85,7 +85,7 @@ namespace Packet
 		//  IP_Form2
 		//---------------------------------------------------------------------------------------------------------
 
-		private void IP_Form2_Load(object sender, EventArgs e)
+	    private void IP_Form2_Load(object sender, EventArgs e)
 		{
 			#region Telnet
 
@@ -199,7 +199,7 @@ namespace Packet
 
 				if (_var1 == "BBS")
 				{
-					textBox_start.Text = _myRegistry.ReadDW("Start Number").ToString();
+					textBox_start.Text = _myRegistry.ReadDw("Start Number").ToString();
 					textBox_start.TabIndex = 6;
 					label_start.Text = "Start Number *";
 					label_start.Left = 20;
@@ -363,7 +363,7 @@ namespace Packet
 				if (_var1 == "BBS")
 				{
 					textBox_mycall.Text = _myRegistry.Read("CallSign");
-					textBox_start.Text = _myRegistry.ReadDW("Start Number").ToString();
+					textBox_start.Text = _myRegistry.ReadDw("Start Number").ToString();
 					textBox_start.TabIndex = 6;
 					label_bbs.Text = "BBS to Connect to";
 					label_start.Text = "Start Number *";

@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
-using System.Reflection.Emit;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using PacketComs;
 
 #endregion
@@ -19,7 +17,6 @@ namespace Packet
 
     internal class Sql
     {
-        private static readonly FileSql FileSql = new FileSql();
         private readonly DtoListMsgFrom _msgfrom = new DtoListMsgFrom();
         private readonly DtoListMsgRoute _msgroute = new DtoListMsgRoute();
         private readonly DtoListMsgSubject _msgsubject = new DtoListMsgSubject();
@@ -37,13 +34,13 @@ namespace Packet
 
         #region SQLSELECTRD
 
-        public List<DtoPacket> SqlselectRD()
+        public List<DtoPacket> SqlselectRd()
         {
             var packets = new List<DtoPacket>();
 
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -92,7 +89,7 @@ namespace Packet
 
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -139,7 +136,7 @@ namespace Packet
             var selectLists = new List<DtoListMsgto>();
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -178,7 +175,7 @@ namespace Packet
             var selectLists = new List<DtoListMsgFrom>();
             try
             {
-                var sqlConn = new OdbcConnection(Main.dsnName);
+                var sqlConn = new OdbcConnection(Main.DsnName);
 
                 using (var cmd = new OdbcCommand())
                 {
@@ -216,7 +213,7 @@ namespace Packet
             var selectLists = new List<DtoListMsgRoute>();
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -255,7 +252,7 @@ namespace Packet
             var selectLists = new List<DtoListMsgSubject>();
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -293,7 +290,7 @@ namespace Packet
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -352,7 +349,7 @@ namespace Packet
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -393,7 +390,7 @@ namespace Packet
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -434,7 +431,7 @@ namespace Packet
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -475,7 +472,7 @@ namespace Packet
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -516,7 +513,7 @@ namespace Packet
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -603,16 +600,16 @@ namespace Packet
 
         #region SQL delete row
 
-        public static void deleteRow(string table, string columnName, string IDNumber)
+        public static void DeleteRow(string table, string columnName, string idNumber)
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     con.Open();
                     using (var cmd = new OdbcCommand())
                     {
-                        cmd.CommandText = ("DELETE FROM " + table + " WHERE " + columnName + " = " + IDNumber);
+                        cmd.CommandText = ("DELETE FROM " + table + " WHERE " + columnName + " = " + idNumber);
                         cmd.Connection = con;
                         cmd.ExecuteNonQuery();
                     }
@@ -629,9 +626,9 @@ namespace Packet
 
         #region delete days
 
-        public static void deletedays(int days)
+        public static void Deletedays(int days)
         {
-            using (var con = new OdbcConnection(Main.dsnName))
+            using (var con = new OdbcConnection(Main.DsnName))
             {
                 con.Open();
                 using (var da = new OdbcDataAdapter("SELECT MSG, MSGDateTime FROM Packet Where MSGState is null", con))
@@ -650,17 +647,17 @@ namespace Packet
                     {
                         string mdhm = r["MSGDateTime"].ToString();
                         // evaluate as current year
-                        var s_month = Convert.ToInt32(mdhm.Substring(0, 2));
-                        var s_day = Convert.ToInt32(mdhm.Substring(2, 2));
-                        var s_hr = Convert.ToInt32(mdhm.Substring(5, 2));
-                        var s_min = Convert.ToInt32(mdhm.Substring(7, 2));
+                        var sMonth = Convert.ToInt32(mdhm.Substring(0, 2));
+                        var sDay = Convert.ToInt32(mdhm.Substring(2, 2));
+                        var sHr = Convert.ToInt32(mdhm.Substring(5, 2));
+                        var sMin = Convert.ToInt32(mdhm.Substring(7, 2));
 
-                        if (s_day == 29 && s_month == 2)
+                        if (sDay == 29 && sMonth == 2)
                         {
 
                         }
 
-                        DateTime rowDateTime = new DateTime(s_year, s_month, s_day, s_hr, s_min, 0);
+                        DateTime rowDateTime = new DateTime(s_year, sMonth, sDay, sHr, sMin, 0);
                         // if in future then convert to previous year
                         if (rowDateTime > currDateTime)
                         {
@@ -684,7 +681,7 @@ namespace Packet
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     using (var cmd = new OdbcCommand())
                     {
@@ -706,16 +703,16 @@ namespace Packet
 
         #region SQL delete count
 
-        public static void deleteCount(int INumber)
+        public static void DeleteCount(int number)
         {
             try
             {
-                using (var con = new OdbcConnection(Main.dsnName))
+                using (var con = new OdbcConnection(Main.DsnName))
                 {
                     con.Open();
                     using (var cmd = new OdbcCommand())
                     {
-                        cmd.CommandText = ("delete * From Packet where MSG not in(select top " + INumber +" MSG from Packet order by MSG desc  )");
+                        cmd.CommandText = ("delete * From Packet where MSG not in(select top " + number +" MSG from Packet order by MSG desc  )");
                         cmd.Connection = con;
                         cmd.ExecuteNonQuery();
                     }

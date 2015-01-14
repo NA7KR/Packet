@@ -1,7 +1,6 @@
 ﻿#region Using Directive
 
 using System;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using PacketComs;
@@ -34,8 +33,8 @@ namespace Packet
 			{
 				foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
 				{
-					var ToDownLoad = drv.Cells[0].Value.ToString();
-					var inumber = Convert.ToInt32(ToDownLoad);
+					var toDownLoad = drv.Cells[0].Value.ToString();
+					var inumber = Convert.ToInt32(toDownLoad);
 					Sql.WriteSqlPacketUpdate(inumber, "P");
 				}	
 			}
@@ -94,8 +93,8 @@ namespace Packet
                 _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
                 _myRegistryKeep.ShowError = true;
 
-		        int idays = _myRegistryKeep.ReadDW("DaystoKeep");
-		        Sql.deletedays(idays);
+		        int idays = _myRegistryKeep.ReadDw("DaystoKeep");
+		        Sql.Deletedays(idays);
                     
                 Loader();
 		    }
@@ -116,40 +115,40 @@ namespace Packet
             
           
 
-            int QTYtoKeep = _myRegistryKeep.ReadDW("QTYtoKeep");
-            if (QTYtoKeep == 0)
+            int qtYtoKeep = _myRegistryKeep.ReadDw("QTYtoKeep");
+            if (qtYtoKeep == 0)
             {
                 toolStripComboBoxQTY.SelectedIndex = 0;   
             }
-            else if (QTYtoKeep == 100)
+            else if (qtYtoKeep == 100)
             {
                 toolStripComboBoxQTY.SelectedIndex = 1; 
             }
-            else if (QTYtoKeep == 500)
+            else if (qtYtoKeep == 500)
             {
                 toolStripComboBoxQTY.SelectedIndex = 2;
             }
-            else if (QTYtoKeep == 1000)
+            else if (qtYtoKeep == 1000)
             {
                 toolStripComboBoxQTY.SelectedIndex = 3;
             }
-            else if (QTYtoKeep == 1500)
+            else if (qtYtoKeep == 1500)
             {
                 toolStripComboBoxQTY.SelectedIndex = 4;
             }
-            else if (QTYtoKeep == 2000)
+            else if (qtYtoKeep == 2000)
             {
                 toolStripComboBoxQTY.SelectedIndex = 5;
             }
-            else if (QTYtoKeep == 5000)
+            else if (qtYtoKeep == 5000)
             {
                 toolStripComboBoxQTY.SelectedIndex = 6;
             }
-            else if (QTYtoKeep == 10000)
+            else if (qtYtoKeep == 10000)
             {
                 toolStripComboBoxQTY.SelectedIndex = 7;
             }
-            else if (QTYtoKeep == 20000)
+            else if (qtYtoKeep == 20000)
             {
                 toolStripComboBoxQTY.SelectedIndex = 8;
             }
@@ -158,24 +157,24 @@ namespace Packet
                 _myRegistryKeep.Write("DaystoKeep", 0);
             }
 
-            int DaystoKeep = _myRegistryKeep.ReadDW("DaystoKeep");
-            if (DaystoKeep == 0)
+            int daystoKeep = _myRegistryKeep.ReadDw("DaystoKeep");
+            if (daystoKeep == 0)
             {
                 toolStripComboBoxTime.SelectedIndex = 0;
             }
-            else if (DaystoKeep == 30)
+            else if (daystoKeep == 30)
             {
                 toolStripComboBoxTime.SelectedIndex = 1;
             }
-            else if (DaystoKeep == 60)
+            else if (daystoKeep == 60)
             {
                 toolStripComboBoxTime.SelectedIndex = 2;
             }
-            else if (DaystoKeep == 90)
+            else if (daystoKeep == 90)
             {
                 toolStripComboBoxTime.SelectedIndex = 3;
             }
-            else if (DaystoKeep == 180)
+            else if (daystoKeep == 180)
             {
                 toolStripComboBoxTime.SelectedIndex = 4;
             }

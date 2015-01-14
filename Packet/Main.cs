@@ -21,7 +21,7 @@ namespace Packet
 
 		#region Form1
 
-        public const string dsnName = "DSN=Packet";	
+        public const string DsnName = "DSN=Packet";	
 	   
 		public Main()
 		{
@@ -73,7 +73,7 @@ namespace Packet
 			toolStripComboBoxBGC.Items.Add("White");
 
             OnResize(EventArgs.Empty);
-		    terminalEmulator1.dnsName = dsnName;
+		    terminalEmulator1.dnsName = DsnName;
 		}
 
 	    protected override sealed void OnResize(EventArgs e)
@@ -339,12 +339,12 @@ namespace Packet
 
 		private void forward_button_Click(object sender, EventArgs e)
 		{
-            Sql.deletedays(_myRegistryKeep.ReadDW("DaystoKeep"));
-            Sql.deleteCount(_myRegistryKeep.ReadDW("QTYtoKeep"));
+            Sql.Deletedays(_myRegistryKeep.ReadDw("DaystoKeep"));
+            Sql.DeleteCount(_myRegistryKeep.ReadDw("QTYtoKeep"));
 			terminalEmulator1.FileActive = true;
 			forward_button.Enabled = false;
 			forward_button.Text = "Forward active";
-			terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.ReadDW("Start Number"));
+			terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.ReadDw("Start Number"));
 			terminalEmulator1.Startforward();		
 		}
 
@@ -561,7 +561,7 @@ namespace Packet
 			}
 			catch
 			{
-				var dialogResult = MessageBox.Show("Configure BBS in Setup");
+				MessageBox.Show("Configure BBS in Setup");
 				bbs_button.Enabled = true;
 				cluster_button.Enabled = true;
 				node_button.Enabled = true;
@@ -628,7 +628,7 @@ namespace Packet
 			}
 			catch (Exception)
 			{
-				var dialogResult = MessageBox.Show("Configure Cluster in Setup");
+				MessageBox.Show("Configure Cluster in Setup");
 				bbs_button.Enabled = true;
 				cluster_button.Enabled = true;
 				node_button.Enabled = true;
@@ -694,7 +694,7 @@ namespace Packet
 			}
 			catch (Exception)
 			{
-				var dialogResult = MessageBox.Show("Configure Node in Setup");
+				MessageBox.Show("Configure Node in Setup");
 				bbs_button.Enabled = true;
 				cluster_button.Enabled = true;
 				node_button.Enabled = true;
@@ -773,7 +773,7 @@ namespace Packet
 			}
 			catch (Exception)
 			{
-				var dialogResult = MessageBox.Show("Configure SSH in Setup");
+				MessageBox.Show("Configure SSH in Setup");
 				bbs_button.Enabled = true;
 				cluster_button.Enabled = true;
 				node_button.Enabled = true;

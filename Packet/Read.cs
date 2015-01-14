@@ -1,9 +1,11 @@
 ﻿#region Using Directive
+
 using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using PacketComs;
+
 #endregion
 
 namespace Packet
@@ -57,7 +59,7 @@ namespace Packet
                 Width = DataGridView1.Width + 50;
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
-                var packets = Sql.SqlselectRD();
+                var packets = Sql.SqlselectRd();
                 packets.ForEach(delegate(DtoPacket packet)
                 {
                     DataGridView1.Rows.Add(
@@ -177,7 +179,7 @@ namespace Packet
                     var number = drv.Cells[0].Value.ToString();
                     string lastNumber = (Convert.ToInt32(number) % 10).ToString();
                     Sql.DeleteSt(number, lastNumber);
-                    Sql.deleteRow("Packet", "MSG", number);
+                    Sql.DeleteRow("Packet", "MSG", number);
                 }
             }
             Loader();

@@ -3,9 +3,7 @@
 using System;
 using System.Data;
 using System.Data.Odbc;
-using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 #endregion

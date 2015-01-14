@@ -1,11 +1,14 @@
-﻿namespace Packet
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Packet
 {
     partial class Custom
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -68,7 +71,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_cancel;
-        private System.Windows.Forms.Button button1;
+        private Button button_cancel;
+        private Button button1;
     }
 }

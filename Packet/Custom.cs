@@ -1,9 +1,9 @@
 ﻿#region Using Directive
+
 using System;
-using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using PacketComs;
+
 #endregion
 
 namespace Packet
