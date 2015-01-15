@@ -152,18 +152,18 @@ namespace PacketComs
         #endregion
 
         #region SelectMakeTable
-        public void SelectMakeTable(string textVale, Int32 intsize, string tableName, string dsnName, string systemDsn)
+        public void SelectMakeTable(string textVale, Int32 intsize, string tableName,  string systemDsn)
         {
             if (odbc.CheckForDSN(systemDsn) > 0)
             {
-                if (DoesTableExist(tableName, dsnName) == false)
+                if (DoesTableExist(tableName, DsnName) == false)
                 {
                     SqlMakeTable("CREATE TABLE " + tableName + " (  " + textVale + " CHAR(" + intsize  + "), DateCreate datetime, Selected CHAR(1)  )");
                 }
             }
             else
             {
-                odbc.CreateDSN(dsnName);
+                odbc.CreateDSN(DsnName);
                 MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",  "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
@@ -171,18 +171,18 @@ namespace PacketComs
         #endregion
 
         #region SelectMakeCustomTable
-        public void SelectMakeCustomTable(string textVale, Int32 intsize, string tableName, string dsnName, string systemDsn)
+        public void SelectMakeCustomTable(   string systemDsn)
         {
             if (odbc.CheckForDSN(systemDsn) > 0)
             {
-                if (DoesTableExist(tableName, dsnName) == false)
+                if (DoesTableExist("CustomTable", DsnName) == false)
                 {
-                    SqlMakeTable("CREATE TABLE " + tableName + " (  " + textVale + " CHAR(" + intsize + "), TableName CHAR(20), Enable CHAR(1)  )");
+                    SqlMakeTable("CREATE TABLE CustomTable ( ID Int,Custom_Name CHAR(20), CustomTable CHAR(50), TableName CHAR(20), Enable CHAR(1)  )");
                 }
             }
             else
             {
-                odbc.CreateDSN(dsnName);
+                odbc.CreateDSN(DsnName);
                 MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }

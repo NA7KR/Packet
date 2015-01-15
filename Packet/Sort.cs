@@ -55,7 +55,7 @@ namespace Packet
 
 		private void Sort_Load(object sender, EventArgs e)
 		{
-			MyFiles.SelectMakeTable(s_list_type, d_size, s_list_type, "DSN=Packet", "Packet");
+			MyFiles.SelectMakeTable(s_list_type, d_size, s_list_type, "Packet");
 			listView1.Left = 5;
 			listView1.Width = (Width - 30);
 			listView1.Top = 5;
