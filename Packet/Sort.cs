@@ -15,18 +15,18 @@ namespace Packet
 	{
 		private static readonly FileSql MyFiles = new FileSql();
 		private static readonly Sql Sql = new Sql();
-		public char d_key;
-		public Int32 d_size;
-		public string s_list_type;
-		public bool loaded = false;
+		public char DKey;
+		public Int32 DSize;
+		public string SListType;
+		public bool Loaded;
 		#region Sort
 
 		public Sort(Int32 dsize, string sListType, char cKey)
 		{
 			InitializeComponent();
-			s_list_type = sListType;
-			d_size = dsize;
-			d_key = cKey;
+			SListType = sListType;
+			DSize = dsize;
+			DKey = cKey;
 		}
 
 		#endregion
@@ -55,7 +55,7 @@ namespace Packet
 
 		private void Sort_Load(object sender, EventArgs e)
 		{
-			MyFiles.SelectMakeTable(s_list_type, d_size, s_list_type, "Packet");
+			MyFiles.SelectMakeTable(SListType, DSize, SListType, "Packet");
 			listView1.Left = 5;
 			listView1.Width = (Width - 30);
 			listView1.Top = 5;
@@ -63,13 +63,13 @@ namespace Packet
 			button_ok.Top = (Height - 75);
 			button_Cancel.Top = (Height - 75);
 
-			Sql.SqlselectOptrion( s_list_type);
-			if (s_list_type == "MSGTO")
+			Sql.SqlselectOptrion( SListType);
+			if (SListType == "MSGTO")
 			{
 				var selectLists = Sql.SQLSELECT_ON_Lists_Msgto();
 				selectLists.ForEach(delegate(DtoListMsgto selectList)
 				{
-					if (d_key == 'Y')
+					if (DKey == 'Y')
 					{
 						listView1.Items.Add(selectList.get_MSGTO());
 						if (selectList.get_Selected() == "Y")
@@ -90,7 +90,7 @@ namespace Packet
 						}
 						
 					}
-					if (d_key == 'D')
+					if (DKey == 'D')
 					{
 						listView1.Items.Add(selectList.get_MSGTO());
 						if (selectList.get_Selected() == "D")
@@ -114,12 +114,12 @@ namespace Packet
 					); //end of foreach
 			}
 
-			if (s_list_type == "MSGFrom")
+			if (SListType == "MSGFrom")
 			{
 				var selectLists = Sql.SQLSELECT_ON_Lists_MsgFrom();
 				selectLists.ForEach(delegate(DtoListMsgFrom selectList)
 				{
-					if (d_key == 'Y')
+					if (DKey == 'Y')
 					{
 						listView1.Items.Add(selectList.get_MSGFROM());
 						if (selectList.get_Selected() == "Y")
@@ -141,7 +141,7 @@ namespace Packet
 						}
 					
 					}
-					if (d_key == 'D')
+					if (DKey == 'D')
 					{
 						listView1.Items.Add(selectList.get_MSGFROM());
 						if (selectList.get_Selected() == "D")
@@ -165,12 +165,12 @@ namespace Packet
 					); //end of foreach
 			}
 
-			if (s_list_type == "MSGRoute")
+			if (SListType == "MSGRoute")
 			{
 				var selectLists = Sql.SQLSELECT_ON_Lists_MsgRoute();
 				selectLists.ForEach(delegate(DtoListMsgRoute selectList)
 				{
-					if (d_key == 'Y')
+					if (DKey == 'Y')
 					{
 						listView1.Items.Add(selectList.get_MSGROUTE());
 						if (selectList.get_Selected() == "Y")
@@ -192,7 +192,7 @@ namespace Packet
 						}
 						
 					}
-					if (d_key == 'D')
+					if (DKey == 'D')
 					{
 						listView1.Items.Add(selectList.get_MSGROUTE());
 						if (selectList.get_Selected() == "D")
@@ -217,12 +217,12 @@ namespace Packet
 					); //end of foreach
 			}
 
-			if (s_list_type == "MSGSubject")
+			if (SListType == "MSGSubject")
 			{
 				var selectLists = Sql.SQLSELECT_ON_Lists_MsgSubject();
 				selectLists.ForEach(delegate(DtoListMsgSubject selectList)
 				{
-					if (d_key == 'Y')
+					if (DKey == 'Y')
 					{
 						listView1.Items.Add(selectList.get_MSGSubject());
 						if (selectList.get_Selected() == "Y")
@@ -244,7 +244,7 @@ namespace Packet
 						}
 						
 					}
-					if (d_key == 'D')
+					if (DKey == 'D')
 					{
 						listView1.Items.Add(selectList.get_MSGSubject());
 						if (selectList.get_Selected() == "D")
@@ -259,7 +259,7 @@ namespace Packet
 				}
 					); //end of foreach
 			}
-			loaded = true;
+			Loaded = true;
 		}
 
 		#endregion
@@ -283,50 +283,49 @@ namespace Packet
 		private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
 			{
 			var checkedItems = listView1.CheckedItems;
-			if (loaded)
+			if (Loaded)
 				{
-                String ITEMS = null;
-				foreach (ListViewItem item in checkedItems)
-					{
-					ITEMS = item.Text;
+				    foreach (ListViewItem item in checkedItems)
+				{
+				    var items = item.Text;
 
-					if (e.Item.Checked)
+				    if (e.Item.Checked)
 						{
-						if (d_key == 'Y')
+						if (DKey == 'Y')
 							{
-							if (s_list_type == "MSGTO")
-								Sql.WriteSqlmsgtoUpdate(ITEMS, "Y");
-							else if (s_list_type == "MSGRoute")
-								Sql.WriteSqlmsgRouteUpdate(ITEMS, "Y");
-							else if (s_list_type == "MSGFrom")
-								Sql.WriteSqlmsgFromUpdate(ITEMS, "Y");
-							else if (s_list_type == "MSGSubject")
-								Sql.WriteSqlmsgSubjectUpdate(ITEMS, "Y");
+							if (SListType == "MSGTO")
+								Sql.WriteSqlmsgtoUpdate(items, "Y");
+							else if (SListType == "MSGRoute")
+								Sql.WriteSqlmsgRouteUpdate(items, "Y");
+							else if (SListType == "MSGFrom")
+								Sql.WriteSqlmsgFromUpdate(items, "Y");
+							else if (SListType == "MSGSubject")
+								Sql.WriteSqlmsgSubjectUpdate(items, "Y");
 							}
-						if (d_key == 'D')
+						if (DKey == 'D')
 							{
-							if (s_list_type == "MSGTO")
-								Sql.WriteSqlmsgtoUpdate(ITEMS, "D");
-							else if (s_list_type == "MSGRoute")
-								Sql.WriteSqlmsgRouteUpdate(ITEMS, "D");
-							else if (s_list_type == "MSGFrom")
-								Sql.WriteSqlmsgFromUpdate(ITEMS, "D");
-							else if (s_list_type == "MSGSubject")
-								Sql.WriteSqlmsgSubjectUpdate(ITEMS, "D");
+							if (SListType == "MSGTO")
+								Sql.WriteSqlmsgtoUpdate(items, "D");
+							else if (SListType == "MSGRoute")
+								Sql.WriteSqlmsgRouteUpdate(items, "D");
+							else if (SListType == "MSGFrom")
+								Sql.WriteSqlmsgFromUpdate(items, "D");
+							else if (SListType == "MSGSubject")
+								Sql.WriteSqlmsgSubjectUpdate(items, "D");
 							}
 						}
 					else if (!e.Item.Checked)
 						{
-						if (s_list_type == "MSGTO")
-							Sql.WriteSqlmsgtoUpdate(ITEMS, "N");
-						else if (s_list_type == "MSGRoute")
-							Sql.WriteSqlmsgRouteUpdate(ITEMS, "N");
-						else if (s_list_type == "MSGFrom")
-							Sql.WriteSqlmsgFromUpdate(ITEMS, "N");
-						else if (s_list_type == "MSGSubject")
-							Sql.WriteSqlmsgSubjectUpdate(ITEMS, "N");
+						if (SListType == "MSGTO")
+							Sql.WriteSqlmsgtoUpdate(items, "N");
+						else if (SListType == "MSGRoute")
+							Sql.WriteSqlmsgRouteUpdate(items, "N");
+						else if (SListType == "MSGFrom")
+							Sql.WriteSqlmsgFromUpdate(items, "N");
+						else if (SListType == "MSGSubject")
+							Sql.WriteSqlmsgSubjectUpdate(items, "N");
 						}
-					}
+				}
 				}
 			}
 

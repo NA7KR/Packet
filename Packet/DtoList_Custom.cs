@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Packet
+﻿namespace Packet
 {
     class DtoCustom
     {
-        private int _ID;
-        private string _CustomName;
-		private string _CustomTable;
-		private string _TableName;
-        private string _Enable;
+        private int _id;
+        private string _customName;
+		private string _customTable;
+		private string _tableName;
+        private string _enable;
 
     
 
@@ -20,24 +14,24 @@ namespace Packet
 
 		public DtoCustom()
 		{
-		    _ID = 0;
-		    _CustomName = null;
-		    _CustomTable = null;
-		    _TableName = null;
-		    _Enable = null;
+		    _id = 0;
+		    _customName = null;
+		    _customTable = null;
+		    _tableName = null;
+		    _enable = null;
 		}
 
 		#endregion
 
 		#region DtoList
 
-        public DtoCustom(int ID, string CustomName, string CustomTable, string TableName, string Enable)
+        public DtoCustom(int id, string customName, string customTable, string tableName, string enable)
         {
-            _ID = ID;
-            _CustomName = CustomName;
-            _CustomTable = CustomTable;
-            _TableName = TableName;
-            _Enable = Enable;
+            _id = id;
+            _customName = customName;
+            _customTable = customTable;
+            _tableName = tableName;
+            _enable = enable;
 		}
 
 		#endregion
@@ -46,7 +40,7 @@ namespace Packet
 
 		public int get_ID()
 		{
-			return _ID;
+			return _id;
 		}
 
 		#endregion
@@ -55,7 +49,7 @@ namespace Packet
 
         public string get_CustomTable()
 		{
-            return _CustomTable;
+            return _customTable;
 		}
 
 		#endregion
@@ -64,7 +58,7 @@ namespace Packet
 
         public string get_CustomName()
         {
-            return _CustomName;
+            return _customName;
         }
 
         #endregion
@@ -73,7 +67,7 @@ namespace Packet
 
         public string get_TableName()
 		{
-            return _TableName;
+            return _tableName;
 		}
 
 		#endregion
@@ -82,52 +76,52 @@ namespace Packet
 
         public string get_Enable()
         {
-            return _Enable;
+            return _enable;
         }
 
         #endregion
 
 		#region set_ID
 
-		public void set_ID(int ID)
+		public void set_ID(int id)
 		{
-			_ID = ID;
+			_id = id;
 		}
 
 		#endregion
 
         #region set_CustomName
 
-        public void set_CustomName(string CustomName)
+        public void set_CustomName(string customName)
         {
-            _CustomName = CustomName;
+            _customName = customName;
         }
 
         #endregion
 
         #region set_CustomTable
 
-        public void set_CustomTable(string CustomTable)
+        public void set_CustomTable(string customTable)
 		{
-            _CustomTable = CustomTable;
+            _customTable = customTable;
 		}
 
 		#endregion
 
         #region set_TableName
 
-        public void set_TableName(string TableName)
+        public void set_TableName(string tableName)
 		{
-            _TableName = TableName;
+            _tableName = tableName;
 		}
 
 		#endregion
 
         #region set_Enable
 
-        public void set_Enable(string Enable)
+        public void set_Enable(string enable)
         {
-            _Enable = Enable;
+            _enable = enable;
         }
 
         #endregion

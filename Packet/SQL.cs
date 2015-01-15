@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
-using System.Reflection.Emit;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -387,15 +386,15 @@ namespace Packet
 
         #region WriteSQLCustomUpdate
 
-        public void WriteSqlCustomUpdate(int value, string CustomName, String CustomTable, String TableName, String Enable)
+        public void WriteSqlCustomUpdate(int value, string customName, String customTable, String tableName, String enable)
         {
             try
             {
                 _custom.set_ID(value);
-                _custom.set_CustomName(CustomName);
-                _custom.set_CustomTable(CustomTable);
-                _custom.set_TableName(TableName);
-                _custom.set_Enable(Enable);
+                _custom.set_CustomName(customName);
+                _custom.set_CustomTable(customTable);
+                _custom.set_TableName(tableName);
+                _custom.set_Enable(enable);
                 SqlupdateCustom(_custom);
             }
             catch (Exception e)
@@ -815,23 +814,27 @@ namespace Packet
 
         public static void DeleteCount(int number)
         {
-            try
+            if (number > 0)
             {
-                using (var con = new OdbcConnection(Main.DsnName))
+                try
                 {
-                    con.Open();
-                    using (var cmd = new OdbcCommand())
+                    using (var con = new OdbcConnection(Main.DsnName))
                     {
-                        cmd.CommandText = ("delete * From Packet where MSG not in(select top " + number +" MSG from Packet order by MSG desc  )");
-                        cmd.Connection = con;
-                        cmd.ExecuteNonQuery();
+                        con.Open();
+                        using (var cmd = new OdbcCommand())
+                        {
+                            cmd.CommandText = ("delete * From Packet where MSG not in(select top " + number +
+                                               " MSG from Packet order by MSG desc  )");
+                            cmd.Connection = con;
+                            cmd.ExecuteNonQuery();
+                        }
+                        con.Close();
                     }
-                    con.Close();
                 }
-            }
-            catch (SystemException ex)
-            {
-                MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
+                catch (SystemException ex)
+                {
+                    MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
+                }
             }
         }
 
