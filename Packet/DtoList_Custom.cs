@@ -9,6 +9,7 @@ namespace Packet
     class DtoCustom
     {
         private int _ID;
+        private string _CustomName;
 		private string _CustomTable;
 		private string _TableName;
         private string _Enable;
@@ -20,6 +21,7 @@ namespace Packet
 		public DtoCustom()
 		{
 		    _ID = 0;
+		    _CustomName = null;
 		    _CustomTable = null;
 		    _TableName = null;
 		    _Enable = null;
@@ -29,9 +31,10 @@ namespace Packet
 
 		#region DtoList
 
-        public DtoCustom(int ID, string CustomTable, string TableName, string Enable)
+        public DtoCustom(int ID, string CustomName, string CustomTable, string TableName, string Enable)
         {
             _ID = ID;
+            _CustomName = CustomName;
             _CustomTable = CustomTable;
             _TableName = TableName;
             _Enable = Enable;
@@ -57,6 +60,15 @@ namespace Packet
 
 		#endregion
 
+        #region get_CustomName
+
+        public string get_CustomName()
+        {
+            return _CustomName;
+        }
+
+        #endregion
+
         #region get_TableName
 
         public string get_TableName()
@@ -75,7 +87,7 @@ namespace Packet
 
         #endregion
 
-		#region set_MSGRoute
+		#region set_ID
 
 		public void set_ID(int ID)
 		{
@@ -84,7 +96,16 @@ namespace Packet
 
 		#endregion
 
-		#region set_dateCreate
+        #region set_CustomName
+
+        public void set_CustomName(string CustomName)
+        {
+            _CustomName = CustomName;
+        }
+
+        #endregion
+
+        #region set_CustomTable
 
         public void set_CustomTable(string CustomTable)
 		{

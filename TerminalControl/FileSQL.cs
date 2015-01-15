@@ -177,7 +177,7 @@ namespace PacketComs
             {
                 if (DoesTableExist("CustomTable", DsnName) == false)
                 {
-                    SqlMakeTable("CREATE TABLE CustomTable ( ID Int,Custom_Name CHAR(20), CustomTable CHAR(50), TableName CHAR(20), Enable CHAR(1)  )");
+                    SqlMakeTable("CREATE TABLE CustomTable ( ID AUTOINCREMENT PRIMARY KEY ,CustomName CHAR(20), CustomTable CHAR(50), TableName CHAR(20), Enable CHAR(1)  )");
                 }
             }
             else

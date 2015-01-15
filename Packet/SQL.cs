@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -26,11 +27,7 @@ namespace Packet
 
         #region constructor
 
-        public Sql()
-        {
-
-        }
-
+       
         #endregion
 
         #region SqlselectCustom
@@ -57,7 +54,8 @@ namespace Packet
                                     var custom = new DtoCustom((int)reader.GetValue(0),
                                         (string)reader.GetValue(1),
                                         (string)reader.GetValue(2),
-                                        (string)reader.GetValue(3));
+                                        (string)reader.GetValue(3),
+                                        (string)reader.GetValue(4));
                                     packets.Add(custom);
                                 }
                             }
@@ -380,6 +378,74 @@ namespace Packet
                 Sqlupdatepacket(_packet);
             }
             catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region WriteSQLCustomUpdate
+
+        public void WriteSqlCustomUpdate(int value, string CustomName, String CustomTable, String TableName, String Enable)
+        {
+            try
+            {
+                _custom.set_ID(value);
+                _custom.set_CustomName(CustomName);
+                _custom.set_CustomTable(CustomTable);
+                _custom.set_TableName(TableName);
+                _custom.set_Enable(Enable);
+                SqlupdateCustom(_custom);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region SqlupdateCustom
+
+        public void SqlupdateCustom(DtoCustom custom)
+        {
+            try
+            {
+                using (var con = new OdbcConnection(Main.DsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        cmd.Connection = con;
+                        cmd.CommandText = ("SELECT count(*) from  CustomTable WHERE CustomName=?");
+                        con.Open();
+                        cmd.Parameters.AddWithValue("@p1", custom.get_TableName());
+                        int count = (int)cmd.ExecuteScalar();
+                        //SqlCommand command;
+
+                        if (count > 0)
+                        {
+                            cmd.CommandText = ("UPDATE CustomTable SET ID=?,CustomName=?,CustomTable=?,TableName=?,Enable=?");
+                        }
+                        else
+                        {
+                            cmd.CommandText = ("INSERT into CustomTable (ID, CustomName, CustomTable, TableName, Enable) VALUES (?, ?, ?, ?, ?)");
+                        }
+
+                        cmd.Parameters.AddWithValue("@p1", custom.get_ID());
+                        cmd.Parameters.AddWithValue("@p2", custom.get_CustomName());
+                        cmd.Parameters.AddWithValue("@p3", custom.get_CustomTable());
+                        cmd.Parameters.AddWithValue("@p4", custom.get_TableName());
+                        cmd.Parameters.AddWithValue("@p4", custom.get_Enable());
+                        
+                        int rowsUpdated = cmd.ExecuteNonQuery();
+                        MessageBox.Show(rowsUpdated.ToString());
+                        
+                        con.Close();
+                    }
+                }
+            }
+            catch (OdbcException e)
             {
                 MessageBox.Show(e.Message);
             }

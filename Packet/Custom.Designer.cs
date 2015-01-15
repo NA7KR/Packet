@@ -69,6 +69,7 @@ namespace Packet
             this.OK_button.TabIndex = 1;
             this.OK_button.Text = "OK";
             this.OK_button.UseVisualStyleBackColor = true;
+            this.OK_button.Click += new System.EventHandler(this.OK_button_Click);
             // 
             // DataGridView1
             // 
