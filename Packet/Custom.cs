@@ -12,6 +12,7 @@ namespace Packet
     {
         
         private static readonly FileSql MyFiles = new FileSql();
+        private static readonly Sql Sql = new Sql();
 
         public Custom()
         {
@@ -26,9 +27,10 @@ namespace Packet
         #endregion
 
         #region Loader
+
         private void Loader()
         {
-            MyFiles.SelectMakeCustomTable(  "Packet");
+            MyFiles.SelectMakeCustomTable("Packet");
             DataGridView1.Columns.Add("ID", "ID");
             DataGridView1.Columns.Add("CustomTable", "CustomTable");
             DataGridView1.Columns.Add("TableName", "TableName");
@@ -40,8 +42,22 @@ namespace Packet
             DataGridView1.Width = DataGridView1.Columns[0].Width + DataGridView1.Columns[1].Width +
                                   DataGridView1.Columns[2].Width + DataGridView1.Columns[3].Width + 48;
 
-            // ID Int,Custom_Name CHAR(20), CustomTable CHAR(50), TableName CHAR(20), Enable CHAR(1)  )");
+            DataGridView1.Visible = true;
+            DataGridView1.Rows.Clear();
+            var packets = Sql.SqlselectCustom();
+            packets.ForEach(delegate(DtoPacket packet)
+            {
+                DataGridView1.Rows.Add(
+                    packet.get_MSG(),
+                    packet.get_MSGTSLD(),
+                    packet.get_MSGSize(),
+                    packet.get_MSGState());
+
+            }
+                );
         }
+
+
         #endregion
 
         private void Custom_Resize(object sender, EventArgs e)

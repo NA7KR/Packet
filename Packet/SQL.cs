@@ -32,6 +32,49 @@ namespace Packet
 
         #endregion
 
+        #region SqlselectCustom
+
+        public List<DtoPacket> SqlselectCustom()
+        {
+            var packets = new List<DtoPacket>();
+
+            try
+            {
+                using (var con = new OdbcConnection(Main.DsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        {
+                            cmd.Connection = con;
+                            cmd.CommandText = "SELECT * FROM CustomTable";
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var packet = new DtoPacket((int)reader.GetValue(0),
+                                        (string)reader.GetValue(1),
+                                        (int)reader.GetValue(2),
+                                        (string)reader.GetValue(3));
+                                    packets.Add(packet);
+                                }
+                            }
+                            con.Close();
+                        }
+
+                    }
+                }
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return packets;
+        }
+
+        #endregion
+
         #region SQLSELECTRD
 
         public List<DtoPacket> SqlselectRd()
