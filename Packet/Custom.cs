@@ -45,13 +45,13 @@ namespace Packet
             DataGridView1.Visible = true;
             DataGridView1.Rows.Clear();
             var packets = Sql.SqlselectCustom();
-            packets.ForEach(delegate(DtoPacket packet)
+            packets.ForEach(delegate(DtoCustom packet)
             {
                 DataGridView1.Rows.Add(
-                    packet.get_MSG(),
-                    packet.get_MSGTSLD(),
-                    packet.get_MSGSize(),
-                    packet.get_MSGState());
+                    packet.get_ID(),
+                    packet.get_CustomTable(),
+                    packet.get_TableName(),
+                    packet.get_Enable());
 
             }
                 );

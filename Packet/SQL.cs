@@ -22,6 +22,7 @@ namespace Packet
         private readonly DtoListMsgSubject _msgsubject = new DtoListMsgSubject();
         private readonly DtoListMsgto _msgtodto = new DtoListMsgto();
         private readonly DtoPacket _packet = new DtoPacket();
+        private readonly DtoCustom _custom = new DtoCustom();
 
         #region constructor
 
@@ -34,9 +35,9 @@ namespace Packet
 
         #region SqlselectCustom
 
-        public List<DtoPacket> SqlselectCustom()
+        public List<DtoCustom> SqlselectCustom()
         {
-            var packets = new List<DtoPacket>();
+            var packets = new List<DtoCustom>();
 
             try
             {
@@ -53,11 +54,11 @@ namespace Packet
                             {
                                 while (reader.Read())
                                 {
-                                    var packet = new DtoPacket((int)reader.GetValue(0),
+                                    var custom = new DtoCustom((int)reader.GetValue(0),
                                         (string)reader.GetValue(1),
-                                        (int)reader.GetValue(2),
+                                        (string)reader.GetValue(2),
                                         (string)reader.GetValue(3));
-                                    packets.Add(packet);
+                                    packets.Add(custom);
                                 }
                             }
                             con.Close();

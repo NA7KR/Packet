@@ -64,6 +64,7 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="DtoListMSGFrom.cs" />
+    <Compile Include="DtoList_Custom.cs" />
     <Compile Include="DtoList_MSGRoute.cs" />
     <Compile Include="DtoList_MSGSubject.cs" />
     <Compile Include="DtoList_MSGTO.cs" />
