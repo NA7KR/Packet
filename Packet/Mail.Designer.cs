@@ -102,6 +102,7 @@ namespace Packet
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -168,7 +169,7 @@ namespace Packet
             this.keepTimeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBoxTime});
             this.keepTimeToolStripMenuItem.Name = "keepTimeToolStripMenuItem";
-            this.keepTimeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.keepTimeToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.keepTimeToolStripMenuItem.Text = "Keep Time";
             // 
             // toolStripComboBoxTime
@@ -186,7 +187,7 @@ namespace Packet
             this.keepQTYToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBoxQTY});
             this.keepQTYToolStripMenuItem.Name = "keepQTYToolStripMenuItem";
-            this.keepQTYToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.keepQTYToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.keepQTYToolStripMenuItem.Text = "Keep QTY";
             // 
             // toolStripComboBoxQTY
@@ -200,7 +201,7 @@ namespace Packet
             this.cleanListToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.allToolStripMenuItemClear});
             this.cleanListToolStripMenuItem.Name = "cleanListToolStripMenuItem";
-            this.cleanListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cleanListToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.cleanListToolStripMenuItem.Text = "Clean List";
             // 
             // allToolStripMenuItemClear
@@ -227,7 +228,7 @@ namespace Packet
             this.ToolStripMenuItemFrom,
             this.ToolStripMenuItemRoute});
             this.downloadToolStripMenuItem.Name = "downloadToolStripMenuItem";
-            this.downloadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.downloadToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.downloadToolStripMenuItem.Text = "To Download";
             // 
             // ToolStripMenuItemSubject
@@ -236,20 +237,20 @@ namespace Packet
             this.configToolStripMenuItem2,
             this.customToolStripMenuItem});
             this.ToolStripMenuItemSubject.Name = "ToolStripMenuItemSubject";
-            this.ToolStripMenuItemSubject.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemSubject.Size = new System.Drawing.Size(113, 22);
             this.ToolStripMenuItemSubject.Text = "Subject";
             // 
             // configToolStripMenuItem2
             // 
             this.configToolStripMenuItem2.Name = "configToolStripMenuItem2";
-            this.configToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.configToolStripMenuItem2.Size = new System.Drawing.Size(116, 22);
             this.configToolStripMenuItem2.Text = "Config";
             this.configToolStripMenuItem2.Click += new System.EventHandler(this.configToolStripMenuItem2_Click_1);
             // 
             // customToolStripMenuItem
             // 
             this.customToolStripMenuItem.Name = "customToolStripMenuItem";
-            this.customToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.customToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.customToolStripMenuItem.Text = "Custom";
             this.customToolStripMenuItem.Click += new System.EventHandler(this.customToolStripMenuItem_Click);
             // 
@@ -258,7 +259,7 @@ namespace Packet
             this.toToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemTO});
             this.toToolStripMenuItem.Name = "toToolStripMenuItem";
-            this.toToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.toToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.toToolStripMenuItem.Text = "To";
             // 
             // toolStripMenuItemTO
@@ -273,7 +274,7 @@ namespace Packet
             this.ToolStripMenuItemFrom.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configToolStripMenuItem1});
             this.ToolStripMenuItemFrom.Name = "ToolStripMenuItemFrom";
-            this.ToolStripMenuItemFrom.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemFrom.Size = new System.Drawing.Size(113, 22);
             this.ToolStripMenuItemFrom.Text = "From";
             // 
             // configToolStripMenuItem1
@@ -288,7 +289,7 @@ namespace Packet
             this.ToolStripMenuItemRoute.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configToolStripMenuItem});
             this.ToolStripMenuItemRoute.Name = "ToolStripMenuItemRoute";
-            this.ToolStripMenuItemRoute.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemRoute.Size = new System.Drawing.Size(113, 22);
             this.ToolStripMenuItemRoute.Text = "Route";
             // 
             // configToolStripMenuItem
@@ -306,7 +307,7 @@ namespace Packet
             this.toolStripMenuItem6,
             this.toolStripMenuItem8});
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.deleteToolStripMenuItem.Text = "To Delete";
             // 
             // toolStripMenuItem1
@@ -314,13 +315,13 @@ namespace Packet
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem2});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
             this.toolStripMenuItem1.Text = "Subject";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem2.Text = "Config";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -329,7 +330,7 @@ namespace Packet
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemToDelete});
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(113, 22);
             this.toolStripMenuItem4.Text = "To";
             // 
             // toolStripMenuItemToDelete
@@ -344,7 +345,7 @@ namespace Packet
             this.toolStripMenuItem6.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem7});
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(113, 22);
             this.toolStripMenuItem6.Text = "From";
             // 
             // toolStripMenuItem7
@@ -359,7 +360,7 @@ namespace Packet
             this.toolStripMenuItem8.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem9});
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(113, 22);
             this.toolStripMenuItem8.Text = "Route";
             // 
             // toolStripMenuItem9

@@ -43,7 +43,7 @@ namespace Packet
                     {
                         {
                             cmd.Connection = con;
-                            cmd.CommandText = "SELECT * FROM CustomTable";
+                            cmd.CommandText = "SELECT * FROM CustomQuery";
                             con.Open();
                             cmd.ExecuteNonQuery();
                             using (var reader = cmd.ExecuteReader())
@@ -386,13 +386,13 @@ namespace Packet
 
         #region WriteSQLCustomUpdate
 
-        public void WriteSqlCustomUpdate(int value, string customName, String customTable, String tableName, String enable)
+        public void WriteSqlCustomUpdate(int value, string customName, String CustomQuery, String tableName, String enable)
         {
             try
             {
                 _custom.set_ID(value);
                 _custom.set_CustomName(customName);
-                _custom.set_CustomTable(customTable);
+                _custom.set_CustomQuery(CustomQuery);
                 _custom.set_TableName(tableName);
                 _custom.set_Enable(enable);
                 SqlupdateCustom(_custom);
@@ -416,7 +416,7 @@ namespace Packet
                     using (var cmd = new OdbcCommand())
                     {
                         cmd.Connection = con;
-                        cmd.CommandText = ("SELECT count(*) from  CustomTable WHERE CustomName=?");
+                        cmd.CommandText = ("SELECT count(*) from  CustomQuery WHERE CustomName=?");
                         con.Open();
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@p1", custom.get_CustomName());
@@ -424,16 +424,16 @@ namespace Packet
 
                         if (count > 0)
                         {
-                            cmd.CommandText = ("UPDATE CustomTable SET ID=?,CustomName=?,CustomTable=?,TableName=?,Enable=?");
+                            cmd.CommandText = ("UPDATE CustomQuery SET ID=?,CustomName=?,CustomQuery=?,TableName=?,Enable=?");
                         }
                         else
                         {
-                            cmd.CommandText = ("INSERT into CustomTable (ID, CustomName, CustomTable, TableName, Enable) VALUES (?, ?, ?, ?, ?)");
+                            cmd.CommandText = ("INSERT into CustomQuery (ID, CustomName, CustomQuery, TableName, Enable) VALUES (?, ?, ?, ?, ?)");
                         }
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@p1", custom.get_ID());
                         cmd.Parameters.AddWithValue("@p2", custom.get_CustomName());
-                        cmd.Parameters.AddWithValue("@p3", custom.get_CustomTable());
+                        cmd.Parameters.AddWithValue("@p3", custom.get_CustomQuery());
                         cmd.Parameters.AddWithValue("@p4", custom.get_TableName());
                         cmd.Parameters.AddWithValue("@p4", custom.get_Enable()); 
                         cmd.ExecuteNonQuery();  

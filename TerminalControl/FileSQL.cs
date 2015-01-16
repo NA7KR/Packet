@@ -12,22 +12,22 @@ namespace PacketComs
 {
     public class FileSql
     {
-        private DtoPacket packet = new DtoPacket();
+        private DtoPacket _packet = new DtoPacket();
         public const string DsnName = "DSN=Packet";
-		private OdbcManager odbc;
-		private OdbcConnection conp = new OdbcConnection(DsnName);  
-		private OdbcCommand cmdp = new OdbcCommand();
+		private OdbcManager _odbc;
+		private OdbcConnection _conp = new OdbcConnection(DsnName);  
+		private OdbcCommand _cmdp = new OdbcCommand();
          
         #region Constructor
         public FileSql()
         {
             var dsnTableName = "Packet";
-            odbc = new OdbcManager();
-			cmdp.Connection = conp;
-			conp.Open();
+            _odbc = new OdbcManager();
+			_cmdp.Connection = _conp;
+			_conp.Open();
 
 	        {
-		        if (odbc.CheckForDsn(dsnTableName) > 0)
+		        if (_odbc.CheckForDsn(dsnTableName) > 0)
 		        {
 			        if (DoesTableExist(dsnTableName, DsnName) == false)
 			        {
@@ -37,7 +37,7 @@ namespace PacketComs
 		        }
 		        else
 		        {
-			        odbc.CreateDsn(DsnName);
+			        _odbc.CreateDsn(DsnName);
 			        MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
 				        "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			        Environment.Exit(1);
@@ -75,18 +75,18 @@ namespace PacketComs
         {
             try
             {
-                        cmdp.CommandText =  "INSERT INTO  Packet (MSG, MSGTSLD, MSGSize, MSGTO, MSGRoute, MSGFrom, MSGDateTime, MSGSubject) VALUES (?,?,?,?,?,?,?,?)";
-                        cmdp.Parameters.Clear();
-                        cmdp.Parameters.AddWithValue("@p1", packetdto.get_MSG());
-                        cmdp.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
-                        cmdp.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
-                        cmdp.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
-                        cmdp.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
-                        cmdp.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
-                        cmdp.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
-                        cmdp.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
-	                    cmdp.Prepare();
-                        cmdp.ExecuteNonQuery();       
+                        _cmdp.CommandText =  "INSERT INTO  Packet (MSG, MSGTSLD, MSGSize, MSGTO, MSGRoute, MSGFrom, MSGDateTime, MSGSubject) VALUES (?,?,?,?,?,?,?,?)";
+                        _cmdp.Parameters.Clear();
+                        _cmdp.Parameters.AddWithValue("@p1", packetdto.get_MSG());
+                        _cmdp.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
+                        _cmdp.Parameters.AddWithValue("@p3", packetdto.get_MSGSize());
+                        _cmdp.Parameters.AddWithValue("@p4", packetdto.get_MSGTO());
+                        _cmdp.Parameters.AddWithValue("@p5", packetdto.get_MSGRoute());
+                        _cmdp.Parameters.AddWithValue("@p6", packetdto.get_MSGFrom());
+                        _cmdp.Parameters.AddWithValue("@p7", packetdto.get_MSGDateTime());
+                        _cmdp.Parameters.AddWithValue("@p8", packetdto.get_MSGSubject());
+	                    _cmdp.Prepare();
+                        _cmdp.ExecuteNonQuery();       
             }
             catch
                 (OdbcException e)
@@ -134,15 +134,15 @@ namespace PacketComs
         {
             try
             {
-                packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
-                packet.set_MSGTSLD(Mid(textValue, 7, 4));
-                packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
-                packet.set_MSGTO(Mid(textValue, 18, 6));
-                packet.set_MSGRoute(Mid(textValue, 24, 8));
-                packet.set_MSGFrom(Mid(textValue, 32, 7));
-                packet.set_MSGDateTime(Mid(textValue, 39, 9));
-                packet.set_MSGSubject(Mid(textValue, 49, (textValue.Length - 49)));
-                SqlInsertPacket(packet);
+                _packet.set_MSG(Convert.ToInt32(Mid(textValue, 0, 5)));
+                _packet.set_MSGTSLD(Mid(textValue, 7, 4));
+                _packet.set_MSGSize(Convert.ToInt32(Mid(textValue, 13, 5)));
+                _packet.set_MSGTO(Mid(textValue, 18, 6));
+                _packet.set_MSGRoute(Mid(textValue, 24, 8));
+                _packet.set_MSGFrom(Mid(textValue, 32, 7));
+                _packet.set_MSGDateTime(Mid(textValue, 39, 9));
+                _packet.set_MSGSubject(Mid(textValue, 49, (textValue.Length - 49)));
+                SqlInsertPacket(_packet);
             }
             catch (Exception e)
             {
@@ -154,7 +154,7 @@ namespace PacketComs
         #region SelectMakeTable
         public void SelectMakeTable(string textVale, Int32 intsize, string tableName,  string systemDsn)
         {
-            if (odbc.CheckForDsn(systemDsn) > 0)
+            if (_odbc.CheckForDsn(systemDsn) > 0)
             {
                 if (DoesTableExist(tableName, DsnName) == false)
                 {
@@ -163,28 +163,35 @@ namespace PacketComs
             }
             else
             {
-                odbc.CreateDsn(DsnName);
+                _odbc.CreateDsn(DsnName);
                 MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",  "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
         }
         #endregion
 
-        #region SelectMakeCustomTable
-        public void SelectMakeCustomTable(   string systemDsn)
+        #region SelectMakeCustomQuery
+        public bool SelectMakeCustomQuery(   string systemDsn)
         {
-            if (odbc.CheckForDsn(systemDsn) > 0)
+            if (_odbc.CheckForDsn(systemDsn) > 0)
             {
-                if (DoesTableExist("CustomTable", DsnName) == false)
+                if (DoesTableExist("CustomQuery", DsnName) == false)
                 {
-                    SqlMakeTable("CREATE TABLE CustomTable ( ID AUTOINCREMENT PRIMARY KEY ,CustomName CHAR(20), CustomTable CHAR(50), TableName CHAR(20), Enable CHAR(1)  )");
+                    SqlMakeTable(
+                        "CREATE TABLE CustomQuery ( ID AUTOINCREMENT PRIMARY KEY ,CustomName CHAR(20), CustomQuery CHAR(50), TableName CHAR(20), Enable CHAR(1)  )");
+                    return false;
+                }
+                else
+                {
+                    return true;
                 }
             }
             else
             {
-                odbc.CreateDsn(DsnName);
+                _odbc.CreateDsn(DsnName);
                 MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
+                return false;
             }
         }
         #endregion
@@ -237,7 +244,6 @@ namespace PacketComs
         {
             using (var con = new OdbcConnection(DsnName))
             {
-                int msgId; 
                 con.Open();
 				String msgList = "SELECT MSG FROM Packet where MSGState = ?";
 	            using (var cmd = new OdbcCommand(msgList, con))
@@ -255,10 +261,10 @@ namespace PacketComs
 				            MsgList = new int[no];
 				            for (int i = 0; i < dt.Rows.Count; i++)
 				            {
-					            msgId = Convert.ToInt32(dt.Rows[i]["MSG"]);
-					            MsgList[i] = msgId;
+				                var msgId = Convert.ToInt32(dt.Rows[i]["MSG"]);
+				                MsgList[i] = msgId;
 				            }
-				            con.Close();
+			                con.Close();
 				            return MsgList;
 			            }
 		            }

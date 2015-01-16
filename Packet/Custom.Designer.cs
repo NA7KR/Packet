@@ -74,9 +74,12 @@ namespace Packet
             // 
             // DataGridView1
             // 
+            this.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.DataGridView1.Location = new System.Drawing.Point(434, 12);
             this.DataGridView1.Name = "DataGridView1";
+            this.DataGridView1.ReadOnly = true;
             this.DataGridView1.Size = new System.Drawing.Size(439, 462);
             this.DataGridView1.TabIndex = 2;
             // 

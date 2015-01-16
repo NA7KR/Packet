@@ -22,17 +22,8 @@ namespace Packet
         #region Custom Loader
         private void Custom_Load(object sender, EventArgs e)
         {
-            Loader();
-        }
-        #endregion
-
-        #region Loader
-
-        private void Loader()
-        {
-            MyFiles.SelectMakeCustomTable("Packet");
             DataGridView1.Columns.Add("ID", "ID");
-            DataGridView1.Columns.Add("CustomTable", "CustomTable");
+            DataGridView1.Columns.Add("CustomQuery", "CustomQuery");
             DataGridView1.Columns.Add("TableName", "TableName");
             DataGridView1.Columns.Add("Enable", "Enable");
             DataGridView1.Columns[0].Width = 50;
@@ -43,13 +34,27 @@ namespace Packet
                                   DataGridView1.Columns[2].Width + DataGridView1.Columns[3].Width + 48;
 
             DataGridView1.Visible = true;
+            Loader();
+        }
+        #endregion
+
+        #region Loader
+
+        private void Loader()
+        {
+            if (MyFiles.SelectMakeCustomQuery("Packet") == false)
+            {
+                Sql.WriteSqlCustomUpdate(1, "7+", "7+", "MSGSubject", "Y");
+            }
+           
             DataGridView1.Rows.Clear();
             var packets = Sql.SqlselectCustom();
+
             packets.ForEach(delegate(DtoCustom packet)
             {
                 DataGridView1.Rows.Add(
                     packet.get_ID(),
-                    packet.get_CustomTable(),
+                    packet.get_CustomQuery(),
                     packet.get_TableName(),
                     packet.get_Enable());
 
@@ -76,7 +81,7 @@ namespace Packet
 
         private void OK_button_Click(object sender, EventArgs e)
         {
-            Sql.WriteSqlCustomUpdate(1, "2","30", "40", "50");
+            Sql.WriteSqlCustomUpdate(0, "9+","79+", "MSGSubject", "Y");
             Loader();
         }
 
