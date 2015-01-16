@@ -76,7 +76,8 @@ namespace Packet
 
         private void OK_button_Click(object sender, EventArgs e)
         {
-            Sql.WriteSqlCustomUpdate(1, "2","3", "4", "5");
+            Sql.WriteSqlCustomUpdate(1, "2","30", "40", "50");
+            Loader();
         }
 
     }

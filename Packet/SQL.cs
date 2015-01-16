@@ -418,9 +418,9 @@ namespace Packet
                         cmd.Connection = con;
                         cmd.CommandText = ("SELECT count(*) from  CustomTable WHERE CustomName=?");
                         con.Open();
-                        cmd.Parameters.AddWithValue("@p1", custom.get_TableName());
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@p1", custom.get_CustomName());
                         int count = (int)cmd.ExecuteScalar();
-                        //SqlCommand command;
 
                         if (count > 0)
                         {
@@ -430,16 +430,13 @@ namespace Packet
                         {
                             cmd.CommandText = ("INSERT into CustomTable (ID, CustomName, CustomTable, TableName, Enable) VALUES (?, ?, ?, ?, ?)");
                         }
-
+                        cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@p1", custom.get_ID());
                         cmd.Parameters.AddWithValue("@p2", custom.get_CustomName());
                         cmd.Parameters.AddWithValue("@p3", custom.get_CustomTable());
                         cmd.Parameters.AddWithValue("@p4", custom.get_TableName());
-                        cmd.Parameters.AddWithValue("@p4", custom.get_Enable());
-                        
-                        int rowsUpdated = cmd.ExecuteNonQuery();
-                        MessageBox.Show(rowsUpdated.ToString());
-                        
+                        cmd.Parameters.AddWithValue("@p4", custom.get_Enable()); 
+                        cmd.ExecuteNonQuery();  
                         con.Close();
                     }
                 }

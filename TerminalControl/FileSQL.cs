@@ -27,7 +27,7 @@ namespace PacketComs
 			conp.Open();
 
 	        {
-		        if (odbc.CheckForDSN(dsnTableName) > 0)
+		        if (odbc.CheckForDsn(dsnTableName) > 0)
 		        {
 			        if (DoesTableExist(dsnTableName, DsnName) == false)
 			        {
@@ -37,7 +37,7 @@ namespace PacketComs
 		        }
 		        else
 		        {
-			        odbc.CreateDSN(DsnName);
+			        odbc.CreateDsn(DsnName);
 			        MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
 				        "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			        Environment.Exit(1);
@@ -154,7 +154,7 @@ namespace PacketComs
         #region SelectMakeTable
         public void SelectMakeTable(string textVale, Int32 intsize, string tableName,  string systemDsn)
         {
-            if (odbc.CheckForDSN(systemDsn) > 0)
+            if (odbc.CheckForDsn(systemDsn) > 0)
             {
                 if (DoesTableExist(tableName, DsnName) == false)
                 {
@@ -163,7 +163,7 @@ namespace PacketComs
             }
             else
             {
-                odbc.CreateDSN(DsnName);
+                odbc.CreateDsn(DsnName);
                 MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",  "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
@@ -173,7 +173,7 @@ namespace PacketComs
         #region SelectMakeCustomTable
         public void SelectMakeCustomTable(   string systemDsn)
         {
-            if (odbc.CheckForDSN(systemDsn) > 0)
+            if (odbc.CheckForDsn(systemDsn) > 0)
             {
                 if (DoesTableExist("CustomTable", DsnName) == false)
                 {
@@ -182,7 +182,7 @@ namespace PacketComs
             }
             else
             {
-                odbc.CreateDSN(DsnName);
+                odbc.CreateDsn(DsnName);
                 MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }

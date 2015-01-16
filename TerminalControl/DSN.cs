@@ -22,7 +22,7 @@ namespace PacketComs
 
 		#region CreateDSN
 
-		public void CreateDSN(string dsnName)
+		public void CreateDsn(string dsnName)
 		{
 			try
 			{
@@ -45,7 +45,7 @@ namespace PacketComs
 
 		#region CheckForDSN
 
-		public int CheckForDSN(string dsnName)
+		public int CheckForDsn(string dsnName)
 		{
 			int iData;
 			var strRetBuff = "";

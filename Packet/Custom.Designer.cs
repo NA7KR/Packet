@@ -31,6 +31,7 @@ namespace Packet
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Custom));
             this.Cancel_button = new System.Windows.Forms.Button();
             this.OK_button = new System.Windows.Forms.Button();
             this.DataGridView1 = new System.Windows.Forms.DataGridView();
@@ -223,6 +224,7 @@ namespace Packet
             this.Controls.Add(this.DataGridView1);
             this.Controls.Add(this.OK_button);
             this.Controls.Add(this.Cancel_button);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Custom";
             this.Text = "Custom";
             this.Load += new System.EventHandler(this.Custom_Load);
