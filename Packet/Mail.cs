@@ -29,16 +29,13 @@ namespace Packet
 
 		private void button_OK_Click(object sender, EventArgs e)
 		{
-			if (DataGridView1.SelectedRows != null)
-			{
-				foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
-				{
-					var toDownLoad = drv.Cells[0].Value.ToString();
-					var inumber = Convert.ToInt32(toDownLoad);
-					Sql.WriteSqlPacketUpdate(inumber, "P");
-				}	
-			}
-			Close();
+		    foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
+		    {
+		        var toDownLoad = drv.Cells[0].Value.ToString();
+		        var inumber = Convert.ToInt32(toDownLoad);
+		        Sql.WriteSqlPacketUpdate(inumber, "P");
+		    }
+		    Close();
 		}
 
 		#endregion
@@ -98,10 +95,9 @@ namespace Packet
                     
                 Loader();
 		    }
-		    catch (Exception)
+            catch (IOException ex)
 		    {
-		        
-		        throw;
+                MessageBox.Show("Error loading" + " " + ex.Source);       
 		    }
            
         }
