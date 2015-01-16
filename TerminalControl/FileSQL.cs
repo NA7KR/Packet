@@ -247,11 +247,12 @@ namespace PacketComs
 			            cmd.Parameters.Clear();
 			            cmd.Parameters.AddWithValue("@p1", "P");
 			            cmd.Prepare();
-			            using (var dt = new DataTable())
+		                int[] MsgList;
+		                using (var dt = new DataTable())
 			            {
 				            da.Fill(dt);
 				            int no = dt.Rows.Count;
-				            int[] MsgList = new int[no];
+				            MsgList = new int[no];
 				            for (int i = 0; i < dt.Rows.Count; i++)
 				            {
 					            msgId = Convert.ToInt32(dt.Rows[i]["MSG"]);
