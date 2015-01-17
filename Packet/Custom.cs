@@ -13,6 +13,7 @@ namespace Packet
         
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
+        private string textID;
 
         public Custom()
         {
@@ -85,10 +86,18 @@ namespace Packet
             Loader();
         }
 
-        private void button_edit_Click(object sender, EventArgs e)
+       
+
+        private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridViewRow dr = DataGridView1.SelectedRows[0];
-            name_textBox.Text = dr.Cells[3].Value.ToString();
+            textID = DataGridView1[1, e.RowIndex].Value.ToString();
+            //textBoxName.Text = DataGridView1[1, e.RowIndex].Value.ToString();
+            //textBoxMobile.Text = DataGridView1[2, e.RowIndex].Value.ToString();
+        }
+
+        private void edit_button_Click(object sender, EventArgs e)
+        {
+            name_textBox.Text = textID;
         }
 
     }

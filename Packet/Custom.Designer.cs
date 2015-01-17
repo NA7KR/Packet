@@ -41,13 +41,13 @@ namespace Packet
             this.table_label = new System.Windows.Forms.Label();
             this.Query_label = new System.Windows.Forms.Label();
             this.Active_label = new System.Windows.Forms.Label();
-            this.button_edit = new System.Windows.Forms.Button();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.MSGFrom_radioButton = new System.Windows.Forms.RadioButton();
             this.MSGRoute_radioButton = new System.Windows.Forms.RadioButton();
             this.MSGTSLD_radioButton = new System.Windows.Forms.RadioButton();
             this.MSGSubject_radioButton = new System.Windows.Forms.RadioButton();
             this.panel_radioButton = new System.Windows.Forms.Panel();
+            this.edit_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             this.panel_radioButton.SuspendLayout();
             this.SuspendLayout();
@@ -82,6 +82,7 @@ namespace Packet
             this.DataGridView1.ReadOnly = true;
             this.DataGridView1.Size = new System.Drawing.Size(439, 462);
             this.DataGridView1.TabIndex = 2;
+            this.DataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellClick);
             // 
             // name_textBox
             // 
@@ -133,17 +134,6 @@ namespace Packet
             this.Active_label.Size = new System.Drawing.Size(37, 13);
             this.Active_label.TabIndex = 12;
             this.Active_label.Text = "Active";
-            // 
-            // button_edit
-            // 
-            this.button_edit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_edit.Location = new System.Drawing.Point(328, 451);
-            this.button_edit.Name = "button_edit";
-            this.button_edit.Size = new System.Drawing.Size(75, 23);
-            this.button_edit.TabIndex = 13;
-            this.button_edit.Text = "Edit";
-            this.button_edit.UseVisualStyleBackColor = true;
-            this.button_edit.Click += new System.EventHandler(this.button_edit_Click);
             // 
             // checkBox5
             // 
@@ -210,15 +200,25 @@ namespace Packet
             this.panel_radioButton.Size = new System.Drawing.Size(145, 108);
             this.panel_radioButton.TabIndex = 24;
             // 
+            // edit_button
+            // 
+            this.edit_button.Location = new System.Drawing.Point(319, 451);
+            this.edit_button.Name = "edit_button";
+            this.edit_button.Size = new System.Drawing.Size(75, 23);
+            this.edit_button.TabIndex = 25;
+            this.edit_button.Text = "Edit";
+            this.edit_button.UseVisualStyleBackColor = true;
+            this.edit_button.Click += new System.EventHandler(this.edit_button_Click);
+            // 
             // Custom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_button;
             this.ClientSize = new System.Drawing.Size(952, 509);
+            this.Controls.Add(this.edit_button);
             this.Controls.Add(this.panel_radioButton);
             this.Controls.Add(this.checkBox5);
-            this.Controls.Add(this.button_edit);
             this.Controls.Add(this.Active_label);
             this.Controls.Add(this.Query_label);
             this.Controls.Add(this.table_label);
@@ -252,12 +252,12 @@ namespace Packet
         private Label table_label;
         private Label Query_label;
         private Label Active_label;
-        private Button button_edit;
         private CheckBox checkBox5;
         private RadioButton MSGFrom_radioButton;
         private RadioButton MSGRoute_radioButton;
         private RadioButton MSGTSLD_radioButton;
         private RadioButton MSGSubject_radioButton;
         private Panel panel_radioButton;
+        private Button edit_button;
     }
 }
