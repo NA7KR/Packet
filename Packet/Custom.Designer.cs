@@ -143,6 +143,7 @@ namespace Packet
             this.button_edit.TabIndex = 13;
             this.button_edit.Text = "Edit";
             this.button_edit.UseVisualStyleBackColor = true;
+            this.button_edit.Click += new System.EventHandler(this.button_edit_Click);
             // 
             // checkBox5
             // 

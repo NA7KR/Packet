@@ -85,5 +85,11 @@ namespace Packet
             Loader();
         }
 
+        private void button_edit_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow dr = DataGridView1.SelectedRows[0];
+            name_textBox.Text = dr.Cells[3].Value.ToString();
+        }
+
     }
 }
