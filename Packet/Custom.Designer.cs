@@ -93,11 +93,12 @@ namespace Packet
             // 
             // Query_richTextBox
             // 
-            this.Query_richTextBox.Location = new System.Drawing.Point(117, 236);
+            this.Query_richTextBox.Location = new System.Drawing.Point(117, 112);
             this.Query_richTextBox.Name = "Query_richTextBox";
             this.Query_richTextBox.Size = new System.Drawing.Size(301, 129);
             this.Query_richTextBox.TabIndex = 6;
             this.Query_richTextBox.Text = "";
+            
             // 
             // name_label
             // 
@@ -111,7 +112,7 @@ namespace Packet
             // table_label
             // 
             this.table_label.AutoSize = true;
-            this.table_label.Location = new System.Drawing.Point(32, 153);
+            this.table_label.Location = new System.Drawing.Point(32, 298);
             this.table_label.Name = "table_label";
             this.table_label.Size = new System.Drawing.Size(34, 13);
             this.table_label.TabIndex = 9;
@@ -120,7 +121,7 @@ namespace Packet
             // Query_label
             // 
             this.Query_label.AutoSize = true;
-            this.Query_label.Location = new System.Drawing.Point(32, 293);
+            this.Query_label.Location = new System.Drawing.Point(33, 164);
             this.Query_label.Name = "Query_label";
             this.Query_label.Size = new System.Drawing.Size(35, 13);
             this.Query_label.TabIndex = 10;
@@ -159,7 +160,7 @@ namespace Packet
             // MSGRoute_radioButton
             // 
             this.MSGRoute_radioButton.AutoSize = true;
-            this.MSGRoute_radioButton.Location = new System.Drawing.Point(11, 54);
+            this.MSGRoute_radioButton.Location = new System.Drawing.Point(10, 54);
             this.MSGRoute_radioButton.Name = "MSGRoute_radioButton";
             this.MSGRoute_radioButton.Size = new System.Drawing.Size(78, 17);
             this.MSGRoute_radioButton.TabIndex = 20;
@@ -195,9 +196,9 @@ namespace Packet
             this.panel_radioButton.Controls.Add(this.MSGSubject_radioButton);
             this.panel_radioButton.Controls.Add(this.MSGFrom_radioButton);
             this.panel_radioButton.Controls.Add(this.MSGRoute_radioButton);
-            this.panel_radioButton.Location = new System.Drawing.Point(117, 107);
+            this.panel_radioButton.Location = new System.Drawing.Point(100, 263);
             this.panel_radioButton.Name = "panel_radioButton";
-            this.panel_radioButton.Size = new System.Drawing.Size(145, 108);
+            this.panel_radioButton.Size = new System.Drawing.Size(170, 109);
             this.panel_radioButton.TabIndex = 24;
             // 
             // edit_button
@@ -215,15 +216,15 @@ namespace Packet
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_button;
-            this.ClientSize = new System.Drawing.Size(952, 509);
+            this.ClientSize = new System.Drawing.Size(1228, 509);
             this.Controls.Add(this.edit_button);
             this.Controls.Add(this.panel_radioButton);
             this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.Active_label);
+            this.Controls.Add(this.Query_richTextBox);
             this.Controls.Add(this.Query_label);
             this.Controls.Add(this.table_label);
             this.Controls.Add(this.name_label);
-            this.Controls.Add(this.Query_richTextBox);
             this.Controls.Add(this.name_textBox);
             this.Controls.Add(this.DataGridView1);
             this.Controls.Add(this.OK_button);

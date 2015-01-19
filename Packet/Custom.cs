@@ -14,6 +14,10 @@ namespace Packet
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
         private string textID;
+        private string nameID;
+        private string queryID;
+        private string tableID;
+        private string enableID;
 
         public Custom()
         {
@@ -24,17 +28,30 @@ namespace Packet
         private void Custom_Load(object sender, EventArgs e)
         {
             DataGridView1.Columns.Add("ID", "ID");
+            DataGridView1.Columns.Add("CustomName", "CustomName");
             DataGridView1.Columns.Add("CustomQuery", "CustomQuery");
             DataGridView1.Columns.Add("TableName", "TableName");
             DataGridView1.Columns.Add("Enable", "Enable");
             DataGridView1.Columns[0].Width = 50;
             DataGridView1.Columns[1].Width = 200;
-            DataGridView1.Columns[2].Width = 100;
-            DataGridView1.Columns[3].Width = 50;
+            DataGridView1.Columns[2].Width = 200;
+            DataGridView1.Columns[3].Width = 100;
+            DataGridView1.Columns[4].Width = 50;
             DataGridView1.Width = DataGridView1.Columns[0].Width + DataGridView1.Columns[1].Width +
-                                  DataGridView1.Columns[2].Width + DataGridView1.Columns[3].Width + 48;
+                                  DataGridView1.Columns[2].Width + DataGridView1.Columns[3].Width +
+                                  DataGridView1.Columns[4].Width + 48;
 
             DataGridView1.Visible = true;
+            MSGFrom_radioButton.Left = 20;
+            MSGRoute_radioButton.Left = 20;
+            MSGTSLD_radioButton.Left = 20;
+            MSGSubject_radioButton.Left = 20;
+
+            MSGFrom_radioButton.Top = 20;
+            MSGTSLD_radioButton.Top = 40;
+            MSGRoute_radioButton.Top = 60;
+            MSGSubject_radioButton.Top = 80;
+            Width = DataGridView1.Right + 48;
             Loader();
         }
         #endregion
@@ -55,12 +72,14 @@ namespace Packet
             {
                 DataGridView1.Rows.Add(
                     packet.get_ID(),
+                    packet.get_CustomName(),
                     packet.get_CustomQuery(),
                     packet.get_TableName(),
                     packet.get_Enable());
 
             }
                 );
+            
         }
 
 
@@ -77,7 +96,7 @@ namespace Packet
             MSGTSLD_radioButton.Top = 40;
             MSGRoute_radioButton.Top = 60;
             MSGSubject_radioButton.Top = 80;
-
+            Width = DataGridView1.Right + 48;
         }
 
         private void OK_button_Click(object sender, EventArgs e)
@@ -90,15 +109,22 @@ namespace Packet
 
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            textID = DataGridView1[1, e.RowIndex].Value.ToString();
-            //textBoxName.Text = DataGridView1[1, e.RowIndex].Value.ToString();
-            //textBoxMobile.Text = DataGridView1[2, e.RowIndex].Value.ToString();
+            textID = DataGridView1[0, e.RowIndex].Value.ToString();
+            nameID = DataGridView1[1, e.RowIndex].Value.ToString();
+            queryID = DataGridView1[2, e.RowIndex].Value.ToString();
+            tableID = DataGridView1[3, e.RowIndex].Value.ToString();
+            enableID = DataGridView1[4, e.RowIndex].Value.ToString();
+           
+           
         }
 
         private void edit_button_Click(object sender, EventArgs e)
         {
-            name_textBox.Text = textID;
+            name_textBox.Text = nameID;
+            Query_richTextBox.Text = queryID;
         }
+
+      
 
     }
 }
