@@ -428,7 +428,7 @@ namespace Packet
                         }
                         else
                         {
-                            cmd.CommandText = ("INSERT into CustomQuery (CustomName, CustomQuery, TableName, Enable,ID) VALUES (?, ?, ?, ?, ?)");
+                            cmd.CommandText = ("INSERT into CustomQuery (CustomName, CustomQuery, TableName, Enable) VALUES (?, ?, ?, ?)");
                         }
                         cmd.Parameters.Clear();
                         

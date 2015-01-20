@@ -131,11 +131,16 @@ namespace Packet
             {
                 enableID = "N"; 
             }
-            OK_button.Text = "Save";
+            
 
-            if ( OK_button.Text == "Save")
+            if (OK_button.Text == "Save")
             {
-                Sql.WriteSqlCustomUpdate(textID, nameID,queryID, tableID, enableID);
+                Sql.WriteSqlCustomUpdate(textID, nameID, queryID, tableID, enableID);
+            }
+            else
+            {
+                textID = 99999;
+                Sql.WriteSqlCustomUpdate(textID, nameID, queryID, tableID, enableID);
             }
             OK_button.Text = "OK";
             Loader();
