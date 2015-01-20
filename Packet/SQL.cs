@@ -416,10 +416,10 @@ namespace Packet
                     using (var cmd = new OdbcCommand())
                     {
                         cmd.Connection = con;
-                        cmd.CommandText = ("SELECT count(*) from  CustomQuery WHERE CustomName=?");
+                        cmd.CommandText = ("SELECT count(*) from  CustomQuery WHERE ID=?");
                         con.Open();
                         cmd.Parameters.Clear();
-                        cmd.Parameters.AddWithValue("@p1", custom.get_CustomName());
+                        cmd.Parameters.AddWithValue("@p1", custom.get_ID());
                         int count = (int)cmd.ExecuteScalar();
 
                         if (count > 0)

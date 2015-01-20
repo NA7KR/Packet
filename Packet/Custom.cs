@@ -104,6 +104,35 @@ namespace Packet
         {
             nameID = name_textBox.Text ;
             queryID = Query_richTextBox.Text ;
+
+             
+            if (MSGSubject_radioButton.Checked )
+            {
+                tableID = "MSGSubject";
+
+            }
+            if (MSGRoute_radioButton.Checked)
+            {
+                tableID = "MSGRoute";
+            }
+            if (MSGTSLD_radioButton.Checked)
+            {
+                tableID = "MSGTSLD";
+            }
+            if (MSGFrom_radioButton.Checked)
+            {
+                tableID = "MSGFrom";
+            }
+            if (Enabel_checkBox.Checked)
+            {
+                enableID = "Y";
+            }
+            else
+            {
+                enableID = "N"; 
+            }
+            OK_button.Text = "Save";
+
             if ( OK_button.Text == "Save")
             {
                 Sql.WriteSqlCustomUpdate(textID, nameID,queryID, tableID, enableID);
