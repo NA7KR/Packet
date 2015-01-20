@@ -13,16 +13,19 @@ namespace Packet
         
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
-        private Int32 textID;
-        private string nameID;
-        private string queryID;
-        private string tableID;
-        private string enableID;
-        private bool SelectedCkeck;
+        private Int32 _textId;
+        private string _nameId;
+        private string _queryId;
+        private string _tableId;
+        private string _enableId;
+        private bool _selectedCkeck;
+
+        #region Custom
         public Custom()
         {
             InitializeComponent();
         }
+        #endregion
 
         #region Custom Loader
         private void Custom_Load(object sender, EventArgs e)
@@ -60,7 +63,7 @@ namespace Packet
 
         private void Loader()
         {
-            SelectedCkeck = false;
+            _selectedCkeck = false;
             if (MyFiles.SelectMakeCustomQuery("Packet") == false)
             {
                 Sql.WriteSqlCustomUpdate(1, "7+", "7+", "MSGSubject", "Y");
@@ -86,6 +89,7 @@ namespace Packet
 
         #endregion
 
+        #region resize
         private void Custom_Resize(object sender, EventArgs e)
         {
             MSGFrom_radioButton.Left = 20;
@@ -99,90 +103,86 @@ namespace Packet
             MSGSubject_radioButton.Top = 80;
             Width = DataGridView1.Right + 48;
         }
+        #endregion
 
+        #region OK button
         private void OK_button_Click(object sender, EventArgs e) 
         {
-            nameID = name_textBox.Text ;
-            queryID = Query_richTextBox.Text ;
+            _nameId = name_textBox.Text ;
+            _queryId = Query_richTextBox.Text ;
 
              
             if (MSGSubject_radioButton.Checked )
             {
-                tableID = "MSGSubject";
+                _tableId = "MSGSubject";
 
             }
             if (MSGRoute_radioButton.Checked)
             {
-                tableID = "MSGRoute";
+                _tableId = "MSGRoute";
             }
             if (MSGTSLD_radioButton.Checked)
             {
-                tableID = "MSGTSLD";
+                _tableId = "MSGTSLD";
             }
             if (MSGFrom_radioButton.Checked)
             {
-                tableID = "MSGFrom";
+                _tableId = "MSGFrom";
             }
-            if (Enabel_checkBox.Checked)
-            {
-                enableID = "Y";
-            }
-            else
-            {
-                enableID = "N"; 
-            }
+            _enableId = Enabel_checkBox.Checked ? "Y" : "N";
             
 
             if (OK_button.Text == "Save")
             {
-                Sql.WriteSqlCustomUpdate(textID, nameID, queryID, tableID, enableID);
+                Sql.WriteSqlCustomUpdate(_textId, _nameId, _queryId, _tableId, _enableId);
             }
             else
             {
-                textID = 99999;
-                Sql.WriteSqlCustomUpdate(textID, nameID, queryID, tableID, enableID);
+                _textId = 99999;
+                Sql.WriteSqlCustomUpdate(_textId, _nameId, _queryId, _tableId, _enableId);
             }
             OK_button.Text = "OK";
             Loader();
         }
+        #endregion
 
-       
-
+        #region DataGridView1_CellClick(
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            textID = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
-            nameID = DataGridView1[1, e.RowIndex].Value.ToString().Trim();
-            queryID = DataGridView1[2, e.RowIndex].Value.ToString().Trim();
-            tableID = DataGridView1[3, e.RowIndex].Value.ToString().Trim();
-            enableID = DataGridView1[4, e.RowIndex].Value.ToString().Trim();
-            SelectedCkeck = true;
-
+            _textId = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
+            _nameId = DataGridView1[1, e.RowIndex].Value.ToString().Trim();
+            _queryId = DataGridView1[2, e.RowIndex].Value.ToString().Trim();
+            _tableId = DataGridView1[3, e.RowIndex].Value.ToString().Trim();
+            _enableId = DataGridView1[4, e.RowIndex].Value.ToString().Trim();
+            _selectedCkeck = true;
         }
+        #endregion
 
+        #region button click
         private void edit_button_Click(object sender, EventArgs e)
         {
-            if (SelectedCkeck)
+            if (_selectedCkeck)
             {
 
-                name_textBox.Text = nameID;
-                Query_richTextBox.Text = queryID;
-                if (tableID.Trim() == "MSGSubject")
+                name_textBox.Text = _nameId;
+                Query_richTextBox.Text = _queryId;
+                if (_tableId.Trim() == "MSGSubject")
                 {
                     MSGSubject_radioButton.Checked = true;
                 }
-                if (tableID.Trim() == "MSGRoure")
+                if (_tableId.Trim() == "MSGRoure")
                 {
                     MSGRoute_radioButton.Checked = true;
                 }
-                if (tableID.Trim() == "MSGTSLD")
+                if (_tableId.Trim() == "MSGTSLD")
                 {
                     MSGTSLD_radioButton.Checked = true;
                 }
-                if (tableID.Trim() == "MSGFrom")
+                if (_tableId.Trim() == "MSGFrom")
                 {
                     MSGFrom_radioButton.Checked = true;
                 }
-                if (enableID.Trim() == "Y")
+                if (_enableId.Trim() == "Y")
                 {
                     Enabel_checkBox.Checked = true;
                 }
@@ -193,13 +193,13 @@ namespace Packet
                 MessageBox.Show("Select to edit!");
             }
         }
+        #endregion
 
+        #region cancel
         private void Cancel_button_Click(object sender, EventArgs e)
         {
             OK_button.Text = "OK";
         }
-
-      
-
+        #endregion
     }
 }

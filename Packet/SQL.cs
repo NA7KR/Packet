@@ -386,13 +386,13 @@ namespace Packet
 
         #region WriteSQLCustomUpdate
 
-        public void WriteSqlCustomUpdate(int value, string customName, String CustomQuery, String tableName, String enable)
+        public void WriteSqlCustomUpdate(int value, string customName, String customQuery, String tableName, String enable)
         {
             try
             {
                 _custom.set_ID(value);
                 _custom.set_CustomName(customName);
-                _custom.set_CustomQuery(CustomQuery);
+                _custom.set_CustomQuery(customQuery);
                 _custom.set_TableName(tableName);
                 _custom.set_Enable(enable);
                 SqlupdateCustom(_custom);
@@ -743,13 +743,13 @@ namespace Packet
                     var cb = new OdbcCommandBuilder(da);
                     cb.QuotePrefix = "[";
                     cb.QuoteSuffix = "]";
-                    int s_year = 2000;
+                    int sYear = 2000;
                     var dt = new DataTable();
                     da.Fill(dt);
                     DateTime dateNow = DateTime.Now;
                     var now = (TimeZoneInfo.ConvertTimeToUtc(dateNow));
                     // save current date/time (without seconds) for comparison
-                    var currDateTime = new DateTime(s_year, now.Month, now.Day, now.Hour, now.Minute, 0);
+                    var currDateTime = new DateTime(sYear, now.Month, now.Day, now.Hour, now.Minute, 0);
                     foreach (DataRow r in dt.Rows)
                     {
                         string mdhm = r["MSGDateTime"].ToString();
@@ -764,7 +764,7 @@ namespace Packet
 
                         }
 
-                        DateTime rowDateTime = new DateTime(s_year, sMonth, sDay, sHr, sMin, 0);
+                        DateTime rowDateTime = new DateTime(sYear, sMonth, sDay, sHr, sMin, 0);
                         // if in future then convert to previous year
                         if (rowDateTime > currDateTime)
                         {
