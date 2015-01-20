@@ -424,18 +424,19 @@ namespace Packet
 
                         if (count > 0)
                         {
-                            cmd.CommandText = ("UPDATE CustomQuery where ID=? SET CustomName=?,CustomQuery=?,TableName=?,Enable=?");
+                            cmd.CommandText = ("UPDATE CustomQuery  SET CustomName=?,CustomQuery=?,TableName=?,Enable=? where ID=?");
                         }
                         else
                         {
-                            cmd.CommandText = ("INSERT into CustomQuery (ID, CustomName, CustomQuery, TableName, Enable) VALUES (?, ?, ?, ?, ?)");
+                            cmd.CommandText = ("INSERT into CustomQuery (CustomName, CustomQuery, TableName, Enable,ID) VALUES (?, ?, ?, ?, ?)");
                         }
                         cmd.Parameters.Clear();
-                        cmd.Parameters.AddWithValue("@p1", custom.get_ID());
-                        cmd.Parameters.AddWithValue("@p2", custom.get_CustomName());
-                        cmd.Parameters.AddWithValue("@p3", custom.get_CustomQuery());
-                        cmd.Parameters.AddWithValue("@p4", custom.get_TableName());
-                        cmd.Parameters.AddWithValue("@p4", custom.get_Enable()); 
+                        
+                        cmd.Parameters.AddWithValue("@p1", custom.get_CustomName());
+                        cmd.Parameters.AddWithValue("@p2", custom.get_CustomQuery());
+                        cmd.Parameters.AddWithValue("@p3", custom.get_TableName());
+                        cmd.Parameters.AddWithValue("@p4", custom.get_Enable());
+                        cmd.Parameters.AddWithValue("@p5", custom.get_ID());
                         cmd.ExecuteNonQuery();  
                         con.Close();
                     }

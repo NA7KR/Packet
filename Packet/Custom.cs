@@ -117,10 +117,10 @@ namespace Packet
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             textID = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
-            nameID = DataGridView1[1, e.RowIndex].Value.ToString();
-            queryID = DataGridView1[2, e.RowIndex].Value.ToString();
-            tableID = DataGridView1[3, e.RowIndex].Value.ToString();
-            enableID = DataGridView1[4, e.RowIndex].Value.ToString();
+            nameID = DataGridView1[1, e.RowIndex].Value.ToString().Trim();
+            queryID = DataGridView1[2, e.RowIndex].Value.ToString().Trim();
+            tableID = DataGridView1[3, e.RowIndex].Value.ToString().Trim();
+            enableID = DataGridView1[4, e.RowIndex].Value.ToString().Trim();
             SelectedCkeck = true;
 
         }
