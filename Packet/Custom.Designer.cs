@@ -41,7 +41,7 @@ namespace Packet
             this.table_label = new System.Windows.Forms.Label();
             this.Query_label = new System.Windows.Forms.Label();
             this.Active_label = new System.Windows.Forms.Label();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.Enabel_checkBox = new System.Windows.Forms.CheckBox();
             this.MSGFrom_radioButton = new System.Windows.Forms.RadioButton();
             this.MSGRoute_radioButton = new System.Windows.Forms.RadioButton();
             this.MSGTSLD_radioButton = new System.Windows.Forms.RadioButton();
@@ -61,6 +61,7 @@ namespace Packet
             this.Cancel_button.TabIndex = 0;
             this.Cancel_button.Text = "Cancel";
             this.Cancel_button.UseVisualStyleBackColor = true;
+            this.Cancel_button.Click += new System.EventHandler(this.Cancel_button_Click);
             // 
             // OK_button
             // 
@@ -74,9 +75,12 @@ namespace Packet
             // 
             // DataGridView1
             // 
+            this.DataGridView1.AllowUserToAddRows = false;
+            this.DataGridView1.AllowUserToDeleteRows = false;
             this.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.DataGridView1.EnableHeadersVisualStyles = false;
             this.DataGridView1.Location = new System.Drawing.Point(434, 12);
             this.DataGridView1.Name = "DataGridView1";
             this.DataGridView1.ReadOnly = true;
@@ -98,7 +102,6 @@ namespace Packet
             this.Query_richTextBox.Size = new System.Drawing.Size(301, 129);
             this.Query_richTextBox.TabIndex = 6;
             this.Query_richTextBox.Text = "";
-            
             // 
             // name_label
             // 
@@ -136,15 +139,15 @@ namespace Packet
             this.Active_label.TabIndex = 12;
             this.Active_label.Text = "Active";
             // 
-            // checkBox5
+            // Enabel_checkBox
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(117, 390);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(59, 17);
-            this.checkBox5.TabIndex = 18;
-            this.checkBox5.Text = "Enable";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.Enabel_checkBox.AutoSize = true;
+            this.Enabel_checkBox.Location = new System.Drawing.Point(117, 390);
+            this.Enabel_checkBox.Name = "Enabel_checkBox";
+            this.Enabel_checkBox.Size = new System.Drawing.Size(59, 17);
+            this.Enabel_checkBox.TabIndex = 18;
+            this.Enabel_checkBox.Text = "Enable";
+            this.Enabel_checkBox.UseVisualStyleBackColor = true;
             // 
             // MSGFrom_radioButton
             // 
@@ -219,7 +222,7 @@ namespace Packet
             this.ClientSize = new System.Drawing.Size(1228, 509);
             this.Controls.Add(this.edit_button);
             this.Controls.Add(this.panel_radioButton);
-            this.Controls.Add(this.checkBox5);
+            this.Controls.Add(this.Enabel_checkBox);
             this.Controls.Add(this.Active_label);
             this.Controls.Add(this.Query_richTextBox);
             this.Controls.Add(this.Query_label);
@@ -253,7 +256,7 @@ namespace Packet
         private Label table_label;
         private Label Query_label;
         private Label Active_label;
-        private CheckBox checkBox5;
+        private CheckBox Enabel_checkBox;
         private RadioButton MSGFrom_radioButton;
         private RadioButton MSGRoute_radioButton;
         private RadioButton MSGTSLD_radioButton;

@@ -13,12 +13,12 @@ namespace Packet
         
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
-        private string textID;
+        private Int32 textID;
         private string nameID;
         private string queryID;
         private string tableID;
         private string enableID;
-
+        private bool SelectedCkeck;
         public Custom()
         {
             InitializeComponent();
@@ -60,6 +60,7 @@ namespace Packet
 
         private void Loader()
         {
+            SelectedCkeck = false;
             if (MyFiles.SelectMakeCustomQuery("Packet") == false)
             {
                 Sql.WriteSqlCustomUpdate(1, "7+", "7+", "MSGSubject", "Y");
@@ -99,9 +100,15 @@ namespace Packet
             Width = DataGridView1.Right + 48;
         }
 
-        private void OK_button_Click(object sender, EventArgs e)
+        private void OK_button_Click(object sender, EventArgs e) 
         {
-            Sql.WriteSqlCustomUpdate(0, "9+","79+", "MSGSubject", "Y");
+            nameID = name_textBox.Text ;
+            queryID = Query_richTextBox.Text ;
+            if ( OK_button.Text == "Save")
+            {
+                Sql.WriteSqlCustomUpdate(textID, nameID,queryID, tableID, enableID);
+            }
+            OK_button.Text = "OK";
             Loader();
         }
 
@@ -109,19 +116,53 @@ namespace Packet
 
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            textID = DataGridView1[0, e.RowIndex].Value.ToString();
+            textID = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
             nameID = DataGridView1[1, e.RowIndex].Value.ToString();
             queryID = DataGridView1[2, e.RowIndex].Value.ToString();
             tableID = DataGridView1[3, e.RowIndex].Value.ToString();
             enableID = DataGridView1[4, e.RowIndex].Value.ToString();
-           
-           
+            SelectedCkeck = true;
+
         }
 
         private void edit_button_Click(object sender, EventArgs e)
         {
-            name_textBox.Text = nameID;
-            Query_richTextBox.Text = queryID;
+            if (SelectedCkeck)
+            {
+
+                name_textBox.Text = nameID;
+                Query_richTextBox.Text = queryID;
+                if (tableID.Trim() == "MSGSubject")
+                {
+                    MSGSubject_radioButton.Checked = true;
+                }
+                if (tableID.Trim() == "MSGRoure")
+                {
+                    MSGRoute_radioButton.Checked = true;
+                }
+                if (tableID.Trim() == "MSGTSLD")
+                {
+                    MSGTSLD_radioButton.Checked = true;
+                }
+                if (tableID.Trim() == "MSGFrom")
+                {
+                    MSGFrom_radioButton.Checked = true;
+                }
+                if (enableID.Trim() == "Y")
+                {
+                    Enabel_checkBox.Checked = true;
+                }
+                OK_button.Text = "Save";
+            }
+            else
+            {
+                MessageBox.Show("Select to edit!");
+            }
+        }
+
+        private void Cancel_button_Click(object sender, EventArgs e)
+        {
+            OK_button.Text = "OK";
         }
 
       

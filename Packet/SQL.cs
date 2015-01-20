@@ -424,7 +424,7 @@ namespace Packet
 
                         if (count > 0)
                         {
-                            cmd.CommandText = ("UPDATE CustomQuery SET ID=?,CustomName=?,CustomQuery=?,TableName=?,Enable=?");
+                            cmd.CommandText = ("UPDATE CustomQuery where ID=? SET CustomName=?,CustomQuery=?,TableName=?,Enable=?");
                         }
                         else
                         {
