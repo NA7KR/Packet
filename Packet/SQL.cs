@@ -23,55 +23,7 @@ namespace Packet
         private readonly DtoListMsgto _msgtodto = new DtoListMsgto();
         private readonly DtoPacket _packet = new DtoPacket();
         private readonly DtoCustom _custom = new DtoCustom();
-
-        #region constructor
-
-       
-        #endregion
-
-        #region SqlselectCustom
-
-        public List<DtoCustom> SqlselectCustom()
-        {
-            var packets = new List<DtoCustom>();
-
-            try
-            {
-                using (var con = new OdbcConnection(Main.DsnName))
-                {
-                    using (var cmd = new OdbcCommand())
-                    {
-                        {
-                            cmd.Connection = con;
-                            cmd.CommandText = "SELECT * FROM CustomQuery";
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            using (var reader = cmd.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    var custom = new DtoCustom((int)reader.GetValue(0),
-                                        (string)reader.GetValue(1),
-                                        (string)reader.GetValue(2),
-                                        (string)reader.GetValue(3),
-                                        (string)reader.GetValue(4));
-                                    packets.Add(custom);
-                                }
-                            }
-                            con.Close();
-                        }
-
-                    }
-                }
-            }
-            catch (OdbcException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return packets;
-        }
-
-        #endregion
+  
 
         #region SQLSELECTRD
 

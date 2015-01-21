@@ -1,6 +1,6 @@
-﻿namespace Packet
+﻿namespace PacketComs
 {
-    class DtoCustom
+    public class DtoCustom
     {
         private int _id;
         private string _customName;

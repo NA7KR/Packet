@@ -32,6 +32,7 @@ namespace PacketComs
         private readonly FileSql _myFiles = new FileSql();
         private readonly SerialPort _port = new SerialPort();
         private static readonly FileSql FileSql = new FileSql();
+        private static readonly RunCustom RunCustom = new RunCustom();
 
         #region TerminalEmulator
 
@@ -987,6 +988,7 @@ namespace PacketComs
                                     FileSql.UpdateSqlto("MSGFrom");
                                     FileSql.UpdateSqlto("MSGRoute");
                                     FileSql.UpdateSqlto("MSGSubject");
+                                    RunCustom.RunSqlCustom();
                                     FileSql.SqlPacketDelete("MSGTO");
                                     FileSql.SqlPacketDelete("MSGFrom");
                                     FileSql.SqlPacketDelete("MSGRoute");

@@ -13,6 +13,7 @@ namespace Packet
         
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
+        private static readonly RunCustom RunCustom = new RunCustom();
         private Int32 _textId;
         private string _nameId;
         private string _queryId;
@@ -70,7 +71,7 @@ namespace Packet
             }
            
             DataGridView1.Rows.Clear();
-            var packets = Sql.SqlselectCustom();
+            var packets = MyFiles.SqlCustomRead();
 
             packets.ForEach(delegate(DtoCustom packet)
             {
@@ -141,6 +142,7 @@ namespace Packet
                 _textId = 99999;
                 Sql.WriteSqlCustomUpdate(_textId, _nameId, _queryId, _tableId, _enableId);
             }
+            RunCustom.RunSqlCustom();
             OK_button.Text = "OK";
             Loader();
         }

@@ -1,6 +1,7 @@
 ﻿#region Using Directive
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
@@ -17,6 +18,7 @@ namespace PacketComs
 		private OdbcManager _odbc;
 		private OdbcConnection _conp = new OdbcConnection(DsnName);  
 		private OdbcCommand _cmdp = new OdbcCommand();
+        private readonly DtoCustom _custom = new DtoCustom();
          
         #region Constructor
         public FileSql()
@@ -305,6 +307,49 @@ namespace PacketComs
 		    
             }
         }
+        #endregion
+
+        #region SqlCustomRead
+
+        
+         public List<DtoCustom> SqlCustomRead()
+        {
+            var packets = new List<DtoCustom>();
+            try
+            {
+                using (var con = new OdbcConnection(DsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        {
+                            cmd.Connection = con;
+                            cmd.CommandText = "SELECT * FROM CustomQuery";
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var custom = new DtoCustom((int)reader.GetValue(0),
+                                        (string)reader.GetValue(1),
+                                        (string)reader.GetValue(2),
+                                        (string)reader.GetValue(3),
+                                        (string)reader.GetValue(4));
+                                    packets.Add(custom);
+                                }
+                            }
+                            con.Close();
+                        }
+
+                    }
+                }
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return packets;
+        }
 
 
         #endregion
@@ -354,16 +399,15 @@ namespace PacketComs
                             " INNER JOIN " + tableName + " ON Packet." + tableName + " = " + tableName + "." + tableName +
                             " SET Packet.MSGState = ? " +
                             " where (Packet.MSGState is null    " +
-                            " or (Packet.MSGState<> ? And Packet.MSGState<> ?) ) " +
+                            " or (Packet.MSGState<> ? And Packet.MSGState<> ? And Packet.MSGState<> ?) ) " +
                             " and  " + tableName + ".Selected = ?" ;
 
-                            //  "UPDATE Packet SET Packet.MSGState = ? Where (MSGState <> ? and  MSGState <> ? and  MSGState <> ?) and Exists( Select " + tableName+ ".Selected From " + tableName + " Where " + tableName + "." + tableName + " = Packet." + tableName + " and Selected = ? )  ";
-							cmd.Parameters.Clear();
+                        	cmd.Parameters.Clear();
 							cmd.Parameters.AddWithValue("@p1", "P");
 							cmd.Parameters.AddWithValue("@p2", "R");
-                            cmd.Parameters.AddWithValue("@p2", "V");
-							cmd.Parameters.AddWithValue("@p3", "D");
-							cmd.Parameters.AddWithValue("@p4", "Y");
+                            cmd.Parameters.AddWithValue("@p3", "V");
+							cmd.Parameters.AddWithValue("@p4", "D");
+							cmd.Parameters.AddWithValue("@p5", "Y");
 							cmd.Connection = con;
 							con.Open();
 							cmd.Prepare();
@@ -380,5 +424,46 @@ namespace PacketComs
         }
         #endregion
 
+        #region	   UpdateSqlCistom
+
+        public void UpdateSqlCustom(string tableName)
+        {
+            if (DoesTableExist(tableName, DsnName))
+            {
+                try
+                {
+                    using (var con = new OdbcConnection(DsnName))
+                    {
+                        using (var cmd = new OdbcCommand())
+                        {
+                            cmd.CommandText =
+                            "UPDATE Packet " +
+                            " INNER JOIN " + tableName + " ON Packet." + tableName + " = " + tableName + "." + tableName +
+                            " SET Packet.MSGState = ? " +
+                            " where (Packet.MSGState is null    " +
+                            " or (Packet.MSGState<> ? And Packet.MSGState<> ? And Packet.MSGState<> ?) ) " +
+                            " and  " + tableName + ".Selected = ?";
+
+                            cmd.Parameters.Clear();
+                            cmd.Parameters.AddWithValue("@p1", "P");
+                            cmd.Parameters.AddWithValue("@p2", "R");
+                            cmd.Parameters.AddWithValue("@p3", "V");
+                            cmd.Parameters.AddWithValue("@p4", "D");
+                            cmd.Parameters.AddWithValue("@p5", "Y");
+                            cmd.Connection = con;
+                            con.Open();
+                            cmd.Prepare();
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                        }
+                    }
+                }
+                catch (OdbcException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+        }
+        #endregion
     }
 } //end name-space
