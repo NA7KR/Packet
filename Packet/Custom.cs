@@ -139,11 +139,14 @@ namespace Packet
             }
             else
             {
-                if (name_textBox.Text == null)
+                if (name_textBox.Text != "")
                 {
-                    _textId = 99999;
-                    Sql.WriteSqlCustomUpdate(_textId, _nameId, _queryId, _tableId, _enableId);
-                }
+                    if (Query_richTextBox.Text != "")
+                    {
+                        _textId = 99999;
+                        Sql.WriteSqlCustomUpdate(_textId, _nameId, _queryId, _tableId, _enableId);
+                    }
+                } 
             }
             RunCustom.RunSqlCustom();
             OK_button.Text = "OK";
