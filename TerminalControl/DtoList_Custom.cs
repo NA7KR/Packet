@@ -4,7 +4,7 @@
     {
         private int _id;
         private string _customName;
-		private string _CustomQuery;
+		private string _customQuery;
 		private string _tableName;
         private string _enable;
 
@@ -16,7 +16,7 @@
 		{
 		    _id = 0;
 		    _customName = null;
-		    _CustomQuery = null;
+		    _customQuery = null;
 		    _tableName = null;
 		    _enable = null;
 		}
@@ -25,11 +25,11 @@
 
 		#region DtoList
 
-        public DtoCustom(int id, string customName, string CustomQuery, string tableName, string enable)
+        public DtoCustom(int id, string customName, string customQuery, string tableName, string enable)
         {
             _id = id;
             _customName = customName;
-            _CustomQuery = CustomQuery;
+            _customQuery = customQuery;
             _tableName = tableName;
             _enable = enable;
 		}
@@ -49,7 +49,7 @@
 
         public string get_CustomQuery()
 		{
-            return _CustomQuery;
+            return _customQuery;
 		}
 
 		#endregion
@@ -101,9 +101,9 @@
 
         #region set_CustomQuery
 
-        public void set_CustomQuery(string CustomQuery)
+        public void set_CustomQuery(string customQuery)
 		{
-            _CustomQuery = CustomQuery;
+            _customQuery = customQuery;
 		}
 
 		#endregion
