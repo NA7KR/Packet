@@ -18,7 +18,7 @@ namespace Packet
             _msgnumber = msg;
             InitializeComponent();
         }
-
+        #region  load
         private void Reply_Load(object sender, EventArgs e)
         {
             reply_richTextBox.Width = Width - 50;
@@ -33,7 +33,9 @@ namespace Packet
             Text = "Reply to MSG # " + _msgnumber.ToString();
             MyFiles.ReplyMakeTable( "Packet");
         }
+        #endregion
 
+        #region resize
         private void Reply_Resize(object sender, EventArgs e)
         {
             reply_richTextBox.Width = Width - 50;
@@ -46,5 +48,6 @@ namespace Packet
             send_button.Top = reply_richTextBox.Bottom + 20;
             cancel_button.Top = reply_richTextBox.Bottom + 20;
         }
+        #endregion
     }
 }
