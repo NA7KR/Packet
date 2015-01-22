@@ -173,6 +173,25 @@ namespace Packet
         }
         #endregion
 
+        #region ReplyMakeTable
+        public void ReplyMakeTable( string systemDsn)
+        {
+            if (_odbc.CheckForDsn(systemDsn) > 0)
+            {
+                if (DoesTableExist("Reply", DsnName) == false)
+                {
+                    SqlMakeTable("CREATE TABLE Reply ( ID AUTOINCREMENT PRIMARY KEY , FileName CHAR(20), DateCreate datetime, Status CHAR(1)  )");
+                }
+            }
+            else
+            {
+                _odbc.CreateDsn(DsnName);
+                MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+            }
+        }
+        #endregion
+
         #region SelectMakeCustomQuery
         public bool SelectMakeCustomQuery(   string systemDsn)
         {

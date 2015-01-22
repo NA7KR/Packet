@@ -11,6 +11,7 @@ namespace Packet
 {
     public partial class Reply : Form
     {
+        private static readonly FileSql MyFiles = new FileSql();
         private int _msgnumber;
         public Reply(int msg)
         {
@@ -30,6 +31,7 @@ namespace Packet
             send_button.Top = reply_richTextBox.Bottom + 20;
             cancel_button.Top = reply_richTextBox.Bottom + 20;
             Text = "Reply to MSG # " + _msgnumber.ToString();
+            MyFiles.ReplyMakeTable( "Packet");
         }
 
         private void Reply_Resize(object sender, EventArgs e)
