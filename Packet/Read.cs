@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using PacketComs;
+using Packet;
 
 #endregion
 
@@ -13,6 +13,8 @@ namespace Packet
     public partial class Read : Form
     {
         private static readonly Sql Sql = new Sql();
+        private bool _selectedCkeck;
+        private Int32 _textId;
 
         #region Read
 
@@ -27,6 +29,7 @@ namespace Packet
 
         private void Read_Load(object sender, EventArgs e)
         {
+            _selectedCkeck = false;
             Loader();
         }
 
@@ -36,6 +39,7 @@ namespace Packet
 
         private void Loader()
         {
+             
             try
             {
                 DataGridView1.Columns.Add("RXMSG", "MSG");
@@ -178,6 +182,7 @@ namespace Packet
         {
             DataGridView1.Visible = true;
             richTextBox1.Visible = false;
+            _selectedCkeck = false;
         }
 
         #endregion
@@ -193,15 +198,31 @@ namespace Packet
                 Sql.DeleteSt(number, lastNumber);
                 Sql.DeleteRow("Packet", "MSG", number);
             }
+            _selectedCkeck = false;
             Loader();
         }
 
         #endregion
 
+        #region Reply
         private void button_Relpy_Click(object sender, EventArgs e)
         {
-            var box = new Reply();
-            box.ShowDialog();
+            if (_selectedCkeck)
+            {
+                var box = new Reply(_textId);
+                box.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Select a message first");
+            }
+        }
+        #endregion
+
+        private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            _textId = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
+            _selectedCkeck = true;
         }
     }
 }

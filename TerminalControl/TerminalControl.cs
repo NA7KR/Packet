@@ -20,7 +20,7 @@ using Renci.SshNet.Common;
 
 #endregion
 
-namespace PacketComs
+namespace Packet
 {
 
     #region  class TerminalEmulator : Control

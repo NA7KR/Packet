@@ -2,7 +2,7 @@
 
 using System;
 using System.Windows.Forms;
-using PacketComs;
+using Packet;
 
 #endregion
 

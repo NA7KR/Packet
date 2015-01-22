@@ -1,4 +1,4 @@
-﻿namespace PacketComs
+﻿namespace Packet
 {
     public class RunCustom
     {

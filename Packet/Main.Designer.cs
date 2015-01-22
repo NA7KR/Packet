@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-using PacketComs;
+using Packet;
 
 namespace Packet
 {
@@ -69,7 +69,7 @@ namespace Packet
             this.mail_button = new System.Windows.Forms.Button();
             this.button_read = new System.Windows.Forms.Button();
             this.button_personal = new System.Windows.Forms.Button();
-            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
+            this.terminalEmulator1 = new Packet.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -387,16 +387,16 @@ namespace Packet
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            this.terminalEmulator1.BaudRateType = PacketComs.TerminalEmulator.BaudRateTypes.Baud_4800;
+            this.terminalEmulator1.BaudRateType = Packet.TerminalEmulator.BaudRateTypes.Baud_4800;
             this.terminalEmulator1.BBSPrompt = null;
             this.terminalEmulator1.Beep = true;
             this.terminalEmulator1.Close = false;
             this.terminalEmulator1.Columns = 172;
-            this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.ConnectionType = Packet.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.DataBitsType = Packet.TerminalEmulator.DataBitsTypes.Data_Bits_8;
             this.terminalEmulator1.dnsName = null;
             this.terminalEmulator1.FileActive = false;
-            this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
+            this.terminalEmulator1.FlowType = Packet.TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
             this.terminalEmulator1.Header = null;
             this.terminalEmulator1.Hostname = null;
@@ -405,14 +405,14 @@ namespace Packet
             this.terminalEmulator1.LocalEcho = false;
             this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
             this.terminalEmulator1.Name = "terminalEmulator1";
-            this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
+            this.terminalEmulator1.ParityType = Packet.TerminalEmulator.ParityTypes.None;
             this.terminalEmulator1.Password = null;
             this.terminalEmulator1.PasswordPrompt = null;
             this.terminalEmulator1.Port = 9000;
             this.terminalEmulator1.Rows = 40;
             this.terminalEmulator1.SerialPort = "";
             this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
-            this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
+            this.terminalEmulator1.StopBitsType = Packet.TerminalEmulator.StopBitsTypes.One;
             this.terminalEmulator1.TabIndex = 5;
             this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.UernamePrompt = null;

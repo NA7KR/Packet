@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace PacketComs
+namespace Packet
 {
 
 	#region class DtoPacket

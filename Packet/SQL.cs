@@ -6,7 +6,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Windows.Forms;
-using PacketComs;
+using Packet;
 
 #endregion
 

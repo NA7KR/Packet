@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PacketComs
+namespace Packet
 {
     public partial class Reply : Form
     {
-        public Reply()
+        private int _msgnumber;
+        public Reply(int msg)
         {
+            _msgnumber = msg;
             InitializeComponent();
         }
 
@@ -27,6 +29,7 @@ namespace PacketComs
             cancel_button.Left = (((Width - 150)/3)*2) + 75;
             send_button.Top = reply_richTextBox.Bottom + 20;
             cancel_button.Top = reply_richTextBox.Bottom + 20;
+            Text = "Reply to MSG # " + _msgnumber.ToString();
         }
 
         private void Reply_Resize(object sender, EventArgs e)
