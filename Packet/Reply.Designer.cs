@@ -60,6 +60,7 @@
             this.reply_richTextBox.Size = new System.Drawing.Size(629, 355);
             this.reply_richTextBox.TabIndex = 2;
             this.reply_richTextBox.Text = "Reply";
+            this.reply_richTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.reply_richTextBox_KeyDown);
             // 
             // Reply
             // 
