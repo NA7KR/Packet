@@ -23,6 +23,7 @@ namespace Packet
         private readonly DtoListMsgto _msgtodto = new DtoListMsgto();
         private readonly DtoPacket _packet = new DtoPacket();
         private readonly DtoCustom _custom = new DtoCustom();
+        private readonly DtoListReply _reply = new DtoListReply();
   
 
         #region SQLSELECTRD
@@ -104,6 +105,49 @@ namespace Packet
                                         (string) reader.GetValue(6),
                                         (string) reader.GetValue(7),
                                         null);
+                                    packets.Add(packet);
+                                }
+                            }
+                            con.Close();
+                        }
+
+                    }
+                }
+            }
+            catch (OdbcException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return packets;
+        }
+
+        #endregion
+
+        #region SQLReply
+
+        public List<DtoListReply> SqlReply()
+        {
+            var packets = new List<DtoListReply>();
+
+            try
+            {
+                using (var con = new OdbcConnection(Main.DsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        {
+                            cmd.Connection = con;
+                            cmd.CommandText = "SELECT * FROM Reply ";
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var packet = new DtoListReply((int)reader.GetValue(0),
+                                        (string)reader.GetValue(1),
+                                        (DateTime)reader.GetValue(3),
+                                        (string)reader.GetValue(4));
                                     packets.Add(packet);
                                 }
                             }
@@ -348,6 +392,25 @@ namespace Packet
                 _custom.set_TableName(tableName);
                 _custom.set_Enable(enable);
                 SqlupdateCustom(_custom);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region WriteSQLReplyUpdate
+
+        public void WriteSqlReplyUpdate(int value, string filename,  String status)
+        {
+            try
+            {
+                _reply.set_MSGID(value);
+                _reply.set_MSGFileName(filename);
+                
+                _reply.set_Status(status);
             }
             catch (Exception e)
             {

@@ -12,6 +12,7 @@ namespace Packet
     public partial class Reply : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
+         private static readonly Sql sql = new Sql();
         private int _msgnumber;
         public Reply(int msg)
         {
@@ -53,10 +54,11 @@ namespace Packet
 
         private void send_button_Click(object sender, EventArgs e)
         {
-            var _reply = "";
-
-            _reply = _msgnumber.ToString() + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-            MyFiles.WriteSt(reply_richTextBox.Text, _reply, "Reply");
+            var _filename = "";
+            var status = "";
+            _filename = _msgnumber.ToString() + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            MyFiles.WriteSt(reply_richTextBox.Text, _filename, "Reply");
+            sql.WriteSqlReplyUpdate(1, _filename,  status);
         }
     }
 }

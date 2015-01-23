@@ -63,6 +63,7 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="DtoListReply.cs" />
     <Compile Include="DtoListMSGFrom.cs" />
     <Compile Include="DtoList_MSGRoute.cs" />
     <Compile Include="DtoList_MSGSubject.cs" />
@@ -160,6 +161,7 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
