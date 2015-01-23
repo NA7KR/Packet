@@ -53,7 +53,10 @@ namespace Packet
 
         private void send_button_Click(object sender, EventArgs e)
         {
-            MyFiles.WriteSt("1", "reply001", "Reply");
+            var _reply = "";
+
+            _reply = _msgnumber.ToString() + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            MyFiles.WriteSt(reply_richTextBox.Text, _reply, "Reply");
         }
     }
 }
