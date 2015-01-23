@@ -32,6 +32,7 @@ namespace Packet
             cancel_button.Top = reply_richTextBox.Bottom + 20;
             Text = "Reply to MSG # " + _msgnumber.ToString();
             MyFiles.ReplyMakeTable( "Packet");
+            
         }
         #endregion
 
@@ -49,5 +50,10 @@ namespace Packet
             cancel_button.Top = reply_richTextBox.Bottom + 20;
         }
         #endregion
+
+        private void send_button_Click(object sender, EventArgs e)
+        {
+            MyFiles.WriteSt("1", "reply001", "Reply");
+        }
     }
 }
