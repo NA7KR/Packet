@@ -144,10 +144,14 @@ namespace Packet
                             {
                                 while (reader.Read())
                                 {
-                                    var packet = new DtoListReply((int)reader.GetValue(0),
-                                        (string)reader.GetValue(1),
-                                        (DateTime)reader.GetValue(3),
-                                        (string)reader.GetValue(4));
+                                    var packet = new DtoListReply((int) reader.GetValue(0),
+                                        (string) reader.GetValue(1),
+                                        (string) reader.GetValue(2),
+                                        (int) reader.GetValue(3),
+                                        (string) reader.GetValue(4),
+                                        (string)reader.GetValue(5),
+                                        (string) reader.GetValue(6));
+                                        
                                     packets.Add(packet);
                                 }
                             }
@@ -403,16 +407,67 @@ namespace Packet
 
         #region WriteSQLReplyUpdate
 
-        public void WriteSqlReplyUpdate(int value, string filename,  String status)
+        public void WriteSqlReplyUpdate(int value, string filename,  String status,int msgnumber,string msgtype ,string msgcall,string  msggroup)
         {
             try
             {
                 _reply.set_MSGID(value);
                 _reply.set_MSGFileName(filename);
-                
                 _reply.set_Status(status);
+                _reply.set_MSGNumber(msgnumber);
+                _reply.set_Type(msgtype);
+                _reply.set_Call(msgcall);
+                _reply.set_Group(msggroup);
+                SqlReplyupdate(_reply);
             }
             catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region SqlReply
+
+        public void SqlReplyupdate(DtoListReply reply)
+        {
+            try
+            {
+                using (var con = new OdbcConnection(Main.DsnName))
+                {
+                    using (var cmd = new OdbcCommand())
+                    {
+                        cmd.Connection = con;
+                        cmd.CommandText = ("SELECT count(*) from  Send WHERE ID=?");
+                        con.Open();
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@p1", reply.get_MSGID());
+                        int count = (int)cmd.ExecuteScalar();
+
+                        if (count > 0)
+                        {
+                            cmd.CommandText = ("UPDATE Send  SET FileName=?,Status=? ,MSGNumber=?, MSGType=?, MSGCall=?, MSGGroup=? where ID=?");
+                        }
+                        else
+                        {
+                            cmd.CommandText = ("INSERT into Send ( FileName,  Status,MSGNumber, MSGType, MSGCall, MSGGroup, ID) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                        }
+                        cmd.Parameters.Clear();
+                        
+                        cmd.Parameters.AddWithValue("@p1", reply.get_MSGFileName());
+                        cmd.Parameters.AddWithValue("@p2", reply.get_Status());
+                        cmd.Parameters.AddWithValue("@p3", reply.get_MSGNumber());
+                        cmd.Parameters.AddWithValue("@p4", reply.get_Type());
+                        cmd.Parameters.AddWithValue("@p5", reply.get_Call());
+                        cmd.Parameters.AddWithValue("@p6", reply.get_Group());
+                        cmd.Parameters.AddWithValue("@p7", reply.get_MSGID());
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                }
+            }
+            catch (OdbcException e)
             {
                 MessageBox.Show(e.Message);
             }

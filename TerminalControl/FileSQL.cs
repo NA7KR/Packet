@@ -178,15 +178,15 @@ namespace Packet
         {
             if (_odbc.CheckForDsn(systemDsn) > 0)
             {
-                if (DoesTableExist("Reply", DsnName) == false)
+                if (DoesTableExist("Send", DsnName) == false)
                 {
-                    SqlMakeTable("CREATE TABLE Reply ( ID AUTOINCREMENT PRIMARY KEY , FileName CHAR(20), DateCreate datetime, Status CHAR(1)  )");
+                    SqlMakeTable("CREATE TABLE Send ( ID AUTOINCREMENT PRIMARY KEY , FileName CHAR(30), Status CHAR(1),MSGNumber INT, MSGType CHAR(1), MSGCall CHAR(7),MSGGroup CHAR(10)  )");
                 }
             }
             else
             {
                 _odbc.CreateDsn(DsnName);
-                MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Send System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
         }

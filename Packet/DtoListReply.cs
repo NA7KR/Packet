@@ -1,5 +1,7 @@
 ﻿#region Using Directive
-using System;
+
+
+
 #endregion
 
 namespace Packet
@@ -9,7 +11,11 @@ namespace Packet
         private string _msgFileName;
 		private int _msgId;
 		private string _status;
-        private DateTime _dateCreate;
+        private int _msgNumber;
+        private string _msgType;
+        private string _msgCall;
+        private string _msgGroup;
+      
 
 		#region Constructor
 
@@ -18,30 +24,35 @@ namespace Packet
 			_msgId = 0;
 			_msgFileName = null;
 			_status = null;
+		    _msgNumber = 0;
+		    _msgType = null;
+		    _msgCall = null;
+		    _msgGroup = null;
 		}
 
 		#endregion
 
 		#region DtoList
 
-		public DtoListReply(int msgId,  string msgFileName,DateTime dateCreate, string status)
+		public DtoListReply(int msgId,  string msgFileName, string status, int msgnumber, string msgtype, string msgcall , string msggroup)
 		{
 			_msgId = msgId;
 			_msgFileName = msgFileName;
-            _dateCreate = DateTime.Now;
 			_status = status;
+		    _msgNumber = msgnumber;
+		    _msgType = msgtype;
+		    _msgCall = msgcall;
+		    _msgGroup = msggroup;
 		}
 
 		#endregion
 
 
 		#region get_MSGID
-
 		public int get_MSGID()
 		{
 			return _msgId;
 		}
-
 		#endregion
 
 		#region get_MSGFileName
@@ -52,14 +63,6 @@ namespace Packet
 		}
         #endregion
 
-        #region get_dateCreate
-
-        public DateTime get_dateCreate()
-        {
-            return _dateCreate;
-        }
-		#endregion
-
         #region get_Status
 
         public string get_Status()
@@ -69,8 +72,35 @@ namespace Packet
 
 		#endregion
 
+        #region get_MSGNumber
+        public int get_MSGNumber()
+        {
+            return _msgNumber;
+        }
+        #endregion
 
-		#region set_MSGRoute
+        #region get_Type
+        public string get_Type()
+        {
+            return _msgType;
+        }
+        #endregion
+
+        #region get_Call
+        public string get_Call()
+        {
+            return _msgCall;
+        }
+        #endregion
+
+        #region get_Group
+        public string get_Group()
+        {
+            return _msgGroup;
+        }
+        #endregion
+
+		#region set_MSGID
 
 		public void set_MSGID(int msgid)
 		{
@@ -88,15 +118,6 @@ namespace Packet
 
 		#endregion
 
-        #region set_dateCreate
-
-        public void set_dateCreate(DateTime dateCreate)
-        {
-            _dateCreate = dateCreate;
-        }
-
-        #endregion
-
         #region set_Status
 
         public void set_Status(string selected)
@@ -105,5 +126,41 @@ namespace Packet
 		}
 
 		#endregion
+
+        #region set_MSGNumber
+
+        public void set_MSGNumber(int msgnumber)
+        {
+            _msgNumber = msgnumber;
+        }
+
+        #endregion
+
+        #region set_Type
+
+        public void set_Type(string type)
+        {
+            _msgType = type;
+        }
+
+        #endregion   
+        
+        #region set_Call
+
+        public void set_Call(string call)
+        {
+            _msgCall = call;
+        }
+
+        #endregion  
+
+        #region set_Group
+
+        public void set_Group(string group)
+        {
+            _msgGroup = group;
+        }
+
+        #endregion  
     }
 }

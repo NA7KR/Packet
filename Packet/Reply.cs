@@ -63,10 +63,13 @@ namespace Packet
         private void send_button_Click(object sender, EventArgs e)
         {
             var _filename = "";
-            var status = "";
+            var status = "Y";
+            var msgtype= "P";
+            var msgcall = "ggggg";
+            var msggroup = "rrrrr";
             _filename = _msgnumber.ToString() + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-            MyFiles.WriteSt(reply_richTextBox.Text, _filename, "Reply");
-            sql.WriteSqlReplyUpdate(1, _filename, status);
+            MyFiles.WriteSt(reply_richTextBox.Text, _filename, "Send");
+            sql.WriteSqlReplyUpdate(1, _filename, status ,_msgnumber, msgtype , msgcall,  msggroup );
         }
 
         private void reply_richTextBox_KeyDown(object sender, KeyEventArgs e)
