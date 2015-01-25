@@ -15,6 +15,9 @@ namespace Packet
         private static readonly Sql Sql = new Sql();
         private bool _selectedCkeck;
         private Int32 _textId;
+        private string _tsld;
+        private string _to;
+        private string _from;
 
         #region Read
 
@@ -209,7 +212,8 @@ namespace Packet
         {
             if (_selectedCkeck)
             {
-                var box = new Reply(_textId);
+                
+                var box = new Reply(_textId,_tsld,_to,_from);
                 box.ShowDialog();
             }
             else
@@ -221,8 +225,26 @@ namespace Packet
 
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            
             _textId = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
+            _tsld = (DataGridView1[1, e.RowIndex].Value).ToString();
+            _to = (DataGridView1[3, e.RowIndex].Value).ToString();
+            _from  = (DataGridView1[5, e.RowIndex].Value).ToString();
+            _tsld = _tsld.Substring(0, 1);
             _selectedCkeck = true;
         }
+    }
+}
+public static class StringExtensions
+{
+    public static string Left(this string value, int maxLength)
+    {
+        if (string.IsNullOrEmpty(value)) return value;
+        maxLength = Math.Abs(maxLength);
+
+        return (value.Length <= maxLength
+               ? value
+               : value.Substring(0, maxLength)
+               );
     }
 }

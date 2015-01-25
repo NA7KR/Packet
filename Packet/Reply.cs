@@ -15,10 +15,16 @@ namespace Packet
         private static readonly Sql sql = new Sql();
         private int _msgnumber;
         private string key;
+        private string    tsld;
+        private string    to;
+        private string    from ;
         private int count = 0;
 
-        public Reply(int msg)
+        public Reply(int msg,string _tsld, string _to, string _from)
         {
+            _tsld = tsld;
+            _to = to;
+            _from = from;
             _msgnumber = msg;
             InitializeComponent();
         }
@@ -64,12 +70,11 @@ namespace Packet
         {
             var _filename = "";
             var status = "Y";
-            var msgtype= "P";
-            var msgcall = "ggggg";
-            var msggroup = "rrrrr";
+            
+            
             _filename = _msgnumber.ToString() + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
             MyFiles.WriteSt(reply_richTextBox.Text, _filename, "Send");
-            sql.WriteSqlReplyUpdate(1, _filename, status ,_msgnumber, msgtype , msgcall,  msggroup );
+            sql.WriteSqlReplyUpdate( _filename, status ,_msgnumber, tsld , from,  to,false  );
         }
 
         private void reply_richTextBox_KeyDown(object sender, KeyEventArgs e)

@@ -407,18 +407,18 @@ namespace Packet
 
         #region WriteSQLReplyUpdate
 
-        public void WriteSqlReplyUpdate(int value, string filename,  String status,int msgnumber,string msgtype ,string msgcall,string  msggroup)
+        public void WriteSqlReplyUpdate( string filename,  String status,int msgnumber,string msgtype ,string msgcall,string  msggroup, bool update)
         {
             try
             {
-                _reply.set_MSGID(value);
+                //_reply.set_MSGID(value);
                 _reply.set_MSGFileName(filename);
                 _reply.set_Status(status);
                 _reply.set_MSGNumber(msgnumber);
                 _reply.set_Type(msgtype);
                 _reply.set_Call(msgcall);
                 _reply.set_Group(msggroup);
-                SqlReplyupdate(_reply);
+                SqlReplyInsert(_reply,update);
             }
             catch (Exception e)
             {
@@ -430,7 +430,7 @@ namespace Packet
 
         #region SqlReply
 
-        public void SqlReplyupdate(DtoListReply reply)
+        public void SqlReplyInsert(DtoListReply reply,bool update)
         {
             try
             {
@@ -439,29 +439,17 @@ namespace Packet
                     using (var cmd = new OdbcCommand())
                     {
                         cmd.Connection = con;
-                        cmd.CommandText = ("SELECT count(*) from  Send WHERE ID=?");
                         con.Open();
+                     
+                        cmd.CommandText = ("INSERT into Send ( FileName,  Status,MSGNumber, MSGType, MSGCall, MSGGroup) VALUES (?, ?, ?, ?, ?, ?)");
                         cmd.Parameters.Clear();
-                        cmd.Parameters.AddWithValue("@p1", reply.get_MSGID());
-                        int count = (int)cmd.ExecuteScalar();
-
-                        if (count > 0)
-                        {
-                            cmd.CommandText = ("UPDATE Send  SET FileName=?,Status=? ,MSGNumber=?, MSGType=?, MSGCall=?, MSGGroup=? where ID=?");
-                        }
-                        else
-                        {
-                            cmd.CommandText = ("INSERT into Send ( FileName,  Status,MSGNumber, MSGType, MSGCall, MSGGroup, ID) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                        }
-                        cmd.Parameters.Clear();
-                        
                         cmd.Parameters.AddWithValue("@p1", reply.get_MSGFileName());
                         cmd.Parameters.AddWithValue("@p2", reply.get_Status());
                         cmd.Parameters.AddWithValue("@p3", reply.get_MSGNumber());
                         cmd.Parameters.AddWithValue("@p4", reply.get_Type());
                         cmd.Parameters.AddWithValue("@p5", reply.get_Call());
                         cmd.Parameters.AddWithValue("@p6", reply.get_Group());
-                        cmd.Parameters.AddWithValue("@p7", reply.get_MSGID());
+                       
                         cmd.ExecuteNonQuery();
                         con.Close();
                     }
