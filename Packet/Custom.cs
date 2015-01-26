@@ -2,7 +2,6 @@
 
 using System;
 using System.Windows.Forms;
-using Packet;
 
 #endregion
 

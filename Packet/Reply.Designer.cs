@@ -1,11 +1,14 @@
-﻿namespace Packet
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Packet
 {
     partial class Reply
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -81,8 +84,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button cancel_button;
-        private System.Windows.Forms.Button send_button;
-        private System.Windows.Forms.RichTextBox reply_richTextBox;
+        private Button cancel_button;
+        private Button send_button;
+        private RichTextBox reply_richTextBox;
     }
 }

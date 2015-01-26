@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Packet
@@ -12,17 +6,17 @@ namespace Packet
     public partial class Reply : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
-        private static readonly Sql sql = new Sql();
+        private static readonly Sql Sql = new Sql();
         private int _msgnumber;
-        private string key;
-        private string    tsld;
-        private string    to;
-        private string    from ;
-        private int count = 0;
+        private string _key;
+        private string    _tsld;
+        private string    _to;
+        private string    _from ;
+        private int _count;
 
-        public Reply(int msg,string _tsld, string _to, string _from)
+        public Reply(int msg,string tsld, string to, string from)
         {
-            _tsld = tsld;
+            _tsld =tsld ;
             _to = to;
             _from = from;
             _msgnumber = msg;
@@ -42,7 +36,7 @@ namespace Packet
             cancel_button.Left = (((Width - 150)/3)*2) + 75;
             send_button.Top = reply_richTextBox.Bottom + 20;
             cancel_button.Top = reply_richTextBox.Bottom + 20;
-            Text = "Reply to MSG # " + _msgnumber.ToString();
+            Text = "Reply to MSG # " + _msgnumber;
             MyFiles.ReplyMakeTable("Packet");
 
         }
@@ -68,37 +62,37 @@ namespace Packet
 
         private void send_button_Click(object sender, EventArgs e)
         {
-            var _filename = "";
+            var filename  = "";
             var status = "Y";
             
             
-            _filename = _msgnumber.ToString() + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-            MyFiles.WriteSt(reply_richTextBox.Text, _filename, "Send");
-            sql.WriteSqlReplyUpdate( _filename, status ,_msgnumber, tsld , from,  to,false  );
+            filename = _msgnumber + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            MyFiles.WriteSt(reply_richTextBox.Text, filename, "Send");
+            Sql.WriteSqlReplyUpdate( filename, status ,_msgnumber, _tsld , _from,  _to,false  );
         }
 
         private void reply_richTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.OemQuestion)
             {
-                key += "/";
-                count++;
+                _key += "/";
+                _count++;
             }
-            if (e.KeyCode == Keys.E && count == 1)
+            if (e.KeyCode == Keys.E && _count == 1)
             {
-                key += "e";
-                count++;
+                _key += "e";
+                _count++;
             }
-            if (e.KeyCode == Keys.X && count == 2)
+            if (e.KeyCode == Keys.X && _count == 2)
             {
-                key += "x";
+                _key += "x";
             }
             if (e.KeyCode == Keys.Enter)
             {
-                if (key == "/ex")
+                if (_key == "/ex")
                 {
-                    count = 0;
-                    key = "";
+                    _count = 0;
+                    _key = "";
                     MessageBox.Show("You have entered /ex command");
                     //Call your command function code here
                 }

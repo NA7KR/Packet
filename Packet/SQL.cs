@@ -6,7 +6,6 @@ using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Windows.Forms;
-using Packet;
 
 #endregion
 
@@ -722,12 +721,8 @@ namespace Packet
                     File.Delete(filePath);
                     return null;
                 }
-                else
-                {
-                    File.Delete(path);
-                    return true;
-                }
-
+                File.Delete(path);
+                return true;
             } //end try
             catch (Exception e)
             {
