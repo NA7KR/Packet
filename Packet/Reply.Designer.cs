@@ -77,6 +77,7 @@ namespace Packet
             this.Name = "Reply";
             this.Text = "Reply";
             this.Load += new System.EventHandler(this.Reply_Load);
+            this.Shown += new System.EventHandler(this.Reply_Shown);
             this.Resize += new System.EventHandler(this.Reply_Resize);
             this.ResumeLayout(false);
 

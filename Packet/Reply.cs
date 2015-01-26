@@ -38,7 +38,11 @@ namespace Packet
             cancel_button.Top = reply_richTextBox.Bottom + 20;
             Text = "Reply to MSG # " + _msgnumber;
             MyFiles.ReplyMakeTable("Packet");
-
+            var lastNumber = (Convert.ToInt32(_msgnumber) % 10).ToString();
+            var myString = Sql.Rxst(_msgnumber.ToString(), lastNumber)
+                .Replace(Environment.NewLine, Environment.NewLine + "> ");
+            reply_richTextBox.Text = Environment.NewLine + Environment.NewLine + "> " + myString;
+          
         }
 
         #endregion
@@ -56,6 +60,7 @@ namespace Packet
             cancel_button.Left = (((Width - 150)/3)*2) + 75;
             send_button.Top = reply_richTextBox.Bottom + 20;
             cancel_button.Top = reply_richTextBox.Bottom + 20;
+            
         }
 
         #endregion
@@ -64,11 +69,10 @@ namespace Packet
         {
             var filename  = "";
             var status = "Y";
-            
-            
             filename = _msgnumber + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
             MyFiles.WriteSt(reply_richTextBox.Text, filename, "Send");
             Sql.WriteSqlReplyUpdate( filename, status ,_msgnumber, _tsld , _from,  _to,false  );
+            Close();
         }
 
         private void reply_richTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -98,6 +102,15 @@ namespace Packet
                 }
 
             }
+        }
+
+        private void Reply_Shown(object sender, EventArgs e)
+        {
+            Focus();
+            reply_richTextBox.SelectionStart = 0;
+            
+            reply_richTextBox.ScrollToCaret();
+            reply_richTextBox.Focus();
         }
     }
 }
