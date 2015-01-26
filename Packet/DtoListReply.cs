@@ -82,6 +82,10 @@ namespace Packet
         #region get_Type
         public string get_Type()
         {
+            if (_msgType == null)
+            {
+                return "N";
+            }
             return _msgType;
         }
         #endregion
@@ -89,6 +93,10 @@ namespace Packet
         #region get_Call
         public string get_Call()
         {
+            if (_msgCall == null)
+            {
+                return "NOCALL";
+            }
             return _msgCall;
         }
         #endregion
@@ -96,6 +104,10 @@ namespace Packet
         #region get_Group
         public string get_Group()
         {
+            if (_msgGroup == null)
+            {
+                return "None";
+            }
             return _msgGroup;
         }
         #endregion
