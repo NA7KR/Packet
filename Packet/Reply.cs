@@ -9,11 +9,12 @@ namespace Packet
         private static readonly Sql Sql = new Sql();
         private int _msgnumber;
         private string _key;
-        private string    _tsld;
-        private string    _to;
-        private string    _from ;
+        private string _tsld;
+        private string _to;
+        private string _from ;
         private int _count;
 
+        #region constructor
         public Reply(int msg,string tsld, string to, string from)
         {
             _tsld =tsld ;
@@ -22,6 +23,7 @@ namespace Packet
             _msgnumber = msg;
             InitializeComponent();
         }
+        #endregion
 
         #region  load
 
@@ -65,16 +67,18 @@ namespace Packet
 
         #endregion
 
+        #region Button click
         private void send_button_Click(object sender, EventArgs e)
         {
-            var filename  = "";
             var status = "Y";
-            filename = _msgnumber + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            var filename = _msgnumber + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
             MyFiles.WriteSt(reply_richTextBox.Text, filename, "Send");
             Sql.WriteSqlReplyUpdate( filename, status ,_msgnumber, _tsld , _from,  _to,false  );
             Close();
         }
+        #endregion
 
+        #region keydown
         private void reply_richTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.OemQuestion)
@@ -103,7 +107,9 @@ namespace Packet
 
             }
         }
+        #endregion
 
+        #region Show form
         private void Reply_Shown(object sender, EventArgs e)
         {
             Focus();
@@ -112,5 +118,6 @@ namespace Packet
             reply_richTextBox.ScrollToCaret();
             reply_richTextBox.Focus();
         }
+        #endregion
     }
 }
