@@ -9,8 +9,8 @@ using System.Windows.Forms;
 namespace Packet
 {
 	public partial class Mail : Form
-	{
-		private static readonly Sql Sql = new Sql();
+    {
+        private static readonly Sql Sql = new Sql();
         ModifyRegistry _myRegistryKeep = new ModifyRegistry();
          
 
@@ -342,7 +342,6 @@ namespace Packet
         }
         #endregion
 
- 
         #region Date 
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
