@@ -330,6 +330,10 @@ namespace Packet
 		    button_personal.Left = bwidth + button_read.Right;
 		    button_personal.Top = 40;
             button_personal.Width = 90;
+
+		    button_7plus.Left = bwidth + button_read.Right;
+            button_7plus.Top = 40;
+            button_7plus.Width = 90;
 		}
 
 		#endregion
@@ -881,6 +885,12 @@ namespace Packet
         private void button_personal_Click(object sender, EventArgs e)
         {
             MessageBox.Show("To come soon");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var box = new _7PlusFrm();
+            box.ShowDialog();
         }
 		//string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
 		//string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";

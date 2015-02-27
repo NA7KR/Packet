@@ -69,6 +69,7 @@ namespace Packet
             this.button_read = new System.Windows.Forms.Button();
             this.button_personal = new System.Windows.Forms.Button();
             this.terminalEmulator1 = new Packet.TerminalEmulator();
+            this.button_7plus = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -168,7 +169,6 @@ namespace Packet
             this.toolStripComboBox2.Name = "toolStripComboBox2";
             this.toolStripComboBox2.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBox2.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox2_SelectedIndexChanged);
-            
             // 
             // clusterIPConfigToolStripMenuItem
             // 
@@ -420,11 +420,24 @@ namespace Packet
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
+            // button_7plus
+            // 
+            this.button_7plus.Location = new System.Drawing.Point(1020, 41);
+            this.button_7plus.Name = "button_7plus";
+            this.button_7plus.Size = new System.Drawing.Size(94, 23);
+            this.button_7plus.TabIndex = 11;
+            this.button_7plus.TabStop = false;
+            this.button_7plus.Text = "7Plus";
+            this.toolTip1.SetToolTip(this.button_7plus, "Mail List");
+            this.button_7plus.UseVisualStyleBackColor = true;
+            this.button_7plus.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 637);
+            this.Controls.Add(this.button_7plus);
             this.Controls.Add(this.button_personal);
             this.Controls.Add(this.button_read);
             this.Controls.Add(this.mail_button);
@@ -494,6 +507,7 @@ namespace Packet
         private readonly ModifyRegistry _myRegistrySsh = new ModifyRegistry();
         private Button button_read;
         private Button button_personal;
+        private Button button_7plus;
     }
 }
 
