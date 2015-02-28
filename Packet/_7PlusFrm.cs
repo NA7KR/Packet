@@ -18,7 +18,7 @@ public partial class _7PlusFrm : Form
 
         private void button_ok_Click(object sender, EventArgs e)
         {
-            Do_7plus("c:\\temp\\7plus.zip -SAVE \"c:\\temp\\\"  -SB 5000");
+            Do_7plus("c:\temp\7plus.zip");
 
             //    c:\temp\7plus.zip -SAVE "c:\temp\"  -SB 5000          
             //    c:\temp\7plus.p01 - SAVE "c:\temp\"                 
