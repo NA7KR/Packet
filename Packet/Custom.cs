@@ -9,25 +9,27 @@ namespace Packet
 {
     public partial class Custom : Form
     {
-        
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
         private static readonly RunCustom RunCustom = new RunCustom();
-        private Int32 _textId;
+        private string _enableId;
         private string _nameId;
         private string _queryId;
-        private string _tableId;
-        private string _enableId;
         private bool _selectedCkeck;
+        private string _tableId;
+        private Int32 _textId;
 
         #region Custom
+
         public Custom()
         {
             InitializeComponent();
         }
+
         #endregion
 
         #region Custom Loader
+
         private void Custom_Load(object sender, EventArgs e)
         {
             DataGridView1.Columns.Add("ID", "ID");
@@ -57,6 +59,7 @@ namespace Packet
             Width = DataGridView1.Right + 48;
             Loader();
         }
+
         #endregion
 
         #region Loader
@@ -68,7 +71,7 @@ namespace Packet
             {
                 Sql.WriteSqlCustomUpdate(1, "7+", "7+", "MSGSubject", "Y");
             }
-           
+
             DataGridView1.Rows.Clear();
             var packets = MyFiles.SqlCustomRead();
 
@@ -80,16 +83,14 @@ namespace Packet
                     packet.get_CustomQuery(),
                     packet.get_TableName(),
                     packet.get_Enable());
-
             }
                 );
-            
         }
-
 
         #endregion
 
         #region resize
+
         private void Custom_Resize(object sender, EventArgs e)
         {
             MSGFrom_radioButton.Left = 20;
@@ -103,19 +104,20 @@ namespace Packet
             MSGSubject_radioButton.Top = 80;
             Width = DataGridView1.Right + 48;
         }
+
         #endregion
 
         #region OK button
-        private void OK_button_Click(object sender, EventArgs e) 
-        {
-            _nameId = name_textBox.Text ;
-            _queryId = Query_richTextBox.Text ;
 
-             
-            if (MSGSubject_radioButton.Checked )
+        private void OK_button_Click(object sender, EventArgs e)
+        {
+            _nameId = name_textBox.Text;
+            _queryId = Query_richTextBox.Text;
+
+
+            if (MSGSubject_radioButton.Checked)
             {
                 _tableId = "MSGSubject";
-
             }
             if (MSGRoute_radioButton.Checked)
             {
@@ -130,7 +132,7 @@ namespace Packet
                 _tableId = "MSGFrom";
             }
             _enableId = Enabel_checkBox.Checked ? "Y" : "N";
-            
+
 
             if (OK_button.Text == "Save")
             {
@@ -145,15 +147,17 @@ namespace Packet
                         _textId = 99999;
                         Sql.WriteSqlCustomUpdate(_textId, _nameId, _queryId, _tableId, _enableId);
                     }
-                } 
+                }
             }
             RunCustom.RunSqlCustom();
             OK_button.Text = "OK";
             Loader();
         }
+
         #endregion
 
         #region DataGridView1_CellClick(
+
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             _textId = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
@@ -163,14 +167,15 @@ namespace Packet
             _enableId = DataGridView1[4, e.RowIndex].Value.ToString().Trim();
             _selectedCkeck = true;
         }
+
         #endregion
 
         #region button click
+
         private void edit_button_Click(object sender, EventArgs e)
         {
             if (_selectedCkeck)
             {
-
                 name_textBox.Text = _nameId;
                 Query_richTextBox.Text = _queryId;
                 if (_tableId.Trim() == "MSGSubject")
@@ -200,13 +205,16 @@ namespace Packet
                 MessageBox.Show("Select to edit!");
             }
         }
+
         #endregion
 
         #region cancel
+
         private void Cancel_button_Click(object sender, EventArgs e)
         {
             OK_button.Text = "OK";
         }
+
         #endregion
     }
 }

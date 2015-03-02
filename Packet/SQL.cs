@@ -12,18 +12,17 @@ using System.Windows.Forms;
 namespace Packet
 {
 
-	#region Class
+    #region Class
 
     internal class Sql
     {
+        private readonly DtoCustom _custom = new DtoCustom();
         private readonly DtoListMsgFrom _msgfrom = new DtoListMsgFrom();
         private readonly DtoListMsgRoute _msgroute = new DtoListMsgRoute();
         private readonly DtoListMsgSubject _msgsubject = new DtoListMsgSubject();
         private readonly DtoListMsgto _msgtodto = new DtoListMsgto();
         private readonly DtoPacket _packet = new DtoPacket();
-        private readonly DtoCustom _custom = new DtoCustom();
         private readonly DtoListReply _reply = new DtoListReply();
-  
 
         #region SQLSELECTRD
 
@@ -61,7 +60,6 @@ namespace Packet
                             }
                             con.Close();
                         }
-
                     }
                 }
             }
@@ -109,7 +107,6 @@ namespace Packet
                             }
                             con.Close();
                         }
-
                     }
                 }
             }
@@ -148,15 +145,14 @@ namespace Packet
                                         (string) reader.GetValue(2),
                                         (int) reader.GetValue(3),
                                         (string) reader.GetValue(4),
-                                        (string)reader.GetValue(5),
+                                        (string) reader.GetValue(5),
                                         (string) reader.GetValue(6));
-                                        
+
                                     packets.Add(packet);
                                 }
                             }
                             con.Close();
                         }
-
                     }
                 }
             }
@@ -385,7 +381,8 @@ namespace Packet
 
         #region WriteSQLCustomUpdate
 
-        public void WriteSqlCustomUpdate(int value, string customName, String customQuery, String tableName, String enable)
+        public void WriteSqlCustomUpdate(int value, string customName, String customQuery, String tableName,
+            String enable)
         {
             try
             {
@@ -406,7 +403,8 @@ namespace Packet
 
         #region WriteSQLReplyUpdate
 
-        public void WriteSqlReplyUpdate( string filename,  String status,int msgnumber,string msgtype ,string msgcall,string  msggroup, bool update)
+        public void WriteSqlReplyUpdate(string filename, String status, int msgnumber, string msgtype, string msgcall,
+            string msggroup, bool update)
         {
             try
             {
@@ -417,7 +415,7 @@ namespace Packet
                 _reply.set_Type(msgtype);
                 _reply.set_Call(msgcall);
                 _reply.set_Group(msggroup);
-                SqlReplyInsert(_reply,update);
+                SqlReplyInsert(_reply, update);
             }
             catch (Exception e)
             {
@@ -429,7 +427,7 @@ namespace Packet
 
         #region SqlReply
 
-        public void SqlReplyInsert(DtoListReply reply,bool update)
+        public void SqlReplyInsert(DtoListReply reply, bool update)
         {
             try
             {
@@ -439,8 +437,9 @@ namespace Packet
                     {
                         cmd.Connection = con;
                         con.Open();
-                     
-                        cmd.CommandText = ("INSERT into Send ( FileName,  Status,MSGNumber, MSGType, MSGCall, MSGGroup) VALUES (?, ?, ?, ?, ?, ?)");
+
+                        cmd.CommandText =
+                            ("INSERT into Send ( FileName,  Status,MSGNumber, MSGType, MSGCall, MSGGroup) VALUES (?, ?, ?, ?, ?, ?)");
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@p1", reply.get_MSGFileName());
                         cmd.Parameters.AddWithValue("@p2", reply.get_Status());
@@ -448,7 +447,7 @@ namespace Packet
                         cmd.Parameters.AddWithValue("@p4", reply.get_Type());
                         cmd.Parameters.AddWithValue("@p5", reply.get_Call());
                         cmd.Parameters.AddWithValue("@p6", reply.get_Group());
-                       
+
                         cmd.ExecuteNonQuery();
                         con.Close();
                     }
@@ -477,24 +476,26 @@ namespace Packet
                         con.Open();
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@p1", custom.get_ID());
-                        int count = (int)cmd.ExecuteScalar();
+                        var count = (int) cmd.ExecuteScalar();
 
                         if (count > 0)
                         {
-                            cmd.CommandText = ("UPDATE CustomQuery  SET CustomName=?,CustomQuery=?,TableName=?,Enable=? where ID=?");
+                            cmd.CommandText =
+                                ("UPDATE CustomQuery  SET CustomName=?,CustomQuery=?,TableName=?,Enable=? where ID=?");
                         }
                         else
                         {
-                            cmd.CommandText = ("INSERT into CustomQuery (CustomName, CustomQuery, TableName, Enable) VALUES (?, ?, ?, ?)");
+                            cmd.CommandText =
+                                ("INSERT into CustomQuery (CustomName, CustomQuery, TableName, Enable) VALUES (?, ?, ?, ?)");
                         }
                         cmd.Parameters.Clear();
-                        
+
                         cmd.Parameters.AddWithValue("@p1", custom.get_CustomName());
                         cmd.Parameters.AddWithValue("@p2", custom.get_CustomQuery());
                         cmd.Parameters.AddWithValue("@p3", custom.get_TableName());
                         cmd.Parameters.AddWithValue("@p4", custom.get_Enable());
                         cmd.Parameters.AddWithValue("@p5", custom.get_ID());
-                        cmd.ExecuteNonQuery();  
+                        cmd.ExecuteNonQuery();
                         con.Close();
                     }
                 }
@@ -705,16 +706,15 @@ namespace Packet
 
         public bool? DeleteSt(string fileName, string pathNo)
         {
-
             try
             {
-                string path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
+                var path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
                 if (!Directory.Exists(path))
                 {
                     // Try to create the directory.
                     Directory.CreateDirectory(path);
                 }
-                string filePath = path + @"\" + fileName + ".txt";
+                var filePath = path + @"\" + fileName + ".txt";
                 path = path + @"\" + fileName + ".txt";
                 if (File.Exists(path))
                 {
@@ -738,22 +738,21 @@ namespace Packet
         public string Rxst(string fileName, string pathNo)
         {
             string myString = null;
-            string path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
+            var path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
             if (!Directory.Exists(path))
             {
                 // Try to create the directory.
                 Directory.CreateDirectory(path);
             }
-            string filePath = path + @"\" + fileName + ".txt";
+            var filePath = path + @"\" + fileName + ".txt";
             //path = path + @"\" + fileName + ".txt";
             if (File.Exists(filePath))
             {
-                StreamReader myFile = new StreamReader(filePath);
+                var myFile = new StreamReader(filePath);
                 myString = myFile.ReadToEnd();
                 myFile.Close();
             }
             return myString;
-
         }
 
         #endregion
@@ -796,16 +795,16 @@ namespace Packet
                     var cb = new OdbcCommandBuilder(da);
                     cb.QuotePrefix = "[";
                     cb.QuoteSuffix = "]";
-                    int sYear = 2000;
+                    var sYear = 2000;
                     var dt = new DataTable();
                     da.Fill(dt);
-                    DateTime dateNow = DateTime.Now;
+                    var dateNow = DateTime.Now;
                     var now = (TimeZoneInfo.ConvertTimeToUtc(dateNow));
                     // save current date/time (without seconds) for comparison
                     var currDateTime = new DateTime(sYear, now.Month, now.Day, now.Hour, now.Minute, 0);
                     foreach (DataRow r in dt.Rows)
                     {
-                        string mdhm = r["MSGDateTime"].ToString();
+                        var mdhm = r["MSGDateTime"].ToString();
                         // evaluate as current year
                         var sMonth = Convert.ToInt32(mdhm.Substring(0, 2));
                         var sDay = Convert.ToInt32(mdhm.Substring(2, 2));
@@ -814,10 +813,9 @@ namespace Packet
 
                         if (sDay == 29 && sMonth == 2)
                         {
-
                         }
 
-                        DateTime rowDateTime = new DateTime(sYear, sMonth, sDay, sHr, sMin, 0);
+                        var rowDateTime = new DateTime(sYear, sMonth, sDay, sHr, sMin, 0);
                         // if in future then convert to previous year
                         if (rowDateTime > currDateTime)
                         {
@@ -837,7 +835,8 @@ namespace Packet
         #endregion
 
         #region clear 
-        public void Sqlupdateclear(String sTable )
+
+        public void Sqlupdateclear(String sTable)
         {
             try
             {
