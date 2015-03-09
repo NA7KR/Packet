@@ -18,7 +18,7 @@ namespace Packet
 
         private void button_ok_Click(object sender, EventArgs e)
         {
-            var args = "c:\\temp\\7plus.zip -SAVE \"c:\\temp\\\" -SB 5000";
+            var args = "c:\\temp\\7plus.zip -SAVE \"c:\\temp\\\"";
             Do_7plus(args);
 
             //    c:\temp\7plus.zip -SAVE "c:\temp\"  -SB 5000          

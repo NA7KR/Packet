@@ -5,7 +5,7 @@
 #include "7plus.h"
 #include <conio.h>
 
-FILE* o;
+FILE* ErrorFile;
 uint crctab[256];
 byte decode[256];
 byte code[216];
@@ -118,45 +118,43 @@ __declspec(dllexport) int  Do_7plus(char *cmd_line)
 	// Call real program entry point
 
 	ret = go_at_it(argc, argv);
-	fclose(o);
+	fclose(ErrorFile);
 	return ret;
 }
-
-
 
 /* This is the real main() */
 int go_at_it(int argc, char** argv)
 {
-	char *p, *r, *s, *t;
+	char *p12, *r12, *s12, *t12;
 	char argname[MAXPATH];
 	int ret, i, extract, genflag, join, cor;
 	long blocksize;
 
 	extract = genflag = join = cor = twolinesend = 0;
-	p = r = s = t = endstr = sendstr = NULLCP;
+	p12 = r12 = s12 = t12 = endstr = sendstr = NULLCP;
 	*genpath = *argname = *altname = EOS;
 
-	i = 0;
-	o = stdout;
-
+	i = -1;
+	//ErrorFile = stdout;
+	ErrorFile = fopen("c:\\temp\\7plus.out", "w");
 	/* initialize range array */
 	get_range("1-");
 
 	/* Default blocksize (abt 10000 bytes) */
 	blocksize = 138 * 62;
 
-	while (++i < argc)
+	while (i++ < argc -1)
 	{
 		if (*argv[i] != '-')
 		{
-			if (!p)
+			if (!p12)
 			{
-				p = argv[i]; /* Name of file to de/encode/correct */
+				p12 = argv[i]; /* Name of file to de/encode/correct */
 				continue;
 			}
-			if (!r)
+			if (!r12)
 			{
-				r = argv[i]; /* Searchpath for non-coded file. Needed for */
+				r12 = argv[i]; /* Searchpath for non-coded file. Needed for */
 				continue; /* generating correction file */
 			}
 		}
@@ -211,13 +209,13 @@ int go_at_it(int argc, char** argv)
 			i++;
 			if (i == argc)
 			{
-				t = def_format;
+				t12 = def_format;
 				i--;
 			}
 			else if (*argv[i] != '-')
-				t = argv[i];
+				t12 = argv[i];
 			else
-				t = def_format;
+				t12 = def_format;
 		}
 
 		if (!_stricmp(argv[i], "-T")) /* Define BBS's termination string, */
@@ -227,7 +225,7 @@ int go_at_it(int argc, char** argv)
 				i--;
 			else
 			{
-				if (t != def_format)
+				if (t12 != def_format)
 				{
 					endstr = (char *)malloc((int)strlen(argv[i]) + 1);
 					strcpy(endstr, argv[i]);
@@ -242,13 +240,14 @@ int go_at_it(int argc, char** argv)
 				i--;
 			else
 			{
-				if (t != def_format)
+				if (t12 != def_format)
 				{
 					pathstr = (char *)malloc((int)strlen(argv[i]) + 1);
 					strcpy(pathstr, argv[i]);
 				}
 			}
 
+			
 		}
 		//end save
 		if (!_strnicmp(argv[i], "-SEND", 5)) /* Define send string, */
@@ -260,7 +259,7 @@ int go_at_it(int argc, char** argv)
 				i--;
 			else
 			{
-				if (t != def_format)
+				if (t12 != def_format)
 				{
 					sendstr = (char *)malloc((int)strlen(argv[i]) + 1);
 					strcpy(sendstr, argv[i]);
@@ -319,12 +318,12 @@ int go_at_it(int argc, char** argv)
 			noquery = 1;
 	}
 
-	if (!_isatty(_fileno(o)))
+	if (!_isatty(_fileno(ErrorFile)))
 		no_tty = noquery = 1;
 
 	if (no_tty)
-		fprintf(o, "%s", s_logon);
-	else if (!p) /* No File specified, show help */
+		fprintf(ErrorFile, "%s", s_logon);
+	else if (!p12) /* No File specified, show help */
 	{
 		int scrlines;
 		int n = 5;
@@ -336,28 +335,28 @@ int go_at_it(int argc, char** argv)
 
 
 		ret = 0;
-		if (o != stdout)
-			fclose(o);
+		if (ErrorFile != stdout)
+			fclose(ErrorFile);
 		free(idxptr);
 		return (ret);
 	}
 
-	if ((s = (char *)malloc((size_t)4000UL)) == NULLCP)
+	if ((s12 = (char *)malloc((size_t)4000UL)) == NULLCP)
 	{
-		fprintf(o, nomem);
-		if (o != stdout)
-			fclose(o);
+		fprintf(ErrorFile, nomem);
+		if (ErrorFile != stdout)
+			fclose(ErrorFile);
 
 		exit(21);
 
 	}
-	free(s);
+	free(s12);
 
 	if ((idxptr = (struct m_index *)malloc(sizeof(struct m_index))) == NULL)
 	{
-		fprintf(o, nomem);
-		if (o != stdout)
-			fclose(o);
+		fprintf(ErrorFile, nomem);
+		if (ErrorFile != stdout)
+			fclose(ErrorFile);
 
 		exit(21);
 
@@ -369,7 +368,7 @@ int go_at_it(int argc, char** argv)
 	init_decodetab(); /* decoding-table */
 	init_codetab(); /* encoding-table */
 
-	strcpy(argname, p);
+	strcpy(argname, p12);
 	// KRR
 	if (pathstr == NULL)
 	{
@@ -399,15 +398,15 @@ int go_at_it(int argc, char** argv)
 
 	if (extract)
 	{
-		if (p)
-			ret = extract_files(argname, r);
+		if (p12)
+			ret = extract_files(argname, r12);
 		else
 		{
-			fprintf(o, "\007File to extract from not specified. Break.\n");
+			fprintf(ErrorFile, "\007File to extract from not specified. Break.\n");
 			ret = 6;
 		}
-		if (o != stdout)
-			fclose(o);
+		if (ErrorFile != stdout)
+			fclose(ErrorFile);
 		free(idxptr);
 		return (ret);
 	}
@@ -417,8 +416,8 @@ int go_at_it(int argc, char** argv)
 		if (cor)
 		{
 			ret = correct_meta(argname, 0, 0);
-			if (o != stdout)
-				fclose(o);
+			if (ErrorFile != stdout)
+				fclose(ErrorFile);
 			free(idxptr);
 			return (ret);
 		}
@@ -429,9 +428,9 @@ int go_at_it(int argc, char** argv)
 				isxdigit(*(_ext + 2)) &&
 				isxdigit(*(_ext + 3))))
 			{
-				ret = join_control(argname, r);
-				if (o != stdout)
-					fclose(o);
+				ret = join_control(argname, r12);
+				if (ErrorFile != stdout)
+					fclose(ErrorFile);
 				free(idxptr);
 				return (ret);
 			}
@@ -442,8 +441,8 @@ int go_at_it(int argc, char** argv)
 			isxdigit(*(_ext + 3))))
 		{
 			ret = correct_meta(argname, 1, 0);
-			if (o != stdout)
-				fclose(o);
+			if (ErrorFile != stdout)
+				fclose(ErrorFile);
 			free(idxptr);
 			return (ret);
 		}
@@ -451,8 +450,8 @@ int go_at_it(int argc, char** argv)
 		if (sysop)
 		{
 			ret = control_decode(argname);
-			if (o != stdout)
-				fclose(o);
+			if (ErrorFile != stdout)
+				fclose(ErrorFile);
 			free(idxptr);
 			return (ret);
 		}
@@ -461,8 +460,8 @@ int go_at_it(int argc, char** argv)
 		if (!_strnicmp(".7pl", _ext, 4) || !_strnicmp(".p01", _ext, 4))
 		{
 			ret = control_decode(argname);
-			if (o != stdout)
-				fclose(o);
+			if (ErrorFile != stdout)
+				fclose(ErrorFile);
 			free(idxptr);
 			return (ret);
 		}
@@ -473,32 +472,32 @@ int go_at_it(int argc, char** argv)
 #endif
 		{
 			ret = make_new_err(argname);
-			if (o != stdout)
-				fclose(o);
+			if (ErrorFile != stdout)
+				fclose(ErrorFile);
 			free(idxptr);
 			return (ret);
 		}
 
 		if (!_strnicmp(".x", _ext, 3))
 		{
-			ret = extract_files(argname, r);
-			if (o != stdout)
-				fclose(o);
+			ret = extract_files(argname, r12);
+			if (ErrorFile != stdout)
+				fclose(ErrorFile);
 			free(idxptr);
 			return (ret);
 		}
-		ret = encode_file(argname, blocksize, r, join, t, genpath);
+		ret = encode_file(argname, blocksize, r12, join, t12, genpath);
 	}
 	else
 	{
 		if (!test_exist(argname)) /* no EXT, but file exists on disk, then encode */
-			ret = encode_file(argname, blocksize, r, join, t, genpath);
+			ret = encode_file(argname, blocksize, r12, join, t12, genpath);
 		else
 			ret = control_decode(argname);
 	}
 
-	if (o != stdout)
-		fclose(o);
+	if (ErrorFile != stdout)
+		fclose(ErrorFile);
 	free(idxptr);
 	return (ret);
 }
