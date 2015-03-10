@@ -18,6 +18,7 @@ char* endstr;
 char* sendstr;
 char* pathstr;
 char genpath[MAXPATH];
+char ErrorF[MAXPATH];
 char altname[MAXPATH];
 char delimit[] = "\n";
 char def_format[] = "format.def";
@@ -140,17 +141,20 @@ int go_at_it(int argc, char** argv)
 	long blocksize;
 
 	extract = genflag = join = cor = twolinesend = 0;
-	p12 = r12 = s12 = t12 = endstr = sendstr = NULLCP;
-	*genpath = *argname = *altname = EOS;
+	p12 = r12 = s12 = t12  = endstr = sendstr = NULLCP;
+	*genpath = *argname = *altname = *ErrorF = EOS;
 
 	i = -1;
 	//ErrorFile = stdout;
-	ErrorFile = fopen("c:\\temp\\7plus.out", "w");
+	
 
 	if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
 	{
 		return errno;
 	}
+	strcpy(ErrorF, cCurrentPath);
+	strcat(ErrorF, "\\7plus.out");
+	ErrorFile = fopen(ErrorF, "w");
 
 	/* initialize range array */
 	get_range("1-");
