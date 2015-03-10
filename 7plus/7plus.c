@@ -39,6 +39,15 @@ const char s_logon[] = "\n[7+ v"VERSION""_LFN" ("PL7_DATE"), (C) DG1BBQ]\n";
 
 HANDLE hDLLInst = 0;
 
+
+#include <direct.h>
+#define GetCurrentDir _getcwd
+
+
+char cCurrentPath[FILENAME_MAX];
+
+
+
 BOOL WINAPI DllMain(HANDLE hModule, DWORD dwFunction, LPVOID lpNot)
 {
 	hDLLInst = hModule;
@@ -137,6 +146,12 @@ int go_at_it(int argc, char** argv)
 	i = -1;
 	//ErrorFile = stdout;
 	ErrorFile = fopen("c:\\temp\\7plus.out", "w");
+
+	if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+	{
+		return errno;
+	}
+
 	/* initialize range array */
 	get_range("1-");
 
