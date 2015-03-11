@@ -38,18 +38,18 @@
             // 
             // button_ok
             // 
-            this.button_ok.Location = new System.Drawing.Point(104, 213);
+            this.button_ok.Location = new System.Drawing.Point(131, 323);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 0;
-            this.button_ok.Text = "OK";
+            this.button_ok.Text = "Send";
             this.button_ok.UseVisualStyleBackColor = true;
             this.button_ok.Click += new System.EventHandler(this.button_ok_Click);
             // 
             // button_cancel
             // 
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_cancel.Location = new System.Drawing.Point(216, 213);
+            this.button_cancel.Location = new System.Drawing.Point(267, 323);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.TabIndex = 1;
@@ -64,6 +64,7 @@
             // 
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
+            this.fileSystemWatcher1.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcher1_Changed);
             // 
             // _7PlusFrm
             // 
@@ -71,7 +72,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_cancel;
-            this.ClientSize = new System.Drawing.Size(391, 261);
+            this.ClientSize = new System.Drawing.Size(534, 389);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
