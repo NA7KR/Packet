@@ -67,10 +67,7 @@ namespace Packet
         private void Loader()
         {
             _selectedCkeck = false;
-            if (MyFiles.SelectMakeCustomQuery("Packet") == false)
-            {
-                Sql.WriteSqlCustomUpdate(1, "7+", "7+", "MSGSubject", "Y");
-            }
+           
 
             DataGridView1.Rows.Clear();
             var packets = MyFiles.SqlCustomRead();

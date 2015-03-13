@@ -114,9 +114,12 @@ namespace Packet
                 _myRegistryKeep.ShowError = true;
 
 		        int idays = _myRegistryKeep.ReadDw("DaystoKeep");
-		        Sql.Deletedays(idays);
-                    
-                Loader();
+                if (idays != 0)
+
+		        {
+		            Sql.Deletedays(idays);
+		        }
+		        Loader();
 		    }
             catch (IOException ex)
 		    {

@@ -17,6 +17,8 @@ namespace Packet
     public partial class Main : Form
     {
         private readonly ModifyRegistry _myRegistryKeep = new ModifyRegistry();
+        private static readonly FileSql MyFiles = new FileSql();
+        private static readonly Sql Sql = new Sql();
 
         #region private void aboutToolStripMenuItem_Click
 
@@ -278,8 +280,16 @@ namespace Packet
 
         private void forward_button_Click(object sender, EventArgs e)
         {
-            Sql.Deletedays(_myRegistryKeep.ReadDw("DaystoKeep"));
-            Sql.DeleteCount(_myRegistryKeep.ReadDw("QTYtoKeep"));
+            int idays = _myRegistryKeep.ReadDw("DaystoKeep");
+            if (idays > 0)
+            {
+                Sql.Deletedays(idays);
+            }
+            int iqty = _myRegistryKeep.ReadDw("QTYtoKeep");
+            if (iqty > 0)
+            {
+                Sql.DeleteCount(iqty);
+            }
             terminalEmulator1.FileActive = true;
             forward_button.Enabled = false;
             forward_button.Text = "Forward active";
@@ -431,6 +441,12 @@ namespace Packet
                     break;
             }
             terminalEmulator1.BackColor = _backgroundColor;
+
+            if (MyFiles.SelectMakeCustomQuery("Packet") == false)
+            {
+                Sql.WriteSqlCustomUpdate(1, "7+", "7+", "MSGSubject", "Y");
+            }
+
             if (_myRegistrySsh.Read("Active") == "Yes")
             {
                 ssh_button.Visible = true;
