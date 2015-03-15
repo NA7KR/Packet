@@ -15,6 +15,7 @@ using System.Net.Sockets;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Windows.Forms;
+using PacketComs;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 

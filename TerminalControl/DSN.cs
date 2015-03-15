@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Packet
+namespace PacketComs
 {
 	public class OdbcManager
 	{

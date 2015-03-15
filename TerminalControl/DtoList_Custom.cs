@@ -1,4 +1,4 @@
-﻿namespace Packet
+﻿namespace PacketComs
 {
     public class DtoCustom
     {

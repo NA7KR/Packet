@@ -1,13 +1,10 @@
-﻿namespace Packet
+﻿namespace PacketComs
 {
     public class RunCustom
     {
         private static readonly FileSql MyFiles = new FileSql();
 
-        public RunCustom()
-        {
-            
-        }
+ 
 
         #region RunSqlCustom
         public void RunSqlCustom()

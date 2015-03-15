@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 #endregion
 
-namespace Packet
+namespace PacketComs
 {
     public class FileSql
     {
