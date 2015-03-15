@@ -948,12 +948,10 @@ namespace Packet
                         }
 
                         if (sReceived.Contains(BBSPrompt))
-
-                        
                         {
                             if (_msgstate == "First")
                             {
-	                            fstmsg = 0;
+                                fstmsg = 0;
                                 for (var i = 1; i < lines.Length - 1; )
                                 {
                                     string checkstring = lines[i].Substring(0, 5);
@@ -1003,10 +1001,10 @@ namespace Packet
                             {
                                 if (_nb == null || _nb.Length == 0)
                                 {
-									_msgstate = "exit";
+                                    _msgstate = "exit";
                                 }
                                 else
-                                {     
+                                {
                                     DispatchMessage(this, "R " + _nb[_msgno].ToString());
                                     DispatchMessage(this, Environment.NewLine);
                                     _msgstate = "prompt";
@@ -1022,32 +1020,32 @@ namespace Packet
                                 if (_msgstate == "prompt")
                                 {
                                     string dfile = "";
-                                    Int32 lastNumber = _nb[_msgno]%10;
-                                    
-									for (var i = fstmsg; i < (lines.Length - 1); i++)
+                                    Int32 lastNumber = _nb[_msgno] % 10;
+
+                                    for (var i = fstmsg; i < (lines.Length - 1); i++)
                                     {
                                         dfile = dfile + lines[i] + Environment.NewLine;
                                     }
 
                                     FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
-									FileSql.SqlupdateRead(_nb[_msgno]);
+                                    FileSql.SqlupdateRead(_nb[_msgno]);
                                     _dataFile = "";
-	                                fstmsg = 1;
+                                    fstmsg = 1;
                                     _msgno++;
                                     _msgstate = "file";
                                 }
 
                             }
-	                        if (_msgno == _nb.Length )
-	                        {
-		                        ForwardDone(this, new EventArgs());
-		                        FileActive = false;
-	                        }
-	                        if (_msgstate == "exit")
-	                        {
-		                        ForwardDone(this, new EventArgs());
-		                        FileActive = false;
-	                        }
+                            if (_msgno == _nb.Length)
+                            {
+                                ForwardDone(this, new EventArgs());
+                                FileActive = false;
+                            }
+                            if (_msgstate == "exit")
+                            {
+                                ForwardDone(this, new EventArgs());
+                                FileActive = false;
+                            }
                         }
                     }
                     Invoke(RxdTextEvent, String.Copy(sReceived));
@@ -1075,7 +1073,7 @@ namespace Packet
             {
                 DispatchMessage(this, Environment.NewLine);
             }
-            
+
         }
 
         #endregion
@@ -5038,7 +5036,7 @@ namespace Packet
         private Int32 _bottomMargin;
         private string _cType;
         private string _msgstate;
-	    private int fstmsg;
+        private int fstmsg;
         private int[] _nb;
         private int _msgno;
         private AsyncCallback _callbackEndDispatch;
