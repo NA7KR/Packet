@@ -12,6 +12,7 @@ namespace Packet
 	public partial class Mail : Form
     {
         private static readonly Sql Sql = new Sql();
+        
         ModifyRegistry _myRegistryKeep = new ModifyRegistry();
          
 
