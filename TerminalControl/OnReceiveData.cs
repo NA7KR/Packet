@@ -42,8 +42,7 @@ namespace PacketComs
                     {
                         _dataFile = _dataFile + sReceived;
 
-                        var lines = _dataFile.Split(new[] { Environment.NewLine },
-                            StringSplitOptions.RemoveEmptyEntries);
+                        var lines = _dataFile.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                         if (sReceived.Contains("There are no such messages"))
                         {
                             _msgstate = "Second";
@@ -107,14 +106,18 @@ namespace PacketComs
                                 }
                                 else
                                 {
-                                    DispatchMessage(this, "R " + _nb[_msgno].ToString());
-                                    DispatchMessage(this, Environment.NewLine);
-                                    _msgstate = "prompt";
-                                    Invoke(RxdTextEvent, String.Copy(sReceived));
-                                    Invoke(RefreshEvent);
-                                    // Re-Establish the next asyncronous receveived data callback as
-                                    stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length, SocketFlags.None, OnReceivedData, stateObject);
-                                    return;
+                                    if (sReceived.Contains(BBSPrompt))
+                                    {
+                                        DispatchMessage(this, "R " + _nb[_msgno].ToString());
+                                        DispatchMessage(this, Environment.NewLine);
+                                        _msgstate = "prompt";
+                                        Invoke(RxdTextEvent, String.Copy(sReceived));
+                                        Invoke(RefreshEvent);
+                                        // Re-Establish the next asyncronous receveived data callback as
+                                        stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
+                                            SocketFlags.None, OnReceivedData, stateObject);
+                                        return;
+                                    }
                                 }
                             }
                             //if (sReceived.Contains(BBSPrompt))
