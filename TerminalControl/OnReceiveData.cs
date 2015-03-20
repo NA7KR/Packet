@@ -108,6 +108,11 @@ namespace PacketComs
                                 {
                                     if (sReceived.Contains(BBSPrompt))
                                     {
+                                        string bbs = BBSPrompt + "\r\n(1) " + BBSPrompt;
+                                        if (sReceived.Contains(bbs))
+                                        {
+                                            return;
+                                        }
                                         DispatchMessage(this, "R " + _nb[_msgno].ToString());
                                         DispatchMessage(this, Environment.NewLine);
                                         _msgstate = "prompt";
