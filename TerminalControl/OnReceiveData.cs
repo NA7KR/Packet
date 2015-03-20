@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Net.Sockets;
 using System.Windows.Forms;
 
@@ -42,7 +43,20 @@ namespace PacketComs
                     {
                         _dataFile = _dataFile + sReceived;
 
-                        var lines = _dataFile.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        var lines = _dataFile.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+                        for (var i = lines.Length-1; i > 0; i--)
+                        {
+                            if (lines[i] == lines[i - 1])
+                            {
+                                lines = lines.Take(i).ToArray();
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        sReceived = string.Join(Environment.NewLine, lines);
                         if (sReceived.Contains("There are no such messages"))
                         {
                             _msgstate = "Second";
@@ -108,11 +122,7 @@ namespace PacketComs
                                 {
                                     if (sReceived.Contains(BBSPrompt))
                                     {
-                                        string bbs = BBSPrompt + "\r\n(1) " + BBSPrompt;
-                                        if (sReceived.Contains(bbs))
-                                        {
-                                            return;
-                                        }
+                                        
                                         DispatchMessage(this, "R " + _nb[_msgno].ToString());
                                         DispatchMessage(this, Environment.NewLine);
                                         _msgstate = "prompt";
