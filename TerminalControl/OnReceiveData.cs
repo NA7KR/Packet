@@ -136,8 +136,9 @@ namespace PacketComs
                                 }
                             }
                             //if (sReceived.Contains(BBSPrompt))
-                            {
-                                if (_msgstate == "prompt")
+                            
+                            
+                             if (_msgstate == "prompt")
                                 {
                                     string dfile = "";
                                     Int32 lastNumber = _nb[_msgno] % 10;
@@ -152,14 +153,21 @@ namespace PacketComs
                                     _dataFile = "";
                                     fstmsg = 1;
                                     _msgno++;
-                                    _msgstate = "file";
+                                    _msgstate = "First";
                                 }
 
-                            }
+                           // }
+                           
                             if (_msgno == _nb.Length)
                             {
                                 ForwardDone(this, new EventArgs());
+                              ;
                                 FileActive = false;
+                                stateObject.Socket.Shutdown(SocketShutdown.Both);
+                                stateObject.Socket.Close();
+                                //Disconnect();
+                                Disconnectby();
+                                return;
                             }
                             if (_msgstate == "exit")
                             {
