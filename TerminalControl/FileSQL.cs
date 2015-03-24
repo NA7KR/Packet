@@ -448,7 +448,7 @@ namespace PacketComs
 
         public void UpdateSqlCustom(string tableName, string customQuery)
         {
-            if (DoesTableExist(tableName, DsnName))
+            if (DoesTableExist("Packet", DsnName))
             {
                 try
                 {
