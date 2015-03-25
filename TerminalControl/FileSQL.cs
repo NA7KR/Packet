@@ -460,7 +460,7 @@ namespace PacketComs
                             "UPDATE Packet " +
                             " SET Packet.MSGState = ? " +
                             " where (Packet.MSGState is null    " +
-                            " or Packet.MSGState<> ? And Packet.MSGState<> ? And Packet.MSGState<> ?   and  Packet." + tableName + " like ?)";
+                            " or (Packet.MSGState <> ? And Packet.MSGState <> ? And Packet.MSGState <> ? ))  and  Packet." + tableName + " like ?";
 
 
                             cmd.Parameters.Clear();
