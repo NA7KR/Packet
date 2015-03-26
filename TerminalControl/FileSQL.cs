@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
+using System.Net;
 using System.Windows.Forms;
 
 #endregion
@@ -52,7 +53,11 @@ namespace PacketComs
                         "No Packet System DSN found" + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error
                     ) == DialogResult.OK)
                     {
-                        System.Diagnostics.Process.Start("https://github.com/NA7KR/Packet/wiki/Install_odbc");
+                        var Check = CheckForInternetConnection();
+                        if ( Check == true)
+                        {
+                            System.Diagnostics.Process.Start("https://github.com/NA7KR/Packet/wiki/Install_odbc");
+                        }
                     }
                     Environment.Exit(1);
                 }
@@ -494,5 +499,20 @@ namespace PacketComs
             }
         }
         #endregion
+        public static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://na7kr.na7kr.us"))
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 } //end name-space

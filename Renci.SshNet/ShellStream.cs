@@ -309,16 +309,9 @@ namespace Renci.SshNet
 
                 if (!expectedFound)
                 {
-                    if (timeout != null)
+                    if (!this._dataReceived.WaitOne(timeout))
                     {
-                        if (!this._dataReceived.WaitOne(timeout))
-                        {
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        this._dataReceived.WaitOne();
+                        return;
                     }
                 }
             }
@@ -429,20 +422,13 @@ namespace Renci.SshNet
                         if (expectActionResult != null)
                             break;
 
-                        if (timeout != null)
+                        if (!this._dataReceived.WaitOne(timeout))
                         {
-                            if (!this._dataReceived.WaitOne(timeout))
+                            if (callback != null)
                             {
-                                if (callback != null)
-                                {
-                                    callback(asyncResult);
-                                }
-                                break;
+                                callback(asyncResult);
                             }
-                        }
-                        else
-                        {
-                            this._dataReceived.WaitOne();
+                            break;
                         }
                     } while (true);
 
@@ -543,18 +529,10 @@ namespace Renci.SshNet
                     }
                 }
 
-                if (timeout != null)
+                if (!this._dataReceived.WaitOne(timeout))
                 {
-                    if (!this._dataReceived.WaitOne(timeout))
-                    {
-                        return null;
-                    }
+                    return null;
                 }
-                else
-                {
-                    this._dataReceived.WaitOne();
-                }
-
             }
 
             return text;
@@ -604,18 +582,10 @@ namespace Renci.SshNet
                     }
                 }
 
-                if (timeout != null)
+                if (!this._dataReceived.WaitOne(timeout))
                 {
-                    if (!this._dataReceived.WaitOne(timeout))
-                    {
-                        return null;
-                    }
+                    return null;
                 }
-                else
-                {
-                    this._dataReceived.WaitOne();
-                }
-
             }
 
             return text;
