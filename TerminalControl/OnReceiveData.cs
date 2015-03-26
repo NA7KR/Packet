@@ -2,11 +2,10 @@
 using System.Globalization;
 using System.Linq;
 using System.Net.Sockets;
-using System.Windows.Forms;
 
 namespace PacketComs
 {
-    public sealed partial class TerminalEmulator : Control
+    public sealed partial class TerminalEmulator
     {
         #region OnReceiveData
 
@@ -141,15 +140,19 @@ namespace PacketComs
                              if (_msgstate == "prompt")
                                 {
                                     string dfile = "";
-                                    Int32 lastNumber = _nb[_msgno] % 10;
-
-                                    for (var i = fstmsg; i < (lines.Length - 1); i++)
+                                    if (_nb != null)
                                     {
-                                        dfile = dfile + lines[i] + Environment.NewLine;
-                                    }
+                                        Int32 lastNumber = _nb[_msgno] % 10;
 
-                                    FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
-                                    FileSql.SqlupdateRead(_nb[_msgno]);
+                                        for (var i = fstmsg; i < (lines.Length - 1); i++)
+                                        {
+                                            dfile = dfile + lines[i] + Environment.NewLine;
+                                        }
+
+                                        FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
+                                        FileSql.SqlupdateRead(_nb[_msgno]);
+                                    }
+                                    
                                     _dataFile = "";
                                     fstmsg = 1;
                                     _msgno++;
@@ -158,10 +161,10 @@ namespace PacketComs
 
                            // }
                            
-                            if (_msgno == _nb.Length)
+                            if (_nb != null && _msgno == _nb.Length)
                             {
                                 ForwardDone(this, new EventArgs());
-                              ;
+                              
                                 FileActive = false;
                                 stateObject.Socket.Shutdown(SocketShutdown.Both);
                                 stateObject.Socket.Close();
