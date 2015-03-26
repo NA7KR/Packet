@@ -203,6 +203,7 @@ namespace PacketComs
 
         public void Disconnectby()
         {
+           
             Invoke(RxdTextEvent, String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
             Invoke(RxdTextEvent, String.Copy(Environment.NewLine));
             Invoke(RefreshEvent);
@@ -3031,11 +3032,12 @@ namespace PacketComs
                 }
                 else
                 {
+                    _curSocket.Shutdown(SocketShutdown.Both);
+                    _curSocket.Close();
                     Invoke(RxdTextEvent, String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
                     Invoke(RxdTextEvent, String.Copy(Environment.NewLine));
                     Invoke(RefreshEvent);
-                    _curSocket.Shutdown(SocketShutdown.Both);
-                    _curSocket.Close();
+                   
                 }
             }
             catch (Exception)
