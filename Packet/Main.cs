@@ -906,7 +906,7 @@ namespace Packet
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var box = new _7PlusFrm();
+            var box = new PlusFrm();
             box.ShowDialog();
         }
 

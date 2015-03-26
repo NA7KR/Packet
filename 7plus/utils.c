@@ -668,7 +668,7 @@ int test_file(FILE* in, char* destnam, int flag, int namsize)
 		{
 			char __drive[MAXDRIVE], __dir[MAXDIR], __file[MAXFILE], __ext[MAXEXT];
 			char newnam[MAXPATH];
-			int i = 1;
+			 i = 1;
 			int j, k;
 			fnsplit(destnam, __drive, __dir, __file, __ext);
 			if (flag == 3)

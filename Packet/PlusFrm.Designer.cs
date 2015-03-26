@@ -1,6 +1,6 @@
 ﻿namespace Packet
 {
-    partial class _7PlusFrm
+    partial class PlusFrm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(_7PlusFrm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlusFrm));
             this.button_ok = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
@@ -66,7 +66,7 @@
             this.fileSystemWatcher1.SynchronizingObject = this;
             this.fileSystemWatcher1.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcher1_Changed);
             // 
-            // _7PlusFrm
+            // PlusFrm
             // 
             this.AcceptButton = this.button_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -76,7 +76,7 @@
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "_7PlusFrm";
+            this.Name = "PlusFrm";
             this.Text = "7Plus";
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);

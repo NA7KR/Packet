@@ -47,7 +47,7 @@ namespace Packet
 		{
 		    if (cipherText == null)
 		    {
-                return cipherText;
+                return null;
 		    }
             else
 		    {

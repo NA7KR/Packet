@@ -7,9 +7,9 @@ using System.Windows.Forms;
 
 namespace Packet
 {
-    public partial class _7PlusFrm : Form
+    public partial class PlusFrm : Form
     {
-        public _7PlusFrm()
+        public PlusFrm()
         {
             InitializeComponent();
         }
@@ -21,7 +21,7 @@ namespace Packet
         {
             
             OpenFileDialog fbd = new OpenFileDialog();
-            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (fbd.ShowDialog() == DialogResult.OK)
 
             {
                 string fp = (Path.GetFullPath(fbd.FileName));
