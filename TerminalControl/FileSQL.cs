@@ -20,7 +20,6 @@ namespace PacketComs
         private OdbcConnection _conp = new OdbcConnection(DsnName);
         private OdbcCommand _cmdp = new OdbcCommand();
 
-
         #region Constructor
         public FileSql()
         {
@@ -499,12 +498,14 @@ namespace PacketComs
             }
         }
         #endregion
+
+        #region Check for Internet
         public static bool CheckForInternetConnection()
         {
             try
             {
                 using (var client = new WebClient())
-                using (var stream = client.OpenRead("http://na7kr.na7kr.us"))
+                using (var stream = client.OpenRead("http://github.com"))
                 {
                     return true;
                 }
@@ -514,5 +515,6 @@ namespace PacketComs
                 return false;
             }
         }
+        #rendegion
     }
 } //end name-space

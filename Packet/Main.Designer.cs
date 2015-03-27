@@ -73,13 +73,13 @@ namespace Packet
             this.toolStripButton_SSH = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_MailConfig = new System.Windows.Forms.ToolStripButton();
-            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_ReadMail = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_7plus = new System.Windows.Forms.ToolStripButton();
+            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -413,43 +413,6 @@ namespace Packet
             this.toolStripButton_MailConfig.Text = "toolStripButton1";
             this.toolStripButton_MailConfig.Click += new System.EventHandler(this.toolStripButton_MailConfig_Click);
             // 
-            // terminalEmulator1
-            // 
-            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            this.terminalEmulator1.BaudRateType = PacketComs.TerminalEmulator.BaudRateTypes.Baud_4800;
-            this.terminalEmulator1.BBSPrompt = null;
-            this.terminalEmulator1.Beep = true;
-            this.terminalEmulator1.Close = false;
-            this.terminalEmulator1.Columns = 172;
-            this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
-            this.terminalEmulator1.dnsName = null;
-            this.terminalEmulator1.FileActive = false;
-            this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
-            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator1.Header = null;
-            this.terminalEmulator1.Hostname = null;
-            this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.terminalEmulator1.LastNumber = 0;
-            this.terminalEmulator1.LocalEcho = false;
-            this.terminalEmulator1.Location = new System.Drawing.Point(31, 103);
-            this.terminalEmulator1.Name = "terminalEmulator1";
-            this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
-            this.terminalEmulator1.Password = null;
-            this.terminalEmulator1.PasswordPrompt = null;
-            this.terminalEmulator1.Port = 9000;
-            this.terminalEmulator1.Rows = 40;
-            this.terminalEmulator1.SerialPort = "";
-            this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
-            this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
-            this.terminalEmulator1.TabIndex = 5;
-            this.terminalEmulator1.Text = "terminalEmulator1";
-            this.terminalEmulator1.UernamePrompt = null;
-            this.terminalEmulator1.Username = null;
-            this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
-            this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
-            this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
-            // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
@@ -494,6 +457,43 @@ namespace Packet
             this.toolStripButton_7plus.Size = new System.Drawing.Size(109, 44);
             this.toolStripButton_7plus.Text = "toolStripButton2";
             this.toolStripButton_7plus.Click += new System.EventHandler(this.toolStripButton_7plus_Click);
+            // 
+            // terminalEmulator1
+            // 
+            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
+            this.terminalEmulator1.BaudRateType = PacketComs.TerminalEmulator.BaudRateTypes.Baud_4800;
+            this.terminalEmulator1.BBSPrompt = null;
+            this.terminalEmulator1.Beep = true;
+            this.terminalEmulator1.Close = false;
+            this.terminalEmulator1.Columns = 172;
+            this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.dnsName = null;
+            this.terminalEmulator1.FileActive = false;
+            this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
+            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
+            this.terminalEmulator1.Header = null;
+            this.terminalEmulator1.Hostname = null;
+            this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.terminalEmulator1.LastNumber = 0;
+            this.terminalEmulator1.LocalEcho = false;
+            this.terminalEmulator1.Location = new System.Drawing.Point(31, 103);
+            this.terminalEmulator1.Name = "terminalEmulator1";
+            this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
+            this.terminalEmulator1.Password = null;
+            this.terminalEmulator1.PasswordPrompt = null;
+            this.terminalEmulator1.Port = 9000;
+            this.terminalEmulator1.Rows = 40;
+            this.terminalEmulator1.SerialPort = "";
+            this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
+            this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
+            this.terminalEmulator1.TabIndex = 5;
+            this.terminalEmulator1.Text = "terminalEmulator1";
+            this.terminalEmulator1.UernamePrompt = null;
+            this.terminalEmulator1.Username = null;
+            this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
+            this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
+            this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
             // Main
             // 

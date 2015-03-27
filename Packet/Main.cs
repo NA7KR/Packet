@@ -583,8 +583,7 @@ namespace Packet
         private Color _textColor = Color.Yellow;
         #endregion
 
-     
-
+        #region BBS Click
         private void toolStripButton_BBS_Click(object sender, EventArgs e)
         {
             
@@ -657,8 +656,9 @@ namespace Packet
                 }
             
         }
+        #endregion
 
-
+        #region FWD
         private void toolStripButton_FWD_Click(object sender, EventArgs e)
         {
             int idays = _myRegistryKeep.ReadDw("DaystoKeep");
@@ -677,7 +677,9 @@ namespace Packet
             terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.ReadDw("Start Number"));
             terminalEmulator1.Startforward();
         }
+        #endregion
 
+        #region Cluster Click
         private void toolStripButton_Cluster_Click(object sender, EventArgs e)
         {
             try
@@ -740,7 +742,9 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
+        #endregion
 
+        #region Node Click
         private void toolStripButton_Node_Click(object sender, EventArgs e)
         {
             try
@@ -802,7 +806,9 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
+        #endregion
 
+        #region Disconnect Click
         private void toolStripButton_Disconnect_Click(object sender, EventArgs e)
         {
             button_check();
@@ -813,7 +819,9 @@ namespace Packet
             toolStripButton_fwd.Text = "Forward";
             
         }
+        #endregion
 
+        #region SSH Click
         private void toolStripButton_SSH_Click(object sender, EventArgs e)
         {
             try
@@ -845,29 +853,38 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
+        #endregion
 
+        #region MailConfig
         private void toolStripButton_MailConfig_Click(object sender, EventArgs e)
         {
             var box = new Mail();
             box.ShowDialog();
         }
+        #endregion
 
+        #region  Read Mail
         private void toolStripButton_ReadMail_Click(object sender, EventArgs e)
         {
             var box = new Read();
             box.ShowDialog();
         }
+        #endregion
 
+        #region Personal Mail
         private void toolStripButton_PersonalMail_Click(object sender, EventArgs e)
         {
             MessageBox.Show("To come soon");
         }
+        #endregion
 
+        #region 7plus click
         private void toolStripButton_7plus_Click(object sender, EventArgs e)
         {
             var box = new PlusFrm();
             box.ShowDialog();
         }
+        #endregion
     }
 
     //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
