@@ -15,10 +15,10 @@ namespace PacketComs
             {
                 // Get The connection socket from the callback
                 var stateObject = (UcCommsStateObject)ar.AsyncState;
-
+                bool plus;
                 // Get The data , if any
                 var nBytesRec = stateObject.Socket.EndReceive(ar);
-
+                plus = false;
                 if (nBytesRec > 0)
                 {
                     var sReceived = "";
@@ -143,14 +143,27 @@ namespace PacketComs
                                     if (_nb != null)
                                     {
                                         Int32 lastNumber = _nb[_msgno] % 10;
-
+                                        if (sReceived.Contains("go_7+."))
+                                        {
+                                            plus = true;
+                                        }
+                                        else
+                                        {
+                                            plus = false;
+                                        }
                                         for (var i = fstmsg; i < (lines.Length - 1); i++)
                                         {
                                             dfile = dfile + lines[i] + Environment.NewLine;
                                         }
-
-                                        FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
-                                        FileSql.SqlupdateRead(_nb[_msgno]);
+                                        if (plus)
+                                        {
+                                            FileSql.WriteSt(dfile, _nb[_msgno].ToString(), "7plus");
+                                        }
+                                         else
+                                        {
+                                            FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
+                                        }
+                                    FileSql.SqlupdateRead(_nb[_msgno]);
                                     }
                                     
                                     _dataFile = "";
