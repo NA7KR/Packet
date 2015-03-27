@@ -232,14 +232,8 @@ namespace Packet
             terminalEmulator1.Width = (Width - 60);
 
             var bwidth = ((Width - (9*90))/10);
-          
 
-
-            ssh_button.Left = bwidth + 20;
-            ssh_button.Top = 40;
-            ssh_button.Width = 90;
-
-            mail_button.Left = bwidth + ssh_button.Right;
+            mail_button.Left = bwidth + 40;
             mail_button.Top = 40;
             mail_button.Width = 90;
 
@@ -312,6 +306,14 @@ namespace Packet
             {
                 toolStripButton_Node.Enabled = false;
                 nodeIPConfigToolStripMenuItem.Text = "Node Config";
+            }
+            if (_myRegistrySsh.Read("Active") == "No")
+            {
+                toolStripButton_SSH.Enabled = false;
+            }
+            else
+            {
+                toolStripButton_SSH.Enabled = true;
             }
         }
         #endregion
@@ -422,10 +424,10 @@ namespace Packet
 
             if (_myRegistrySsh.Read("Active") == "Yes")
             {
-                ssh_button.Visible = true;
+                toolStripButton_SSH.Visible = true;
             }
             else
-                ssh_button.Visible = false;
+                toolStripButton_SSH.Visible = false;
         }
 
         #endregion
@@ -450,41 +452,6 @@ namespace Packet
 
         #endregion    
 
-        #region ssh_button_Click
-
-        private void ssh_button_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                ssh_button.Enabled = false;
-                toolStripButton_bbs.Enabled = false;
-                toolStripButton_cls.Enabled = false;
-                toolStripButton_Node.Enabled = false;
-                toolStripButton_Disconnect.Enabled = true;
-                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.SSH2;
-                terminalEmulator1.Port = Convert.ToInt32(_myRegistrySsh.Read("Port"));
-                terminalEmulator1.Hostname = _myRegistrySsh.Read("IP");
-                terminalEmulator1.Username = _myRegistrySsh.Read("UserName");
-                terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistrySsh.Read("Password"));
-                terminalEmulator1.Connect();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Configure SSH in Setup");
-                toolStripButton_bbs.Enabled = true;
-                toolStripButton_cls.Enabled = true;
-                toolStripButton_Node.Enabled = true;
-                toolStripButton_Disconnect.Enabled = false;
-                if (_myRegistrySsh.Read("Active") == "No")
-                {
-                    ssh_button.Enabled = false;
-                }
-                else
-                    ssh_button.Enabled = true;
-            }
-        }
-
-        #endregion
 
         #region toolStripMenuItem1_Click SSH
 
@@ -494,10 +461,10 @@ namespace Packet
             box.ShowDialog();
             if (_myRegistrySsh.Read("Active") == "No")
             {
-                ssh_button.Visible = false;
+                toolStripButton_SSH.Visible = false;
             }
             else
-                ssh_button.Visible = true;
+                toolStripButton_SSH.Visible = true;
         }
 
         #endregion
@@ -713,7 +680,7 @@ namespace Packet
                 toolStripButton_bbs.Enabled = false;
                 toolStripButton_cls.Enabled = false;
                     toolStripButton_Node.Enabled = false;
-                    ssh_button.Enabled = false;
+                    toolStripButton_SSH.Enabled = false;
                     toolStripButton_fwd.Enabled = true;
                 }
                 catch
@@ -725,10 +692,10 @@ namespace Packet
                     toolStripButton_Disconnect.Enabled = false;
                     if (_myRegistrySsh.Read("Active") == "No")
                     {
-                        ssh_button.Enabled = false;
+                        toolStripButton_SSH.Enabled = false;
                     }
                     else
-                        ssh_button.Enabled = true;
+                        toolStripButton_SSH.Enabled = true;
                 }
             
         }
@@ -760,7 +727,7 @@ namespace Packet
                 toolStripButton_bbs.Enabled = false;
                 toolStripButton_cls.Enabled = false;
                 toolStripButton_Node.Enabled = false;
-                ssh_button.Enabled = false;
+                toolStripButton_SSH.Enabled = false;
                 if (_myRegistry.Read("Cluster-Mode") == "Telnet")
                 {
                     if (_myRegistryCluster.Read("Echo") == "Yes")
@@ -809,10 +776,10 @@ namespace Packet
                 toolStripButton_Disconnect.Enabled = false;
                 if (_myRegistrySsh.Read("Active") == "No")
                 {
-                    ssh_button.Enabled = false;
+                    toolStripButton_SSH.Enabled = false;
                 }
                 else
-                    ssh_button.Enabled = true;
+                    toolStripButton_SSH.Enabled = true;
             }
         }
 
@@ -823,7 +790,7 @@ namespace Packet
                 toolStripButton_bbs.Enabled = false;
                 toolStripButton_cls.Enabled = false;
                 toolStripButton_Node.Enabled = false;
-                ssh_button.Enabled = false;
+                toolStripButton_SSH.Enabled = false;
                 if (_myRegistry.Read("Node-Mode") == "Telnet")
                 {
                     if (_myRegistryNode.Read("Echo") == "Yes")
@@ -871,10 +838,10 @@ namespace Packet
                 toolStripButton_Disconnect.Enabled = false;
                 if (_myRegistrySsh.Read("Active") == "No")
                 {
-                    ssh_button.Enabled = false;
+                    toolStripButton_SSH.Enabled = false;
                 }
                 else
-                    ssh_button.Enabled = true;
+                    toolStripButton_SSH.Enabled = true;
             }
         }
 
@@ -886,12 +853,39 @@ namespace Packet
             terminalEmulator1.FileActive = false;
             toolStripButton_fwd.Enabled = false;
             toolStripButton_fwd.Text = "Forward";
-            if (_myRegistrySsh.Read("Active") == "No")
+            
+        }
+
+        private void toolStripButton_SSH_Click(object sender, EventArgs e)
+        {
+            try
             {
-                ssh_button.Enabled = false;
+                toolStripButton_SSH.Enabled = false;
+                toolStripButton_bbs.Enabled = false;
+                toolStripButton_cls.Enabled = false;
+                toolStripButton_Node.Enabled = false;
+                toolStripButton_Disconnect.Enabled = true;
+                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.SSH2;
+                terminalEmulator1.Port = Convert.ToInt32(_myRegistrySsh.Read("Port"));
+                terminalEmulator1.Hostname = _myRegistrySsh.Read("IP");
+                terminalEmulator1.Username = _myRegistrySsh.Read("UserName");
+                terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistrySsh.Read("Password"));
+                terminalEmulator1.Connect();
             }
-            else
-                ssh_button.Enabled = true;
+            catch (Exception)
+            {
+                MessageBox.Show("Configure SSH in Setup");
+                toolStripButton_bbs.Enabled = true;
+                toolStripButton_cls.Enabled = true;
+                toolStripButton_Node.Enabled = true;
+                toolStripButton_Disconnect.Enabled = false;
+                if (_myRegistrySsh.Read("Active") == "No")
+                {
+                    toolStripButton_SSH.Enabled = false;
+                }
+                else
+                    toolStripButton_SSH.Enabled = true;
+            }
         }
     }
 

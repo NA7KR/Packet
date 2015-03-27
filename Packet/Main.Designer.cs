@@ -59,7 +59,6 @@ namespace Packet
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ssh_button = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mail_button = new System.Windows.Forms.Button();
             this.button_read = new System.Windows.Forms.Button();
@@ -70,12 +69,14 @@ namespace Packet
             this.toolStripButton_bbs = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_fwd = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton_cls = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton_cls = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_Node = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_Disconnect = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton_SSH = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -286,17 +287,6 @@ namespace Packet
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
-            // ssh_button
-            // 
-            this.ssh_button.Location = new System.Drawing.Point(542, 74);
-            this.ssh_button.Name = "ssh_button";
-            this.ssh_button.Size = new System.Drawing.Size(94, 23);
-            this.ssh_button.TabIndex = 4;
-            this.ssh_button.Text = "SSH";
-            this.toolTip1.SetToolTip(this.ssh_button, "To Connect SSH");
-            this.ssh_button.UseVisualStyleBackColor = true;
-            this.ssh_button.Click += new System.EventHandler(this.ssh_button_Click);
-            // 
             // mail_button
             // 
             this.mail_button.Location = new System.Drawing.Point(658, 74);
@@ -384,7 +374,7 @@ namespace Packet
             // 
             // toolStrip1
             // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(16, 40);
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(105, 40);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton_bbs,
             this.toolStripSeparator1,
@@ -394,7 +384,9 @@ namespace Packet
             this.toolStripSeparator3,
             this.toolStripButton_Node,
             this.toolStripSeparator4,
-            this.toolStripButton_Disconnect});
+            this.toolStripButton_Disconnect,
+            this.toolStripButton_SSH,
+            this.toolStripSeparator5});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1278, 47);
@@ -405,7 +397,6 @@ namespace Packet
             // 
             this.toolStripButton_bbs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton_bbs.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_bbs.Image")));
-            this.toolStripButton_bbs.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_bbs.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton_bbs.Name = "toolStripButton_bbs";
             this.toolStripButton_bbs.Size = new System.Drawing.Size(109, 44);
@@ -421,28 +412,26 @@ namespace Packet
             // 
             this.toolStripButton_fwd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton_fwd.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_fwd.Image")));
-            this.toolStripButton_fwd.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_fwd.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton_fwd.Name = "toolStripButton_fwd";
-            this.toolStripButton_fwd.Size = new System.Drawing.Size(75, 44);
+            this.toolStripButton_fwd.Size = new System.Drawing.Size(109, 44);
             this.toolStripButton_fwd.Text = "toolStripButton_fwd";
             this.toolStripButton_fwd.Click += new System.EventHandler(this.toolStripButton_FWD_Click);
-            // 
-            // toolStripButton_cls
-            // 
-            this.toolStripButton_cls.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton_cls.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_cls.Image")));
-            this.toolStripButton_cls.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton_cls.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton_cls.Name = "toolStripButton_cls";
-            this.toolStripButton_cls.Size = new System.Drawing.Size(109, 44);
-            this.toolStripButton_cls.Text = "+";
-            this.toolStripButton_cls.Click += new System.EventHandler(this.toolStripButton_Cluster_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 47);
+            // 
+            // toolStripButton_cls
+            // 
+            this.toolStripButton_cls.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton_cls.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_cls.Image")));
+            this.toolStripButton_cls.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_cls.Name = "toolStripButton_cls";
+            this.toolStripButton_cls.Size = new System.Drawing.Size(109, 44);
+            this.toolStripButton_cls.Text = "+";
+            this.toolStripButton_cls.Click += new System.EventHandler(this.toolStripButton_Cluster_Click);
             // 
             // toolStripSeparator3
             // 
@@ -453,7 +442,6 @@ namespace Packet
             // 
             this.toolStripButton_Node.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton_Node.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Node.Image")));
-            this.toolStripButton_Node.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_Node.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton_Node.Name = "toolStripButton_Node";
             this.toolStripButton_Node.Size = new System.Drawing.Size(109, 44);
@@ -469,12 +457,26 @@ namespace Packet
             // 
             this.toolStripButton_Disconnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton_Disconnect.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Disconnect.Image")));
-            this.toolStripButton_Disconnect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_Disconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton_Disconnect.Name = "toolStripButton_Disconnect";
             this.toolStripButton_Disconnect.Size = new System.Drawing.Size(109, 44);
             this.toolStripButton_Disconnect.Text = "toolStripButton1";
             this.toolStripButton_Disconnect.Click += new System.EventHandler(this.toolStripButton_Disconnect_Click);
+            // 
+            // toolStripButton_SSH
+            // 
+            this.toolStripButton_SSH.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton_SSH.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_SSH.Image")));
+            this.toolStripButton_SSH.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_SSH.Name = "toolStripButton_SSH";
+            this.toolStripButton_SSH.Size = new System.Drawing.Size(109, 44);
+            this.toolStripButton_SSH.Text = "toolStripButton1";
+            this.toolStripButton_SSH.Click += new System.EventHandler(this.toolStripButton_SSH_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 47);
             // 
             // Main
             // 
@@ -487,7 +489,6 @@ namespace Packet
             this.Controls.Add(this.button_read);
             this.Controls.Add(this.mail_button);
             this.Controls.Add(this.terminalEmulator1);
-            this.Controls.Add(this.ssh_button);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -521,7 +522,6 @@ namespace Packet
         private ToolStripMenuItem nodeIPConfigToolStripMenuItem;
         private ToolStripComboBox toolStripComboBox2;
         private ToolStripComboBox toolStripComboBox3;
-        private Button ssh_button;
         private ToolStripMenuItem beepToolStripMenuItem;
         private ToolStripComboBox toolStripComboBoxBeep;
         private ToolStripMenuItem colourToolStripMenuItem;
@@ -554,6 +554,8 @@ namespace Packet
         private ToolStripButton toolStripButton_Node;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripButton toolStripButton_Disconnect;
+        private ToolStripButton toolStripButton_SSH;
+        private ToolStripSeparator toolStripSeparator5;
     }
 }
 
