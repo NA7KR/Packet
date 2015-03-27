@@ -60,11 +60,6 @@ namespace Packet
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.mail_button = new System.Windows.Forms.Button();
-            this.button_read = new System.Windows.Forms.Button();
-            this.button_personal = new System.Windows.Forms.Button();
-            this.button_7plus = new System.Windows.Forms.Button();
-            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton_bbs = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -77,6 +72,14 @@ namespace Packet
             this.toolStripButton_Disconnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_SSH = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton_MailConfig = new System.Windows.Forms.ToolStripButton();
+            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton_ReadMail = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton_7plus = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -287,91 +290,6 @@ namespace Packet
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
-            // mail_button
-            // 
-            this.mail_button.Location = new System.Drawing.Point(658, 74);
-            this.mail_button.Name = "mail_button";
-            this.mail_button.Size = new System.Drawing.Size(94, 23);
-            this.mail_button.TabIndex = 8;
-            this.mail_button.TabStop = false;
-            this.mail_button.Text = "Mail Config";
-            this.toolTip1.SetToolTip(this.mail_button, "Mail List");
-            this.mail_button.UseVisualStyleBackColor = true;
-            this.mail_button.Click += new System.EventHandler(this.mail_button_Click);
-            // 
-            // button_read
-            // 
-            this.button_read.Location = new System.Drawing.Point(758, 74);
-            this.button_read.Name = "button_read";
-            this.button_read.Size = new System.Drawing.Size(94, 23);
-            this.button_read.TabIndex = 9;
-            this.button_read.TabStop = false;
-            this.button_read.Text = "Mail Read";
-            this.toolTip1.SetToolTip(this.button_read, "Mail List");
-            this.button_read.UseVisualStyleBackColor = true;
-            this.button_read.Click += new System.EventHandler(this.button_read_Click);
-            // 
-            // button_personal
-            // 
-            this.button_personal.Location = new System.Drawing.Point(858, 74);
-            this.button_personal.Name = "button_personal";
-            this.button_personal.Size = new System.Drawing.Size(94, 23);
-            this.button_personal.TabIndex = 10;
-            this.button_personal.TabStop = false;
-            this.button_personal.Text = "Personal Mail";
-            this.toolTip1.SetToolTip(this.button_personal, "Mail List");
-            this.button_personal.UseVisualStyleBackColor = true;
-            this.button_personal.Click += new System.EventHandler(this.button_personal_Click);
-            // 
-            // button_7plus
-            // 
-            this.button_7plus.Location = new System.Drawing.Point(958, 74);
-            this.button_7plus.Name = "button_7plus";
-            this.button_7plus.Size = new System.Drawing.Size(94, 23);
-            this.button_7plus.TabIndex = 11;
-            this.button_7plus.TabStop = false;
-            this.button_7plus.Text = "7Plus";
-            this.toolTip1.SetToolTip(this.button_7plus, "Mail List");
-            this.button_7plus.UseVisualStyleBackColor = true;
-            this.button_7plus.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // terminalEmulator1
-            // 
-            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            this.terminalEmulator1.BaudRateType = PacketComs.TerminalEmulator.BaudRateTypes.Baud_4800;
-            this.terminalEmulator1.BBSPrompt = null;
-            this.terminalEmulator1.Beep = true;
-            this.terminalEmulator1.Close = false;
-            this.terminalEmulator1.Columns = 172;
-            this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
-            this.terminalEmulator1.dnsName = null;
-            this.terminalEmulator1.FileActive = false;
-            this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
-            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator1.Header = null;
-            this.terminalEmulator1.Hostname = null;
-            this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.terminalEmulator1.LastNumber = 0;
-            this.terminalEmulator1.LocalEcho = false;
-            this.terminalEmulator1.Location = new System.Drawing.Point(31, 103);
-            this.terminalEmulator1.Name = "terminalEmulator1";
-            this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
-            this.terminalEmulator1.Password = null;
-            this.terminalEmulator1.PasswordPrompt = null;
-            this.terminalEmulator1.Port = 9000;
-            this.terminalEmulator1.Rows = 40;
-            this.terminalEmulator1.SerialPort = "";
-            this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
-            this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
-            this.terminalEmulator1.TabIndex = 5;
-            this.terminalEmulator1.Text = "terminalEmulator1";
-            this.terminalEmulator1.UernamePrompt = null;
-            this.terminalEmulator1.Username = null;
-            this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
-            this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
-            this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
-            // 
             // toolStrip1
             // 
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(105, 40);
@@ -386,7 +304,14 @@ namespace Packet
             this.toolStripSeparator4,
             this.toolStripButton_Disconnect,
             this.toolStripButton_SSH,
-            this.toolStripSeparator5});
+            this.toolStripSeparator5,
+            this.toolStripButton_MailConfig,
+            this.toolStripSeparator6,
+            this.toolStripButton_ReadMail,
+            this.toolStripSeparator7,
+            this.toolStripButton1,
+            this.toolStripSeparator8,
+            this.toolStripButton_7plus});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1278, 47);
@@ -478,16 +403,104 @@ namespace Packet
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 47);
             // 
+            // toolStripButton_MailConfig
+            // 
+            this.toolStripButton_MailConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton_MailConfig.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_MailConfig.Image")));
+            this.toolStripButton_MailConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_MailConfig.Name = "toolStripButton_MailConfig";
+            this.toolStripButton_MailConfig.Size = new System.Drawing.Size(109, 44);
+            this.toolStripButton_MailConfig.Text = "toolStripButton1";
+            this.toolStripButton_MailConfig.Click += new System.EventHandler(this.toolStripButton_MailConfig_Click);
+            // 
+            // terminalEmulator1
+            // 
+            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
+            this.terminalEmulator1.BaudRateType = PacketComs.TerminalEmulator.BaudRateTypes.Baud_4800;
+            this.terminalEmulator1.BBSPrompt = null;
+            this.terminalEmulator1.Beep = true;
+            this.terminalEmulator1.Close = false;
+            this.terminalEmulator1.Columns = 172;
+            this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.dnsName = null;
+            this.terminalEmulator1.FileActive = false;
+            this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
+            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
+            this.terminalEmulator1.Header = null;
+            this.terminalEmulator1.Hostname = null;
+            this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.terminalEmulator1.LastNumber = 0;
+            this.terminalEmulator1.LocalEcho = false;
+            this.terminalEmulator1.Location = new System.Drawing.Point(31, 103);
+            this.terminalEmulator1.Name = "terminalEmulator1";
+            this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
+            this.terminalEmulator1.Password = null;
+            this.terminalEmulator1.PasswordPrompt = null;
+            this.terminalEmulator1.Port = 9000;
+            this.terminalEmulator1.Rows = 40;
+            this.terminalEmulator1.SerialPort = "";
+            this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
+            this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
+            this.terminalEmulator1.TabIndex = 5;
+            this.terminalEmulator1.Text = "terminalEmulator1";
+            this.terminalEmulator1.UernamePrompt = null;
+            this.terminalEmulator1.Username = null;
+            this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
+            this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
+            this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 47);
+            // 
+            // toolStripButton_ReadMail
+            // 
+            this.toolStripButton_ReadMail.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton_ReadMail.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_ReadMail.Image")));
+            this.toolStripButton_ReadMail.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_ReadMail.Name = "toolStripButton_ReadMail";
+            this.toolStripButton_ReadMail.Size = new System.Drawing.Size(109, 44);
+            this.toolStripButton_ReadMail.Text = "toolStripButton1";
+            this.toolStripButton_ReadMail.Click += new System.EventHandler(this.toolStripButton_ReadMail_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 47);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(109, 44);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton_PersonalMail_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 47);
+            // 
+            // toolStripButton_7plus
+            // 
+            this.toolStripButton_7plus.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton_7plus.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_7plus.Image")));
+            this.toolStripButton_7plus.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_7plus.Name = "toolStripButton_7plus";
+            this.toolStripButton_7plus.Size = new System.Drawing.Size(109, 44);
+            this.toolStripButton_7plus.Text = "toolStripButton2";
+            this.toolStripButton_7plus.Click += new System.EventHandler(this.toolStripButton_7plus_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 637);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.button_7plus);
-            this.Controls.Add(this.button_personal);
-            this.Controls.Add(this.button_read);
-            this.Controls.Add(this.mail_button);
             this.Controls.Add(this.terminalEmulator1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -533,7 +546,6 @@ namespace Packet
         private ToolStripMenuItem SSHConfigToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItemCom;
         private ToolTip toolTip1;
-        private Button mail_button;
         private readonly ModifyRegistry _myRegistryBbs = new ModifyRegistry();
         private readonly Encrypting _myEncrypt = new Encrypting();
         private readonly ModifyRegistry _myRegistry = new ModifyRegistry();
@@ -541,9 +553,6 @@ namespace Packet
         private readonly ModifyRegistry _myRegistryCom = new ModifyRegistry();
         private readonly ModifyRegistry _myRegistryNode = new ModifyRegistry();
         private readonly ModifyRegistry _myRegistrySsh = new ModifyRegistry();
-        private Button button_read;
-        private Button button_personal;
-        private Button button_7plus;
         private ToolStrip toolStrip1;
         private ToolStripButton toolStripButton_bbs;
         private ToolStripButton toolStripButton_fwd;
@@ -556,6 +565,13 @@ namespace Packet
         private ToolStripButton toolStripButton_Disconnect;
         private ToolStripButton toolStripButton_SSH;
         private ToolStripSeparator toolStripSeparator5;
+        private ToolStripButton toolStripButton_MailConfig;
+        private ToolStripSeparator toolStripSeparator6;
+        private ToolStripButton toolStripButton_ReadMail;
+        private ToolStripSeparator toolStripSeparator7;
+        private ToolStripButton toolStripButton1;
+        private ToolStripSeparator toolStripSeparator8;
+        private ToolStripButton toolStripButton_7plus;
     }
 }
 

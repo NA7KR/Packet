@@ -230,24 +230,7 @@ namespace Packet
             terminalEmulator1.Top = 80;
             terminalEmulator1.Height = (Height - 20);
             terminalEmulator1.Width = (Width - 60);
-
             var bwidth = ((Width - (9*90))/10);
-
-            mail_button.Left = bwidth + 40;
-            mail_button.Top = 40;
-            mail_button.Width = 90;
-
-            button_read.Left = bwidth + mail_button.Right;
-            button_read.Top = 40;
-            button_read.Width = 90;
-
-            button_personal.Left = bwidth + button_read.Right;
-            button_personal.Top = 40;
-            button_personal.Width = 90;
-
-            button_7plus.Left = bwidth + button_read.Right;
-            button_7plus.Top = 40;
-            button_7plus.Width = 90;
         }
 
         #endregion
@@ -527,16 +510,6 @@ namespace Packet
 
         #endregion
 
-        #region mail_button_Click
-
-        private void mail_button_Click(object sender, EventArgs e)
-        {
-            var box = new Mail();
-            box.ShowDialog();
-        }
-
-        #endregion
-
         #region Form1
 
         public const string DsnName = "DSN=Packet";
@@ -610,22 +583,7 @@ namespace Packet
         private Color _textColor = Color.Yellow;
         #endregion
 
-        private void button_read_Click(object sender, EventArgs e)
-        {
-            var box = new Read();
-            box.ShowDialog();
-        }
-
-        private void button_personal_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("To come soon");
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var box = new PlusFrm();
-            box.ShowDialog();
-        }
+     
 
         private void toolStripButton_BBS_Click(object sender, EventArgs e)
         {
@@ -886,6 +844,29 @@ namespace Packet
                 else
                     toolStripButton_SSH.Enabled = true;
             }
+        }
+
+        private void toolStripButton_MailConfig_Click(object sender, EventArgs e)
+        {
+            var box = new Mail();
+            box.ShowDialog();
+        }
+
+        private void toolStripButton_ReadMail_Click(object sender, EventArgs e)
+        {
+            var box = new Read();
+            box.ShowDialog();
+        }
+
+        private void toolStripButton_PersonalMail_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("To come soon");
+        }
+
+        private void toolStripButton_7plus_Click(object sender, EventArgs e)
+        {
+            var box = new PlusFrm();
+            box.ShowDialog();
         }
     }
 
