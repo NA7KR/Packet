@@ -69,14 +69,20 @@ namespace Packet
             this.mail_button = new System.Windows.Forms.Button();
             this.button_read = new System.Windows.Forms.Button();
             this.button_personal = new System.Windows.Forms.Button();
-            this.terminalEmulator1 = new TerminalEmulator();
             this.button_7plus = new System.Windows.Forms.Button();
+            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // bbs_button
             // 
-            this.bbs_button.Location = new System.Drawing.Point(55, 40);
+            this.bbs_button.Location = new System.Drawing.Point(31, 74);
             this.bbs_button.Name = "bbs_button";
             this.bbs_button.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.bbs_button.Size = new System.Drawing.Size(92, 23);
@@ -294,7 +300,7 @@ namespace Packet
             // 
             // forward_button
             // 
-            this.forward_button.Location = new System.Drawing.Point(149, 41);
+            this.forward_button.Location = new System.Drawing.Point(129, 74);
             this.forward_button.Name = "forward_button";
             this.forward_button.Size = new System.Drawing.Size(93, 23);
             this.forward_button.TabIndex = 6;
@@ -305,7 +311,7 @@ namespace Packet
             // 
             // cluster_button
             // 
-            this.cluster_button.Location = new System.Drawing.Point(231, 40);
+            this.cluster_button.Location = new System.Drawing.Point(242, 74);
             this.cluster_button.Name = "cluster_button";
             this.cluster_button.Size = new System.Drawing.Size(94, 23);
             this.cluster_button.TabIndex = 2;
@@ -316,7 +322,7 @@ namespace Packet
             // 
             // node_button
             // 
-            this.node_button.Location = new System.Drawing.Point(331, 40);
+            this.node_button.Location = new System.Drawing.Point(342, 74);
             this.node_button.Name = "node_button";
             this.node_button.Size = new System.Drawing.Size(94, 23);
             this.node_button.TabIndex = 3;
@@ -327,7 +333,7 @@ namespace Packet
             // 
             // disconnect_button
             // 
-            this.disconnect_button.Location = new System.Drawing.Point(449, 41);
+            this.disconnect_button.Location = new System.Drawing.Point(442, 74);
             this.disconnect_button.Name = "disconnect_button";
             this.disconnect_button.Size = new System.Drawing.Size(94, 23);
             this.disconnect_button.TabIndex = 7;
@@ -339,7 +345,7 @@ namespace Packet
             // 
             // ssh_button
             // 
-            this.ssh_button.Location = new System.Drawing.Point(561, 40);
+            this.ssh_button.Location = new System.Drawing.Point(542, 74);
             this.ssh_button.Name = "ssh_button";
             this.ssh_button.Size = new System.Drawing.Size(94, 23);
             this.ssh_button.TabIndex = 4;
@@ -350,7 +356,7 @@ namespace Packet
             // 
             // mail_button
             // 
-            this.mail_button.Location = new System.Drawing.Point(673, 40);
+            this.mail_button.Location = new System.Drawing.Point(658, 74);
             this.mail_button.Name = "mail_button";
             this.mail_button.Size = new System.Drawing.Size(94, 23);
             this.mail_button.TabIndex = 8;
@@ -362,7 +368,7 @@ namespace Packet
             // 
             // button_read
             // 
-            this.button_read.Location = new System.Drawing.Point(785, 40);
+            this.button_read.Location = new System.Drawing.Point(758, 74);
             this.button_read.Name = "button_read";
             this.button_read.Size = new System.Drawing.Size(94, 23);
             this.button_read.TabIndex = 9;
@@ -374,7 +380,7 @@ namespace Packet
             // 
             // button_personal
             // 
-            this.button_personal.Location = new System.Drawing.Point(897, 40);
+            this.button_personal.Location = new System.Drawing.Point(858, 74);
             this.button_personal.Name = "button_personal";
             this.button_personal.Size = new System.Drawing.Size(94, 23);
             this.button_personal.TabIndex = 10;
@@ -384,46 +390,9 @@ namespace Packet
             this.button_personal.UseVisualStyleBackColor = true;
             this.button_personal.Click += new System.EventHandler(this.button_personal_Click);
             // 
-            // terminalEmulator1
-            // 
-            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            this.terminalEmulator1.BaudRateType = TerminalEmulator.BaudRateTypes.Baud_4800;
-            this.terminalEmulator1.BBSPrompt = null;
-            this.terminalEmulator1.Beep = true;
-            this.terminalEmulator1.Close = false;
-            this.terminalEmulator1.Columns = 172;
-            this.terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.DataBitsType = TerminalEmulator.DataBitsTypes.Data_Bits_8;
-            this.terminalEmulator1.dnsName = null;
-            this.terminalEmulator1.FileActive = false;
-            this.terminalEmulator1.FlowType = TerminalEmulator.FlowTypes.XOnXOff;
-            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
-            this.terminalEmulator1.Header = null;
-            this.terminalEmulator1.Hostname = null;
-            this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.terminalEmulator1.LastNumber = 0;
-            this.terminalEmulator1.LocalEcho = false;
-            this.terminalEmulator1.Location = new System.Drawing.Point(31, 89);
-            this.terminalEmulator1.Name = "terminalEmulator1";
-            this.terminalEmulator1.ParityType = TerminalEmulator.ParityTypes.None;
-            this.terminalEmulator1.Password = null;
-            this.terminalEmulator1.PasswordPrompt = null;
-            this.terminalEmulator1.Port = 9000;
-            this.terminalEmulator1.Rows = 40;
-            this.terminalEmulator1.SerialPort = "";
-            this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
-            this.terminalEmulator1.StopBitsType = TerminalEmulator.StopBitsTypes.One;
-            this.terminalEmulator1.TabIndex = 5;
-            this.terminalEmulator1.Text = "terminalEmulator1";
-            this.terminalEmulator1.UernamePrompt = null;
-            this.terminalEmulator1.Username = null;
-            this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
-            this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
-            this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
-            // 
             // button_7plus
             // 
-            this.button_7plus.Location = new System.Drawing.Point(1020, 41);
+            this.button_7plus.Location = new System.Drawing.Point(958, 74);
             this.button_7plus.Name = "button_7plus";
             this.button_7plus.Size = new System.Drawing.Size(94, 23);
             this.button_7plus.TabIndex = 11;
@@ -433,11 +402,96 @@ namespace Packet
             this.button_7plus.UseVisualStyleBackColor = true;
             this.button_7plus.Click += new System.EventHandler(this.button1_Click);
             // 
+            // terminalEmulator1
+            // 
+            this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
+            this.terminalEmulator1.BaudRateType = PacketComs.TerminalEmulator.BaudRateTypes.Baud_4800;
+            this.terminalEmulator1.BBSPrompt = null;
+            this.terminalEmulator1.Beep = true;
+            this.terminalEmulator1.Close = false;
+            this.terminalEmulator1.Columns = 172;
+            this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.dnsName = null;
+            this.terminalEmulator1.FileActive = false;
+            this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
+            this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
+            this.terminalEmulator1.Header = null;
+            this.terminalEmulator1.Hostname = null;
+            this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.terminalEmulator1.LastNumber = 0;
+            this.terminalEmulator1.LocalEcho = false;
+            this.terminalEmulator1.Location = new System.Drawing.Point(31, 103);
+            this.terminalEmulator1.Name = "terminalEmulator1";
+            this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
+            this.terminalEmulator1.Password = null;
+            this.terminalEmulator1.PasswordPrompt = null;
+            this.terminalEmulator1.Port = 9000;
+            this.terminalEmulator1.Rows = 40;
+            this.terminalEmulator1.SerialPort = "";
+            this.terminalEmulator1.Size = new System.Drawing.Size(1216, 522);
+            this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
+            this.terminalEmulator1.TabIndex = 5;
+            this.terminalEmulator1.Text = "terminalEmulator1";
+            this.terminalEmulator1.UernamePrompt = null;
+            this.terminalEmulator1.Username = null;
+            this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
+            this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
+            this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripSeparator1,
+            this.toolStripButton2,
+            this.toolStripButton3});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(1278, 53);
+            this.toolStrip1.TabIndex = 12;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(125, 50);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 50);
+            this.toolStripButton2.Text = "toolStripButton2";
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(23, 50);
+            this.toolStripButton3.Text = "toolStripButton3";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 53);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1278, 637);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.button_7plus);
             this.Controls.Add(this.button_personal);
             this.Controls.Add(this.button_read);
@@ -458,6 +512,8 @@ namespace Packet
             this.Resize += new System.EventHandler(this.Form1_Resize_1);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -509,6 +565,11 @@ namespace Packet
         private Button button_read;
         private Button button_personal;
         private Button button_7plus;
+        private ToolStrip toolStrip1;
+        private ToolStripButton toolStripButton1;
+        private ToolStripButton toolStripButton2;
+        private ToolStripButton toolStripButton3;
+        private ToolStripSeparator toolStripSeparator1;
     }
 }
 

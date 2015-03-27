@@ -461,75 +461,7 @@ namespace Packet
         #region connect bbs
 
         private void bbs_button_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (_myRegistryBbs.BRead("Prompt") == "BlanKey!!")
-                {
-                    MessageBox.Show("BBS may not correct as BBS Prompt cot configured", "Important Note",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-                }
-
-                if (_myRegistry.Read("BBS-Mode") == "Telnet")
-                {
-                    if (_myRegistryBbs.Read("Echo") == "Yes")
-                    {
-                        terminalEmulator1.LocalEcho = true;
-                    }
-                    else
-                    {
-                        terminalEmulator1.LocalEcho = false;
-                    }
-                    terminalEmulator1.Port = Convert.ToInt32(_myRegistryBbs.Read("Port"));
-                    terminalEmulator1.Hostname = _myRegistryBbs.Read("IP");
-                    terminalEmulator1.Username = _myRegistryBbs.Read("CallSign");
-                    terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryBbs.Read("Password"));
-                    terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-                    terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
-                    terminalEmulator1.UernamePrompt = _myRegistryBbs.BRead("UserNamePrompt");
-                    terminalEmulator1.PasswordPrompt = _myRegistryBbs.BRead("PasswordPrompt");
-                }
-                else
-                {
-                    terminalEmulator1.BaudRateType =
-                        ParseEnum<TerminalEmulator.BaudRateTypes>("Baud_" + _myRegistryCom.Read("Baud"));
-                    terminalEmulator1.DataBitsType =
-                        ParseEnum<TerminalEmulator.DataBitsTypes>("Data_Bits_" +
-                                                                  _myRegistryCom.Read("Data Bits"));
-                    terminalEmulator1.StopBitsType =
-                        ParseEnum<TerminalEmulator.StopBitsTypes>(_myRegistryCom.Read("Stop Bits"));
-                    terminalEmulator1.ParityType =
-                        ParseEnum<TerminalEmulator.ParityTypes>(_myRegistryCom.Read("Parity"));
-                    terminalEmulator1.FlowType =
-                        ParseEnum<TerminalEmulator.FlowTypes>(_myRegistryCom.Read("Flow"));
-                    terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.COM;
-                    terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
-                    terminalEmulator1.SerialPort = _myRegistryCom.Read("Port");
-                }
-
-                terminalEmulator1.Connect();
-                disconnect_button.Enabled = true;
-                bbs_button.Enabled = false;
-                cluster_button.Enabled = false;
-                node_button.Enabled = false;
-                ssh_button.Enabled = false;
-                forward_button.Enabled = true;
-            }
-            catch
-            {
-                MessageBox.Show("Configure BBS in Setup");
-                bbs_button.Enabled = true;
-                cluster_button.Enabled = true;
-                node_button.Enabled = true;
-                disconnect_button.Enabled = false;
-                if (_myRegistrySsh.Read("Active") == "No")
-                {
-                    ssh_button.Enabled = false;
-                }
-                else
-                    ssh_button.Enabled = true;
-            }
-        }
+        { }
 
         #endregion
 
@@ -908,6 +840,79 @@ namespace Packet
         {
             var box = new PlusFrm();
             box.ShowDialog();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            
+                try
+                {
+                    if (_myRegistryBbs.BRead("Prompt") == "BlanKey!!")
+                    {
+                        MessageBox.Show("BBS may not correct as BBS Prompt cot configured", "Important Note",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                    }
+
+                    if (_myRegistry.Read("BBS-Mode") == "Telnet")
+                    {
+                        if (_myRegistryBbs.Read("Echo") == "Yes")
+                        {
+                            terminalEmulator1.LocalEcho = true;
+                        }
+                        else
+                        {
+                            terminalEmulator1.LocalEcho = false;
+                        }
+                        terminalEmulator1.Port = Convert.ToInt32(_myRegistryBbs.Read("Port"));
+                        terminalEmulator1.Hostname = _myRegistryBbs.Read("IP");
+                        terminalEmulator1.Username = _myRegistryBbs.Read("CallSign");
+                        terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryBbs.Read("Password"));
+                        terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
+                        terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
+                        terminalEmulator1.UernamePrompt = _myRegistryBbs.BRead("UserNamePrompt");
+                        terminalEmulator1.PasswordPrompt = _myRegistryBbs.BRead("PasswordPrompt");
+                    }
+                    else
+                    {
+                        terminalEmulator1.BaudRateType =
+                            ParseEnum<TerminalEmulator.BaudRateTypes>("Baud_" + _myRegistryCom.Read("Baud"));
+                        terminalEmulator1.DataBitsType =
+                            ParseEnum<TerminalEmulator.DataBitsTypes>("Data_Bits_" +
+                                                                      _myRegistryCom.Read("Data Bits"));
+                        terminalEmulator1.StopBitsType =
+                            ParseEnum<TerminalEmulator.StopBitsTypes>(_myRegistryCom.Read("Stop Bits"));
+                        terminalEmulator1.ParityType =
+                            ParseEnum<TerminalEmulator.ParityTypes>(_myRegistryCom.Read("Parity"));
+                        terminalEmulator1.FlowType =
+                            ParseEnum<TerminalEmulator.FlowTypes>(_myRegistryCom.Read("Flow"));
+                        terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.COM;
+                        terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
+                        terminalEmulator1.SerialPort = _myRegistryCom.Read("Port");
+                    }
+
+                    terminalEmulator1.Connect();
+                    disconnect_button.Enabled = true;
+                    bbs_button.Enabled = false;
+                    cluster_button.Enabled = false;
+                    node_button.Enabled = false;
+                    ssh_button.Enabled = false;
+                    forward_button.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Configure BBS in Setup");
+                    bbs_button.Enabled = true;
+                    cluster_button.Enabled = true;
+                    node_button.Enabled = true;
+                    disconnect_button.Enabled = false;
+                    if (_myRegistrySsh.Read("Active") == "No")
+                    {
+                        ssh_button.Enabled = false;
+                    }
+                    else
+                        ssh_button.Enabled = true;
+                }
+            
         }
 
         //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
