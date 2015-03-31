@@ -26,9 +26,22 @@ namespace PacketComs
 		{
 			try
 			{
-				// to come soon...
-			}
-			catch (Exception ex)
+                string connectionString = string.Format("Provider={0}; Data Source={1}; Jet OLEDB:Engine Type={2}",
+        "Microsoft.Jet.OLEDB.4.0",
+        "Packet.mdb",
+        5);
+
+                ADOX.CatalogClass catalog = new ADOX.CatalogClass();
+                catalog.Create(connectionString);
+
+         
+                // Close the connection to the database after we are done creating it and adding the table to it.
+                ADODB.Connection con = (ADODB.Connection)catalog.ActiveConnection;
+                if (con != null && con.State != 0)
+                    con.Close();
+
+            }
+            catch (Exception ex)
 			{
 				if (ex.InnerException != null)
 				{
