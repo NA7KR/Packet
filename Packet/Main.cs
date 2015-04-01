@@ -456,10 +456,11 @@ namespace Packet
 
         private void Disconnected(object sender, EventArgs e)
         {
-            Invoke((Action) delegate { toolStripButton_bbs.Enabled = true; });
-            Invoke((Action) delegate { toolStripButton_cls.Enabled = true; });
-            Invoke((Action) delegate { toolStripButton_Node.Enabled = true; });
-            Invoke((Action) delegate { toolStripButton_Disconnect.Enabled = false; });
+            button_check();
+            //Invoke((Action) delegate { toolStripButton_bbs.Enabled = true; });
+            //Invoke((Action) delegate { toolStripButton_cls.Enabled = true; });
+            //Invoke((Action) delegate { toolStripButton_Node.Enabled = true; });
+            //Invoke((Action) delegate { toolStripButton_Disconnect.Enabled = false; });
         }
 
         #endregion
