@@ -226,8 +226,8 @@ namespace Packet
 
         private void Form1_Resize_1(object sender, EventArgs e)
         {
-            terminalEmulator1.Left = 20;
-            terminalEmulator1.Top = 80;
+            terminalEmulator1.Left = 10;
+            terminalEmulator1.Top = 60;
             terminalEmulator1.Height = (Height - 20);
             terminalEmulator1.Width = (Width - 60);
             var bwidth = ((Width - (9*90))/10);
