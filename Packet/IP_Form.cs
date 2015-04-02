@@ -86,9 +86,20 @@ namespace Packet
 				textBox_mycall.Text = _myRegistry.Read("CallSign");
 				textBox_bbs.Text = _myRegistry.Read("BBS");
 				textBox_password.Text = _myEncrypt.Decrypt(_myRegistry.Read("Password"));
-				textBox_prompt.Text = _myRegistry.Read("Prompt");
-				textBox_password_prompt.Text = _myRegistry.Read("PasswordPrompt");
-				textBox_username_prompt.Text = _myRegistry.Read("UserNamePrompt");
+
+                var PasswordPrompt = _myRegistry.Read("PasswordPrompt");
+                if (PasswordPrompt == null)
+                {
+                    _myRegistry.Write("PasswordPrompt", "Password:");
+                }   
+                textBox_password_prompt.Text = _myRegistry.Read("PasswordPrompt");
+
+                var UserNamePrompt = _myRegistry.Read("UserNamePrompt");
+                if (UserNamePrompt == null)
+                {
+                    _myRegistry.Write("UserNamePrompt", "Callsign:");
+                }
+                textBox_username_prompt.Text = _myRegistry.Read("UserNamePrompt");
 
 				if (_myRegistry.Read("Echo") == "Yes")
 				{
@@ -201,9 +212,14 @@ namespace Packet
 					textBox_bbs.Width = 140;
 					textBox_mycall.Width = 140;
 					textBox_start.Left = 160;
-
-
-					Done_button.Top = textBox_start.Top + 30;
+                    var BBSPrompt = _myRegistry.Read("Prompt");
+                    if (BBSPrompt == null)
+                    {
+                        _myRegistry.Write("Prompt", "BBS>");
+                    }
+                    
+                    textBox_prompt.Text = _myRegistry.Read("Prompt");
+                    Done_button.Top = textBox_start.Top + 30;
 					Cancel_button.Top = textBox_start.Top + 30;
 
 					Height = Done_button.Top + 80;
