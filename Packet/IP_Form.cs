@@ -81,8 +81,20 @@ namespace Packet
 			if (_var2 == "Telnet")
 			{
 				Text = "Telnet";
-				textBox_ip.Text = _myRegistry.Read("IP");
-				textBox_port.Text = _myRegistry.Read("Port");
+                var IP = _myRegistry.Read("IP");
+                if (IP == null)
+                {
+                    _myRegistry.Write("IP", "NA7KR.NA7KR.US");
+                }
+                textBox_ip.Text = _myRegistry.Read("IP");
+
+                var Port = _myRegistry.Read("Port");
+                if (Port == null)
+                {
+                    _myRegistry.Write("Port", "6300");
+                }
+                textBox_port.Text = _myRegistry.Read("Port");
+
 				textBox_mycall.Text = _myRegistry.Read("CallSign");
 				textBox_bbs.Text = _myRegistry.Read("BBS");
 				textBox_password.Text = _myEncrypt.Decrypt(_myRegistry.Read("Password"));
@@ -101,7 +113,13 @@ namespace Packet
                 }
                 textBox_username_prompt.Text = _myRegistry.Read("UserNamePrompt");
 
-				if (_myRegistry.Read("Echo") == "Yes")
+                var Echo = _myRegistry.Read("Echo");
+                if (Echo == null)
+                {
+                    _myRegistry.Write("Echo", "Yes");
+                }
+
+                if (_myRegistry.Read("Echo") == "Yes")
 				{
 					echo_comboBox.SelectedIndex = 0;
 				}
