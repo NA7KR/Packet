@@ -90,14 +90,14 @@ namespace Packet
                 var PasswordPrompt = _myRegistry.Read("PasswordPrompt");
                 if (PasswordPrompt == null)
                 {
-                    _myRegistry.Write("PasswordPrompt", "Password:");
+                    _myRegistry.Write("PasswordPrompt", "Password :");
                 }   
                 textBox_password_prompt.Text = _myRegistry.Read("PasswordPrompt");
 
                 var UserNamePrompt = _myRegistry.Read("UserNamePrompt");
                 if (UserNamePrompt == null)
                 {
-                    _myRegistry.Write("UserNamePrompt", "Callsign:");
+                    _myRegistry.Write("UserNamePrompt", "Callsign :");
                 }
                 textBox_username_prompt.Text = _myRegistry.Read("UserNamePrompt");
 
