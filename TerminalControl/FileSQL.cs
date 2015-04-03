@@ -52,8 +52,8 @@ namespace PacketComs
                         "No Packet System DSN found" + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error
                     ) == DialogResult.OK)
                     {
-                        var Check = CheckForInternetConnection();
-                        if ( Check == true)
+                        var check = CheckForInternetConnection();
+                        if ( check)
                         {
                             System.Diagnostics.Process.Start("https://github.com/NA7KR/Packet/wiki/Install_odbc");
                         }
@@ -390,9 +390,10 @@ namespace PacketComs
 
         #region WriteST
 
-        public bool WriteSt(string textVale, string fileName, string pathNo)
+        public bool WriteSt(string textVale, string fileName, string pathNo, bool txt)
         {
-
+            string filePath;
+            filePath = null;
             try
             {
                 string path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
@@ -401,9 +402,14 @@ namespace PacketComs
                     // Try to create the directory.
                     Directory.CreateDirectory(path);
                 }
-
-                string filePath = path + @"\" + fileName + ".txt";
-
+                if (txt)
+                {
+                     filePath = path + @"\" + fileName + ".txt";
+                }
+                else
+                {
+                     filePath = path + @"\" + fileName ;
+                }
                 File.WriteAllText(filePath, textVale);
                 return true;
             } //end try

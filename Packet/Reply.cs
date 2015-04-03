@@ -73,7 +73,7 @@ namespace Packet
         {
             var status = "Y";
             var filename = _msgnumber + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-            MyFiles.WriteSt(reply_richTextBox.Text, filename, "Send");
+            MyFiles.WriteSt(reply_richTextBox.Text, filename, "Send", true);
             Sql.WriteSqlReplyUpdate( filename, status ,_msgnumber, _tsld , _from,  _to,false  );
             Close();
         }

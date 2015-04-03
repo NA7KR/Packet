@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Net.Sockets;
+using System.Windows.Forms;
 
 namespace PacketComs
 {
@@ -18,7 +19,6 @@ namespace PacketComs
                 bool plus;
                 // Get The data , if any
                 var nBytesRec = stateObject.Socket.EndReceive(ar);
-                plus = false;
                 if (nBytesRec > 0)
                 {
                     var sReceived = "";
@@ -151,17 +151,30 @@ namespace PacketComs
                                         {
                                             plus = false;
                                         }
+                                       string result;
+                                        result = null;
                                         for (var i = fstmsg; i < (lines.Length - 1); i++)
                                         {
                                             dfile = dfile + lines[i] + Environment.NewLine;
+                                            if (lines[i].Contains("stop_7+"))
+                                            {
+                                                int start = lines[i].IndexOf("(", StringComparison.Ordinal) + 1;
+                                                int end = lines[i].IndexOf("/", start, StringComparison.Ordinal);
+                                                if (end == 0)
+                                                {
+                                                     end = lines[i].IndexOf(")", start, StringComparison.Ordinal);
+                                                }
+                                                 result = lines[i].Substring(start, end - start);
+                                                
+                                            }
                                         }
                                         if (plus)
                                         {
-                                            FileSql.WriteSt(dfile, _nb[_msgno].ToString(), "7plus");
+                                            FileSql.WriteSt(dfile, result, "7plus", false);
                                         }
                                          else
                                         {
-                                            FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString());
+                                            FileSql.WriteSt(dfile, _nb[_msgno].ToString(), lastNumber.ToString(),true);
                                         }
                                     FileSql.SqlupdateRead(_nb[_msgno]);
                                     }
