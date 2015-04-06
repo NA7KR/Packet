@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using System.Net.Sockets;
-using System.Windows.Forms;
 
 namespace PacketComs
 {
@@ -16,7 +15,6 @@ namespace PacketComs
             {
                 // Get The connection socket from the callback
                 var stateObject = (UcCommsStateObject)ar.AsyncState;
-                bool plus;
                 // Get The data , if any
                 var nBytesRec = stateObject.Socket.EndReceive(ar);
                 if (nBytesRec > 0)
@@ -143,16 +141,10 @@ namespace PacketComs
                                     if (_nb != null)
                                     {
                                         Int32 lastNumber = _nb[_msgno] % 10;
-                                        if (sReceived.Contains("go_7+."))
-                                        {
-                                            plus = true;
-                                        }
-                                        else
-                                        {
-                                            plus = false;
-                                        }
-                                       string result;
-                                        result = null;
+
+                                        var plus = sReceived.Contains("go_7+.");
+
+                                        string result = null;
                                         for (var i = fstmsg; i < (lines.Length - 1); i++)
                                         {
                                             dfile = dfile + lines[i] + Environment.NewLine;
