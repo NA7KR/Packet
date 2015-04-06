@@ -42,9 +42,7 @@ namespace Packet
             this.textBox_port = new System.Windows.Forms.TextBox();
             this.textBox_mycall = new System.Windows.Forms.TextBox();
             this.textBox_start = new System.Windows.Forms.TextBox();
-            this.textBox_bbs = new System.Windows.Forms.TextBox();
             this.label_start = new System.Windows.Forms.Label();
-            this.label_bbs = new System.Windows.Forms.Label();
             this.textBox_password = new System.Windows.Forms.TextBox();
             this.label_password = new System.Windows.Forms.Label();
             this.label_echo = new System.Windows.Forms.Label();
@@ -141,14 +139,6 @@ namespace Packet
             this.textBox_start.TabIndex = 15;
             this.toolTip1.SetToolTip(this.textBox_start, "Start Number");
             // 
-            // textBox_bbs
-            // 
-            this.textBox_bbs.Location = new System.Drawing.Point(144, 87);
-            this.textBox_bbs.Name = "textBox_bbs";
-            this.textBox_bbs.Size = new System.Drawing.Size(109, 20);
-            this.textBox_bbs.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.textBox_bbs, "BBS Callsign connecting to");
-            // 
             // label_start
             // 
             this.label_start.AutoSize = true;
@@ -157,15 +147,6 @@ namespace Packet
             this.label_start.Size = new System.Drawing.Size(93, 13);
             this.label_start.TabIndex = 13;
             this.label_start.Text = "BBS Start Number";
-            // 
-            // label_bbs
-            // 
-            this.label_bbs.AutoSize = true;
-            this.label_bbs.Location = new System.Drawing.Point(36, 87);
-            this.label_bbs.Name = "label_bbs";
-            this.label_bbs.Size = new System.Drawing.Size(67, 13);
-            this.label_bbs.TabIndex = 12;
-            this.label_bbs.Text = "BBS Callsign";
             // 
             // textBox_password
             // 
@@ -277,9 +258,7 @@ namespace Packet
             this.Controls.Add(this.textBox_password);
             this.Controls.Add(this.label_password);
             this.Controls.Add(this.textBox_start);
-            this.Controls.Add(this.textBox_bbs);
             this.Controls.Add(this.label_start);
-            this.Controls.Add(this.label_bbs);
             this.Controls.Add(this.Cancel_button);
             this.Controls.Add(this.Done_button);
             this.Controls.Add(this.textBox_mycall);
@@ -314,9 +293,7 @@ namespace Packet
         private TextBox textBox_port;
         private TextBox textBox_mycall;
         private TextBox textBox_start;
-        private TextBox textBox_bbs;
         private Label label_start;
-        private Label label_bbs;
         private TextBox textBox_password;
         private Label label_password;
         private Label label_echo;
