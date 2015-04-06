@@ -384,6 +384,22 @@ namespace Packet
 
 			#endregion
         }
+
         #endregion
+
+        private void textBox_prompt_Enter(object sender, EventArgs e)
+        {
+            MessageBox.Show("Must match what BBS sends. Like BBS>");
+        }
+
+        private void textBox_username_prompt_Enter(object sender, EventArgs e)
+        {
+            MessageBox.Show("Must match what BBS sends. Like Callsign:");
+        }
+
+        private void textBox_password_prompt_Enter(object sender, EventArgs e)
+        {
+            MessageBox.Show("Must match what BBS sends. Like Password:");
+        }
     }
 }

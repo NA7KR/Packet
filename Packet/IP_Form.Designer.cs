@@ -196,6 +196,7 @@ namespace Packet
             this.textBox_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_prompt.TabIndex = 23;
             this.toolTip1.SetToolTip(this.textBox_prompt, "Like NA7KR BBS>");
+            this.textBox_prompt.Enter += new System.EventHandler(this.textBox_prompt_Enter);
             // 
             // label_prompt
             // 
@@ -213,6 +214,7 @@ namespace Packet
             this.textBox_username_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_username_prompt.TabIndex = 25;
             this.toolTip1.SetToolTip(this.textBox_username_prompt, "Like: Callsign :");
+            this.textBox_username_prompt.Enter += new System.EventHandler(this.textBox_username_prompt_Enter);
             // 
             // label_username_prompt
             // 
@@ -230,6 +232,7 @@ namespace Packet
             this.textBox_password_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_password_prompt.TabIndex = 27;
             this.toolTip1.SetToolTip(this.textBox_password_prompt, "Like: Password");
+            this.textBox_password_prompt.Enter += new System.EventHandler(this.textBox_password_prompt_Enter);
             // 
             // label_password_prompt
             // 
