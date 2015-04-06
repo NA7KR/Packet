@@ -116,9 +116,7 @@ namespace Packet
 			}
 		}
 
-		#endregion
-
-       
+		#endregion 
 
 		#region Write
 

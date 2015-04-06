@@ -401,5 +401,7 @@ namespace Packet
         {
             MessageBox.Show("Must match what BBS sends. Like Password:");
         }
+
+    
     }
 }

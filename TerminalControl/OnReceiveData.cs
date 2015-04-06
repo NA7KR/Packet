@@ -7,8 +7,7 @@ namespace PacketComs
 {
     public sealed partial class TerminalEmulator
     {
-        #region OnReceiveData
-
+        #region OnReveiveData
         private void OnReceivedData(IAsyncResult ar)
         {
             try
@@ -124,6 +123,7 @@ namespace PacketComs
                                         DispatchMessage(this, Environment.NewLine);
                                         _msgstate = "prompt";
                                         Invoke(RxdTextEvent, String.Copy(sReceived));
+                                        System.Threading.Thread.Sleep(1000);
                                         Invoke(RefreshEvent);
                                         // Re-Establish the next asyncronous receveived data callback as
                                         stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
@@ -224,7 +224,6 @@ namespace PacketComs
             }
 
         }
-
         #endregion
     }
 }
