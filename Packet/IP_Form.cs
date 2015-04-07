@@ -18,7 +18,7 @@ namespace Packet
 
 		public IpForm(string var1, string var2)
 		{
-			if (var1 == null) throw new ArgumentNullException("var1");
+			if (var1 == null) throw new ArgumentNullException(nameof(var1));
 			var key = "SOFTWARE\\NA7KR\\Packet\\" + var1;
 			InitializeComponent();
 			_myRegistry.SubKey = key;
@@ -78,15 +78,15 @@ namespace Packet
 			if (_var2 == "Telnet")
 			{
 				Text = "Telnet";
-                var IP = _myRegistry.Read("IP");
-                if (IP == null)
+                var ip = _myRegistry.Read("IP");
+                if (ip == null)
                 {
                     _myRegistry.Write("IP", "NA7KR.NA7KR.US");
                 }
                 textBox_ip.Text = _myRegistry.Read("IP");
 
-                var Port = _myRegistry.Read("Port");
-                if (Port == null)
+                var port = _myRegistry.Read("Port");
+                if (port == null)
                 {
                     if (_var1 == "BBS")
                     {
@@ -105,15 +105,15 @@ namespace Packet
 				textBox_mycall.Text = _myRegistry.Read("CallSign");
 				textBox_password.Text = _myEncrypt.Decrypt(_myRegistry.Read("Password"));
 
-                var PasswordPrompt = _myRegistry.Read("PasswordPrompt");
-                if (PasswordPrompt == null)
+                var passwordPrompt = _myRegistry.Read("PasswordPrompt");
+                if (passwordPrompt == null)
                 {
                     _myRegistry.Write("PasswordPrompt", "Password :");
                 }   
                 textBox_password_prompt.Text = _myRegistry.Read("PasswordPrompt");
 
-                var UserNamePrompt = _myRegistry.Read("UserNamePrompt");
-                if (UserNamePrompt == null)
+                var userNamePrompt = _myRegistry.Read("UserNamePrompt");
+                if (userNamePrompt == null)
                 {
                     if (_var1 == "BBS")
                     {
@@ -130,8 +130,8 @@ namespace Packet
                 }
                 textBox_username_prompt.Text = _myRegistry.Read("UserNamePrompt");
 
-                var Echo = _myRegistry.Read("Echo");
-                if (Echo == null)
+                var echo = _myRegistry.Read("Echo");
+                if (echo == null)
                 {
                     _myRegistry.Write("Echo", "Yes");
                 }
@@ -232,8 +232,8 @@ namespace Packet
 					textBox_start.Width = 140;
 					textBox_mycall.Width = 140;
 					textBox_start.Left = 160;
-                    var BBSPrompt = _myRegistry.Read("Prompt");
-                    if (BBSPrompt == null)
+                    var bbsPrompt = _myRegistry.Read("Prompt");
+                    if (bbsPrompt == null)
                     {
                         _myRegistry.Write("Prompt", "BBS>");
                     }
