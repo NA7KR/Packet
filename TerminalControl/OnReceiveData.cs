@@ -123,7 +123,7 @@ namespace PacketComs
                                         DispatchMessage(this, Environment.NewLine);
                                         _msgstate = "prompt";
                                         Invoke(RxdTextEvent, String.Copy(sReceived));
-                                        System.Threading.Thread.Sleep(1000);
+                                        System.Threading.Thread.Sleep(100);
                                         Invoke(RefreshEvent);
                                         // Re-Establish the next asyncronous receveived data callback as
                                         stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,

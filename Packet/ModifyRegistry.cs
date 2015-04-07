@@ -1,9 +1,7 @@
 #region Using Directive
-
 using System;
 using System.Windows.Forms;
 using Microsoft.Win32;
-
 #endregion
 
 namespace Packet
@@ -95,14 +93,13 @@ namespace Packet
 		{
 			var rk = _baseRegistryKey;
 			var sk1 = rk.OpenSubKey(_subKey);
-			string regkey;
-			if (sk1 == null)
+		    if (sk1 == null)
 			{
 				return null;
 			}
 			try
 			{
-				regkey = (string) sk1.GetValue(keyName);
+				var regkey = (string) sk1.GetValue(keyName);
 				if (regkey == "")
 				{
 					return "BlanKey!!";
@@ -127,8 +124,8 @@ namespace Packet
 				var rk = _baseRegistryKey;
 				var sk1 = rk.CreateSubKey(_subKey);
 				// Save the value
-				if (sk1 != null) sk1.SetValue(keyName, value);
-				return true;
+			    sk1?.SetValue(keyName, value);
+			    return true;
 			}
 			catch (Exception e)
 			{
@@ -148,11 +145,7 @@ namespace Packet
 				// Setting
 				var rk = _baseRegistryKey;
 				var sk1 = rk.CreateSubKey(_subKey);
-				// If the RegistrySubKey doesn't exists -> (true)
-				if (sk1 == null)
-					return true;
-				sk1.DeleteValue(keyName);
-
+			    sk1?.DeleteValue(keyName);
 				return true;
 			}
 			catch (Exception e)

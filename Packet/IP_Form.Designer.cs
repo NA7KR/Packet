@@ -71,7 +71,7 @@ namespace Packet
             // 
             // textBox_ip
             // 
-            this.textBox_ip.Location = new System.Drawing.Point(145, 31);
+            this.textBox_ip.Location = new System.Drawing.Point(176, 28);
             this.textBox_ip.Name = "textBox_ip";
             this.textBox_ip.Size = new System.Drawing.Size(109, 20);
             this.textBox_ip.TabIndex = 5;
@@ -117,7 +117,7 @@ namespace Packet
             // 
             // textBox_port
             // 
-            this.textBox_port.Location = new System.Drawing.Point(145, 57);
+            this.textBox_port.Location = new System.Drawing.Point(176, 54);
             this.textBox_port.Name = "textBox_port";
             this.textBox_port.Size = new System.Drawing.Size(109, 20);
             this.textBox_port.TabIndex = 6;
@@ -125,7 +125,7 @@ namespace Packet
             // 
             // textBox_mycall
             // 
-            this.textBox_mycall.Location = new System.Drawing.Point(143, 144);
+            this.textBox_mycall.Location = new System.Drawing.Point(176, 146);
             this.textBox_mycall.Name = "textBox_mycall";
             this.textBox_mycall.Size = new System.Drawing.Size(109, 20);
             this.textBox_mycall.TabIndex = 9;
@@ -133,7 +133,7 @@ namespace Packet
             // 
             // textBox_start
             // 
-            this.textBox_start.Location = new System.Drawing.Point(144, 115);
+            this.textBox_start.Location = new System.Drawing.Point(176, 112);
             this.textBox_start.Name = "textBox_start";
             this.textBox_start.Size = new System.Drawing.Size(109, 20);
             this.textBox_start.TabIndex = 15;
@@ -150,7 +150,7 @@ namespace Packet
             // 
             // textBox_password
             // 
-            this.textBox_password.Location = new System.Drawing.Point(160, 170);
+            this.textBox_password.Location = new System.Drawing.Point(178, 172);
             this.textBox_password.Name = "textBox_password";
             this.textBox_password.PasswordChar = '#';
             this.textBox_password.Size = new System.Drawing.Size(109, 20);
@@ -182,7 +182,7 @@ namespace Packet
             this.echo_comboBox.Items.AddRange(new object[] {
             "Yes",
             "No"});
-            this.echo_comboBox.Location = new System.Drawing.Point(143, 198);
+            this.echo_comboBox.Location = new System.Drawing.Point(176, 198);
             this.echo_comboBox.Name = "echo_comboBox";
             this.echo_comboBox.Size = new System.Drawing.Size(111, 21);
             this.echo_comboBox.TabIndex = 21;
@@ -191,7 +191,7 @@ namespace Packet
             // 
             // textBox_prompt
             // 
-            this.textBox_prompt.Location = new System.Drawing.Point(144, 227);
+            this.textBox_prompt.Location = new System.Drawing.Point(176, 225);
             this.textBox_prompt.Name = "textBox_prompt";
             this.textBox_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_prompt.TabIndex = 23;
@@ -209,7 +209,7 @@ namespace Packet
             // 
             // textBox_username_prompt
             // 
-            this.textBox_username_prompt.Location = new System.Drawing.Point(158, 253);
+            this.textBox_username_prompt.Location = new System.Drawing.Point(176, 253);
             this.textBox_username_prompt.Name = "textBox_username_prompt";
             this.textBox_username_prompt.Size = new System.Drawing.Size(109, 20);
             this.textBox_username_prompt.TabIndex = 25;
