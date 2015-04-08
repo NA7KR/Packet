@@ -1,7 +1,9 @@
 ﻿#region Using Directive
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using PacketComs;
@@ -911,8 +913,9 @@ namespace Packet
 
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            var path = Directory.GetCurrentDirectory() + @"\Data\7plus" + @"\";
             Thread.Sleep(1000);
-            FileCheck.CreateFileWatcher("E:\\Code\\Packet\\Packet\\bin\\x86\\Debug\\Data\\7plus");
+            FileCheck.CreateFileWatcher(path);
         }
     }
 

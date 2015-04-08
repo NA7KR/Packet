@@ -1,10 +1,33 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Packet
 {
     class FileCheck
     {
+        [DllImport("7plus.dll")]
+        public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
+
+        private void button_ok_Click(object sender, EventArgs e)
+        {
+            var fbd = new OpenFileDialog();
+            if (fbd.ShowDialog() == DialogResult.OK)
+
+            {
+                var fp = (Path.GetFullPath(fbd.FileName));
+                var args = fp + " -SAVE \"c:\\temp\\out\\\"";
+                Do_7plus(args);
+            }
+
+
+            //    c:\temp\7plus.zip -SAVE "c:\temp\"  -SB 5000          
+            //    c:\temp\7plus.p01 - SAVE "c:\temp\"                 
+            //    c:\temp\7plus.err -SAVE "c:\temp\"					
+            //	  c:\temp\7plus.cor -SAVE "c:\temp\	
+        }
+
         public void CreateFileWatcher(string path)
         {
             // Create a new FileSystemWatcher and set its properties.

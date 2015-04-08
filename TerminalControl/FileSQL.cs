@@ -34,6 +34,7 @@ namespace PacketComs
             }
             catch (Exception)
             {
+                //
             }
             {
                 if (_odbc.CheckForDsn(dsnTableName) > 0)
