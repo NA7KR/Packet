@@ -894,8 +894,7 @@ namespace PacketComs
                     // Assign Callback function to read from Asyncronous Socket
                     _callbackProc = OnReceivedData;
                     // Begin reading data asyncronously
-                    sock1.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
-                        SocketFlags.None, _callbackProc, stateObject);
+                    sock1.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,  SocketFlags.None, _callbackProc, stateObject);
                 }
             }
             catch (Exception curException)

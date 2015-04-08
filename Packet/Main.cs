@@ -614,6 +614,7 @@ namespace Packet
                         terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
                         terminalEmulator1.UernamePrompt = _myRegistryBbs.BRead("UserNamePrompt");
                         terminalEmulator1.PasswordPrompt = _myRegistryBbs.BRead("PasswordPrompt");
+                        
                     }
                     else
                     {

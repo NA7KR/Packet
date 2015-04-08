@@ -122,12 +122,14 @@ namespace PacketComs
                                         DispatchMessage(this, "R " + _nb[_msgno].ToString());
                                         DispatchMessage(this, Environment.NewLine);
                                         _msgstate = "prompt";
+
+                                        
+
                                         Invoke(RxdTextEvent, String.Copy(sReceived));
-                                        System.Threading.Thread.Sleep(100);
+                                        
                                         Invoke(RefreshEvent);
                                         // Re-Establish the next asyncronous receveived data callback as
-                                        stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
-                                            SocketFlags.None, OnReceivedData, stateObject);
+                                        stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,  SocketFlags.None, OnReceivedData, stateObject);
                                         return;
                                     }
                                 }
@@ -202,8 +204,7 @@ namespace PacketComs
                     // Re-Establish the next asyncronous receveived data callback as
                     if (stateObject.Socket.Connected)
                     {
-                        stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
-                            SocketFlags.None, OnReceivedData, stateObject);
+                        stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,  SocketFlags.None, OnReceivedData, stateObject);
                     }
                 }
                 else
