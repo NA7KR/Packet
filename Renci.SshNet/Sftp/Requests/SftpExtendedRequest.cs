@@ -7,6 +7,11 @@ namespace Renci.SshNet.Sftp.Requests
     {
         public const string NAME = "posix-rename@openssh.com";
 
+        public SftpExtendedRequest(uint protocolVersion, uint requestId, Action<SftpStatusResponse> statusAction)
+            : base(protocolVersion, requestId, statusAction)
+        {
+        }
+
         public override SftpMessageTypes SftpMessageType
         {
             get { return SftpMessageTypes.Extended; }
@@ -14,15 +19,10 @@ namespace Renci.SshNet.Sftp.Requests
 
         public abstract string Name { get; }
 
-        public SftpExtendedRequest(uint protocolVersion, uint requestId, Action<SftpStatusResponse> statusAction)
-            : base(protocolVersion, requestId, statusAction)
-        {
-        }
-
         protected override void SaveData()
         {
             base.SaveData();
-            this.Write(this.Name);
+            Write(Name);
         }
     }
 }

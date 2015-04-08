@@ -8,52 +8,48 @@ using Renci.SshNet.Messages.Authentication;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Provides functionality to perform keyboard interactive authentication.
+    ///     Provides functionality to perform keyboard interactive authentication.
     /// </summary>
     public partial class KeyboardInteractiveAuthenticationMethod : AuthenticationMethod, IDisposable
     {
+        private readonly RequestMessage _requestMessage;
+        private EventWaitHandle _authenticationCompleted = new AutoResetEvent(false);
         private AuthenticationResult _authenticationResult = AuthenticationResult.Failure;
-
+        private Exception _exception;
         private Session _session;
 
-        private EventWaitHandle _authenticationCompleted = new AutoResetEvent(false);
-
-        private Exception _exception;
-
-        private RequestMessage _requestMessage;
-
         /// <summary>
-        /// Gets authentication method name
+        ///     Initializes a new instance of the <see cref="KeyboardInteractiveAuthenticationMethod" /> class.
         /// </summary>
-        public override string Name
+        /// <param name="username">The username.</param>
+        /// <exception cref="ArgumentException"><paramref name="username" /> is whitespace or null.</exception>
+        public KeyboardInteractiveAuthenticationMethod(string username)
+            : base(username)
         {
-            get { return this._requestMessage.MethodName; }
+            _requestMessage = new RequestMessageKeyboardInteractive(ServiceName.Connection, username);
         }
 
         /// <summary>
-        /// Occurs when server prompts for more authentication information.
+        ///     Gets authentication method name
+        /// </summary>
+        public override string Name
+        {
+            get { return _requestMessage.MethodName; }
+        }
+
+        /// <summary>
+        ///     Occurs when server prompts for more authentication information.
         /// </summary>
         public event EventHandler<AuthenticationPromptEventArgs> AuthenticationPrompt;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="KeyboardInteractiveAuthenticationMethod"/> class.
-        /// </summary>
-        /// <param name="username">The username.</param>
-        /// <exception cref="ArgumentException"><paramref name="username"/> is whitespace or null.</exception>
-        public KeyboardInteractiveAuthenticationMethod(string username)
-            : base(username)
-        {
-            this._requestMessage = new RequestMessageKeyboardInteractive(ServiceName.Connection, username);
-        }
-
-        /// <summary>
-        /// Authenticates the specified session.
+        ///     Authenticates the specified session.
         /// </summary>
         /// <param name="session">The session to authenticate.</param>
         /// <returns>Result of authentication  process.</returns>
         public override AuthenticationResult Authenticate(Session session)
         {
-            this._session = session;
+            _session = session;
 
             session.UserAuthenticationSuccessReceived += Session_UserAuthenticationSuccessReceived;
             session.UserAuthenticationFailureReceived += Session_UserAuthenticationFailureReceived;
@@ -61,9 +57,9 @@ namespace Renci.SshNet
 
             session.RegisterMessage("SSH_MSG_USERAUTH_INFO_REQUEST");
 
-            session.SendMessage(this._requestMessage);
+            session.SendMessage(_requestMessage);
 
-            session.WaitHandle(this._authenticationCompleted);
+            session.WaitHandle(_authenticationCompleted);
 
             session.UnRegisterMessage("SSH_MSG_USERAUTH_INFO_REQUEST");
 
@@ -73,32 +69,32 @@ namespace Renci.SshNet
             session.MessageReceived -= Session_MessageReceived;
 
 
-            if (this._exception != null)
+            if (_exception != null)
             {
-                throw this._exception;
+                throw _exception;
             }
 
-            return this._authenticationResult;
+            return _authenticationResult;
         }
 
         private void Session_UserAuthenticationSuccessReceived(object sender, MessageEventArgs<SuccessMessage> e)
         {
-            this._authenticationResult = AuthenticationResult.Success;
+            _authenticationResult = AuthenticationResult.Success;
 
-            this._authenticationCompleted.Set();
+            _authenticationCompleted.Set();
         }
 
         private void Session_UserAuthenticationFailureReceived(object sender, MessageEventArgs<FailureMessage> e)
         {
             if (e.Message.PartialSuccess)
-                this._authenticationResult = AuthenticationResult.PartialSuccess;
+                _authenticationResult = AuthenticationResult.PartialSuccess;
             else
-                this._authenticationResult = AuthenticationResult.Failure;
+                _authenticationResult = AuthenticationResult.Failure;
 
             //  Copy allowed authentication methods
-            this.AllowedAuthentications = e.Message.AllowedAuthentications.ToList();
+            AllowedAuthentications = e.Message.AllowedAuthentications.ToList();
 
-            this._authenticationCompleted.Set();
+            _authenticationCompleted.Set();
         }
 
         private void Session_MessageReceived(object sender, MessageEventArgs<Message> e)
@@ -106,15 +102,16 @@ namespace Renci.SshNet
             var informationRequestMessage = e.Message as InformationRequestMessage;
             if (informationRequestMessage != null)
             {
-                var eventArgs = new AuthenticationPromptEventArgs(this.Username, informationRequestMessage.Instruction, informationRequestMessage.Language, informationRequestMessage.Prompts);
+                var eventArgs = new AuthenticationPromptEventArgs(Username, informationRequestMessage.Instruction,
+                    informationRequestMessage.Language, informationRequestMessage.Prompts);
 
-                this.ExecuteThread(() =>
+                ExecuteThread(() =>
                 {
                     try
                     {
-                        if (this.AuthenticationPrompt != null)
+                        if (AuthenticationPrompt != null)
                         {
-                            this.AuthenticationPrompt(this, eventArgs);
+                            AuthenticationPrompt(this, eventArgs);
                         }
 
                         var informationResponse = new InformationResponseMessage();
@@ -125,12 +122,12 @@ namespace Renci.SshNet
                         }
 
                         //  Send information response message
-                        this._session.SendMessage(informationResponse);
+                        _session.SendMessage(informationResponse);
                     }
                     catch (Exception exp)
                     {
-                        this._exception = exp;
-                        this._authenticationCompleted.Set();
+                        _exception = exp;
+                        _authenticationCompleted.Set();
                     }
                 });
             }
@@ -140,10 +137,10 @@ namespace Renci.SshNet
 
         #region IDisposable Members
 
-        private bool isDisposed = false;
+        private bool isDisposed;
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -153,23 +150,26 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        ///     Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!this.isDisposed)
+            if (!isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (this._authenticationCompleted != null)
+                    if (_authenticationCompleted != null)
                     {
-                        this._authenticationCompleted.Dispose();
-                        this._authenticationCompleted = null;
+                        _authenticationCompleted.Dispose();
+                        _authenticationCompleted = null;
                     }
                 }
 
@@ -179,8 +179,8 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="PasswordConnectionInfo"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="PasswordConnectionInfo" /> is reclaimed by garbage collection.
         /// </summary>
         ~KeyboardInteractiveAuthenticationMethod()
         {
@@ -191,6 +191,5 @@ namespace Renci.SshNet
         }
 
         #endregion
-
     }
 }

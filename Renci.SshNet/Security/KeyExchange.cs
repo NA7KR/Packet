@@ -11,101 +11,98 @@ using Renci.SshNet.Security.Cryptography;
 namespace Renci.SshNet.Security
 {
     /// <summary>
-    /// Represents base class for different key exchange algorithm implementations
+    ///     Represents base class for different key exchange algorithm implementations
     /// </summary>
     public abstract class KeyExchange : Algorithm, IDisposable
     {
         private CipherInfo _clientCipherInfo;
-
-        private CipherInfo _serverCipherInfo;
-
         private HashInfo _clientHashInfo;
-
+        private Type _compressionType;
+        private Type _decompressionType;
+        private byte[] _exchangeHash;
+        private CipherInfo _serverCipherInfo;
         private HashInfo _serverHashInfo;
 
-        private Type _compressionType;
-
-        private Type _decompressionType;
-
         /// <summary>
-        /// Gets or sets the session.
+        ///     Gets or sets the session.
         /// </summary>
         /// <value>
-        /// The session.
+        ///     The session.
         /// </value>
         protected Session Session { get; private set; }
 
         /// <summary>
-        /// Gets or sets key exchange shared key.
+        ///     Gets or sets key exchange shared key.
         /// </summary>
         /// <value>
-        /// The shared key.
+        ///     The shared key.
         /// </value>
         public BigInteger SharedKey { get; protected set; }
 
-        private byte[] _exchangeHash;
         /// <summary>
-        /// Gets the exchange hash.
+        ///     Gets the exchange hash.
         /// </summary>
         /// <value>The exchange hash.</value>
         public byte[] ExchangeHash
         {
             get
             {
-                if (this._exchangeHash == null)
+                if (_exchangeHash == null)
                 {
-                    this._exchangeHash = this.CalculateHash();
+                    _exchangeHash = CalculateHash();
                 }
-                return this._exchangeHash;
+                return _exchangeHash;
             }
         }
 
         /// <summary>
-        /// Occurs when host key received.
+        ///     Occurs when host key received.
         /// </summary>
         public event EventHandler<HostKeyEventArgs> HostKeyReceived;
 
         /// <summary>
-        /// Starts key exchange algorithm
+        ///     Starts key exchange algorithm
         /// </summary>
         /// <param name="session">The session.</param>
         /// <param name="message">Key exchange init message.</param>
         public virtual void Start(Session session, KeyExchangeInitMessage message)
         {
-            this.Session = session;
+            Session = session;
 
-            this.SendMessage(session.ClientInitMessage);
+            SendMessage(session.ClientInitMessage);
 
             //  Determine encryption algorithm
             var clientEncryptionAlgorithmName = (from b in session.ConnectionInfo.Encryptions.Keys
-                                                 from a in message.EncryptionAlgorithmsClientToServer
-                                                 where a == b
-                                                 select a).FirstOrDefault();
+                from a in message.EncryptionAlgorithmsClientToServer
+                where a == b
+                select a).FirstOrDefault();
 
             if (string.IsNullOrEmpty(clientEncryptionAlgorithmName))
             {
-                throw new SshConnectionException("Client encryption algorithm not found", DisconnectReason.KeyExchangeFailed);
+                throw new SshConnectionException("Client encryption algorithm not found",
+                    DisconnectReason.KeyExchangeFailed);
             }
 
             session.ConnectionInfo.CurrentClientEncryption = clientEncryptionAlgorithmName;
 
             //  Determine encryption algorithm
             var serverDecryptionAlgorithmName = (from b in session.ConnectionInfo.Encryptions.Keys
-                                                 from a in message.EncryptionAlgorithmsServerToClient
-                                                 where a == b
-                                                 select a).FirstOrDefault();
+                from a in message.EncryptionAlgorithmsServerToClient
+                where a == b
+                select a).FirstOrDefault();
             if (string.IsNullOrEmpty(serverDecryptionAlgorithmName))
             {
-                throw new SshConnectionException("Server decryption algorithm not found", DisconnectReason.KeyExchangeFailed);
+                throw new SshConnectionException("Server decryption algorithm not found",
+                    DisconnectReason.KeyExchangeFailed);
             }
 
             session.ConnectionInfo.CurrentServerEncryption = serverDecryptionAlgorithmName;
 
             //  Determine client hmac algorithm
             var clientHmacAlgorithmName = (from b in session.ConnectionInfo.HmacAlgorithms.Keys
-                                           from a in message.MacAlgorithmsClientToServer
-                                           where a == b
-                                           select a).FirstOrDefault();
+                from a in message.MacAlgorithmsClientToServer
+                where a == b
+                select a).FirstOrDefault();
             if (string.IsNullOrEmpty(clientHmacAlgorithmName))
             {
                 throw new SshConnectionException("Server HMAC algorithm not found", DisconnectReason.KeyExchangeFailed);
@@ -115,9 +112,9 @@ namespace Renci.SshNet.Security
 
             //  Determine server hmac algorithm
             var serverHmacAlgorithmName = (from b in session.ConnectionInfo.HmacAlgorithms.Keys
-                                           from a in message.MacAlgorithmsServerToClient
-                                           where a == b
-                                           select a).FirstOrDefault();
+                from a in message.MacAlgorithmsServerToClient
+                where a == b
+                select a).FirstOrDefault();
             if (string.IsNullOrEmpty(serverHmacAlgorithmName))
             {
                 throw new SshConnectionException("Server HMAC algorithm not found", DisconnectReason.KeyExchangeFailed);
@@ -127,9 +124,9 @@ namespace Renci.SshNet.Security
 
             //  Determine compression algorithm
             var compressionAlgorithmName = (from b in session.ConnectionInfo.CompressionAlgorithms.Keys
-                                            from a in message.CompressionAlgorithmsClientToServer
-                                            where a == b
-                                            select a).LastOrDefault();
+                from a in message.CompressionAlgorithmsClientToServer
+                where a == b
+                select a).LastOrDefault();
             if (string.IsNullOrEmpty(compressionAlgorithmName))
             {
                 throw new SshConnectionException("Compression algorithm not found", DisconnectReason.KeyExchangeFailed);
@@ -139,9 +136,9 @@ namespace Renci.SshNet.Security
 
             //  Determine decompression algorithm
             var decompressionAlgorithmName = (from b in session.ConnectionInfo.CompressionAlgorithms.Keys
-                                              from a in message.CompressionAlgorithmsServerToClient
-                                              where a == b
-                                              select a).LastOrDefault();
+                from a in message.CompressionAlgorithmsServerToClient
+                where a == b
+                select a).LastOrDefault();
             if (string.IsNullOrEmpty(decompressionAlgorithmName))
             {
                 throw new SshConnectionException("Decompression algorithm not found", DisconnectReason.KeyExchangeFailed);
@@ -149,23 +146,23 @@ namespace Renci.SshNet.Security
 
             session.ConnectionInfo.CurrentServerCompressionAlgorithm = decompressionAlgorithmName;
 
-            this._clientCipherInfo = session.ConnectionInfo.Encryptions[clientEncryptionAlgorithmName];
-            this._serverCipherInfo = session.ConnectionInfo.Encryptions[clientEncryptionAlgorithmName];
-            this._clientHashInfo = session.ConnectionInfo.HmacAlgorithms[clientHmacAlgorithmName];
-            this._serverHashInfo = session.ConnectionInfo.HmacAlgorithms[serverHmacAlgorithmName];
-            this._compressionType = session.ConnectionInfo.CompressionAlgorithms[compressionAlgorithmName];
-            this._decompressionType = session.ConnectionInfo.CompressionAlgorithms[decompressionAlgorithmName];
+            _clientCipherInfo = session.ConnectionInfo.Encryptions[clientEncryptionAlgorithmName];
+            _serverCipherInfo = session.ConnectionInfo.Encryptions[clientEncryptionAlgorithmName];
+            _clientHashInfo = session.ConnectionInfo.HmacAlgorithms[clientHmacAlgorithmName];
+            _serverHashInfo = session.ConnectionInfo.HmacAlgorithms[serverHmacAlgorithmName];
+            _compressionType = session.ConnectionInfo.CompressionAlgorithms[compressionAlgorithmName];
+            _decompressionType = session.ConnectionInfo.CompressionAlgorithms[decompressionAlgorithmName];
         }
 
         /// <summary>
-        /// Finishes key exchange algorithm.
+        ///     Finishes key exchange algorithm.
         /// </summary>
         public virtual void Finish()
         {
             //  Validate hash
-            if (this.ValidateExchangeHash())
+            if (ValidateExchangeHash())
             {
-                this.SendMessage(new NewKeysMessage());
+                SendMessage(new NewKeysMessage());
             }
             else
             {
@@ -174,150 +171,150 @@ namespace Renci.SshNet.Security
         }
 
         /// <summary>
-        /// Creates the server side cipher to use.
+        ///     Creates the server side cipher to use.
         /// </summary>
         /// <returns>Server cipher.</returns>
         public Cipher CreateServerCipher()
         {
             //  Resolve Session ID
-            var sessionId = this.Session.SessionId ?? this.ExchangeHash;
+            var sessionId = Session.SessionId ?? ExchangeHash;
 
             //  Calculate server to client initial IV
-            var serverVector = this.Hash(this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, 'B', sessionId));
+            var serverVector = Hash(GenerateSessionKey(SharedKey, ExchangeHash, 'B', sessionId));
 
             //  Calculate server to client encryption
-            var serverKey = this.Hash(this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, 'D', sessionId));
+            var serverKey = Hash(GenerateSessionKey(SharedKey, ExchangeHash, 'D', sessionId));
 
-            serverKey = this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, serverKey, this._serverCipherInfo.KeySize / 8);
-            
+            serverKey = GenerateSessionKey(SharedKey, ExchangeHash, serverKey, _serverCipherInfo.KeySize/8);
+
             //  Create server cipher
-            return this._serverCipherInfo.Cipher(serverKey, serverVector);
+            return _serverCipherInfo.Cipher(serverKey, serverVector);
         }
 
         /// <summary>
-        /// Creates the client side cipher to use.
+        ///     Creates the client side cipher to use.
         /// </summary>
         /// <returns>Client cipher.</returns>
         public Cipher CreateClientCipher()
         {
             //  Resolve Session ID
-            var sessionId = this.Session.SessionId ?? this.ExchangeHash;
+            var sessionId = Session.SessionId ?? ExchangeHash;
 
             //  Calculate client to server initial IV
-            var clientVector = this.Hash(this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, 'A', sessionId));
+            var clientVector = Hash(GenerateSessionKey(SharedKey, ExchangeHash, 'A', sessionId));
 
             //  Calculate client to server encryption
-            var clientKey = this.Hash(this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, 'C', sessionId));
+            var clientKey = Hash(GenerateSessionKey(SharedKey, ExchangeHash, 'C', sessionId));
 
-            clientKey = this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, clientKey, this._clientCipherInfo.KeySize / 8);
+            clientKey = GenerateSessionKey(SharedKey, ExchangeHash, clientKey, _clientCipherInfo.KeySize/8);
 
             //  Create client cipher
-            return this._clientCipherInfo.Cipher(clientKey, clientVector);
+            return _clientCipherInfo.Cipher(clientKey, clientVector);
         }
 
         /// <summary>
-        /// Creates the server side hash algorithm to use.
+        ///     Creates the server side hash algorithm to use.
         /// </summary>
         /// <returns>Hash algorithm</returns>
         public HashAlgorithm CreateServerHash()
         {
             //  Resolve Session ID
-            var sessionId = this.Session.SessionId ?? this.ExchangeHash;
+            var sessionId = Session.SessionId ?? ExchangeHash;
 
-            var serverKey = this.Hash(this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, 'F', sessionId));
+            var serverKey = Hash(GenerateSessionKey(SharedKey, ExchangeHash, 'F', sessionId));
 
-            serverKey = this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, serverKey, this._serverHashInfo.KeySize / 8);
+            serverKey = GenerateSessionKey(SharedKey, ExchangeHash, serverKey, _serverHashInfo.KeySize/8);
 
             //return serverHMac;
-            return this._serverHashInfo.HashAlgorithm(serverKey);
+            return _serverHashInfo.HashAlgorithm(serverKey);
         }
 
         /// <summary>
-        /// Creates the client side hash algorithm to use.
+        ///     Creates the client side hash algorithm to use.
         /// </summary>
         /// <returns>Hash algorithm</returns>
         public HashAlgorithm CreateClientHash()
         {
             //  Resolve Session ID
-            var sessionId = this.Session.SessionId ?? this.ExchangeHash;
+            var sessionId = Session.SessionId ?? ExchangeHash;
 
-            var clientKey = this.Hash(this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, 'E', sessionId));
-            
-            clientKey = this.GenerateSessionKey(this.SharedKey, this.ExchangeHash, clientKey, this._clientHashInfo.KeySize / 8);
+            var clientKey = Hash(GenerateSessionKey(SharedKey, ExchangeHash, 'E', sessionId));
+
+            clientKey = GenerateSessionKey(SharedKey, ExchangeHash, clientKey, _clientHashInfo.KeySize/8);
 
             //return clientHMac;
-            return this._clientHashInfo.HashAlgorithm(clientKey);
+            return _clientHashInfo.HashAlgorithm(clientKey);
         }
 
         /// <summary>
-        /// Creates the compression algorithm to use to deflate data.
+        ///     Creates the compression algorithm to use to deflate data.
         /// </summary>
         /// <returns>Compression method.</returns>
         public Compressor CreateCompressor()
         {
-            if (this._compressionType == null)
+            if (_compressionType == null)
                 return null;
 
-            var compressor = this._compressionType.CreateInstance<Compressor>();
+            var compressor = _compressionType.CreateInstance<Compressor>();
 
-            compressor.Init(this.Session);
+            compressor.Init(Session);
 
             return compressor;
         }
 
         /// <summary>
-        /// Creates the compression algorithm to use to inflate data.
+        ///     Creates the compression algorithm to use to inflate data.
         /// </summary>
         /// <returns>Compression method.</returns>
         public Compressor CreateDecompressor()
         {
-            if (this._compressionType == null)
+            if (_compressionType == null)
                 return null;
 
-            var decompressor = this._decompressionType.CreateInstance<Compressor>();
+            var decompressor = _decompressionType.CreateInstance<Compressor>();
 
-            decompressor.Init(this.Session);
+            decompressor.Init(Session);
 
             return decompressor;
         }
 
         /// <summary>
-        /// Determines whether the specified host key can be trusted.
+        ///     Determines whether the specified host key can be trusted.
         /// </summary>
         /// <param name="host">The host algorithm.</param>
         /// <returns>
-        ///   <c>true</c> if the specified host can be trusted; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified host can be trusted; otherwise, <c>false</c>.
         /// </returns>
         protected bool CanTrustHostKey(KeyHostAlgorithm host)
         {
             var args = new HostKeyEventArgs(host);
 
-            if (this.HostKeyReceived != null)
+            if (HostKeyReceived != null)
             {
-                this.HostKeyReceived(this, args);
+                HostKeyReceived(this, args);
             }
 
             return args.CanTrust;
         }
 
         /// <summary>
-        /// Validates the exchange hash.
+        ///     Validates the exchange hash.
         /// </summary>
         /// <returns>true if exchange hash is valid; otherwise false.</returns>
         protected abstract bool ValidateExchangeHash();
 
         /// <summary>
-        /// Calculates key exchange hash value.
+        ///     Calculates key exchange hash value.
         /// </summary>
         /// <returns>Key exchange hash.</returns>
         protected abstract byte[] CalculateHash();
 
         /// <summary>
-        /// Hashes the specified data bytes.
+        ///     Hashes the specified data bytes.
         /// </summary>
         /// <param name="hashData">The hash data.</param>
         /// <returns>
-        /// Hashed bytes
+        ///     Hashed bytes
         /// </returns>
         protected virtual byte[] Hash(byte[] hashData)
         {
@@ -328,16 +325,16 @@ namespace Renci.SshNet.Security
         }
 
         /// <summary>
-        /// Sends SSH message to the server
+        ///     Sends SSH message to the server
         /// </summary>
         /// <param name="message">The message.</param>
         protected void SendMessage(Message message)
         {
-            this.Session.SendMessage(message);
+            Session.SendMessage(message);
         }
 
         /// <summary>
-        /// Generates the session key.
+        ///     Generates the session key.
         /// </summary>
         /// <param name="sharedKey">The shared key.</param>
         /// <param name="exchangeHash">The exchange hash.</param>
@@ -349,11 +346,11 @@ namespace Renci.SshNet.Security
             var result = new List<byte>(key);
             while (size > result.Count)
             {
-                result.AddRange(this.Hash(new _SessionKeyAdjustment
+                result.AddRange(Hash(new _SessionKeyAdjustment
                 {
                     SharedKey = sharedKey,
                     ExcahngeHash = exchangeHash,
-                    Key = key,
+                    Key = key
                 }.GetBytes()));
             }
 
@@ -361,7 +358,7 @@ namespace Renci.SshNet.Security
         }
 
         /// <summary>
-        /// Generates the session key.
+        ///     Generates the session key.
         /// </summary>
         /// <param name="sharedKey">The shared key.</param>
         /// <param name="exchangeHash">The exchange hash.</param>
@@ -375,7 +372,7 @@ namespace Renci.SshNet.Security
                 SharedKey = sharedKey,
                 ExchangeHash = exchangeHash,
                 Char = p,
-                SessionId = sessionId,
+                SessionId = sessionId
             }.GetBytes();
         }
 
@@ -393,10 +390,10 @@ namespace Renci.SshNet.Security
 
             protected override void SaveData()
             {
-                this.Write(this.SharedKey);
-                this.Write(this.ExchangeHash);
-                this.Write((byte)this.Char);
-                this.Write(this.SessionId);
+                Write(SharedKey);
+                Write(ExchangeHash);
+                Write((byte) Char);
+                Write(SessionId);
             }
         }
 
@@ -413,16 +410,16 @@ namespace Renci.SshNet.Security
 
             protected override void SaveData()
             {
-                this.Write(this.SharedKey);
-                this.Write(this.ExcahngeHash);
-                this.Write(this.Key);
+                Write(SharedKey);
+                Write(ExcahngeHash);
+                Write(Key);
             }
         }
 
         #region IDisposable Members
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged ResourceMessages.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged ResourceMessages.
         /// </summary>
         public void Dispose()
         {
@@ -432,16 +429,19 @@ namespace Renci.SshNet.Security
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        ///     Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged ResourceMessages.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged ResourceMessages.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="KeyExchange"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="KeyExchange" /> is reclaimed by garbage collection.
         /// </summary>
         ~KeyExchange()
         {

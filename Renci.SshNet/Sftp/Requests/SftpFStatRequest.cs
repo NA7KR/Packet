@@ -5,6 +5,14 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class SftpFStatRequest : SftpRequest
     {
+        public SftpFStatRequest(uint protocolVersion, uint requestId, byte[] handle,
+            Action<SftpAttrsResponse> attrsAction, Action<SftpStatusResponse> statusAction)
+            : base(protocolVersion, requestId, statusAction)
+        {
+            Handle = handle;
+            SetAction(attrsAction);
+        }
+
         public override SftpMessageTypes SftpMessageType
         {
             get { return SftpMessageTypes.FStat; }
@@ -12,23 +20,16 @@ namespace Renci.SshNet.Sftp.Requests
 
         public byte[] Handle { get; private set; }
 
-        public SftpFStatRequest(uint protocolVersion, uint requestId, byte[] handle, Action<SftpAttrsResponse> attrsAction, Action<SftpStatusResponse> statusAction)
-            : base(protocolVersion, requestId, statusAction)
-        {
-            this.Handle = handle;
-            this.SetAction(attrsAction);
-        }
-
         protected override void LoadData()
         {
             base.LoadData();
-            this.Handle = this.ReadBinaryString();
+            Handle = ReadBinaryString();
         }
 
         protected override void SaveData()
         {
             base.SaveData();
-            this.WriteBinaryString(this.Handle);
+            WriteBinaryString(Handle);
         }
     }
 }

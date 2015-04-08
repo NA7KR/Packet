@@ -2,6 +2,11 @@
 {
     internal class SftpHandleResponse : SftpResponse
     {
+        public SftpHandleResponse(uint protocolVersion)
+            : base(protocolVersion)
+        {
+        }
+
         public override SftpMessageTypes SftpMessageType
         {
             get { return SftpMessageTypes.Handle; }
@@ -9,16 +14,11 @@
 
         public byte[] Handle { get; private set; }
 
-        public SftpHandleResponse(uint protocolVersion)
-            : base(protocolVersion)
-        {
-        }
-
         protected override void LoadData()
         {
             base.LoadData();
-            
-            this.Handle = this.ReadBinaryString();
+
+            Handle = ReadBinaryString();
         }
     }
 }

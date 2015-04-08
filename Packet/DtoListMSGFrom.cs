@@ -2,86 +2,86 @@
 
 namespace Packet
 {
-	internal class DtoListMsgFrom
-	{
-		private DateTime _dateCreate;
-		private string _msgfrom;
-		private string _selected;
+    internal class DtoListMsgFrom
+    {
+        private DateTime _dateCreate;
+        private string _msgfrom;
+        private string _selected;
 
-		#region Constructor
+        #region Constructor
 
-		public DtoListMsgFrom()
-		{
-			_msgfrom = "";
-			_dateCreate = DateTime.Now;
-			_selected = null;
-		}
+        public DtoListMsgFrom()
+        {
+            _msgfrom = "";
+            _dateCreate = DateTime.Now;
+            _selected = null;
+        }
 
-		#endregion
+        #endregion
 
-		#region DtoList
+        #region DtoList
 
-		public DtoListMsgFrom(string msgfrom, string selected, DateTime dateCreate)
-		{
-			_msgfrom = msgfrom;
-			_selected = selected;
-			_dateCreate = dateCreate;
-		}
+        public DtoListMsgFrom(string msgfrom, string selected, DateTime dateCreate)
+        {
+            _msgfrom = msgfrom;
+            _selected = selected;
+            _dateCreate = dateCreate;
+        }
 
-		#endregion
+        #endregion
 
-		#region get_MSGFROM
+        #region get_MSGFROM
 
-		public string get_MSGFROM()
-		{
-			return _msgfrom;
-		}
+        public string get_MSGFROM()
+        {
+            return _msgfrom;
+        }
 
-		#endregion
+        #endregion
 
-		#region get_dateCreate
+        #region get_dateCreate
 
-		public DateTime get_dateCreate()
-		{
-			return _dateCreate;
-		}
+        public DateTime get_dateCreate()
+        {
+            return _dateCreate;
+        }
 
-		#endregion
+        #endregion
 
-		#region get_Selected
+        #region get_Selected
 
-		public string get_Selected()
-		{
-			return _selected;
-		}
+        public string get_Selected()
+        {
+            return _selected;
+        }
 
-		#endregion
+        #endregion
 
-		#region set_MSGFROM
+        #region set_MSGFROM
 
-		public void set_MSGFROM(string msgfrom)
-		{
-			_msgfrom = msgfrom;
-		}
+        public void set_MSGFROM(string msgfrom)
+        {
+            _msgfrom = msgfrom;
+        }
 
-		#endregion
+        #endregion
 
-		#region set_dateCreate
+        #region set_dateCreate
 
-		public void set_dateCreate(DateTime dateCreate)
-		{
-			_dateCreate = dateCreate;
-		}
+        public void set_dateCreate(DateTime dateCreate)
+        {
+            _dateCreate = dateCreate;
+        }
 
-		#endregion
+        #endregion
 
-		#region set_Selected
+        #region set_Selected
 
-		public void set_Selected(string selected)
-		{
-			_selected = selected;
-		}
+        public void set_Selected(string selected)
+        {
+            _selected = selected;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

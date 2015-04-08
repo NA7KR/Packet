@@ -2,86 +2,86 @@
 
 namespace Packet
 {
-	internal class DtoListMsgRoute
-	{
-		private DateTime _dateCreate;
-		private string _msgroute;
-		private string _selected;
+    internal class DtoListMsgRoute
+    {
+        private DateTime _dateCreate;
+        private string _msgroute;
+        private string _selected;
 
-		#region Constructor
+        #region Constructor
 
-		public DtoListMsgRoute()
-		{
-			_msgroute = null;
-			_dateCreate = DateTime.MinValue;
-			_selected = null;
-		}
+        public DtoListMsgRoute()
+        {
+            _msgroute = null;
+            _dateCreate = DateTime.MinValue;
+            _selected = null;
+        }
 
-		#endregion
+        #endregion
 
-		#region DtoList
+        #region DtoList
 
-		public DtoListMsgRoute(string msgroute, string selected, DateTime dateCreate)
-		{
-			_msgroute = msgroute;
-			_dateCreate = dateCreate;
-			_selected = selected;
-		}
+        public DtoListMsgRoute(string msgroute, string selected, DateTime dateCreate)
+        {
+            _msgroute = msgroute;
+            _dateCreate = dateCreate;
+            _selected = selected;
+        }
 
-		#endregion
+        #endregion
 
-		#region get_MSGRoute
+        #region get_MSGRoute
 
-		public string get_MSGROUTE()
-		{
-			return _msgroute;
-		}
+        public string get_MSGROUTE()
+        {
+            return _msgroute;
+        }
 
-		#endregion
+        #endregion
 
-		#region get_dateCreate
+        #region get_dateCreate
 
-		public DateTime get_dateCreate()
-		{
-			return _dateCreate;
-		}
+        public DateTime get_dateCreate()
+        {
+            return _dateCreate;
+        }
 
-		#endregion
+        #endregion
 
-		#region get_Selected
+        #region get_Selected
 
-		public string get_Selected()
-		{
-			return _selected;
-		}
+        public string get_Selected()
+        {
+            return _selected;
+        }
 
-		#endregion
+        #endregion
 
-		#region set_MSGRoute
+        #region set_MSGRoute
 
-		public void set_MSGRoute(string msgroute)
-		{
-			_msgroute = msgroute;
-		}
+        public void set_MSGRoute(string msgroute)
+        {
+            _msgroute = msgroute;
+        }
 
-		#endregion
+        #endregion
 
-		#region set_dateCreate
+        #region set_dateCreate
 
-		public void set_dateCreate(DateTime dateCreate)
-		{
-			_dateCreate = dateCreate;
-		}
+        public void set_dateCreate(DateTime dateCreate)
+        {
+            _dateCreate = dateCreate;
+        }
 
-		#endregion
+        #endregion
 
-		#region set_Selected
+        #region set_Selected
 
-		public void set_Selected(string selected)
-		{
-			_selected = selected;
-		}
+        public void set_Selected(string selected)
+        {
+            _selected = selected;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

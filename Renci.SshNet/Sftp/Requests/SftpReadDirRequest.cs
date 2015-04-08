@@ -5,6 +5,14 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class SftpReadDirRequest : SftpRequest
     {
+        public SftpReadDirRequest(uint protocolVersion, uint requestId, byte[] handle,
+            Action<SftpNameResponse> nameAction, Action<SftpStatusResponse> statusAction)
+            : base(protocolVersion, requestId, statusAction)
+        {
+            Handle = handle;
+            SetAction(nameAction);
+        }
+
         public override SftpMessageTypes SftpMessageType
         {
             get { return SftpMessageTypes.ReadDir; }
@@ -12,23 +20,16 @@ namespace Renci.SshNet.Sftp.Requests
 
         public byte[] Handle { get; private set; }
 
-        public SftpReadDirRequest(uint protocolVersion, uint requestId, byte[] handle, Action<SftpNameResponse> nameAction, Action<SftpStatusResponse> statusAction)
-            : base(protocolVersion, requestId, statusAction)
-        {
-            this.Handle = handle;
-            this.SetAction(nameAction);
-        }
-
         protected override void LoadData()
         {
             base.LoadData();
-            this.Handle = this.ReadBinaryString();
+            Handle = ReadBinaryString();
         }
 
         protected override void SaveData()
         {
             base.SaveData();
-            this.WriteBinaryString(this.Handle);
+            WriteBinaryString(Handle);
         }
     }
 }

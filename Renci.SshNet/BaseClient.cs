@@ -5,183 +5,173 @@ using Renci.SshNet.Common;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Serves as base class for client implementations, provides common client functionality.
+    ///     Serves as base class for client implementations, provides common client functionality.
     /// </summary>
     public abstract class BaseClient : IDisposable
     {
         private TimeSpan _keepAliveInterval;
-
         private Timer _keepAliveTimer;
 
         /// <summary>
-        /// Gets current session.
-        /// </summary>
-        protected Session Session { get; private set; }
-
-        /// <summary>
-        /// Gets the connection info.
-        /// </summary>
-        public ConnectionInfo ConnectionInfo { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether this client is connected to the server.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this client is connected; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsConnected
-        {
-            get
-            {
-                if (this.Session == null)
-                    return false;
-                else
-                    return this.Session.IsConnected;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the keep alive interval in seconds.
-        /// </summary>
-        /// <value>
-        /// The keep alive interval in seconds.
-        /// </value>
-        public TimeSpan KeepAliveInterval
-        {
-            get
-            {
-                return this._keepAliveInterval;
-            }
-            set
-            {
-                this._keepAliveInterval = value;
-
-                if (this._keepAliveTimer == null)
-                {
-                    this._keepAliveTimer = new Timer((state) =>
-                    {
-                        this.SendKeepAlive();
-                    });
-                }
-
-                this._keepAliveTimer.Change(this._keepAliveInterval, this._keepAliveInterval);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when an error occurred.
-        /// </summary>
-        /// <example>
-        ///   <code source="..\..\Renci.SshNet.Tests\Classes\SshClientTest.cs" region="Example SshClient Connect ErrorOccurred" language="C#" title="Handle ErrorOccurred event" />
-        /// </example>
-        public event EventHandler<ExceptionEventArgs> ErrorOccurred;
-
-        /// <summary>
-        /// Occurs when host key received.
-        /// </summary>
-        /// <example>
-        ///   <code source="..\..\Renci.SshNet.Tests\Classes\SshClientTest.cs" region="Example SshClient Connect HostKeyReceived" language="C#" title="Handle HostKeyReceived event" />
-        /// </example>
-        public event EventHandler<HostKeyEventArgs> HostKeyReceived;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseClient"/> class.
+        ///     Initializes a new instance of the <see cref="BaseClient" /> class.
         /// </summary>
         /// <param name="connectionInfo">The connection info.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionInfo"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionInfo" /> is null.</exception>
         public BaseClient(ConnectionInfo connectionInfo)
         {
             if (connectionInfo == null)
                 throw new ArgumentNullException("connectionInfo");
 
-            this.ConnectionInfo = connectionInfo;
-            this.Session = new Session(connectionInfo);
+            ConnectionInfo = connectionInfo;
+            Session = new Session(connectionInfo);
         }
 
         /// <summary>
-        /// Connects client to the server.
+        ///     Gets current session.
+        /// </summary>
+        protected Session Session { get; private set; }
+
+        /// <summary>
+        ///     Gets the connection info.
+        /// </summary>
+        public ConnectionInfo ConnectionInfo { get; }
+
+        /// <summary>
+        ///     Gets a value indicating whether this client is connected to the server.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this client is connected; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsConnected
+        {
+            get
+            {
+                if (Session == null)
+                    return false;
+                return Session.IsConnected;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the keep alive interval in seconds.
+        /// </summary>
+        /// <value>
+        ///     The keep alive interval in seconds.
+        /// </value>
+        public TimeSpan KeepAliveInterval
+        {
+            get { return _keepAliveInterval; }
+            set
+            {
+                _keepAliveInterval = value;
+
+                if (_keepAliveTimer == null)
+                {
+                    _keepAliveTimer = new Timer(state => { SendKeepAlive(); });
+                }
+
+                _keepAliveTimer.Change(_keepAliveInterval, _keepAliveInterval);
+            }
+        }
+
+        /// <summary>
+        ///     Occurs when an error occurred.
+        /// </summary>
+        /// <example>
+        ///     <code source="..\..\Renci.SshNet.Tests\Classes\SshClientTest.cs" region="Example SshClient Connect ErrorOccurred"
+        ///         language="C#" title="Handle ErrorOccurred event" />
+        /// </example>
+        public event EventHandler<ExceptionEventArgs> ErrorOccurred;
+
+        /// <summary>
+        ///     Occurs when host key received.
+        /// </summary>
+        /// <example>
+        ///     <code source="..\..\Renci.SshNet.Tests\Classes\SshClientTest.cs" region="Example SshClient Connect HostKeyReceived"
+        ///         language="C#" title="Handle HostKeyReceived event" />
+        /// </example>
+        public event EventHandler<HostKeyEventArgs> HostKeyReceived;
+
+        /// <summary>
+        ///     Connects client to the server.
         /// </summary>
         public void Connect()
         {
-            this.OnConnecting();
+            OnConnecting();
 
-            if (this.IsConnected)
+            if (IsConnected)
             {
-                this.Session.Disconnect();
+                Session.Disconnect();
             }
 
-            this.Session = new Session(this.ConnectionInfo);
-            this.Session.HostKeyReceived += Session_HostKeyReceived;
-            this.Session.ErrorOccured += Session_ErrorOccured;
-            this.Session.Connect();
+            Session = new Session(ConnectionInfo);
+            Session.HostKeyReceived += Session_HostKeyReceived;
+            Session.ErrorOccured += Session_ErrorOccured;
+            Session.Connect();
 
-            this.OnConnected();
+            OnConnected();
         }
 
         /// <summary>
-        /// Disconnects client from the server.
+        ///     Disconnects client from the server.
         /// </summary>
         public void Disconnect()
         {
-            if (!this.IsConnected)
+            if (!IsConnected)
                 return;
 
-            this.OnDisconnecting();
+            OnDisconnecting();
 
-            this.Session.Disconnect();
+            Session.Disconnect();
 
-            this.OnDisconnected();
+            OnDisconnected();
         }
 
         /// <summary>
-        /// Sends keep-alive message to the server.
+        ///     Sends keep-alive message to the server.
         /// </summary>
         public void SendKeepAlive()
         {
-            if (this.Session == null)
+            if (Session == null)
                 return;
 
-            if (!this.Session.IsConnected)
+            if (!Session.IsConnected)
                 return;
 
-            this.Session.SendKeepAlive();
+            Session.SendKeepAlive();
         }
 
         /// <summary>
-        /// Called when client is connecting to the server.
+        ///     Called when client is connecting to the server.
         /// </summary>
         protected virtual void OnConnecting()
         {
-
         }
 
         /// <summary>
-        /// Called when client is connected to the server.
+        ///     Called when client is connected to the server.
         /// </summary>
         protected virtual void OnConnected()
         {
-
         }
 
         /// <summary>
-        /// Called when client is disconnecting from the server.
+        ///     Called when client is disconnecting from the server.
         /// </summary>
         protected virtual void OnDisconnecting()
         {
-
         }
 
         /// <summary>
-        /// Called when client is disconnected from the server.
+        ///     Called when client is disconnected from the server.
         /// </summary>
         protected virtual void OnDisconnected()
         {
-
         }
 
-         private void Session_ErrorOccured(object sender, ExceptionEventArgs e)
+        private void Session_ErrorOccured(object sender, ExceptionEventArgs e)
         {
-            var handler = this.ErrorOccurred;
+            var handler = ErrorOccurred;
             if (handler != null)
             {
                 handler(this, e);
@@ -190,7 +180,7 @@ namespace Renci.SshNet
 
         private void Session_HostKeyReceived(object sender, HostKeyEventArgs e)
         {
-            var handler = this.HostKeyReceived;
+            var handler = HostKeyReceived;
             if (handler != null)
             {
                 handler(this, e);
@@ -199,10 +189,10 @@ namespace Renci.SshNet
 
         #region IDisposable Members
 
-        private bool _isDisposed = false;
+        private bool _isDisposed;
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged ResourceMessages.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged ResourceMessages.
         /// </summary>
         public void Dispose()
         {
@@ -212,32 +202,35 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        ///     Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged ResourceMessages.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged ResourceMessages.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!this._isDisposed)
+            if (!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged ResourceMessages.
                 if (disposing)
                 {
                     // Dispose managed ResourceMessages.
-                    this.Session.ErrorOccured -= Session_ErrorOccured;
-                    this.Session.HostKeyReceived -= Session_HostKeyReceived;
+                    Session.ErrorOccured -= Session_ErrorOccured;
+                    Session.HostKeyReceived -= Session_HostKeyReceived;
 
-                    if (this.Session != null)
+                    if (Session != null)
                     {
-                        this.Session.Dispose();
-                        this.Session = null;
+                        Session.Dispose();
+                        Session = null;
                     }
 
-                    if (this._keepAliveTimer != null)
+                    if (_keepAliveTimer != null)
                     {
-                        this._keepAliveTimer.Dispose();
-                        this._keepAliveTimer = null;
+                        _keepAliveTimer.Dispose();
+                        _keepAliveTimer = null;
                     }
                 }
 
@@ -247,8 +240,8 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="BaseClient"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="BaseClient" /> is reclaimed by garbage collection.
         /// </summary>
         ~BaseClient()
         {

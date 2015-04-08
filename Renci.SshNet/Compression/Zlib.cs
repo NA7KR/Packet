@@ -1,12 +1,12 @@
 ﻿namespace Renci.SshNet.Compression
 {
     /// <summary>
-    /// Represents "zlib" compression implementation
+    ///     Represents "zlib" compression implementation
     /// </summary>
     internal class Zlib : Compressor
     {
         /// <summary>
-        /// Gets algorithm name.
+        ///     Gets algorithm name.
         /// </summary>
         public override string Name
         {
@@ -14,13 +14,13 @@
         }
 
         /// <summary>
-        /// Initializes the algorithm
+        ///     Initializes the algorithm
         /// </summary>
         /// <param name="session">The session.</param>
         public override void Init(Session session)
         {
             base.Init(session);
-            this.IsActive = true;
+            IsActive = true;
         }
     }
 }

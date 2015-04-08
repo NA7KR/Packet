@@ -10,9 +10,9 @@ namespace Packet
         public AboutBox1()
         {
             InitializeComponent();
-            Text = String.Format("About {0}", AssemblyTitle);
+            Text = string.Format("About {0}", AssemblyTitle);
             labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
+            labelVersion.Text = string.Format("Version {0}", AssemblyVersion);
             labelCopyright.Text = AssemblyCopyright;
             labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
@@ -24,13 +24,21 @@ namespace Packet
             set { base.Text = value; }
         }
 
+        private void labelVersion_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+        }
+
         #region Assembly Attribute Accessors
 
         public string AssemblyTitle
         {
             get
             {
-                object[] attributes =
+                var attributes =
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (AssemblyTitleAttribute), false);
                 if (attributes.Length > 0)
                 {
@@ -53,7 +61,7 @@ namespace Packet
         {
             get
             {
-                object[] attributes =
+                var attributes =
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (AssemblyDescriptionAttribute), false);
                 if (attributes.Length == 0)
                 {
@@ -67,7 +75,7 @@ namespace Packet
         {
             get
             {
-                object[] attributes =
+                var attributes =
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (AssemblyProductAttribute), false);
                 if (attributes.Length == 0)
                 {
@@ -81,7 +89,7 @@ namespace Packet
         {
             get
             {
-                object[] attributes =
+                var attributes =
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (AssemblyCopyrightAttribute), false);
                 if (attributes.Length == 0)
                 {
@@ -95,7 +103,7 @@ namespace Packet
         {
             get
             {
-                object[] attributes =
+                var attributes =
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (AssemblyCompanyAttribute), false);
                 if (attributes.Length == 0)
                 {
@@ -106,13 +114,5 @@ namespace Packet
         }
 
         #endregion
-
-        private void labelVersion_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void okButton_Click(object sender, EventArgs e)
-        {
-        }
     }
 }

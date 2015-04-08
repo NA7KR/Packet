@@ -12,46 +12,46 @@ namespace Renci.SshNet
 {
     public partial class ForwardedPortDynamic
     {
+        private readonly object _listenerLocker = new object();
         private TcpListener _listener;
-        private object _listenerLocker = new object();
 
         partial void InternalStart()
         {
             //  If port already started don't start it again
-            if (this.IsStarted)
+            if (IsStarted)
                 return;
 
             var ip = IPAddress.Any;
-            if (!string.IsNullOrEmpty(this.BoundHost))
+            if (!string.IsNullOrEmpty(BoundHost))
             {
-                ip = this.BoundHost.GetIPAddress();
+                ip = BoundHost.GetIPAddress();
             }
 
-            var ep = new IPEndPoint(ip, (int)this.BoundPort);
+            var ep = new IPEndPoint(ip, (int) BoundPort);
 
-            this._listener = new TcpListener(ep);
-            this._listener.Start();
+            _listener = new TcpListener(ep);
+            _listener.Start();
 
-            this._listenerTaskCompleted = new ManualResetEvent(false);
-            this.ExecuteThread(() =>
+            _listenerTaskCompleted = new ManualResetEvent(false);
+            ExecuteThread(() =>
             {
                 try
                 {
                     while (true)
                     {
-                        lock (this._listenerLocker)
+                        lock (_listenerLocker)
                         {
-                            if (this._listener == null)
+                            if (_listener == null)
                                 break;
                         }
 
-                        var socket = this._listener.AcceptSocket();
+                        var socket = _listener.AcceptSocket();
 
-                        this.ExecuteThread(() =>
+                        ExecuteThread(() =>
                         {
                             try
                             {
-                                using (var channel = this.Session.CreateChannel<ChannelDirectTcpip>())
+                                using (var channel = Session.CreateChannel<ChannelDirectTcpip>())
                                 {
                                     var version = new byte[1];
 
@@ -59,15 +59,16 @@ namespace Renci.SshNet
 
                                     if (version[0] == 4)
                                     {
-                                        this.HandleSocks4(socket, channel);
+                                        HandleSocks4(socket, channel);
                                     }
                                     else if (version[0] == 5)
                                     {
-                                        this.HandleSocks5(socket, channel);
+                                        HandleSocks5(socket, channel);
                                     }
                                     else
                                     {
-                                        throw new NotSupportedException(string.Format("SOCKS version {0} is not supported.", version));
+                                        throw new NotSupportedException(
+                                            string.Format("SOCKS version {0} is not supported.", version));
                                     }
 
                                     channel.Bind();
@@ -77,7 +78,7 @@ namespace Renci.SshNet
                             }
                             catch (Exception exp)
                             {
-                                this.RaiseExceptionEvent(exp);
+                                RaiseExceptionEvent(exp);
                             }
                         });
                     }
@@ -86,37 +87,37 @@ namespace Renci.SshNet
                 {
                     if (!(exp.SocketErrorCode == SocketError.Interrupted))
                     {
-                        this.RaiseExceptionEvent(exp);
+                        RaiseExceptionEvent(exp);
                     }
                 }
                 catch (Exception exp)
                 {
-                    this.RaiseExceptionEvent(exp);
+                    RaiseExceptionEvent(exp);
                 }
                 finally
                 {
-                    this._listenerTaskCompleted.Set();
+                    _listenerTaskCompleted.Set();
                 }
             });
 
-            this.IsStarted = true;
+            IsStarted = true;
         }
 
         partial void InternalStop()
         {
             //  If port not started you cant stop it
-            if (!this.IsStarted)
+            if (!IsStarted)
                 return;
 
-            lock (this._listenerLocker)
+            lock (_listenerLocker)
             {
-                this._listener.Stop();
-                this._listener = null;
+                _listener.Stop();
+                _listener = null;
             }
-            this._listenerTaskCompleted.WaitOne(this.Session.ConnectionInfo.Timeout);
-            this._listenerTaskCompleted.Dispose();
-            this._listenerTaskCompleted = null;
-            this.IsStarted = false;
+            _listenerTaskCompleted.WaitOne(Session.ConnectionInfo.Timeout);
+            _listenerTaskCompleted.Dispose();
+            _listenerTaskCompleted = null;
+            IsStarted = false;
         }
 
         private void HandleSocks4(Socket socket, ChannelDirectTcpip channel)
@@ -128,7 +129,7 @@ namespace Renci.SshNet
 
                 var portBuffer = new byte[2];
                 stream.Read(portBuffer, 0, portBuffer.Length);
-                var port = (uint)(portBuffer[0] * 256 + portBuffer[1]);
+                var port = (uint) (portBuffer[0]*256 + portBuffer[1]);
 
                 var ipBuffer = new byte[4];
                 stream.Read(ipBuffer, 0, ipBuffer.Length);
@@ -138,7 +139,7 @@ namespace Renci.SshNet
 
                 var host = ipAddress.ToString();
 
-                this.RaiseRequestReceived(host, port);
+                RaiseRequestReceived(host, port);
 
                 channel.Open(host, port, socket);
 
@@ -197,40 +198,41 @@ namespace Renci.SshNet
                 switch (addressType)
                 {
                     case 0x01:
-                        {
-                            addressBuffer = new byte[4];
-                            stream.Read(addressBuffer, 0, 4);
+                    {
+                        addressBuffer = new byte[4];
+                        stream.Read(addressBuffer, 0, 4);
 
-                            ipAddress = new IPAddress(addressBuffer);
-                        }
+                        ipAddress = new IPAddress(addressBuffer);
+                    }
                         break;
                     case 0x03:
-                        {
-                            var length = stream.ReadByte();
-                            addressBuffer = new byte[length];
-                            stream.Read(addressBuffer, 0, addressBuffer.Length);
+                    {
+                        var length = stream.ReadByte();
+                        addressBuffer = new byte[length];
+                        stream.Read(addressBuffer, 0, addressBuffer.Length);
 
-                            ipAddress = IPAddress.Parse(new ASCIIEncoding().GetString(addressBuffer));
-                        }
+                        ipAddress = IPAddress.Parse(new ASCIIEncoding().GetString(addressBuffer));
+                    }
                         break;
                     case 0x04:
-                        {
-                            addressBuffer = new byte[16];
-                            stream.Read(addressBuffer, 0, 16);
+                    {
+                        addressBuffer = new byte[16];
+                        stream.Read(addressBuffer, 0, 16);
 
-                            ipAddress = new IPAddress(addressBuffer);
-                        }
+                        ipAddress = new IPAddress(addressBuffer);
+                    }
                         break;
                     default:
-                        throw new ProxyException(string.Format("SOCKS5: Address type '{0}' is not supported.", addressType));
+                        throw new ProxyException(string.Format("SOCKS5: Address type '{0}' is not supported.",
+                            addressType));
                 }
 
                 var portBuffer = new byte[2];
                 stream.Read(portBuffer, 0, portBuffer.Length);
-                var port = (uint)(portBuffer[0] * 256 + portBuffer[1]);
+                var port = (uint) (portBuffer[0]*256 + portBuffer[1]);
                 var host = ipAddress.ToString();
 
-                this.RaiseRequestReceived(host, port);
+                RaiseRequestReceived(host, port);
 
                 channel.Open(host, port, socket);
 
@@ -269,12 +271,12 @@ namespace Renci.SshNet
 
         private static string ReadString(NetworkStream stream)
         {
-            StringBuilder text = new StringBuilder();
-            var aa = (char)stream.ReadByte();
+            var text = new StringBuilder();
+            var aa = (char) stream.ReadByte();
             while (aa != 0)
             {
                 text.Append(aa);
-                aa = (char)stream.ReadByte();
+                aa = (char) stream.ReadByte();
             }
             return text.ToString();
         }

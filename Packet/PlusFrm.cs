@@ -19,13 +19,12 @@ namespace Packet
 
         private void button_ok_Click(object sender, EventArgs e)
         {
-            
-            OpenFileDialog fbd = new OpenFileDialog();
+            var fbd = new OpenFileDialog();
             if (fbd.ShowDialog() == DialogResult.OK)
 
             {
-                string fp = (Path.GetFullPath(fbd.FileName));
-                var args = fp +" -SAVE \"c:\\temp\\out\\\"";
+                var fp = (Path.GetFullPath(fbd.FileName));
+                var args = fp + " -SAVE \"c:\\temp\\out\\\"";
                 Do_7plus(args);
             }
 
@@ -38,12 +37,10 @@ namespace Packet
 
         private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
         {
-
         }
 
         private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
         {
-
         }
     }
 }

@@ -8,42 +8,42 @@ using Renci.SshNet.Messages.Transport;
 namespace Renci.SshNet.Security
 {
     /// <summary>
-    /// Represents base class for Diffie Hellman key exchange algorithm
+    ///     Represents base class for Diffie Hellman key exchange algorithm
     /// </summary>
     public class KeyExchangeEllipticCurveDiffieHellman : KeyExchange
     {
         /// <summary>
-        /// Specifies client payload
-        /// </summary>
-        protected byte[] _clientPayload;
-
-        /// <summary>
-        /// Specifies server payload
-        /// </summary>
-        protected byte[] _serverPayload;
-
-        /// <summary>
-        /// Specifies client exchange number.
+        ///     Specifies client exchange number.
         /// </summary>
         protected BigInteger _clientExchangeValue;
 
         /// <summary>
-        /// Specifies server exchange number.
+        ///     Specifies client payload
         /// </summary>
-        protected BigInteger _serverExchangeValue;
+        protected byte[] _clientPayload;
 
         /// <summary>
-        /// Specifies random generated number.
-        /// </summary>
-        protected BigInteger _randomValue;
-
-        /// <summary>
-        /// Specifies host key data.
+        ///     Specifies host key data.
         /// </summary>
         protected byte[] _hostKey;
 
         /// <summary>
-        /// Specifies signature data.
+        ///     Specifies random generated number.
+        /// </summary>
+        protected BigInteger _randomValue;
+
+        /// <summary>
+        ///     Specifies server exchange number.
+        /// </summary>
+        protected BigInteger _serverExchangeValue;
+
+        /// <summary>
+        ///     Specifies server payload
+        /// </summary>
+        protected byte[] _serverPayload;
+
+        /// <summary>
+        ///     Specifies signature data.
         /// </summary>
         protected byte[] _signature;
 
@@ -77,7 +77,7 @@ namespace Renci.SshNet.Security
         }
 
         /// <summary>
-        /// Starts key exchange algorithm
+        ///     Starts key exchange algorithm
         /// </summary>
         /// <param name="session">The session.</param>
         /// <param name="message">Key exchange init message.</param>
@@ -85,12 +85,12 @@ namespace Renci.SshNet.Security
         {
             base.Start(session, message);
 
-            this._serverPayload = message.GetBytes().ToArray();
-            this._clientPayload = this.Session.ClientInitMessage.GetBytes().ToArray();
+            _serverPayload = message.GetBytes().ToArray();
+            _clientPayload = Session.ClientInitMessage.GetBytes().ToArray();
 
-            this.Session.RegisterMessage("SSH_MSG_KEXECDH_REPLY");
+            Session.RegisterMessage("SSH_MSG_KEXECDH_REPLY");
 
-            this.Session.MessageReceived += Session_MessageReceived;
+            Session.MessageReceived += Session_MessageReceived;
 
             //3.2.1 Elliptic Curve Key Pair Generation Primitive
             //Elliptic curve key pairs should be generated as follows:
@@ -100,16 +100,19 @@ namespace Renci.SshNet.Security
             //1. Randomly or pseudorandomly select an integer d in the interval [1, n − 1].
             //2. Compute Q = dG.
             //3. Output (d,Q).
-            
-            BigInteger p;
-            BigInteger.TryParse("00FFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF", NumberStyles.AllowHexSpecifier, CultureInfo.CurrentCulture, out p);
 
+            BigInteger p;
+            BigInteger.TryParse("00FFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF",
+                NumberStyles.AllowHexSpecifier, CultureInfo.CurrentCulture, out p);
 
 
             BigInteger n;
-            BigInteger.TryParse("00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC7634D81F4372DDF581A0DB248B0A77AECEC196ACCC52973", NumberStyles.AllowHexSpecifier, CultureInfo.CurrentCulture, out n);
+            BigInteger.TryParse(
+                "00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC7634D81F4372DDF581A0DB248B0A77AECEC196ACCC52973",
+                NumberStyles.AllowHexSpecifier, CultureInfo.CurrentCulture, out n);
             BigInteger G;
-            BigInteger.TryParse("00036B17D1F2E12C4247F8BCE6E563A440F277037D812DEB33A0F4A13945D898C296", NumberStyles.AllowHexSpecifier, CultureInfo.CurrentCulture, out G);
+            BigInteger.TryParse("00036B17D1F2E12C4247F8BCE6E563A440F277037D812DEB33A0F4A13945D898C296",
+                NumberStyles.AllowHexSpecifier, CultureInfo.CurrentCulture, out G);
 
             BigInteger d;
 
@@ -118,11 +121,10 @@ namespace Renci.SshNet.Security
                 d = BigInteger.Random(n.BitLength);
             } while (d < 1 || d > n);
 
-            var Q = d * G;
+            var Q = d*G;
 
 
-            this.SendMessage(new KeyExchangeEcdhInitMessage(d, Q));
-
+            SendMessage(new KeyExchangeEcdhInitMessage(d, Q));
         }
 
         private void Session_MessageReceived(object sender, MessageEventArgs<Message> e)
@@ -131,20 +133,20 @@ namespace Renci.SshNet.Security
             if (message != null)
             {
                 //  Unregister message once received
-                this.Session.UnRegisterMessage("SSH_MSG_KEXECDH_REPLY");
+                Session.UnRegisterMessage("SSH_MSG_KEXECDH_REPLY");
 
-                this.HandleServerEcdhReply();
+                HandleServerEcdhReply();
 
                 //  When SSH_MSG_KEXDH_REPLY received key exchange is completed
-                this.Finish();
+                Finish();
             }
         }
 
         /// <summary>
-        /// Validates the exchange hash.
+        ///     Validates the exchange hash.
         /// </summary>
         /// <returns>
-        /// true if exchange hash is valid; otherwise false.
+        ///     true if exchange hash is valid; otherwise false.
         /// </returns>
         protected override bool ValidateExchangeHash()
         {
@@ -172,7 +174,7 @@ namespace Renci.SshNet.Security
         }
 
         /// <summary>
-        /// Populates the client exchange value.
+        ///     Populates the client exchange value.
         /// </summary>
         //protected void PopulateClientExchangeValue()
         //{
@@ -192,7 +194,6 @@ namespace Renci.SshNet.Security
 
         //    } while (this._clientExchangeValue < 1 || this._clientExchangeValue > ((this._prime - 1)));
         //}
-
         protected virtual void HandleServerEcdhReply()
         {
             //this._serverExchangeValue = serverExchangeValue;
@@ -205,12 +206,12 @@ namespace Renci.SshNet.Security
         {
             var hashData = new _ExchangeHashData
             {
-                ClientVersion = this.Session.ClientVersion,
-                ServerVersion = this.Session.ServerVersion,
-                ClientPayload = this._clientPayload,
-                ServerPayload = this._serverPayload,
-                HostKey = this._hostKey,
-                SharedKey = this.SharedKey,
+                ClientVersion = Session.ClientVersion,
+                ServerVersion = Session.ServerVersion,
+                ClientPayload = _clientPayload,
+                ServerPayload = _serverPayload,
+                HostKey = _hostKey,
+                SharedKey = SharedKey
             }.GetBytes();
 
             //string   V_C, client's identification string (CR and LF excluded)
@@ -221,35 +222,23 @@ namespace Renci.SshNet.Security
             //string   Q_C, client's ephemeral public key octet string
             //string   Q_S, server's ephemeral public key octet string
             //mpint    K,   shared secret
-            return this.Hash(hashData);
+            return Hash(hashData);
         }
 
         private class _ExchangeHashData : SshData
         {
             public string ServerVersion { get; set; }
-
             public string ClientVersion { get; set; }
-
             public byte[] ClientPayload { get; set; }
-
             public byte[] ServerPayload { get; set; }
-
             public byte[] HostKey { get; set; }
-
-            public UInt32 MinimumGroupSize { get; set; }
-
-            public UInt32 PreferredGroupSize { get; set; }
-
-            public UInt32 MaximumGroupSize { get; set; }
-
+            public uint MinimumGroupSize { get; set; }
+            public uint PreferredGroupSize { get; set; }
+            public uint MaximumGroupSize { get; set; }
             public BigInteger Prime { get; set; }
-
             public BigInteger SubGroup { get; set; }
-
             public BigInteger ClientExchangeValue { get; set; }
-
             public BigInteger ServerExchangeValue { get; set; }
-
             public BigInteger SharedKey { get; set; }
 
             protected override void LoadData()
@@ -259,21 +248,20 @@ namespace Renci.SshNet.Security
 
             protected override void SaveData()
             {
-                this.Write(this.ClientVersion);
-                this.Write(this.ServerVersion);
-                this.WriteBinaryString(this.ClientPayload);
-                this.WriteBinaryString(this.ServerPayload);
-                this.WriteBinaryString(this.HostKey);
-                this.Write(this.MinimumGroupSize);
-                this.Write(this.PreferredGroupSize);
-                this.Write(this.MaximumGroupSize);
-                this.Write(this.Prime);
-                this.Write(this.SubGroup);
-                this.Write(this.ClientExchangeValue);
-                this.Write(this.ServerExchangeValue);
-                this.Write(this.SharedKey);
+                Write(ClientVersion);
+                Write(ServerVersion);
+                WriteBinaryString(ClientPayload);
+                WriteBinaryString(ServerPayload);
+                WriteBinaryString(HostKey);
+                Write(MinimumGroupSize);
+                Write(PreferredGroupSize);
+                Write(MaximumGroupSize);
+                Write(Prime);
+                Write(SubGroup);
+                Write(ClientExchangeValue);
+                Write(ServerExchangeValue);
+                Write(SharedKey);
             }
         }
-
     }
 }

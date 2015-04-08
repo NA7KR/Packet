@@ -186,8 +186,8 @@ namespace Packet
                             while (reader.Read())
                             {
                                 var selectList = new DtoListMsgto(
-                                    (String) convertDBNull(reader.GetValue(0)),
-                                    (String) convertDBNull(reader.GetValue(1)),
+                                    (string) convertDBNull(reader.GetValue(0)),
+                                    (string) convertDBNull(reader.GetValue(1)),
                                     DateTime.MinValue);
                                 selectLists.Add(selectList);
                             }
@@ -225,8 +225,8 @@ namespace Packet
                         while (reader.Read())
                         {
                             var selectList = new DtoListMsgFrom(
-                                (String) convertDBNull(reader.GetValue(0)),
-                                (String) convertDBNull(reader.GetValue(1)),
+                                (string) convertDBNull(reader.GetValue(0)),
+                                (string) convertDBNull(reader.GetValue(1)),
                                 DateTime.MinValue);
                             selectLists.Add(selectList);
                         }
@@ -263,8 +263,8 @@ namespace Packet
                             while (reader.Read())
                             {
                                 var selectList = new DtoListMsgRoute(
-                                    (String) convertDBNull(reader.GetValue(0)),
-                                    (String) convertDBNull(reader.GetValue(1)),
+                                    (string) convertDBNull(reader.GetValue(0)),
+                                    (string) convertDBNull(reader.GetValue(1)),
                                     DateTime.MinValue);
                                 selectLists.Add(selectList);
                             }
@@ -302,8 +302,8 @@ namespace Packet
                             while (reader.Read())
                             {
                                 var selectList = new DtoListMsgSubject(
-                                    (String) convertDBNull(reader.GetValue(0)),
-                                    (String) convertDBNull(reader.GetValue(1)),
+                                    (string) convertDBNull(reader.GetValue(0)),
+                                    (string) convertDBNull(reader.GetValue(1)),
                                     DateTime.MinValue);
                                 selectLists.Add(selectList);
                             }
@@ -364,7 +364,7 @@ namespace Packet
 
         #region WriteSQLPacketUpdate
 
-        public void WriteSqlPacketUpdate(int value, String textValue)
+        public void WriteSqlPacketUpdate(int value, string textValue)
         {
             try
             {
@@ -382,8 +382,8 @@ namespace Packet
 
         #region WriteSQLCustomUpdate
 
-        public void WriteSqlCustomUpdate(int value, string customName, String customQuery, String tableName,
-            String enable)
+        public void WriteSqlCustomUpdate(int value, string customName, string customQuery, string tableName,
+            string enable)
         {
             try
             {
@@ -404,7 +404,7 @@ namespace Packet
 
         #region WriteSQLReplyUpdate
 
-        public void WriteSqlReplyUpdate(string filename, String status, int msgnumber, string msgtype, string msgcall,
+        public void WriteSqlReplyUpdate(string filename, string status, int msgnumber, string msgtype, string msgcall,
             string msggroup, bool update)
         {
             try
@@ -541,7 +541,7 @@ namespace Packet
 
         #region WriteSQLMSGTOUpdate
 
-        public void WriteSqlmsgtoUpdate(string value, String textValue)
+        public void WriteSqlmsgtoUpdate(string value, string textValue)
         {
             _msgtodto.set_MSGTO(value);
             _msgtodto.set_Selected(textValue);
@@ -582,7 +582,7 @@ namespace Packet
 
         #region WriteSQLMSGFromUpdate
 
-        public void WriteSqlmsgFromUpdate(string value, String textValue)
+        public void WriteSqlmsgFromUpdate(string value, string textValue)
         {
             _msgfrom.set_MSGFROM(value);
             _msgfrom.set_Selected(textValue);
@@ -623,7 +623,7 @@ namespace Packet
 
         #region WriteSQLMSGRouteUpdate
 
-        public void WriteSqlmsgRouteUpdate(string value, String textValue)
+        public void WriteSqlmsgRouteUpdate(string value, string textValue)
         {
             _msgroute.set_MSGRoute(value);
             _msgroute.set_Selected(textValue);
@@ -664,7 +664,7 @@ namespace Packet
 
         #region WriteSQLMSGSubjectUpdate
 
-        public void WriteSqlmsgSubjectUpdate(string value, String textValue)
+        public void WriteSqlmsgSubjectUpdate(string value, string textValue)
         {
             _msgsubject.set_MSGSubject(value);
             _msgsubject.set_Selected(textValue);
@@ -837,7 +837,7 @@ namespace Packet
 
         #region clear 
 
-        public void Sqlupdateclear(String sTable)
+        public void Sqlupdateclear(string sTable)
         {
             try
             {

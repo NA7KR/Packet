@@ -13,11 +13,11 @@ namespace Packet
     public partial class Read : Form
     {
         private static readonly Sql Sql = new Sql();
-        private bool _selectedCkeck;
-        private Int32 _textId;
-        private string _tsld;
-        private string _to;
         private string _from;
+        private bool _selectedCkeck;
+        private int _textId;
+        private string _to;
+        private string _tsld;
 
         #region Read
 
@@ -68,10 +68,8 @@ namespace Packet
 
         private void Loader()
         {
-             
             try
             {
-               
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
                 var packets = Sql.SqlselectRd();
@@ -209,12 +207,12 @@ namespace Packet
         #endregion
 
         #region Reply
+
         private void button_Relpy_Click(object sender, EventArgs e)
         {
             if (_selectedCkeck)
             {
-                
-                var box = new Reply(_textId,_tsld,_to,_from);
+                var box = new Reply(_textId, _tsld, _to, _from);
                 box.ShowDialog();
             }
             else
@@ -222,15 +220,15 @@ namespace Packet
                 MessageBox.Show("Select a message first");
             }
         }
+
         #endregion
 
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
             _textId = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
             _tsld = (DataGridView1[1, e.RowIndex].Value).ToString();
             _to = (DataGridView1[3, e.RowIndex].Value).ToString();
-            _from  = (DataGridView1[5, e.RowIndex].Value).ToString();
+            _from = (DataGridView1[5, e.RowIndex].Value).ToString();
             _tsld = _tsld.Substring(0, 1);
             _selectedCkeck = true;
         }

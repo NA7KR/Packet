@@ -8,65 +8,66 @@ using System.Text.RegularExpressions;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Collection of different extension method
+    ///     Collection of different extension method
     /// </summary>
     public static partial class Extensions
     {
         /// <summary>
-        /// Checks whether a collection is the same as another collection
+        ///     Checks whether a collection is the same as another collection
         /// </summary>
         /// <param name="value">The current instance object</param>
         /// <param name="compareList">The collection to compare with</param>
-        /// <param name="comparer">The comparer object to use to compare each item in the collection.  If null uses EqualityComparer(T).Default</param>
+        /// <param name="comparer">
+        ///     The comparer object to use to compare each item in the collection.  If null uses
+        ///     EqualityComparer(T).Default
+        /// </param>
         /// <returns>True if the two collections contain all the same items in the same order</returns>
-        internal static bool IsEqualTo<TSource>(this IEnumerable<TSource> value, IEnumerable<TSource> compareList, IEqualityComparer<TSource> comparer)
+        internal static bool IsEqualTo<TSource>(this IEnumerable<TSource> value, IEnumerable<TSource> compareList,
+            IEqualityComparer<TSource> comparer)
         {
             if (value == compareList)
             {
                 return true;
             }
-            else if (value == null || compareList == null)
+            if (value == null || compareList == null)
             {
                 return false;
             }
-            else
+            if (comparer == null)
             {
-                if (comparer == null)
+                comparer = EqualityComparer<TSource>.Default;
+            }
+
+            var enumerator1 = value.GetEnumerator();
+            var enumerator2 = compareList.GetEnumerator();
+
+            var enum1HasValue = enumerator1.MoveNext();
+            var enum2HasValue = enumerator2.MoveNext();
+
+            try
+            {
+                while (enum1HasValue && enum2HasValue)
                 {
-                    comparer = EqualityComparer<TSource>.Default;
-                }
-
-                IEnumerator<TSource> enumerator1 = value.GetEnumerator();
-                IEnumerator<TSource> enumerator2 = compareList.GetEnumerator();
-
-                bool enum1HasValue = enumerator1.MoveNext();
-                bool enum2HasValue = enumerator2.MoveNext();
-
-                try
-                {
-                    while (enum1HasValue && enum2HasValue)
+                    if (!comparer.Equals(enumerator1.Current, enumerator2.Current))
                     {
-                        if (!comparer.Equals(enumerator1.Current, enumerator2.Current))
-                        {
-                            return false;
-                        }
-
-                        enum1HasValue = enumerator1.MoveNext();
-                        enum2HasValue = enumerator2.MoveNext();
+                        return false;
                     }
 
-                    return !(enum1HasValue || enum2HasValue);
+                    enum1HasValue = enumerator1.MoveNext();
+                    enum2HasValue = enumerator2.MoveNext();
                 }
-                finally
-                {
-                    if (enumerator1 != null) enumerator1.Dispose();
-                    if (enumerator2 != null) enumerator2.Dispose();
-                }
+
+                return !(enum1HasValue || enum2HasValue);
+            }
+            finally
+            {
+                if (enumerator1 != null) enumerator1.Dispose();
+                if (enumerator2 != null) enumerator2.Dispose();
             }
         }
 
         /// <summary>
-        /// Checks whether a collection is the same as another collection
+        ///     Checks whether a collection is the same as another collection
         /// </summary>
         /// <param name="value">The current instance object</param>
         /// <param name="compareList">The collection to compare with</param>
@@ -80,7 +81,7 @@ namespace Renci.SshNet
 #else
 
         /// <summary>
-        /// Prints out 
+        ///     Prints out
         /// </summary>
         /// <param name="bytes">The bytes.</param>
         internal static void DebugPrint(this IEnumerable<byte> bytes)
@@ -94,30 +95,27 @@ namespace Renci.SshNet
 #endif
 
         /// <summary>
-        /// Trims the leading zero from bytes array.
+        ///     Trims the leading zero from bytes array.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>Data without leading zeros.</returns>
         internal static IEnumerable<byte> TrimLeadingZero(this IEnumerable<byte> data)
         {
-            bool leadingZero = true;
+            var leadingZero = true;
             foreach (var item in data)
             {
                 if (item == 0 & leadingZero)
                 {
                     continue;
                 }
-                else
-                {
-                    leadingZero = false;
-                }
+                leadingZero = false;
 
                 yield return item;
             }
         }
 
         /// <summary>
-        /// Creates an instance of the specified type using that type's default constructor.
+        ///     Creates an instance of the specified type using that type's default constructor.
         /// </summary>
         /// <typeparam name="T">The type to create.</typeparam>
         /// <param name="type">Type of the instance to create.</param>
@@ -130,43 +128,51 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Returns the specified 16-bit unsigned integer value as an array of bytes.
+        ///     Returns the specified 16-bit unsigned integer value as an array of bytes.
         /// </summary>
         /// <param name="value">The number to convert.</param>
         /// <returns>An array of bytes with length 2.</returns>
-        internal static byte[] GetBytes(this UInt16 value)
+        internal static byte[] GetBytes(this ushort value)
         {
-            return new byte[] { (byte)(value >> 8), (byte)(value & 0xFF) };
+            return new[] {(byte) (value >> 8), (byte) (value & 0xFF)};
         }
 
         /// <summary>
-        /// Returns the specified 32-bit unsigned integer value as an array of bytes.
+        ///     Returns the specified 32-bit unsigned integer value as an array of bytes.
         /// </summary>
         /// <param name="value">The number to convert.</param>
         /// <returns>An array of bytes with length 4.</returns>
-        internal static byte[] GetBytes(this UInt32 value)
+        internal static byte[] GetBytes(this uint value)
         {
-            return new byte[] { (byte)(value >> 24), (byte)(value >> 16), (byte)(value >> 8), (byte)(value & 0xFF) };
+            return new[] {(byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) (value & 0xFF)};
         }
 
         /// <summary>
-        /// Returns the specified 64-bit unsigned integer value as an array of bytes.
+        ///     Returns the specified 64-bit unsigned integer value as an array of bytes.
         /// </summary>
         /// <param name="value">The number to convert.</param>
         /// <returns>An array of bytes with length 8.</returns>
-        internal static byte[] GetBytes(this UInt64 value)
+        internal static byte[] GetBytes(this ulong value)
         {
-            return new byte[] { (byte)(value >> 56), (byte)(value >> 48), (byte)(value >> 40), (byte)(value >> 32), (byte)(value >> 24), (byte)(value >> 16), (byte)(value >> 8), (byte)(value & 0xFF) };
+            return new[]
+            {
+                (byte) (value >> 56), (byte) (value >> 48), (byte) (value >> 40), (byte) (value >> 32),
+                (byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) (value & 0xFF)
+            };
         }
 
         /// <summary>
-        /// Returns the specified 64-bit signed integer value as an array of bytes.
+        ///     Returns the specified 64-bit signed integer value as an array of bytes.
         /// </summary>
         /// <param name="value">The number to convert.</param>
         /// <returns>An array of bytes with length 8.</returns>
-        internal static byte[] GetBytes(this Int64 value)
+        internal static byte[] GetBytes(this long value)
         {
-            return new byte[] { (byte)(value >> 56), (byte)(value >> 48), (byte)(value >> 40), (byte)(value >> 32), (byte)(value >> 24), (byte)(value >> 16), (byte)(value >> 8), (byte)(value & 0xFF) };
+            return new[]
+            {
+                (byte) (value >> 56), (byte) (value >> 48), (byte) (value >> 40), (byte) (value >> 32),
+                (byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) (value & 0xFF)
+            };
         }
 
 #if SILVERLIGHT
@@ -174,9 +180,15 @@ namespace Renci.SshNet
 
         private static Regex _reIPv6 = new Regex(@"^(((?=(?>.*?::)(?!.*::)))(::)?([0-9A-F]{1,4}::?){0,5}|([0-9A-F]{1,4}:){6})(\2([0-9A-F]{1,4}(::?|$)){0,2}|((25[0-5]|(2[0-4]|1\d|[1-9])?\d)(\.|$)){4}|[0-9A-F]{1,4}:[0-9A-F]{1,4})(?<![^:]:|\.)\z", RegexOptions.IgnoreCase);
 #else
-        private static Regex _rehost = new Regex(@"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex _rehost =
+            new Regex(
+                @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static Regex _reIPv6 = new Regex(@"^(((?=(?>.*?::)(?!.*::)))(::)?([0-9A-F]{1,4}::?){0,5}|([0-9A-F]{1,4}:){6})(\2([0-9A-F]{1,4}(::?|$)){0,2}|((25[0-5]|(2[0-4]|1\d|[1-9])?\d)(\.|$)){4}|[0-9A-F]{1,4}:[0-9A-F]{1,4})(?<![^:]:|\.)\z", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex _reIPv6 =
+            new Regex(
+                @"^(((?=(?>.*?::)(?!.*::)))(::)?([0-9A-F]{1,4}::?){0,5}|([0-9A-F]{1,4}:){6})(\2([0-9A-F]{1,4}(::?|$)){0,2}|((25[0-5]|(2[0-4]|1\d|[1-9])?\d)(\.|$)){4}|[0-9A-F]{1,4}:[0-9A-F]{1,4})(?<![^:]:|\.)\z",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 #endif
 
@@ -216,6 +228,5 @@ namespace Renci.SshNet
                 return false;
             return true;
         }
-
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
@@ -14,16 +15,16 @@ namespace PacketComs
 {
     public class FileSql
     {
-        private DtoPacket _packet = new DtoPacket();
         public const string DsnName = "DSN=Packet";
-        private OdbcManager _odbc;
-        private OdbcConnection _conp = new OdbcConnection(DsnName);
-        private OdbcCommand _cmdp = new OdbcCommand();
+        private readonly OdbcCommand _cmdp = new OdbcCommand();
+        private readonly OdbcConnection _conp = new OdbcConnection(DsnName);
+        private readonly OdbcManager _odbc;
+        private readonly DtoPacket _packet = new DtoPacket();
 
         #region Constructor
+
         public FileSql()
         {
-
             var dsnTableName = "Packet";
             _odbc = new OdbcManager();
             _cmdp.Connection = _conp;
@@ -33,7 +34,6 @@ namespace PacketComs
             }
             catch (Exception)
             {
-
             }
             {
                 if (_odbc.CheckForDsn(dsnTableName) > 0)
@@ -47,24 +47,27 @@ namespace PacketComs
                 else
                 {
                     _odbc.CreateDsn(DsnName);
-                    
+
                     if (MessageBox.Show(
-                        "No Packet System DSN found" + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error
-                    ) == DialogResult.OK)
+                        "No Packet System DSN found" + Environment.NewLine + "Please make one. Must be name Packet",
+                        "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error
+                        ) == DialogResult.OK)
                     {
                         var check = CheckForInternetConnection();
-                        if ( check)
+                        if (check)
                         {
-                            System.Diagnostics.Process.Start("https://github.com/NA7KR/Packet/wiki/Install_odbc");
+                            Process.Start("https://github.com/NA7KR/Packet/wiki/Install_odbc");
                         }
                     }
                     Environment.Exit(1);
                 }
             }
         }
+
         #endregion
 
         #region SQLMakeTable
+
         private void SqlMakeTable(string query)
         {
             try
@@ -86,14 +89,17 @@ namespace PacketComs
                 MessageBox.Show(e.Message);
             }
         }
+
         #endregion
 
         #region SQLInsertPacket
+
         private void SqlInsertPacket(DtoPacket packetdto)
         {
             try
             {
-                _cmdp.CommandText = "INSERT INTO  Packet (MSG, MSGTSLD, MSGSize, MSGTO, MSGRoute, MSGFrom, MSGDateTime, MSGSubject) VALUES (?,?,?,?,?,?,?,?)";
+                _cmdp.CommandText =
+                    "INSERT INTO  Packet (MSG, MSGTSLD, MSGSize, MSGTO, MSGRoute, MSGFrom, MSGDateTime, MSGSubject) VALUES (?,?,?,?,?,?,?,?)";
                 _cmdp.Parameters.Clear();
                 _cmdp.Parameters.AddWithValue("@p1", packetdto.get_MSG());
                 _cmdp.Parameters.AddWithValue("@p2", packetdto.get_MSGTSLD());
@@ -111,11 +117,12 @@ namespace PacketComs
             {
                 MessageBox.Show(e.Message);
             }
-
         }
+
         #endregion
 
         #region DoesTableExist
+
         public bool DoesTableExist(string tableName, string dsnName)
         {
             using (var con = new OdbcConnection(dsnName))
@@ -145,9 +152,11 @@ namespace PacketComs
                 return tableExists;
             }
         }
+
         #endregion
 
         #region WriteSQLPacket
+
         public void WriteSqlPacket(string textValue)
         {
             try
@@ -167,47 +176,57 @@ namespace PacketComs
                 MessageBox.Show(e.Message);
             }
         }
+
         #endregion
 
         #region SelectMakeTable
-        public void SelectMakeTable(string textVale, Int32 intsize, string tableName, string systemDsn)
+
+        public void SelectMakeTable(string textVale, int intsize, string tableName, string systemDsn)
         {
             if (_odbc.CheckForDsn(systemDsn) > 0)
             {
                 if (DoesTableExist(tableName, DsnName) == false)
                 {
-                    SqlMakeTable("CREATE TABLE " + tableName + " (  " + textVale + " CHAR(" + intsize + "), DateCreate datetime, Selected CHAR(1)  )");
+                    SqlMakeTable("CREATE TABLE " + tableName + " (  " + textVale + " CHAR(" + intsize +
+                                 "), DateCreate datetime, Selected CHAR(1)  )");
                 }
             }
             else
             {
                 _odbc.CreateDsn(DsnName);
-                MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
+                    "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
         }
+
         #endregion
 
         #region ReplyMakeTable
+
         public void ReplyMakeTable(string systemDsn)
         {
             if (_odbc.CheckForDsn(systemDsn) > 0)
             {
                 if (DoesTableExist("Send", DsnName) == false)
                 {
-                    SqlMakeTable("CREATE TABLE Send ( ID AUTOINCREMENT PRIMARY KEY , FileName CHAR(30), Status CHAR(1),MSGNumber INT, MSGType CHAR(1), MSGCall CHAR(7),MSGGroup CHAR(10)  )");
+                    SqlMakeTable(
+                        "CREATE TABLE Send ( ID AUTOINCREMENT PRIMARY KEY , FileName CHAR(30), Status CHAR(1),MSGNumber INT, MSGType CHAR(1), MSGCall CHAR(7),MSGGroup CHAR(10)  )");
                 }
             }
             else
             {
                 _odbc.CreateDsn(DsnName);
-                MessageBox.Show("No Send System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Send System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
+                    "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
         }
+
         #endregion
 
         #region SelectMakeCustomQuery
+
         public bool SelectMakeCustomQuery(string systemDsn)
         {
             if (_odbc.CheckForDsn(systemDsn) > 0)
@@ -218,22 +237,19 @@ namespace PacketComs
                         "CREATE TABLE CustomQuery ( ID AUTOINCREMENT PRIMARY KEY ,CustomName CHAR(20), CustomQuery CHAR(50), TableName CHAR(20), Enable CHAR(1)  )");
                     return false;
                 }
-                else
-                {
-                    return true;
-                }
+                return true;
             }
-            else
-            {
-                _odbc.CreateDsn(DsnName);
-                MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet", "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(1);
-                return false;
-            }
+            _odbc.CreateDsn(DsnName);
+            MessageBox.Show("No Packet System DSN " + Environment.NewLine + "Please make one. Must be name Packet",
+                "Critical Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Environment.Exit(1);
+            return false;
         }
+
         #endregion
 
         #region Mid
+
         private static string Mid(string param, int startIndex, int length)
         {
             if (param == " ")
@@ -243,10 +259,12 @@ namespace PacketComs
             var result = param.Substring(startIndex, length);
             return result;
         }
+
         #endregion
 
         #region SQLPacket Delete
-        public void SqlPacketDelete(String tableName)
+
+        public void SqlPacketDelete(string tableName)
         {
             if (DoesTableExist(tableName, DsnName))
             {
@@ -257,7 +275,8 @@ namespace PacketComs
                         using (var cmd = new OdbcCommand())
                         {
                             cmd.Connection = con;
-                            cmd.CommandText = "Delete From Packet  Where " + tableName + " in  ( Select " + tableName + " from " + tableName + " where Selected  = ? )   ";
+                            cmd.CommandText = "Delete From Packet  Where " + tableName + " in  ( Select " + tableName +
+                                              " from " + tableName + " where Selected  = ? )   ";
                             cmd.Parameters.Clear();
                             cmd.Parameters.AddWithValue("@p1", "D");
                             con.Open();
@@ -268,21 +287,23 @@ namespace PacketComs
                     }
                 }
                 catch
-                (OdbcException e)
+                    (OdbcException e)
                 {
                     MessageBox.Show(e.Message);
                 }
             }
         }
+
         #endregion
 
         #region SQLSelectMail
+
         public int[] SqlSelectMail()
         {
             using (var con = new OdbcConnection(DsnName))
             {
                 con.Open();
-                String msgList = "SELECT MSG FROM Packet where MSGState = ?";
+                var msgList = "SELECT MSG FROM Packet where MSGState = ?";
                 using (var cmd = new OdbcCommand(msgList, con))
                 {
                     using (var da = new OdbcDataAdapter(cmd))
@@ -293,9 +314,9 @@ namespace PacketComs
                         using (var dt = new DataTable())
                         {
                             da.Fill(dt);
-                            int no = dt.Rows.Count;
+                            var no = dt.Rows.Count;
                             var MsgList = new int[no];
-                            for (int i = 0; i < dt.Rows.Count; i++)
+                            for (var i = 0; i < dt.Rows.Count; i++)
                             {
                                 var msgId = Convert.ToInt32(dt.Rows[i]["MSG"]);
                                 MsgList[i] = msgId;
@@ -307,11 +328,12 @@ namespace PacketComs
                 }
             }
         }
+
         #endregion
 
         #region SqlupdateRead
 
-        public void SqlupdateRead(Int32 msgNumber)
+        public void SqlupdateRead(int msgNumber)
         {
             if (DoesTableExist("Packet", DsnName))
             {
@@ -338,13 +360,12 @@ namespace PacketComs
                 {
                     MessageBox.Show(e.Message);
                 }
-
             }
         }
+
         #endregion
 
         #region SqlCustomRead
-
 
         public List<DtoCustom> SqlCustomRead()
         {
@@ -364,17 +385,16 @@ namespace PacketComs
                             {
                                 while (reader.Read())
                                 {
-                                    var custom = new DtoCustom((int)reader.GetValue(0),
-                                        (string)reader.GetValue(1),
-                                        (string)reader.GetValue(2),
-                                        (string)reader.GetValue(3),
-                                        (string)reader.GetValue(4));
+                                    var custom = new DtoCustom((int) reader.GetValue(0),
+                                        (string) reader.GetValue(1),
+                                        (string) reader.GetValue(2),
+                                        (string) reader.GetValue(3),
+                                        (string) reader.GetValue(4));
                                     packets.Add(custom);
                                 }
                             }
                             con.Close();
                         }
-
                     }
                 }
             }
@@ -384,7 +404,6 @@ namespace PacketComs
             }
             return packets;
         }
-
 
         #endregion
 
@@ -396,7 +415,7 @@ namespace PacketComs
             filePath = null;
             try
             {
-                string path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
+                var path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
                 if (!Directory.Exists(path))
                 {
                     // Try to create the directory.
@@ -404,11 +423,11 @@ namespace PacketComs
                 }
                 if (txt)
                 {
-                     filePath = path + @"\" + fileName + ".txt";
+                    filePath = path + @"\" + fileName + ".txt";
                 }
                 else
                 {
-                     filePath = path + @"\" + fileName ;
+                    filePath = path + @"\" + fileName;
                 }
                 File.WriteAllText(filePath, textVale);
                 return true;
@@ -435,12 +454,13 @@ namespace PacketComs
                         using (var cmd = new OdbcCommand())
                         {
                             cmd.CommandText =
-                            "UPDATE Packet " +
-                            " INNER JOIN " + tableName + " ON Packet." + tableName + " = " + tableName + "." + tableName +
-                            " SET Packet.MSGState = ? " +
-                            " where (Packet.MSGState is null    " +
-                            " or (Packet.MSGState<> ? And Packet.MSGState<> ? And Packet.MSGState<> ?) ) " +
-                            " and  " + tableName + ".Selected = ?";
+                                "UPDATE Packet " +
+                                " INNER JOIN " + tableName + " ON Packet." + tableName + " = " + tableName + "." +
+                                tableName +
+                                " SET Packet.MSGState = ? " +
+                                " where (Packet.MSGState is null    " +
+                                " or (Packet.MSGState<> ? And Packet.MSGState<> ? And Packet.MSGState<> ?) ) " +
+                                " and  " + tableName + ".Selected = ?";
 
                             cmd.Parameters.Clear();
                             cmd.Parameters.AddWithValue("@p1", "P");
@@ -462,6 +482,7 @@ namespace PacketComs
                 }
             }
         }
+
         #endregion
 
         #region	   UpdateSqlCistom
@@ -477,10 +498,11 @@ namespace PacketComs
                         using (var cmd = new OdbcCommand())
                         {
                             cmd.CommandText =
-                            "UPDATE Packet " +
-                            " SET Packet.MSGState = ? " +
-                            " where (Packet.MSGState is null    " +
-                            " or (Packet.MSGState <> ? And Packet.MSGState <> ? And Packet.MSGState <> ? ))  and  Packet." + tableName + " like ?";
+                                "UPDATE Packet " +
+                                " SET Packet.MSGState = ? " +
+                                " where (Packet.MSGState is null    " +
+                                " or (Packet.MSGState <> ? And Packet.MSGState <> ? And Packet.MSGState <> ? ))  and  Packet." +
+                                tableName + " like ?";
 
 
                             cmd.Parameters.Clear();
@@ -503,9 +525,11 @@ namespace PacketComs
                 }
             }
         }
+
         #endregion
 
         #region Check for Internet
+
         public static bool CheckForInternetConnection()
         {
             try
@@ -521,6 +545,7 @@ namespace PacketComs
                 return false;
             }
         }
+
         #endregion
     }
 } //end name-space

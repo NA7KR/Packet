@@ -18,7 +18,7 @@ namespace Packet
         private string _queryId;
         private bool _selectedCkeck;
         private string _tableId;
-        private Int32 _textId;
+        private int _textId;
 
         #region Custom
 
@@ -68,7 +68,7 @@ namespace Packet
         private void Loader()
         {
             _selectedCkeck = false;
-           
+
 
             DataGridView1.Rows.Clear();
             var packets = MyFiles.SqlCustomRead();

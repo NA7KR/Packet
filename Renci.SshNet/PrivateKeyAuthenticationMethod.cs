@@ -10,18 +10,31 @@ using Renci.SshNet.Messages.Authentication;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Provides functionality to perform private key authentication.
+    ///     Provides functionality to perform private key authentication.
     /// </summary>
     public class PrivateKeyAuthenticationMethod : AuthenticationMethod, IDisposable
     {
-        private AuthenticationResult _authenticationResult = AuthenticationResult.Failure;
-
         private EventWaitHandle _authenticationCompleted = new ManualResetEvent(false);
-
+        private AuthenticationResult _authenticationResult = AuthenticationResult.Failure;
         private bool _isSignatureRequired;
 
         /// <summary>
-        /// Gets authentication method name
+        ///     Initializes a new instance of the <see cref="PrivateKeyAuthenticationMethod" /> class.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="keyFiles">The key files.</param>
+        /// <exception cref="ArgumentException"><paramref name="username" /> is whitespace or null.</exception>
+        public PrivateKeyAuthenticationMethod(string username, params PrivateKeyFile[] keyFiles)
+            : base(username)
+        {
+            if (keyFiles == null)
+                throw new ArgumentNullException("keyFiles");
+
+            KeyFiles = new Collection<PrivateKeyFile>(keyFiles);
+        }
+
+        /// <summary>
+        ///     Gets authentication method name
         /// </summary>
         public override string Name
         {
@@ -29,31 +42,16 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Gets the key files used for authentication.
+        ///     Gets the key files used for authentication.
         /// </summary>
-        public ICollection<PrivateKeyFile> KeyFiles { get; private set; }
+        public ICollection<PrivateKeyFile> KeyFiles { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrivateKeyAuthenticationMethod"/> class.
-        /// </summary>
-        /// <param name="username">The username.</param>
-        /// <param name="keyFiles">The key files.</param>
-        /// <exception cref="ArgumentException"><paramref name="username"/> is whitespace or null.</exception>
-        public PrivateKeyAuthenticationMethod(string username, params PrivateKeyFile[] keyFiles)
-            : base(username)
-        {
-            if (keyFiles == null)
-                throw new ArgumentNullException("keyFiles");
-
-            this.KeyFiles = new Collection<PrivateKeyFile>(keyFiles);
-        }
-
-        /// <summary>
-        /// Authenticates the specified session.
+        ///     Authenticates the specified session.
         /// </summary>
         /// <param name="session">The session to authenticate.</param>
         /// <returns>
-        /// Result of authentication  process.
+        ///     Result of authentication  process.
         /// </returns>
         public override AuthenticationResult Authenticate(Session session)
         {
@@ -63,14 +61,15 @@ namespace Renci.SshNet
 
             session.RegisterMessage("SSH_MSG_USERAUTH_PK_OK");
 
-            foreach (var keyFile in this.KeyFiles)
+            foreach (var keyFile in KeyFiles)
             {
-                this._authenticationCompleted.Reset();
-                this._isSignatureRequired = false;
+                _authenticationCompleted.Reset();
+                _isSignatureRequired = false;
 
-                var message = new RequestMessagePublicKey(ServiceName.Connection, this.Username, keyFile.HostKey.Name, keyFile.HostKey.Data);
+                var message = new RequestMessagePublicKey(ServiceName.Connection, Username, keyFile.HostKey.Name,
+                    keyFile.HostKey.Data);
 
-                if (this.KeyFiles.Count < 2)
+                if (KeyFiles.Count < 2)
                 {
                     //  If only one key file provided then send signature for very first request
                     var signatureData = new SignatureData(message, session.SessionId).GetBytes();
@@ -81,13 +80,14 @@ namespace Renci.SshNet
                 //  Send public key authentication request
                 session.SendMessage(message);
 
-                session.WaitHandle(this._authenticationCompleted);
+                session.WaitHandle(_authenticationCompleted);
 
-                if (this._isSignatureRequired)
+                if (_isSignatureRequired)
                 {
-                    this._authenticationCompleted.Reset();
+                    _authenticationCompleted.Reset();
 
-                    var signatureMessage = new RequestMessagePublicKey(ServiceName.Connection, this.Username, keyFile.HostKey.Name, keyFile.HostKey.Data);
+                    var signatureMessage = new RequestMessagePublicKey(ServiceName.Connection, Username,
+                        keyFile.HostKey.Name, keyFile.HostKey.Data);
 
                     var signatureData = new SignatureData(message, session.SessionId).GetBytes();
 
@@ -97,41 +97,41 @@ namespace Renci.SshNet
                     session.SendMessage(signatureMessage);
                 }
 
-                session.WaitHandle(this._authenticationCompleted);
+                session.WaitHandle(_authenticationCompleted);
 
-                if (this._authenticationResult == AuthenticationResult.Success)
+                if (_authenticationResult == AuthenticationResult.Success)
                 {
                     break;
                 }
             }
-            
+
             session.UserAuthenticationSuccessReceived -= Session_UserAuthenticationSuccessReceived;
             session.UserAuthenticationFailureReceived -= Session_UserAuthenticationFailureReceived;
             session.MessageReceived -= Session_MessageReceived;
 
             session.UnRegisterMessage("SSH_MSG_USERAUTH_PK_OK");
 
-            return this._authenticationResult;
+            return _authenticationResult;
         }
 
         private void Session_UserAuthenticationSuccessReceived(object sender, MessageEventArgs<SuccessMessage> e)
         {
-            this._authenticationResult = AuthenticationResult.Success;
+            _authenticationResult = AuthenticationResult.Success;
 
-            this._authenticationCompleted.Set();
+            _authenticationCompleted.Set();
         }
 
         private void Session_UserAuthenticationFailureReceived(object sender, MessageEventArgs<FailureMessage> e)
         {
             if (e.Message.PartialSuccess)
-                this._authenticationResult = AuthenticationResult.PartialSuccess;
+                _authenticationResult = AuthenticationResult.PartialSuccess;
             else
-                this._authenticationResult = AuthenticationResult.Failure;
+                _authenticationResult = AuthenticationResult.Failure;
 
             //  Copy allowed authentication methods
-            this.AllowedAuthentications = e.Message.AllowedAuthentications.ToList();
+            AllowedAuthentications = e.Message.AllowedAuthentications.ToList();
 
-            this._authenticationCompleted.Set();
+            _authenticationCompleted.Set();
         }
 
         private void Session_MessageReceived(object sender, MessageEventArgs<Message> e)
@@ -139,17 +139,46 @@ namespace Renci.SshNet
             var publicKeyMessage = e.Message as PublicKeyMessage;
             if (publicKeyMessage != null)
             {
-                this._isSignatureRequired = true;
-                this._authenticationCompleted.Set();
+                _isSignatureRequired = true;
+                _authenticationCompleted.Set();
+            }
+        }
+
+        private class SignatureData : SshData
+        {
+            private readonly RequestMessagePublicKey _message;
+            private readonly byte[] _sessionId;
+
+            public SignatureData(RequestMessagePublicKey message, byte[] sessionId)
+            {
+                _message = message;
+                _sessionId = sessionId;
+            }
+
+            protected override void LoadData()
+            {
+                throw new NotImplementedException();
+            }
+
+            protected override void SaveData()
+            {
+                WriteBinaryString(_sessionId);
+                Write(50);
+                Write(_message.Username);
+                WriteAscii("ssh-connection");
+                WriteAscii("publickey");
+                Write(1);
+                WriteAscii(_message.PublicKeyAlgorithmName);
+                WriteBinaryString(_message.PublicKeyData);
             }
         }
 
         #region IDisposable Members
 
-        private bool isDisposed = false;
+        private bool isDisposed;
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -159,23 +188,26 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        ///     Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!this.isDisposed)
+            if (!isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (this._authenticationCompleted != null)
+                    if (_authenticationCompleted != null)
                     {
-                        this._authenticationCompleted.Dispose();
-                        this._authenticationCompleted = null;
+                        _authenticationCompleted.Dispose();
+                        _authenticationCompleted = null;
                     }
                 }
 
@@ -185,8 +217,8 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="PasswordConnectionInfo"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="PasswordConnectionInfo" /> is reclaimed by garbage collection.
         /// </summary>
         ~PrivateKeyAuthenticationMethod()
         {
@@ -197,36 +229,5 @@ namespace Renci.SshNet
         }
 
         #endregion
-
-        private class SignatureData : SshData
-        {
-            private RequestMessagePublicKey _message;
-
-            private byte[] _sessionId;
-
-            public SignatureData(RequestMessagePublicKey message, byte[] sessionId)
-            {
-                this._message = message;
-                this._sessionId = sessionId;
-            }
-
-            protected override void LoadData()
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override void SaveData()
-            {
-                this.WriteBinaryString(this._sessionId);
-                this.Write((byte)50);
-                this.Write(this._message.Username);
-                this.WriteAscii("ssh-connection");
-                this.WriteAscii("publickey");
-                this.Write((byte)1);
-                this.WriteAscii(this._message.PublicKeyAlgorithmName);
-                this.WriteBinaryString(this._message.PublicKeyData);
-            }
-        }
-
     }
 }

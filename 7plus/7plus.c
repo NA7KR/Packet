@@ -12,14 +12,14 @@ byte code[216];
 char range[257];
 byte _extended = '*'; /* Allow long filenames */
 size_t buflen;
-char _drive[MAXDRIVE], _dir[MAXDIR], _file[MAXFILE], _ext[MAXEXT];
+char _drive[MAXDRIVE ], _dir[MAXDIR ], _file[MAXFILE ], _ext[MAXEXT ];
 char spaces[] = "                                                   ";
 char* endstr;
 char* sendstr;
 char* pathstr;
-char genpath[MAXPATH];
-char ErrorF[MAXPATH];
-char altname[MAXPATH];
+char genpath[MAXPATH ];
+char ErrorF[MAXPATH ];
+char altname[MAXPATH ];
 char delimit[] = "\n";
 char def_format[] = "format.def";
 const char cant[] = "\007\n'%s': Can't open. Break.\n";
@@ -48,7 +48,6 @@ HANDLE hDLLInst = 0;
 char cCurrentPath[FILENAME_MAX];
 
 
-
 BOOL WINAPI DllMain(HANDLE hModule, DWORD dwFunction, LPVOID lpNot)
 {
 	hDLLInst = hModule;
@@ -66,10 +65,10 @@ BOOL WINAPI DllMain(HANDLE hModule, DWORD dwFunction, LPVOID lpNot)
 
 // The real DLL entry point
 //int __export CALLBACK Do_7plus(char *cmd_line)
-__declspec(dllexport) int  Do_7plus(char *cmd_line)
+__declspec(dllexport) int Do_7plus(char* cmd_line)
 {
 	char *p1, *p2;
-	char **argv;
+	char** argv;
 	int argc = 0;
 	int i, l;
 	int ret;
@@ -136,17 +135,17 @@ __declspec(dllexport) int  Do_7plus(char *cmd_line)
 int go_at_it(int argc, char** argv)
 {
 	char *p12, *r12, *s12, *t12;
-	char argname[MAXPATH];
+	char argname[MAXPATH ];
 	int ret, i, extract, genflag, join, cor;
 	long blocksize;
 
 	extract = genflag = join = cor = twolinesend = 0;
-	p12 = r12 = s12 = t12  = endstr = sendstr = NULLCP;
+	p12 = r12 = s12 = t12 = endstr = sendstr = NULLCP;
 	*genpath = *argname = *altname = *ErrorF = EOS;
 
 	i = -1;
 	//ErrorFile = stdout;
-	
+
 
 	if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
 	{
@@ -162,7 +161,7 @@ int go_at_it(int argc, char** argv)
 	/* Default blocksize (abt 10000 bytes) */
 	blocksize = 138 * 62;
 
-	while (i++ < argc -1)
+	while (i++ < argc - 1)
 	{
 		if (*argv[i] != '-')
 		{
@@ -265,8 +264,6 @@ int go_at_it(int argc, char** argv)
 					strcpy(pathstr, argv[i]);
 				}
 			}
-
-			
 		}
 		//end save
 		if (!_strnicmp(argv[i], "-SEND", 5)) /* Define send string, */
@@ -322,7 +319,6 @@ int go_at_it(int argc, char** argv)
 			sprintf(delimit, "\r"); /* for direct binary upload. */
 
 
-
 		if (!_stricmp(argv[i], "-SIM")) /* Simulate encoding and report */
 			simulate = 1; /* number of parts and parts */
 		/* filename in 7plus.fls */
@@ -367,7 +363,6 @@ int go_at_it(int argc, char** argv)
 			fclose(ErrorFile);
 
 		exit(21);
-
 	}
 	free(s12);
 
@@ -378,7 +373,6 @@ int go_at_it(int argc, char** argv)
 			fclose(ErrorFile);
 
 		exit(21);
-
 	}
 
 	buflen = 16384;
@@ -397,10 +391,9 @@ int go_at_it(int argc, char** argv)
 	{
 		fnsplit(argname, _drive, _dir, _file, _ext);
 
-		char *c = malloc(strlen(pathstr) + strlen(_file) + strlen(_ext) + 1);
+		char* c = malloc(strlen(pathstr) + strlen(_file) + strlen(_ext) + 1);
 		if (c != NULL)
 		{
-
 			strcpy(c, _drive);
 			strcat(c, _dir);
 			strcat(c, _file);
@@ -410,7 +403,6 @@ int go_at_it(int argc, char** argv)
 
 			//free(c);
 		}
-
 	}
 	//KRR 
 	// fnsplit(argname, _drive, _dir, _file, _ext);
@@ -446,8 +438,8 @@ int go_at_it(int argc, char** argv)
 		if (join)
 			if (!_strnicmp(".err", _ext, 4) ||
 				(toupper(*(_ext + 1)) == 'E' &&
-				isxdigit(*(_ext + 2)) &&
-				isxdigit(*(_ext + 3))))
+					isxdigit(*(_ext + 2)) &&
+					isxdigit(*(_ext + 3))))
 			{
 				ret = join_control(argname, r12);
 				if (ErrorFile != stdout)
@@ -458,8 +450,8 @@ int go_at_it(int argc, char** argv)
 
 		if (!_strnicmp(".cor", _ext, 4) ||
 			(toupper(*(_ext + 1)) == 'C' &&
-			isxdigit(*(_ext + 2)) &&
-			isxdigit(*(_ext + 3))))
+				isxdigit(*(_ext + 2)) &&
+				isxdigit(*(_ext + 3))))
 		{
 			ret = correct_meta(argname, 1, 0);
 			if (ErrorFile != stdout)
@@ -525,8 +517,6 @@ int go_at_it(int argc, char** argv)
 }
 
 
-
-
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
  *+ Possible return codes:                                                 +*
  *++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
@@ -555,3 +545,4 @@ int go_at_it(int argc, char** argv)
  21 Not enough memory available
 
  *++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+

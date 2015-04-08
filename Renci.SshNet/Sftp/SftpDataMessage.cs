@@ -6,16 +6,15 @@ namespace Renci.SshNet.Sftp
     {
         public SftpDataMessage(uint localChannelNumber, SftpMessage sftpMessage)
         {
-            this.LocalChannelNumber = localChannelNumber;
+            LocalChannelNumber = localChannelNumber;
 
             var messageData = sftpMessage.GetBytes();
 
             var data = new byte[4 + messageData.Length];
 
-            ((uint)messageData.Length).GetBytes().CopyTo(data, 0);
+            ((uint) messageData.Length).GetBytes().CopyTo(data, 0);
             messageData.CopyTo(data, 4);
-            this.Data = data;
+            Data = data;
         }
-
     }
 }

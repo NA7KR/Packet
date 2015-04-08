@@ -77,7 +77,7 @@ void add_crc2(char* line)
 	/* Whip up 2nd CRC */
 	crc = 0;
 	for (i = 66; i > -1; i--)
-		crc_calc(crc, line[i]);
+	crc_calc(crc, line[i]);
 	crc &= 0x7fff;
 
 	i = 67;
@@ -103,7 +103,7 @@ int mcrc(char* line, int flag)
 	j = (int)(p - line) + 4;
 
 	for (i = crc = 0; i < j; i++)
-		crc_calc(crc, line[i]);
+	crc_calc(crc, line[i]);
 	crc %= 216;
 	if (!flag)
 	{
@@ -246,7 +246,8 @@ int write_index(FILE* ifile, struct m_index* idxptr, int flag)
 				i++;
 				j = (int)(i >> 5);
 			}
-		} while (j < 4080 && (idxptr->lines_ok[j] & (1UL << (i & 31UL))));
+		}
+		while (j < 4080 && (idxptr->lines_ok[j] & (1UL << (i & 31UL))));
 
 		end = i;
 
@@ -394,7 +395,8 @@ int crc_file(const char* file, const char* s1, const char* s2, int flag)
 			break;
 
 		j = strncmp(line, s1, i);
-	} while (j);
+	}
+	while (j);
 
 	if (j)
 		p = s1;
@@ -406,7 +408,7 @@ int crc_file(const char* file, const char* s1, const char* s2, int flag)
 			register int linelen = (int)strlen(line) - 1;
 
 			for (i = 0; i < linelen; i++)
-				crc_calc(crc, line[i]);
+			crc_calc(crc, line[i]);
 
 			/* unfortunately, OS9/68k uses CR as line seperator. Since the CRC
 			   is calculated over the entire file (including the line seps),
@@ -421,13 +423,14 @@ int crc_file(const char* file, const char* s1, const char* s2, int flag)
 
 			if (my_fgets(line, 80, in) == NULL)
 				break;
-		} while (j);
+		}
+		while (j);
 	}
 
 	if (j)
 	{
 		fprintf(ErrorFile, "\n\007Can't calculate CRC\nString '%s' not found in '%s'.\n"
-			"Break.\n", p, file);
+		        "Break.\n", p, file);
 		return (7);
 	}
 
@@ -439,7 +442,7 @@ int crc_file(const char* file, const char* s1, const char* s2, int flag)
 		if (!line || strncmp("CRC ", line, 4))
 		{
 			fprintf(ErrorFile, "\n'%s': no CRC found.\n(File may be corrupted or from version "
-				"earlier than 7PLUS v1.5)\n", file);
+			        "earlier than 7PLUS v1.5)\n", file);
 			return (17);
 		}
 		cs = get_hex(line + 4);
@@ -524,11 +527,11 @@ void replace(const char* old, const char*new, ulong timestamp)
 */
 
 void kill_em(const char* name, const char* inpath, const char* one,
-	const char* two, const char* three, const char* four,
-	const char* five, int _one, int no_lf)
+             const char* two, const char* three, const char* four,
+             const char* five, int _one, int no_lf)
 {
 	const char* p;
-	char newname[MAXPATH];
+	char newname[MAXPATH ];
 	int i, j, k, l, len;
 
 	k = l = 0;
@@ -666,9 +669,9 @@ int test_file(FILE* in, char* destnam, int flag, int namsize)
 
 		if (flag > 1) /* autogenerate new filename */
 		{
-			char __drive[MAXDRIVE], __dir[MAXDIR], __file[MAXFILE], __ext[MAXEXT];
-			char newnam[MAXPATH];
-			 i = 1;
+			char __drive[MAXDRIVE ], __dir[MAXDIR ], __file[MAXFILE ], __ext[MAXEXT ];
+			char newnam[MAXPATH ];
+			i = 1;
 			int j, k;
 			fnsplit(destnam, __drive, __dir, __file, __ext);
 			if (flag == 3)
@@ -713,7 +716,8 @@ int test_file(FILE* in, char* destnam, int flag, int namsize)
 				}
 				return (ret);
 			}
-		} while (i != 'Y' && i != 'A' && i != 0xff);
+		}
+		while (i != 'Y' && i != 'A' && i != 0xff);
 	}
 	return(0);
 }
@@ -760,18 +764,18 @@ void init_codetab(void)
 
 	j = 0;
 
-	for (i = 0x21; i < 0x2a; i++, j++)
+	for (i = 0x21; i < 0x2a; i++ , j++)
 		code[j] = i;
 
-	for (i = 0x2b; i < 0x7f; i++, j++)
+	for (i = 0x2b; i < 0x7f; i++ , j++)
 		code[j] = i;
 
-	for (i = 0x80; i < 0x91; i++, j++)
+	for (i = 0x80; i < 0x91; i++ , j++)
 		code[j] = i;
 
 	code[j++] = 0x92;
 
-	for (i = 0x94; i < 0xfd; i++, j++)
+	for (i = 0x94; i < 0xfd; i++ , j++)
 		code[j] = i;
 }
 
@@ -786,12 +790,12 @@ void init_crctab(void)
 {
 	uint m, n, r, mask;
 
-	static uint bitrmdrs[] = { 0x9188, 0x48C4, 0x2462, 0x1231,
-		0x8108, 0x4084, 0x2042, 0x1021 };
+	static uint bitrmdrs[] = {0x9188, 0x48C4, 0x2462, 0x1231,
+		0x8108, 0x4084, 0x2042, 0x1021};
 
 	for (n = 0; n < 256; ++n)
 	{
-		for (mask = 0x0080, r = 0, m = 0; m < 8; ++m, mask >>= 1)
+		for (mask = 0x0080 , r = 0 , m = 0; m < 8; ++m , mask >>= 1)
 			if (n & mask)
 				r = bitrmdrs[m] ^ r;
 		crctab[n] = r;
@@ -835,7 +839,8 @@ void strip(char* string)
 
 			if (strchr(" <>=,';:*?&[]{}|^()/.\\\"~+@", string[i]) != NULL)
 				string[i] = '_';
-		} while (string[++i]);
+		}
+		while (string[++i]);
 
 		string[i] = EOS;
 	}
@@ -857,9 +862,9 @@ void strip(char* string)
 
 const unsigned short int __mon_lengths[2][12] =
 {
-	/* Normal years.  */
+/* Normal years.  */
 	{ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
-	/* Leap years.  */
+/* Leap years.  */
 	{ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
 };
 
@@ -902,7 +907,7 @@ struct tm *
 	rem %= SECS_PER_HOUR;
 	tbuf.tm_min = rem / 60;
 	tbuf.tm_sec = rem % 60;
-	/* January 1, 1970 was a Thursday.  */
+/* January 1, 1970 was a Thursday.  */
 	tbuf.tm_wday = (4 + days) % 7;
 	if (tbuf.tm_wday < 0)
 		tbuf.tm_wday += 7;
@@ -982,7 +987,7 @@ time_t mktime(register struct tm *tp)
 			max.tm_mday = max.tm_mon = max.tm_year = INT_MAX;
 	}
 
-	/* Make all the elements of TP that we pay attention to
+/* Make all the elements of TP that we pay attention to
 		   be within the ranges of reasonable values for those things.  */
 #define  normalize(elt, min, max, nextelt)\
 					while (tp->elt < min)                     \
@@ -1000,22 +1005,22 @@ time_t mktime(register struct tm *tp)
 	normalize(tm_min, 0, 59, tm_hour);
 	normalize(tm_hour, 0, 24, tm_mday);
 
-	/* Normalize the month first so we can use
+/* Normalize the month first so we can use
 		   it to figure the range for the day.  */
 	normalize(tm_mon, 0, 11, tm_year);
 	normalize(tm_mday, 1, __mon_lengths[__isleap(tp->tm_year)][tp->tm_mon],
 		tm_mon);
 
-	/* Normalize the month again, since normalizing
+/* Normalize the month again, since normalizing
 		   the day may have pushed it out of range.  */
 	normalize(tm_mon, 0, 11, tm_year);
 
-	/* Normalize the day again, because normalizing
+/* Normalize the day again, because normalizing
 		   the month may have changed the range.  */
 	normalize(tm_mday, 1, __mon_lengths[__isleap(tp->tm_year)][tp->tm_mon],
 		tm_mon);
 
-	/* Check for out-of-range values.  */
+/* Check for out-of-range values.  */
 #define  lowhigh(field, minmax, cmp)  (tp->field cmp minmax.field)
 #define  low(field)                   lowhigh(field, min, <)
 #define  high(field)                  lowhigh(field, max, >)
@@ -1189,7 +1194,7 @@ ulong get_filetime(const char* filename)
  */
 void set_filetime(const char *filename, ulong ftimestamp)
 {
-	/* error exit */
+/* error exit */
 	fprintf(ErrorFile, "\007\nset_filetime not (yet) implemented on this system!\n"
 		"7PLUS should NOT be circulated until it is implemented!!\n"
 		"Axel, DG1BBQ.\n");

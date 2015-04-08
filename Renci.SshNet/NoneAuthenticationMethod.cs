@@ -7,16 +7,25 @@ using Renci.SshNet.Messages.Authentication;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Provides functionality for "none" authentication method
+    ///     Provides functionality for "none" authentication method
     /// </summary>
     public class NoneAuthenticationMethod : AuthenticationMethod, IDisposable
     {
+        private EventWaitHandle _authenticationCompleted = new AutoResetEvent(false);
         private AuthenticationResult _authenticationResult = AuthenticationResult.Failure;
 
-        private EventWaitHandle _authenticationCompleted = new AutoResetEvent(false);
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="KeyboardInteractiveConnectionInfo" /> class.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <exception cref="ArgumentException"><paramref name="username" /> is whitespace or null.</exception>
+        public NoneAuthenticationMethod(string username)
+            : base(username)
+        {
+        }
 
         /// <summary>
-        /// Gets connection name
+        ///     Gets connection name
         /// </summary>
         public override string Name
         {
@@ -24,22 +33,11 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="KeyboardInteractiveConnectionInfo"/> class.
-        /// </summary>
-        /// <param name="username">The username.</param>
-        /// <exception cref="ArgumentException"><paramref name="username"/> is whitespace or null.</exception>
-        public NoneAuthenticationMethod(string username)
-            : base(username)
-        {
-
-        }
-
-        /// <summary>
-        /// Authenticates the specified session.
+        ///     Authenticates the specified session.
         /// </summary>
         /// <param name="session">The session.</param>
         /// <returns>
-        /// Result of authentication  process.
+        ///     Result of authentication  process.
         /// </returns>
         /// <exception cref="System.ArgumentNullException"><paramref name="session" /> is null.</exception>
         public override AuthenticationResult Authenticate(Session session)
@@ -50,42 +48,42 @@ namespace Renci.SshNet
             session.UserAuthenticationSuccessReceived += Session_UserAuthenticationSuccessReceived;
             session.UserAuthenticationFailureReceived += Session_UserAuthenticationFailureReceived;
 
-            session.SendMessage(new RequestMessageNone(ServiceName.Connection, this.Username));
+            session.SendMessage(new RequestMessageNone(ServiceName.Connection, Username));
 
-            session.WaitHandle(this._authenticationCompleted);
+            session.WaitHandle(_authenticationCompleted);
 
             session.UserAuthenticationSuccessReceived -= Session_UserAuthenticationSuccessReceived;
             session.UserAuthenticationFailureReceived -= Session_UserAuthenticationFailureReceived;
 
-            return this._authenticationResult;
+            return _authenticationResult;
         }
 
         private void Session_UserAuthenticationSuccessReceived(object sender, MessageEventArgs<SuccessMessage> e)
         {
-            this._authenticationResult = AuthenticationResult.Success;
+            _authenticationResult = AuthenticationResult.Success;
 
-            this._authenticationCompleted.Set();
+            _authenticationCompleted.Set();
         }
 
         private void Session_UserAuthenticationFailureReceived(object sender, MessageEventArgs<FailureMessage> e)
         {
             if (e.Message.PartialSuccess)
-                this._authenticationResult = AuthenticationResult.PartialSuccess;
+                _authenticationResult = AuthenticationResult.PartialSuccess;
             else
-                this._authenticationResult = AuthenticationResult.Failure;
+                _authenticationResult = AuthenticationResult.Failure;
 
             //  Copy allowed authentication methods
-            this.AllowedAuthentications = e.Message.AllowedAuthentications.ToList();
+            AllowedAuthentications = e.Message.AllowedAuthentications.ToList();
 
-            this._authenticationCompleted.Set();
+            _authenticationCompleted.Set();
         }
-        
+
         #region IDisposable Members
 
-        private bool isDisposed = false;
+        private bool isDisposed;
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -95,23 +93,26 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        ///     Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!this.isDisposed)
+            if (!isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (this._authenticationCompleted != null)
+                    if (_authenticationCompleted != null)
                     {
-                        this._authenticationCompleted.Dispose();
-                        this._authenticationCompleted = null;
+                        _authenticationCompleted.Dispose();
+                        _authenticationCompleted = null;
                     }
                 }
 
@@ -121,8 +122,8 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="PasswordConnectionInfo"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="PasswordConnectionInfo" /> is reclaimed by garbage collection.
         /// </summary>
         ~NoneAuthenticationMethod()
         {
@@ -133,6 +134,5 @@ namespace Renci.SshNet
         }
 
         #endregion
-
     }
 }

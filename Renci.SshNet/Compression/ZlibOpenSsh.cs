@@ -3,12 +3,12 @@
 namespace Renci.SshNet.Compression
 {
     /// <summary>
-    /// Represents "zlib@openssh.org" compression implementation
+    ///     Represents "zlib@openssh.org" compression implementation
     /// </summary>
     public class ZlibOpenSsh : Compressor
     {
         /// <summary>
-        /// Gets algorithm name.
+        ///     Gets algorithm name.
         /// </summary>
         public override string Name
         {
@@ -16,7 +16,7 @@ namespace Renci.SshNet.Compression
         }
 
         /// <summary>
-        /// Initializes the algorithm
+        ///     Initializes the algorithm
         /// </summary>
         /// <param name="session">The session.</param>
         public override void Init(Session session)
@@ -28,8 +28,8 @@ namespace Renci.SshNet.Compression
 
         private void Session_UserAuthenticationSuccessReceived(object sender, MessageEventArgs<SuccessMessage> e)
         {
-            this.IsActive = true;
-            this.Session.UserAuthenticationSuccessReceived -= Session_UserAuthenticationSuccessReceived;
+            IsActive = true;
+            Session.UserAuthenticationSuccessReceived -= Session_UserAuthenticationSuccessReceived;
         }
     }
 }

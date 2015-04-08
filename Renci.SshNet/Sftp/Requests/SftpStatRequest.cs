@@ -6,33 +6,33 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class SftpStatRequest : SftpRequest
     {
+        public SftpStatRequest(uint protocolVersion, uint requestId, string path, Encoding encoding,
+            Action<SftpAttrsResponse> attrsAction, Action<SftpStatusResponse> statusAction)
+            : base(protocolVersion, requestId, statusAction)
+        {
+            Path = path;
+            Encoding = encoding;
+            SetAction(attrsAction);
+        }
+
         public override SftpMessageTypes SftpMessageType
         {
             get { return SftpMessageTypes.Stat; }
         }
 
         public string Path { get; private set; }
-
-        public Encoding Encoding { get; private set; }
-
-        public SftpStatRequest(uint protocolVersion, uint requestId, string path, Encoding encoding, Action<SftpAttrsResponse> attrsAction, Action<SftpStatusResponse> statusAction)
-            : base(protocolVersion, requestId, statusAction)
-        {
-            this.Path = path;
-            this.Encoding = encoding;
-            this.SetAction(attrsAction);
-        }
+        public Encoding Encoding { get; }
 
         protected override void LoadData()
         {
             base.LoadData();
-            this.Path = this.ReadString(this.Encoding);
+            Path = ReadString(Encoding);
         }
 
         protected override void SaveData()
         {
             base.SaveData();
-            this.Write(this.Path, this.Encoding);
+            Write(Path, Encoding);
         }
     }
 }

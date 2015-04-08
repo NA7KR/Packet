@@ -10,22 +10,19 @@ namespace Renci.SshNet.Sftp
 {
     internal abstract class SftpMessage : SshData
     {
-        public static SftpMessage Load(uint protocolVersion, byte[] data, Encoding encoding)
-        {
-            var messageType = (SftpMessageTypes)data.FirstOrDefault();
-
-            return Load(protocolVersion, data, messageType, encoding);
-        }
-
         protected override int ZeroReaderIndex
         {
-            get
-            {
-                return 1;
-            }
+            get { return 1; }
         }
 
         public abstract SftpMessageTypes SftpMessageType { get; }
+
+        public static SftpMessage Load(uint protocolVersion, byte[] data, Encoding encoding)
+        {
+            var messageType = (SftpMessageTypes) data.FirstOrDefault();
+
+            return Load(protocolVersion, data, messageType, encoding);
+        }
 
         protected override void LoadData()
         {
@@ -33,53 +30,53 @@ namespace Renci.SshNet.Sftp
 
         protected override void SaveData()
         {
-            this.Write((byte)this.SftpMessageType);
+            Write((byte) SftpMessageType);
         }
 
         protected SftpFileAttributes ReadAttributes()
         {
-
-            var flag = this.ReadUInt32();
+            var flag = ReadUInt32();
 
             long size = -1;
-            int userId = -1;
-            int groupId = -1;
+            var userId = -1;
+            var groupId = -1;
             uint permissions = 0;
             var accessTime = DateTime.MinValue;
             var modifyTime = DateTime.MinValue;
             IDictionary<string, string> extensions = null;
 
-            if ((flag & 0x00000001) == 0x00000001)   //  SSH_FILEXFER_ATTR_SIZE
+            if ((flag & 0x00000001) == 0x00000001) //  SSH_FILEXFER_ATTR_SIZE
             {
-                size = (long)this.ReadUInt64();
+                size = (long) ReadUInt64();
             }
 
-            if ((flag & 0x00000002) == 0x00000002)   //  SSH_FILEXFER_ATTR_UIDGID
+            if ((flag & 0x00000002) == 0x00000002) //  SSH_FILEXFER_ATTR_UIDGID
             {
-                userId = (int)this.ReadUInt32();
+                userId = (int) ReadUInt32();
 
-                groupId = (int)this.ReadUInt32();
+                groupId = (int) ReadUInt32();
             }
 
-            if ((flag & 0x00000004) == 0x00000004)   //  SSH_FILEXFER_ATTR_PERMISSIONS
+            if ((flag & 0x00000004) == 0x00000004) //  SSH_FILEXFER_ATTR_PERMISSIONS
             {
-                permissions = this.ReadUInt32();
+                permissions = ReadUInt32();
             }
 
-            if ((flag & 0x00000008) == 0x00000008)   //  SSH_FILEXFER_ATTR_ACMODTIME
+            if ((flag & 0x00000008) == 0x00000008) //  SSH_FILEXFER_ATTR_ACMODTIME
             {
-                var time = this.ReadUInt32();
-                accessTime = DateTime.FromFileTime((time + 11644473600) * 10000000);
-                time = this.ReadUInt32();
-                modifyTime = DateTime.FromFileTime((time + 11644473600) * 10000000);
+                var time = ReadUInt32();
+                accessTime = DateTime.FromFileTime((time + 11644473600)*10000000);
+                time = ReadUInt32();
+                modifyTime = DateTime.FromFileTime((time + 11644473600)*10000000);
             }
 
-            if ((flag & 0x80000000) == 0x80000000)   //  SSH_FILEXFER_ATTR_ACMODTIME
+            if ((flag & 0x80000000) == 0x80000000) //  SSH_FILEXFER_ATTR_ACMODTIME
             {
-                var extendedCount = this.ReadUInt32();
-                extensions = this.ReadExtensionPair();
+                var extendedCount = ReadUInt32();
+                extensions = ReadExtensionPair();
             }
-            var attributes = new SftpFileAttributes(accessTime, modifyTime, size, userId, groupId, permissions, extensions);
+            var attributes = new SftpFileAttributes(accessTime, modifyTime, size, userId, groupId, permissions,
+                extensions);
 
             return attributes;
         }
@@ -88,72 +85,69 @@ namespace Renci.SshNet.Sftp
         {
             if (attributes == null)
             {
-                this.Write((uint)0);
-                return;
+                Write((uint) 0);
             }
-            else
+            uint flag = 0;
+
+            if (attributes.IsSizeChanged && attributes.IsRegularFile)
             {
-                UInt32 flag = 0;
+                flag |= 0x00000001;
+            }
 
-                if (attributes.IsSizeChanged && attributes.IsRegularFile)
-                {
-                    flag |= 0x00000001;
-                }
+            if (attributes.IsUserIdChanged || attributes.IsGroupIdChanged)
+            {
+                flag |= 0x00000002;
+            }
 
-                if (attributes.IsUserIdChanged|| attributes.IsGroupIdChanged)
-                {
-                    flag |= 0x00000002;
-                }
+            if (attributes.IsPermissionsChanged)
+            {
+                flag |= 0x00000004;
+            }
 
-                if (attributes.IsPermissionsChanged)
-                {
-                    flag |= 0x00000004;
-                }
+            if (attributes.IsLastAccessTimeChanged || attributes.IsLastWriteTimeChanged)
+            {
+                flag |= 0x00000008;
+            }
 
-                if (attributes.IsLastAccessTimeChanged || attributes.IsLastWriteTimeChanged)
-                {
-                    flag |= 0x00000008;
-                }
+            if (attributes.IsExtensionsChanged)
+            {
+                flag |= 0x80000000;
+            }
 
-                if (attributes.IsExtensionsChanged)
-                {
-                    flag |= 0x80000000;
-                }
+            Write(flag);
 
-                this.Write(flag);
+            if (attributes.IsSizeChanged && attributes.IsRegularFile)
+            {
+                Write((ulong) attributes.Size);
+            }
 
-                if (attributes.IsSizeChanged && attributes.IsRegularFile)
-                {
-                    this.Write((UInt64)attributes.Size);
-                }
+            if (attributes.IsUserIdChanged || attributes.IsGroupIdChanged)
+            {
+                Write((uint) attributes.UserId);
+                Write((uint) attributes.GroupId);
+            }
 
-                if (attributes.IsUserIdChanged|| attributes.IsGroupIdChanged)
-                {
-                    this.Write((UInt32)attributes.UserId);
-                    this.Write((UInt32)attributes.GroupId);
-                }
+            if (attributes.IsPermissionsChanged)
+            {
+                Write(attributes.Permissions);
+            }
 
-                if (attributes.IsPermissionsChanged)
-                {
-                    this.Write(attributes.Permissions);
-                }
+            if (attributes.IsLastAccessTimeChanged || attributes.IsLastWriteTimeChanged)
+            {
+                var time = (uint) (attributes.LastAccessTime.ToFileTime()/10000000 - 11644473600);
+                Write(time);
+                time = (uint) (attributes.LastWriteTime.ToFileTime()/10000000 - 11644473600);
+                Write(time);
+            }
 
-                if (attributes.IsLastAccessTimeChanged || attributes.IsLastWriteTimeChanged)
-                {
-                    uint time = (uint)(attributes.LastAccessTime.ToFileTime() / 10000000 - 11644473600);
-                    this.Write(time);
-                    time = (uint)(attributes.LastWriteTime.ToFileTime() / 10000000 - 11644473600);
-                    this.Write(time);
-                }
-
-                if (attributes.IsExtensionsChanged)
-                {
-                    this.Write(attributes.Extensions);
-                }
+            if (attributes.IsExtensionsChanged)
+            {
+                Write(attributes.Extensions);
             }
         }
 
-        private static SftpMessage Load(uint protocolVersion, byte[] data, SftpMessageTypes messageType, Encoding encoding)
+        private static SftpMessage Load(uint protocolVersion, byte[] data, SftpMessageTypes messageType,
+            Encoding encoding)
         {
             SftpMessage message = null;
 
@@ -181,7 +175,8 @@ namespace Renci.SshNet.Sftp
                     message = new SftpExtendedReplyResponse(protocolVersion);
                     break;
                 default:
-                    throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Message type '{0}' is not supported.", messageType));
+                    throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture,
+                        "Message type '{0}' is not supported.", messageType));
             }
 
             message.LoadBytes(data);
@@ -195,7 +190,7 @@ namespace Renci.SshNet.Sftp
 
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, "SFTP Message : {0}", this.SftpMessageType);
+            return string.Format(CultureInfo.CurrentCulture, "SFTP Message : {0}", SftpMessageType);
         }
     }
 }

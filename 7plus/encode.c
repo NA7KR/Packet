@@ -4,18 +4,18 @@
 // encode a file. split, if desired/needed. create correction file.
 
 int encode_file(char* name, long blocksize, char* search,
-	int join, char* head_foot, char* genpath)
+                int join, char* head_foot, char* genpath)
 {
 	int part, parts, first_part, last_part, blocklines, curline;
 	int correct, corrlines, corrpart, corrline, tune;
 	uint csequence;
 	ulong ftimestamp, ftstamp0, after[16], *af, h18;
 	long binbytes, binb0, position, size, blocksize2, corrsize;
-	char destname[MAXPATH], hdrname[MAXFNAME], filename[MAXPATH], corrname[13];
-	char orgcorrname[13], orgname[MAXFNAME];
-	char inpath[MAXFPATH], format_file[MAXPATH];
+	char destname[MAXPATH ], hdrname[MAXFNAME ], filename[MAXPATH ], corrname[13];
+	char orgcorrname[13], orgname[MAXFNAME ];
+	char inpath[MAXFPATH], format_file[MAXPATH ];
 	char line[81], line2[81], dummi[20], dummi2[20], *q14, *r14, *f14;
-	char go_buf[257], stop_buf[257], cor_head[129], searchbin[MAXPATH];
+	char go_buf[257], stop_buf[257], cor_head[129], searchbin[MAXPATH ];
 	char c15[256];
 	FILE *in, *out, *corr;
 	register int i17, j17, k17;
@@ -148,8 +148,8 @@ int encode_file(char* name, long blocksize, char* search,
 	}
 	if (sendstr)
 		sprintf(go_buf, "%s%s%%O %%P/%%Q%s", sendstr,
-		twolinesend ? delimit : " ",
-		delimit);
+		        twolinesend ? delimit : " ",
+		        delimit);
 	if (endstr)
 		sprintf(stop_buf, "%s%s", endstr, delimit);
 
@@ -215,7 +215,7 @@ int encode_file(char* name, long blocksize, char* search,
 		if (parts > 255)
 		{
 			fprintf(ErrorFile, "\007Not more than 255 parts allowed.\n"
-				"Choose different blocksize. Break.\n");
+			        "Choose different blocksize. Break.\n");
 			fclose(in);
 			return (8);
 		}
@@ -231,7 +231,7 @@ int encode_file(char* name, long blocksize, char* search,
 	if (strlen(orgname) > 60)
 	{
 		fprintf(ErrorFile, "\n\007Filename of original file is too long (max 60 chars).\n"
-			"Truncating \"%s\" to ", orgname);
+		        "Truncating \"%s\" to ", orgname);
 		if (*_ext)
 		{
 			_ext[4] = EOS;
@@ -261,7 +261,7 @@ int encode_file(char* name, long blocksize, char* search,
 			return (14);
 		fprintf(out, "%d %s\n", parts, destname);
 		fprintf(ErrorFile, "\nNumber of parts: %d, Filename of parts: \"%s\"\n", parts,
-			destname);
+		        destname);
 
 		fclose(out);
 		fclose(in);
@@ -270,12 +270,12 @@ int encode_file(char* name, long blocksize, char* search,
 
 	if (!correct)
 		fprintf(ErrorFile, "\n-----------\n"
-		"Encoding...\n"
-		"-----------\n\n");
+		        "Encoding...\n"
+		        "-----------\n\n");
 	else
 		fprintf(ErrorFile, "\n---------------------------\n"
-		"Creating correction file...\n"
-		"---------------------------\n\n");
+		        "Creating correction file...\n"
+		        "---------------------------\n\n");
 
 	for (i17 = 1; (i17 < 256) && !range[i17]; i17++);
 	first_part = i17;
@@ -289,7 +289,7 @@ int encode_file(char* name, long blocksize, char* search,
 	if (first_part > parts)
 	{
 		fprintf(ErrorFile, "\007Can't encode part %d of %d... You're pulling my leg!\n",
-			first_part, parts);
+		        first_part, parts);
 		return (1);
 	}
 
@@ -305,7 +305,7 @@ int encode_file(char* name, long blocksize, char* search,
 			{
 				if (!*altname)
 					sprintf(filename, "%s%s%s", searchbin ? searchbin : "",
-					destname, ".7pl");
+					        destname, ".7pl");
 				else
 					sprintf(filename, "%s%s", altname, ".7pl");
 
@@ -317,7 +317,7 @@ int encode_file(char* name, long blocksize, char* search,
 			{
 				if (!*altname)
 					sprintf(filename, "%s%s.p%02x", searchbin ? searchbin : "",
-					destname, part);
+					        destname, part);
 				else
 					sprintf(filename, "%s.p%02x", altname, part);
 
@@ -325,7 +325,7 @@ int encode_file(char* name, long blocksize, char* search,
 
 					fprintf(ErrorFile, "'%s': Writing part %03d of %03d.\r",
 
-					filename, part, parts);
+					        filename, part, parts);
 			}
 
 			fflush(ErrorFile);
@@ -335,13 +335,12 @@ int encode_file(char* name, long blocksize, char* search,
 			{
 				if (!*altname)
 					sprintf(filename, "%s%s%s", searchbin ? searchbin : "",
-					destname, ".upl");
+					        destname, ".upl");
 				else
 					sprintf(filename, "%s%s", altname, ".upl");
 			}
 			/* check, if output file already exists. */
 			if ((join < 2) && range[part])
-
 
 
 				strcpy(c15, filename);
@@ -397,8 +396,8 @@ int encode_file(char* name, long blocksize, char* search,
 
 			/* output header */
 			sprintf(line, " go_7+. %03d of %03d %-12s %07ld %04X %03X (7PLUS v2.2) "
-				"\xb0\xb1\xb2%c", part, parts, hdrname, size,
-				(uint)(((blocksize + 61) / 62) * 64), blocklines, _extended);
+			        "\xb0\xb1\xb2%c", part, parts, hdrname, size,
+			        (uint)(((blocksize + 61) / 62) * 64), blocklines, _extended);
 
 			mcrc(line, 1);
 			add_crc2(line);
@@ -422,7 +421,7 @@ int encode_file(char* name, long blocksize, char* search,
 			top_bottom(out, go_buf, dummi2, "c", part, part);
 
 			sprintf(cor_head, " go_text. %s%s7PLUS correction: %s %ld %03X",
-				dummi2, delimit, orgcorrname, size, corrlines);
+			        dummi2, delimit, orgcorrname, size, corrlines);
 			if (ftimestamp)
 			{
 				sprintf(dummi, " [%lX]", ftimestamp);
@@ -483,7 +482,7 @@ int encode_file(char* name, long blocksize, char* search,
 
 						/* if we were creating a correction file, complete it. */
 						fprintf(out, " P00:%s________%s stop_text.%s",
-							delimit, delimit, delimit);
+						        delimit, delimit, delimit);
 
 
 						sprintf(line, "%s.c%02x", destname, part);
@@ -544,7 +543,7 @@ int encode_file(char* name, long blocksize, char* search,
 
 			/* get two groups of 31 bytes and stuff them into 2 * 8 longs. */
 			af = after;
-			for (i17 = 0; i17 < 2; i17++, af += 8)
+			for (i17 = 0; i17 < 2; i17++ , af += 8)
 			{
 				/* Get 31 Bytes and put them into 8 longs. */
 				for (j17 = 0; j17 < 8; j17++)
@@ -589,7 +588,7 @@ int encode_file(char* name, long blocksize, char* search,
 			}
 
 			for (i17 = 0; i17 < 64; i17++)
-				crc_calc(csequence, line2[i17]);
+			crc_calc(csequence, line2[i17]);
 
 			/* package line number and crc into three radix216 bytes and add to code line. */
 			after[0] = (long)(curline & 0x1ff) << 14;
@@ -616,7 +615,7 @@ int encode_file(char* name, long blocksize, char* search,
 			_strupr(destname);
 			if (parts > 1)
 				sprintf(line2, " stop_7+. (%s.P%02X/%02X) [%lX]",
-				destname, part, parts, ftimestamp);
+				        destname, part, parts, ftimestamp);
 			else
 				sprintf(line2, " stop_7+. (%s.7PL) [%lX]", destname, ftimestamp);
 			_strlwr(destname);
@@ -649,7 +648,7 @@ int encode_file(char* name, long blocksize, char* search,
 			}
 			if (ftstamp0 && ftstamp0 != ftimestamp)
 				fprintf(ErrorFile, "\007Warning: Timestamp in error report differs from the "
-				"original file!\n");
+				        "original file!\n");
 		}
 		if (ferror(out)) /* did any errors occur while writing? */
 		{
@@ -772,7 +771,8 @@ int read_tb(char* name, char* go_top, char* go_bottom)
 
 
 				i++;
-			} while (j != EOF && !(j == '@' && prev == '\n') && i < 256);
+			}
+			while (j != EOF && !(j == '@' && prev == '\n') && i < 256);
 
 			q[i - 2] = '\n';
 			q[i - 1] = EOS;
@@ -783,19 +783,20 @@ int read_tb(char* name, char* go_top, char* go_bottom)
 			{
 				prev = j;
 				j = fgetc(rfile);
-			} while (j != EOF && !(j == '@' && prev == '\n'));
-
-			if (j == '@')
-				ungetc(j, rfile);
-
-			if (j == EOF && q == go_bottom)
-				break;
-
-			if (q == go_top)
-			{
-				q = go_bottom;
-				strcpy(compare, "@@BOTTOM\n");
 			}
+			while (j != EOF && !(j == '@' && prev == '\n'));
+
+		if (j == '@')
+			ungetc(j, rfile);
+
+		if (j == EOF && q == go_bottom)
+			break;
+
+		if (q == go_top)
+		{
+			q = go_bottom;
+			strcpy(compare, "@@BOTTOM\n");
+		}
 	}
 	fclose(rfile);
 
@@ -805,10 +806,10 @@ int read_tb(char* name, char* go_top, char* go_bottom)
 // output head or foot
 
 int top_bottom(FILE* wfile, char* top_bot, char* orgname,
-	char* type, int part, int parts)
+               char* type, int part, int parts)
 {
 	int i;
-	char __file[MAXFNAME], __ext[MAXEXT], _type[2];
+	char __file[MAXFNAME ], __ext[MAXEXT ], _type[2];
 
 	fnsplit(orgname, NULL, NULL, _file, _ext);
 	strcpy(__file, _file);
@@ -833,48 +834,48 @@ int top_bottom(FILE* wfile, char* top_bot, char* orgname,
 			case 'O': fprintf(wfile, "%s%s", __file, __ext);
 				break;
 			case 'n': if (part == 1 && parts == 1)
-			{
-				if (*type == 'p')
-					fprintf(wfile, "%s.7pl", _file);
+				{
+					if (*type == 'p')
+						fprintf(wfile, "%s.7pl", _file);
+					else
+						fprintf(wfile, "%s.cor", _file);
+				}
 				else
-					fprintf(wfile, "%s.cor", _file);
-			}
-					  else
-					  {
-						  if (*type == 'c')
-							  part -= 1;
-						  _strlwr(_type);
-						  fprintf(wfile, "%s.%s%02x", _file, _type, part);
-					  }
-					  break;
+				{
+					if (*type == 'c')
+						part -= 1;
+					_strlwr(_type);
+					fprintf(wfile, "%s.%s%02x", _file, _type, part);
+				}
+				break;
 			case 'N': if (part == 1 && parts == 1)
-			{
-				if (*type == 'p')
-					fprintf(wfile, "%s.7PL", _file);
+				{
+					if (*type == 'p')
+						fprintf(wfile, "%s.7PL", _file);
+					else
+						fprintf(wfile, "%s.COR", _file);
+				}
 				else
-					fprintf(wfile, "%s.COR", _file);
-			}
-					  else
-					  {
-						  if (*type == 'c')
-							  part -= 1;
-						  _strupr(_type);
-						  fprintf(wfile, "%s.%s%02X", _file, _type, part);
-					  }
-					  break;
+				{
+					if (*type == 'c')
+						part -= 1;
+					_strupr(_type);
+					fprintf(wfile, "%s.%s%02X", _file, _type, part);
+				}
+				break;
 			case 'p': fprintf(wfile, "%d", part);
 				break;
 			case 'P': fprintf(wfile, "%02X", part);
 				break;
 			case 'q': if (*type == 'p')
-				fprintf(wfile, "%d", parts);
-					  else
-						  fprintf(wfile, "X");
+					fprintf(wfile, "%d", parts);
+				else
+					fprintf(wfile, "X");
 				break;
 			case 'Q': if (*type == 'p')
-				fprintf(wfile, "%02X", parts);
-					  else
-						  fprintf(wfile, "X");
+					fprintf(wfile, "%02X", parts);
+				else
+					fprintf(wfile, "X");
 				break;
 			case '%': fprintf(wfile, "%s", "%");
 				break;
@@ -960,7 +961,8 @@ void get_range(char* rangestring)
 		for (i = start; i <= end; i++)
 			range[i] = 1;
 		range[0] = 1;
-	} while ((p = strtok(NULL, ",")) != NULL); /* get next range */
+	}
+	while ((p = strtok(NULL, ",")) != NULL); /* get next range */
 
 	/* No range was defined. Set range to 1-255 */
 	if (!range[0])

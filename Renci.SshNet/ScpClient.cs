@@ -11,138 +11,47 @@ using Renci.SshNet.Common;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Provides SCP client functionality.
+    ///     Provides SCP client functionality.
     /// </summary>
     public partial class ScpClient : BaseClient
     {
-        private static Regex _fileInfoRe = new Regex(@"C(?<mode>\d{4}) (?<length>\d+) (?<filename>.+)");
-
-        private static Regex _directoryInfoRe = new Regex(@"D(?<mode>\d{4}) (?<length>\d+) (?<filename>.+)");
-
-        private static Regex _timestampRe = new Regex(@"T(?<mtime>\d+) 0 (?<atime>\d+) 0");
-
+        private static readonly Regex _fileInfoRe = new Regex(@"C(?<mode>\d{4}) (?<length>\d+) (?<filename>.+)");
+        private static readonly Regex _directoryInfoRe = new Regex(@"D(?<mode>\d{4}) (?<length>\d+) (?<filename>.+)");
+        private static readonly Regex _timestampRe = new Regex(@"T(?<mtime>\d+) 0 (?<atime>\d+) 0");
         private static char[] _byteToChar;
-
-        private bool _disposeConnectionInfo;
+        private readonly bool _disposeConnectionInfo;
 
         /// <summary>
-        /// Gets or sets the operation timeout.
+        ///     Gets or sets the operation timeout.
         /// </summary>
         /// <value>The operation timeout.</value>
         public TimeSpan OperationTimeout { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the buffer.
+        ///     Gets or sets the size of the buffer.
         /// </summary>
         /// <value>The size of the buffer.</value>
         public uint BufferSize { get; set; }
 
         /// <summary>
-        /// Occurs when downloading file.
+        ///     Occurs when downloading file.
         /// </summary>
         public event EventHandler<ScpDownloadEventArgs> Downloading;
 
         /// <summary>
-        /// Occurs when uploading file.
+        ///     Occurs when uploading file.
         /// </summary>
         public event EventHandler<ScpUploadEventArgs> Uploading;
 
-        #region Constructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="SftpClient"/> class.
-        /// </summary>
-        /// <param name="connectionInfo">The connection info.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionInfo"/> is null.</exception>
-        public ScpClient(ConnectionInfo connectionInfo)
-            : base(connectionInfo)
-        {
-            this.OperationTimeout = new TimeSpan(0, 0, 0, 0, -1);
-            this.BufferSize = 1024 * 16;
-
-            if (_byteToChar == null)
-            {
-                _byteToChar = new char[128];
-                var ch = '\0';
-                for (int i = 0; i < 128; i++)
-                {
-                    _byteToChar[i] = ch++;
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SftpClient"/> class.
-        /// </summary>
-        /// <param name="host">Connection host.</param>
-        /// <param name="port">Connection port.</param>
-        /// <param name="username">Authentication username.</param>
-        /// <param name="password">Authentication password.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="password"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="host"/> is invalid, or <paramref name="username"/> is null or contains whitespace characters.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="port"/> is not within <see cref="F:System.Net.IPEndPoint.MinPort"/> and <see cref="System.Net.IPEndPoint.MaxPort"/>.</exception>
-        [SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope", Justification = "Disposed in Dispose(bool) method.")]
-        public ScpClient(string host, int port, string username, string password)
-            : this(new PasswordConnectionInfo(host, port, username, password))
-        {
-            this._disposeConnectionInfo = true;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SftpClient"/> class.
-        /// </summary>
-        /// <param name="host">Connection host.</param>
-        /// <param name="username">Authentication username.</param>
-        /// <param name="password">Authentication password.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="password"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="host"/> is invalid, or <paramref name="username"/> is null or contains whitespace characters.</exception>
-        public ScpClient(string host, string username, string password)
-            : this(host, ConnectionInfo.DEFAULT_PORT, username, password)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SftpClient"/> class.
-        /// </summary>
-        /// <param name="host">Connection host.</param>
-        /// <param name="port">Connection port.</param>
-        /// <param name="username">Authentication username.</param>
-        /// <param name="keyFiles">Authentication private key file(s) .</param>
-        /// <exception cref="ArgumentNullException"><paramref name="keyFiles"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="host"/> is invalid, -or- <paramref name="username"/> is null or contains whitespace characters.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="port"/> is not within <see cref="F:System.Net.IPEndPoint.MinPort"/> and <see cref="System.Net.IPEndPoint.MaxPort"/>.</exception>
-        [SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope", Justification = "Disposed in Dispose(bool) method.")]
-        public ScpClient(string host, int port, string username, params PrivateKeyFile[] keyFiles)
-            : this(new PrivateKeyConnectionInfo(host, port, username, keyFiles))
-        {
-            this._disposeConnectionInfo = true;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SftpClient"/> class.
-        /// </summary>
-        /// <param name="host">Connection host.</param>
-        /// <param name="username">Authentication username.</param>
-        /// <param name="keyFiles">Authentication private key file(s) .</param>
-        /// <exception cref="ArgumentNullException"><paramref name="keyFiles"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="host"/> is invalid, -or- <paramref name="username"/> is null or contains whitespace characters.</exception>
-        public ScpClient(string host, string username, params PrivateKeyFile[] keyFiles)
-            : this(host, ConnectionInfo.DEFAULT_PORT, username, keyFiles)
-        {
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Uploads the specified stream to the remote host.
+        ///     Uploads the specified stream to the remote host.
         /// </summary>
         /// <param name="source">Stream to upload.</param>
         /// <param name="filename">Remote host file name.</param>
         public void Upload(Stream source, string path)
         {
             using (var input = new PipeStream())
-            using (var channel = this.Session.CreateChannel<ChannelSession>())
+            using (var channel = Session.CreateChannel<ChannelSession>())
             {
                 channel.DataReceived += delegate(object sender, ChannelDataEventArgs e)
                 {
@@ -156,23 +65,23 @@ namespace Renci.SshNet
 
                 //  Send channel command request
                 channel.SendExecRequest(string.Format("scp -rt \"{0}\"", pathParts[0]));
-                this.CheckReturnCode(input);
+                CheckReturnCode(input);
 
                 //  Prepare directory structure
-                for (int i = 0; i < pathParts.Length - 1; i++)
+                for (var i = 0; i < pathParts.Length - 1; i++)
                 {
-                    this.InternalSetTimestamp(channel, input, DateTime.UtcNow, DateTime.UtcNow);
-                    this.SendData(channel, string.Format("D0755 0 {0}\n", pathParts[i]));
-                    this.CheckReturnCode(input);
+                    InternalSetTimestamp(channel, input, DateTime.UtcNow, DateTime.UtcNow);
+                    SendData(channel, string.Format("D0755 0 {0}\n", pathParts[i]));
+                    CheckReturnCode(input);
                 }
 
-                this.InternalUpload(channel, input, source, pathParts.Last());
+                InternalUpload(channel, input, source, pathParts.Last());
 
                 //  Finish directory structure
-                for (int i = 0; i < pathParts.Length - 1; i++)
+                for (var i = 0; i < pathParts.Length - 1; i++)
                 {
-                    this.SendData(channel, "E\n");
-                    this.CheckReturnCode(input);
+                    SendData(channel, "E\n");
+                    CheckReturnCode(input);
                 }
 
                 channel.Close();
@@ -180,13 +89,16 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Downloads the specified file from the remote host to the stream.
+        ///     Downloads the specified file from the remote host to the stream.
         /// </summary>
         /// <param name="filename">Remote host file name.</param>
         /// <param name="destination">The stream where to download remote file.</param>
-        /// <exception cref="ArgumentException"><paramref name="filename"/> is null or contains whitespace characters.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="destination"/> is null.</exception>
-        /// <remarks>Method calls made by this method to <paramref name="destination"/>, may under certain conditions result in exceptions thrown by the stream.</remarks>
+        /// <exception cref="ArgumentException"><paramref name="filename" /> is null or contains whitespace characters.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="destination" /> is null.</exception>
+        /// <remarks>
+        ///     Method calls made by this method to <paramref name="destination" />, may under certain conditions result in
+        ///     exceptions thrown by the stream.
+        /// </remarks>
         public void Download(string filename, Stream destination)
         {
             if (filename.IsNullOrWhiteSpace())
@@ -196,7 +108,7 @@ namespace Renci.SshNet
                 throw new ArgumentNullException("destination");
 
             using (var input = new PipeStream())
-            using (var channel = this.Session.CreateChannel<ChannelSession>())
+            using (var channel = Session.CreateChannel<ChannelSession>())
             {
                 channel.DataReceived += delegate(object sender, ChannelDataEventArgs e)
                 {
@@ -208,7 +120,7 @@ namespace Renci.SshNet
 
                 //  Send channel command request
                 channel.SendExecRequest(string.Format("scp -f \"{0}\"", filename));
-                this.SendConfirmation(channel); //  Send reply
+                SendConfirmation(channel); //  Send reply
 
                 var message = ReadString(input);
                 var match = _fileInfoRe.Match(message);
@@ -216,39 +128,40 @@ namespace Renci.SshNet
                 if (match.Success)
                 {
                     //  Read file
-                    this.SendConfirmation(channel); //  Send reply
+                    SendConfirmation(channel); //  Send reply
 
                     var mode = match.Result("${mode}");
                     var length = long.Parse(match.Result("${length}"));
                     var fileName = match.Result("${filename}");
 
-                    this.InternalDownload(channel, input, destination, fileName, length);
+                    InternalDownload(channel, input, destination, fileName, length);
                 }
                 else
                 {
-                    this.SendConfirmation(channel, 1, string.Format("\"{0}\" is not valid protocol message.", message));
+                    SendConfirmation(channel, 1, string.Format("\"{0}\" is not valid protocol message.", message));
                 }
 
                 channel.Close();
             }
         }
 
-        private void InternalSetTimestamp(ChannelSession channel, Stream input, DateTime lastWriteTime, DateTime lastAccessime)
+        private void InternalSetTimestamp(ChannelSession channel, Stream input, DateTime lastWriteTime,
+            DateTime lastAccessime)
         {
             var zeroTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            var modificationSeconds = (long)(lastWriteTime - zeroTime).TotalSeconds;
-            var accessSeconds = (long)(lastAccessime - zeroTime).TotalSeconds;
-            this.SendData(channel, string.Format("T{0} 0 {1} 0\n", modificationSeconds, accessSeconds));
-            this.CheckReturnCode(input);
+            var modificationSeconds = (long) (lastWriteTime - zeroTime).TotalSeconds;
+            var accessSeconds = (long) (lastAccessime - zeroTime).TotalSeconds;
+            SendData(channel, string.Format("T{0} 0 {1} 0\n", modificationSeconds, accessSeconds));
+            CheckReturnCode(input);
         }
 
         private void InternalUpload(ChannelSession channel, Stream input, Stream source, string filename)
         {
             var length = source.Length;
 
-            this.SendData(channel, string.Format("C0644 {0} {1}\n", length, Path.GetFileName(filename)));
+            SendData(channel, string.Format("C0644 {0} {1}\n", length, Path.GetFileName(filename)));
 
-            var buffer = new byte[this.BufferSize];
+            var buffer = new byte[BufferSize];
 
             var read = source.Read(buffer, 0, buffer.Length);
 
@@ -256,76 +169,75 @@ namespace Renci.SshNet
 
             while (read > 0)
             {
-                this.SendData(channel, buffer, read);
+                SendData(channel, buffer, read);
 
                 totalRead += read;
 
-                this.RaiseUploadingEvent(filename, length, totalRead);
+                RaiseUploadingEvent(filename, length, totalRead);
 
                 read = source.Read(buffer, 0, buffer.Length);
             }
 
-            this.SendConfirmation(channel);
-            this.CheckReturnCode(input);
+            SendConfirmation(channel);
+            CheckReturnCode(input);
         }
 
         private void InternalDownload(ChannelSession channel, Stream input, Stream output, string filename, long length)
         {
-            var buffer = new byte[Math.Min(length, this.BufferSize)];
+            var buffer = new byte[Math.Min(length, BufferSize)];
             var needToRead = length;
 
             do
             {
-                var read = input.Read(buffer, 0, (int)Math.Min(needToRead, this.BufferSize));
+                var read = input.Read(buffer, 0, (int) Math.Min(needToRead, BufferSize));
 
                 output.Write(buffer, 0, read);
 
-                this.RaiseDownloadingEvent(filename, length, length - needToRead);
+                RaiseDownloadingEvent(filename, length, length - needToRead);
 
                 needToRead -= read;
-            }
-            while (needToRead > 0);
+            } while (needToRead > 0);
 
             output.Flush();
 
             //  Raise one more time when file downloaded
-            this.RaiseDownloadingEvent(filename, length, length - needToRead);
+            RaiseDownloadingEvent(filename, length, length - needToRead);
 
             //  Send confirmation byte after last data byte was read
-            this.SendConfirmation(channel);
+            SendConfirmation(channel);
 
-            this.CheckReturnCode(input);
+            CheckReturnCode(input);
         }
 
         private void RaiseDownloadingEvent(string filename, long size, long downloaded)
         {
-            if (this.Downloading != null)
+            if (Downloading != null)
             {
-                this.Downloading(this, new ScpDownloadEventArgs(filename, size, downloaded));
+                Downloading(this, new ScpDownloadEventArgs(filename, size, downloaded));
             }
         }
 
         private void RaiseUploadingEvent(string filename, long size, long uploaded)
         {
-            if (this.Uploading != null)
+            if (Uploading != null)
             {
-                this.Uploading(this, new ScpUploadEventArgs(filename, size, uploaded));
+                Uploading(this, new ScpUploadEventArgs(filename, size, uploaded));
             }
         }
 
         private void SendConfirmation(ChannelSession channel)
         {
-            this.SendData(channel, new byte[] { 0 });
+            SendData(channel, new byte[] {0});
         }
 
         private void SendConfirmation(ChannelSession channel, byte errorCode, string message)
         {
-            this.SendData(channel, new byte[] { errorCode });
-            this.SendData(channel, string.Format("{0}\n", message));
+            SendData(channel, new[] {errorCode});
+            SendData(channel, string.Format("{0}\n", message));
         }
 
         /// <summary>
-        /// Checks the return code.
+        ///     Checks the return code.
         /// </summary>
         /// <param name="input">The output stream.</param>
         private void CheckReturnCode(Stream input)
@@ -376,7 +288,7 @@ namespace Renci.SshNet
         {
             var hasError = false;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             var b = ReadByte(stream);
 
@@ -404,15 +316,124 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        ///     Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged ResourceMessages.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged ResourceMessages.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
 
-            if (this._disposeConnectionInfo)
-                ((IDisposable)this.ConnectionInfo).Dispose();
+            if (_disposeConnectionInfo)
+                ((IDisposable) ConnectionInfo).Dispose();
         }
+
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SftpClient" /> class.
+        /// </summary>
+        /// <param name="connectionInfo">The connection info.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionInfo" /> is null.</exception>
+        public ScpClient(ConnectionInfo connectionInfo)
+            : base(connectionInfo)
+        {
+            OperationTimeout = new TimeSpan(0, 0, 0, 0, -1);
+            BufferSize = 1024*16;
+
+            if (_byteToChar == null)
+            {
+                _byteToChar = new char[128];
+                var ch = '\0';
+                for (var i = 0; i < 128; i++)
+                {
+                    _byteToChar[i] = ch++;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SftpClient" /> class.
+        /// </summary>
+        /// <param name="host">Connection host.</param>
+        /// <param name="port">Connection port.</param>
+        /// <param name="username">Authentication username.</param>
+        /// <param name="password">Authentication password.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="password" /> is null.</exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="host" /> is invalid, or <paramref name="username" /> is null or
+        ///     contains whitespace characters.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     <paramref name="port" /> is not within
+        ///     <see cref="F:System.Net.IPEndPoint.MinPort" /> and <see cref="System.Net.IPEndPoint.MaxPort" />.
+        /// </exception>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope",
+            Justification = "Disposed in Dispose(bool) method.")]
+        public ScpClient(string host, int port, string username, string password)
+            : this(new PasswordConnectionInfo(host, port, username, password))
+        {
+            _disposeConnectionInfo = true;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SftpClient" /> class.
+        /// </summary>
+        /// <param name="host">Connection host.</param>
+        /// <param name="username">Authentication username.</param>
+        /// <param name="password">Authentication password.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="password" /> is null.</exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="host" /> is invalid, or <paramref name="username" /> is null or
+        ///     contains whitespace characters.
+        /// </exception>
+        public ScpClient(string host, string username, string password)
+            : this(host, ConnectionInfo.DEFAULT_PORT, username, password)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SftpClient" /> class.
+        /// </summary>
+        /// <param name="host">Connection host.</param>
+        /// <param name="port">Connection port.</param>
+        /// <param name="username">Authentication username.</param>
+        /// <param name="keyFiles">Authentication private key file(s) .</param>
+        /// <exception cref="ArgumentNullException"><paramref name="keyFiles" /> is null.</exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="host" /> is invalid, -or- <paramref name="username" /> is null or
+        ///     contains whitespace characters.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     <paramref name="port" /> is not within
+        ///     <see cref="F:System.Net.IPEndPoint.MinPort" /> and <see cref="System.Net.IPEndPoint.MaxPort" />.
+        /// </exception>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope",
+            Justification = "Disposed in Dispose(bool) method.")]
+        public ScpClient(string host, int port, string username, params PrivateKeyFile[] keyFiles)
+            : this(new PrivateKeyConnectionInfo(host, port, username, keyFiles))
+        {
+            _disposeConnectionInfo = true;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SftpClient" /> class.
+        /// </summary>
+        /// <param name="host">Connection host.</param>
+        /// <param name="username">Authentication username.</param>
+        /// <param name="keyFiles">Authentication private key file(s) .</param>
+        /// <exception cref="ArgumentNullException"><paramref name="keyFiles" /> is null.</exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="host" /> is invalid, -or- <paramref name="username" /> is null or
+        ///     contains whitespace characters.
+        /// </exception>
+        public ScpClient(string host, string username, params PrivateKeyFile[] keyFiles)
+            : this(host, ConnectionInfo.DEFAULT_PORT, username, keyFiles)
+        {
+        }
+
+        #endregion
     }
 }

@@ -7,12 +7,12 @@ using Renci.SshNet.Security.Cryptography;
 namespace Renci.SshNet.Security
 {
     /// <summary>
-    /// Represents "diffie-hellman-group-exchange-sha256" algorithm implementation.
+    ///     Represents "diffie-hellman-group-exchange-sha256" algorithm implementation.
     /// </summary>
     public class KeyExchangeDiffieHellmanGroupExchangeSha256 : KeyExchangeDiffieHellman
     {
         /// <summary>
-        /// Gets algorithm name.
+        ///     Gets algorithm name.
         /// </summary>
         public override string Name
         {
@@ -20,7 +20,7 @@ namespace Renci.SshNet.Security
         }
 
         /// <summary>
-        /// Starts key exchange algorithm
+        ///     Starts key exchange algorithm
         /// </summary>
         /// <param name="session">The session.</param>
         /// <param name="message">Key exchange init message.</param>
@@ -28,60 +28,59 @@ namespace Renci.SshNet.Security
         {
             base.Start(session, message);
 
-            this.Session.RegisterMessage("SSH_MSG_KEX_DH_GEX_GROUP");
-            this.Session.RegisterMessage("SSH_MSG_KEX_DH_GEX_REPLY");
+            Session.RegisterMessage("SSH_MSG_KEX_DH_GEX_GROUP");
+            Session.RegisterMessage("SSH_MSG_KEX_DH_GEX_REPLY");
 
-            this.Session.MessageReceived += Session_MessageReceived;
+            Session.MessageReceived += Session_MessageReceived;
 
             //  1. send SSH_MSG_KEY_DH_GEX_REQUEST
-            this.SendMessage(new KeyExchangeDhGroupExchangeRequest(1024,1024,1024));
-            
+            SendMessage(new KeyExchangeDhGroupExchangeRequest(1024, 1024, 1024));
         }
 
         /// <summary>
-        /// Finishes key exchange algorithm.
+        ///     Finishes key exchange algorithm.
         /// </summary>
         public override void Finish()
         {
             base.Finish();
 
-            this.Session.MessageReceived -= Session_MessageReceived;
+            Session.MessageReceived -= Session_MessageReceived;
         }
 
         /// <summary>
-        /// Calculates key exchange hash value.
+        ///     Calculates key exchange hash value.
         /// </summary>
         /// <returns>
-        /// Key exchange hash.
+        ///     Key exchange hash.
         /// </returns>
         protected override byte[] CalculateHash()
         {
             var hashData = new _ExchangeHashData
             {
-                ClientVersion = this.Session.ClientVersion,
-                ServerVersion = this.Session.ServerVersion,
-                ClientPayload = this._clientPayload,
-                ServerPayload = this._serverPayload,
-                HostKey = this._hostKey,
+                ClientVersion = Session.ClientVersion,
+                ServerVersion = Session.ServerVersion,
+                ClientPayload = _clientPayload,
+                ServerPayload = _serverPayload,
+                HostKey = _hostKey,
                 MinimumGroupSize = 1024,
                 PreferredGroupSize = 1024,
                 MaximumGroupSize = 1024,
-                Prime = this._prime,
-                SubGroup = this._group,
-                ClientExchangeValue = this._clientExchangeValue,
-                ServerExchangeValue = this._serverExchangeValue,
-                SharedKey = this.SharedKey,
+                Prime = _prime,
+                SubGroup = _group,
+                ClientExchangeValue = _clientExchangeValue,
+                ServerExchangeValue = _serverExchangeValue,
+                SharedKey = SharedKey
             }.GetBytes();
 
-            return this.Hash(hashData);
+            return Hash(hashData);
         }
 
         /// <summary>
-        /// Hashes the specified data bytes.
+        ///     Hashes the specified data bytes.
         /// </summary>
         /// <param name="hashBytes">Data to hash.</param>
         /// <returns>
-        /// Hashed bytes
+        ///     Hashed bytes
         /// </returns>
         protected override byte[] Hash(byte[] hashBytes)
         {
@@ -98,57 +97,45 @@ namespace Renci.SshNet.Security
             if (groupMessage != null)
             {
                 //  Unregister message once received
-                this.Session.UnRegisterMessage("SSH_MSG_KEX_DH_GEX_GROUP");
+                Session.UnRegisterMessage("SSH_MSG_KEX_DH_GEX_GROUP");
 
                 //  2. Receive SSH_MSG_KEX_DH_GEX_GROUP
-                this._prime = groupMessage.SafePrime;
-                this._group = groupMessage.SubGroup;
+                _prime = groupMessage.SafePrime;
+                _group = groupMessage.SubGroup;
 
-                this.PopulateClientExchangeValue();
+                PopulateClientExchangeValue();
 
                 //  3. Send SSH_MSG_KEX_DH_GEX_INIT
-                this.SendMessage(new KeyExchangeDhGroupExchangeInit(this._clientExchangeValue));
+                SendMessage(new KeyExchangeDhGroupExchangeInit(_clientExchangeValue));
             }
             var replyMessage = e.Message as KeyExchangeDhGroupExchangeReply;
 
             if (replyMessage != null)
             {
                 //  Unregister message once received
-                this.Session.UnRegisterMessage("SSH_MSG_KEX_DH_GEX_REPLY");
+                Session.UnRegisterMessage("SSH_MSG_KEX_DH_GEX_REPLY");
 
-                this.HandleServerDhReply(replyMessage.HostKey, replyMessage.F, replyMessage.Signature);
+                HandleServerDhReply(replyMessage.HostKey, replyMessage.F, replyMessage.Signature);
 
                 //  When SSH_MSG_KEX_DH_GEX_REPLY received key exchange is completed
-                this.Finish();
+                Finish();
             }
         }
 
         private class _ExchangeHashData : SshData
         {
             public string ServerVersion { get; set; }
-
             public string ClientVersion { get; set; }
-
             public byte[] ClientPayload { get; set; }
-
             public byte[] ServerPayload { get; set; }
-
             public byte[] HostKey { get; set; }
-
-            public UInt32 MinimumGroupSize { get; set; }
-
-            public UInt32 PreferredGroupSize { get; set; }
-
-            public UInt32 MaximumGroupSize { get; set; }
-
+            public uint MinimumGroupSize { get; set; }
+            public uint PreferredGroupSize { get; set; }
+            public uint MaximumGroupSize { get; set; }
             public BigInteger Prime { get; set; }
-
             public BigInteger SubGroup { get; set; }
-
             public BigInteger ClientExchangeValue { get; set; }
-
             public BigInteger ServerExchangeValue { get; set; }
-
             public BigInteger SharedKey { get; set; }
 
             protected override void LoadData()
@@ -158,19 +145,19 @@ namespace Renci.SshNet.Security
 
             protected override void SaveData()
             {
-                this.Write(this.ClientVersion);
-                this.Write(this.ServerVersion);
-                this.WriteBinaryString(this.ClientPayload);
-                this.WriteBinaryString(this.ServerPayload);
-                this.WriteBinaryString(this.HostKey);
-                this.Write(this.MinimumGroupSize);
-                this.Write(this.PreferredGroupSize);
-                this.Write(this.MaximumGroupSize);
-                this.Write(this.Prime);
-                this.Write(this.SubGroup);
-                this.Write(this.ClientExchangeValue);
-                this.Write(this.ServerExchangeValue);
-                this.Write(this.SharedKey);
+                Write(ClientVersion);
+                Write(ServerVersion);
+                WriteBinaryString(ClientPayload);
+                WriteBinaryString(ServerPayload);
+                WriteBinaryString(HostKey);
+                Write(MinimumGroupSize);
+                Write(PreferredGroupSize);
+                Write(MaximumGroupSize);
+                Write(Prime);
+                Write(SubGroup);
+                Write(ClientExchangeValue);
+                Write(ServerExchangeValue);
+                Write(SharedKey);
             }
         }
     }

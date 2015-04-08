@@ -5,16 +5,16 @@ using System.Net.Sockets;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Collection of different extension method specific for .NET 4.0
+    ///     Collection of different extension method specific for .NET 4.0
     /// </summary>
     public static partial class Extensions
     {
         /// <summary>
-        /// Determines whether [is null or white space] [the specified value].
+        ///     Determines whether [is null or white space] [the specified value].
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>
-        ///   <c>true</c> if [is null or white space] [the specified value]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [is null or white space] [the specified value]; otherwise, <c>false</c>.
         /// </returns>
         internal static bool IsNullOrWhiteSpace(this string value)
         {
@@ -22,7 +22,7 @@ namespace Renci.SshNet
 
             return value.All(char.IsWhiteSpace);
         }
-        
+
         internal static bool CanRead(this Socket socket)
         {
             return socket.Connected && socket.Poll(-1, SelectMode.SelectRead) && socket.Available > 0;

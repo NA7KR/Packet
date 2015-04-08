@@ -3,14 +3,14 @@
 namespace Renci.SshNet.Compression
 {
     /// <summary>
-    /// Implements Zlib compression algorithm.
+    ///     Implements Zlib compression algorithm.
     /// </summary>
     public class ZlibStream
     {
         //private readonly Ionic.Zlib.ZlibStream _baseStream;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZlibStream" /> class.
+        ///     Initializes a new instance of the <see cref="ZlibStream" /> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="mode">The mode.</param>
@@ -32,7 +32,7 @@ namespace Renci.SshNet.Compression
         }
 
         /// <summary>
-        /// Writes the specified buffer.
+        ///     Writes the specified buffer.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="offset">The offset.</param>

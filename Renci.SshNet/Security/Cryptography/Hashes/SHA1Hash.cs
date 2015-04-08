@@ -2,167 +2,142 @@
 
 namespace Renci.SshNet.Security.Cryptography
 {
-	/// <summary>
-	/// SHA1 algorithm implementation
-	/// </summary>
-	public sealed class SHA1Hash : HashAlgorithm
-	{
-		private const int DIGEST_SIZE = 20;
+    /// <summary>
+    ///     SHA1 algorithm implementation
+    /// </summary>
+    public sealed class SHA1Hash : HashAlgorithm
+    {
+        private const int DIGEST_SIZE = 20;
+        private const uint Y1 = 0x5a827999;
+        private const uint Y2 = 0x6ed9eba1;
+        private const uint Y3 = 0x8f1bbcdc;
+        private const uint Y4 = 0xca62c1d6;
+        private readonly byte[] _buffer;
+        private readonly uint[] _hashValue = new uint[80];
+        private int _bufferOffset;
+        private long _byteCount;
+        private int _offset;
+        private uint H1, H2, H3, H4, H5;
 
-		private const uint Y1 = 0x5a827999;
-
-		private const uint Y2 = 0x6ed9eba1;
-
-		private const uint Y3 = 0x8f1bbcdc;
-
-		private const uint Y4 = 0xca62c1d6;
-
-		private uint H1, H2, H3, H4, H5;
-		
-		private uint[] _hashValue = new uint[80];
-		
-		private int _offset;
-
-		private byte[] _buffer;
-
-		private int _bufferOffset;
-
-		private long _byteCount;
-
-		/// <summary>
-		/// Gets the size, in bits, of the computed hash code.
-		/// </summary>
-		/// <returns>The size, in bits, of the computed hash code.</returns>
-		public override int HashSize
-		{
-			get
-			{
-				return DIGEST_SIZE * 8;
-			}
-		}
-
-		/// <summary>
-		/// Gets the input block size.
-		/// </summary>
-		/// <returns>The input block size.</returns>
-		public override int InputBlockSize
-		{
-			get
-			{
-				return 64;
-			}
-		}
-
-		/// <summary>
-		/// Gets the output block size.
-		/// </summary>
-		/// <returns>The output block size.</returns>
-		public override int OutputBlockSize
-		{
-			get
-			{
-				return 64;
-			}
-		}
-
-		/// <summary>
-		/// Gets a value indicating whether the current transform can be reused.
-		/// </summary>
-		/// <returns>Always true.</returns>
-		public override bool CanReuseTransform
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed.
-		/// </summary>
-		/// <returns>true if multiple blocks can be transformed; otherwise, false.</returns>
-		public override bool CanTransformMultipleBlocks
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SHA1Hash"/> class.
-		/// </summary>
-		public SHA1Hash()
-		{
-			this._buffer = new byte[4];
-            this.InternalInitialize();
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SHA1Hash" /> class.
+        /// </summary>
+        public SHA1Hash()
+        {
+            _buffer = new byte[4];
+            InternalInitialize();
         }
 
-		/// <summary>
-		/// Routes data written to the object into the hash algorithm for computing the hash.
-		/// </summary>
-		/// <param name="array">The input to compute the hash code for.</param>
-		/// <param name="ibStart">The offset into the byte array from which to begin using data.</param>
-		/// <param name="cbSize">The number of bytes in the byte array to use as data.</param>
-		protected override void HashCore(byte[] array, int ibStart, int cbSize)
-		{
-			//  Fill the current word
-			while ((this._bufferOffset != 0) && (cbSize > 0))
-			{
-				this.Update(array[ibStart]);
-				ibStart++;
-				cbSize--;
-			}
+        /// <summary>
+        ///     Gets the size, in bits, of the computed hash code.
+        /// </summary>
+        /// <returns>The size, in bits, of the computed hash code.</returns>
+        public override int HashSize
+        {
+            get { return DIGEST_SIZE*8; }
+        }
 
-			//  Process whole words.
-			while (cbSize > this._buffer.Length)
-			{
-				this.ProcessWord(array, ibStart);
+        /// <summary>
+        ///     Gets the input block size.
+        /// </summary>
+        /// <returns>The input block size.</returns>
+        public override int InputBlockSize
+        {
+            get { return 64; }
+        }
 
-				ibStart += this._buffer.Length;
-				cbSize -= this._buffer.Length;
-				this._byteCount += this._buffer.Length;
-			}
+        /// <summary>
+        ///     Gets the output block size.
+        /// </summary>
+        /// <returns>The output block size.</returns>
+        public override int OutputBlockSize
+        {
+            get { return 64; }
+        }
 
-			//  Load in the remainder.
-			while (cbSize > 0)
-			{
-				this.Update(array[ibStart]);
+        /// <summary>
+        ///     Gets a value indicating whether the current transform can be reused.
+        /// </summary>
+        /// <returns>Always true.</returns>
+        public override bool CanReuseTransform
+        {
+            get { return true; }
+        }
 
-				ibStart++;
-				cbSize--;
-			}
-		}
+        /// <summary>
+        ///     Gets a value indicating whether multiple blocks can be transformed.
+        /// </summary>
+        /// <returns>true if multiple blocks can be transformed; otherwise, false.</returns>
+        public override bool CanTransformMultipleBlocks
+        {
+            get { return true; }
+        }
 
-		/// <summary>
-		/// Finalizes the hash computation after the last data is processed by the cryptographic stream object.
-		/// </summary>
-		/// <returns>
-		/// The computed hash code.
-		/// </returns>
-		protected override byte[] HashFinal()
-		{
-			var output = new byte[DIGEST_SIZE];
-			long bitLength = (this._byteCount << 3);
+        /// <summary>
+        ///     Routes data written to the object into the hash algorithm for computing the hash.
+        /// </summary>
+        /// <param name="array">The input to compute the hash code for.</param>
+        /// <param name="ibStart">The offset into the byte array from which to begin using data.</param>
+        /// <param name="cbSize">The number of bytes in the byte array to use as data.</param>
+        protected override void HashCore(byte[] array, int ibStart, int cbSize)
+        {
+            //  Fill the current word
+            while ((_bufferOffset != 0) && (cbSize > 0))
+            {
+                Update(array[ibStart]);
+                ibStart++;
+                cbSize--;
+            }
 
-			//
-			// add the pad bytes.
-			//
-			this.Update((byte)128);
+            //  Process whole words.
+            while (cbSize > _buffer.Length)
+            {
+                ProcessWord(array, ibStart);
 
-			while (this._bufferOffset != 0) 
-				this.Update((byte)0);
+                ibStart += _buffer.Length;
+                cbSize -= _buffer.Length;
+                _byteCount += _buffer.Length;
+            }
 
-			if (this._offset > 14)
-			{
-				this.ProcessBlock();
-			}
+            //  Load in the remainder.
+            while (cbSize > 0)
+            {
+                Update(array[ibStart]);
 
-			this._hashValue[14] = (uint)((ulong)bitLength >> 32);
-            this._hashValue[15] = (uint)((ulong)bitLength);
+                ibStart++;
+                cbSize--;
+            }
+        }
+
+        /// <summary>
+        ///     Finalizes the hash computation after the last data is processed by the cryptographic stream object.
+        /// </summary>
+        /// <returns>
+        ///     The computed hash code.
+        /// </returns>
+        protected override byte[] HashFinal()
+        {
+            var output = new byte[DIGEST_SIZE];
+            var bitLength = (_byteCount << 3);
+
+            //
+            // add the pad bytes.
+            //
+            Update(128);
+
+            while (_bufferOffset != 0)
+                Update(0);
+
+            if (_offset > 14)
+            {
+                ProcessBlock();
+            }
+
+            _hashValue[14] = (uint) ((ulong) bitLength >> 32);
+            _hashValue[15] = (uint) ((ulong) bitLength);
 
 
-			this.ProcessBlock();
+            ProcessBlock();
 
             UInt32ToBigEndian(H1, output, 0);
             UInt32ToBigEndian(H2, output, 4);
@@ -170,27 +145,27 @@ namespace Renci.SshNet.Security.Cryptography
             UInt32ToBigEndian(H4, output, 12);
             UInt32ToBigEndian(H5, output, 16);
 
-            this.Initialize();
+            Initialize();
 
-			return output;
-		}
+            return output;
+        }
 
-		/// <summary>
-		/// Initializes an implementation of the <see cref="T:System.Security.Cryptography.HashAlgorithm"/> class.
-		/// </summary>
-		public override void Initialize()
-		{
-            this.InternalInitialize();
-		}
+        /// <summary>
+        ///     Initializes an implementation of the <see cref="T:System.Security.Cryptography.HashAlgorithm" /> class.
+        /// </summary>
+        public override void Initialize()
+        {
+            InternalInitialize();
+        }
 
         private void InternalInitialize()
         {
             var i = 0;
-            this._byteCount = 0;
-            this._bufferOffset = 0;
+            _byteCount = 0;
+            _bufferOffset = 0;
             for (i = 0; i < 4; i++)
             {
-                this._buffer[i] = 0;
+                _buffer[i] = 0;
             }
 
             H1 = 0x67452301;
@@ -199,75 +174,75 @@ namespace Renci.SshNet.Security.Cryptography
             H4 = 0x10325476;
             H5 = 0xc3d2e1f0;
 
-            this._offset = 0;
-            for (i = 0; i != this._hashValue.Length; i++)
+            _offset = 0;
+            for (i = 0; i != _hashValue.Length; i++)
             {
-                this._hashValue[i] = 0;
+                _hashValue[i] = 0;
             }
         }
 
-		private void Update(byte input)
-		{
-			this._buffer[this._bufferOffset++] = input;
+        private void Update(byte input)
+        {
+            _buffer[_bufferOffset++] = input;
 
-			if (this._bufferOffset == this._buffer.Length)
-			{
-				this.ProcessWord(this._buffer, 0);
-				this._bufferOffset = 0;
-			}
+            if (_bufferOffset == _buffer.Length)
+            {
+                ProcessWord(_buffer, 0);
+                _bufferOffset = 0;
+            }
 
-			this._byteCount++;
-		}
+            _byteCount++;
+        }
 
-		private void ProcessWord(byte[] input, int inOff)
-		{
-            this._hashValue[this._offset] = BigEndianToUInt32(input, inOff);
+        private void ProcessWord(byte[] input, int inOff)
+        {
+            _hashValue[_offset] = BigEndianToUInt32(input, inOff);
 
-			if (++this._offset == 16)
-			{
-				this.ProcessBlock();
-			}
-		}
+            if (++_offset == 16)
+            {
+                ProcessBlock();
+            }
+        }
 
-		private static uint F(uint u, uint v, uint w)
-		{
-			return (u & v) | (~u & w);
-		}
+        private static uint F(uint u, uint v, uint w)
+        {
+            return (u & v) | (~u & w);
+        }
 
-		private static uint H(uint u, uint v, uint w)
-		{
-			return u ^ v ^ w;
-		}
+        private static uint H(uint u, uint v, uint w)
+        {
+            return u ^ v ^ w;
+        }
 
-		private static uint G(uint u, uint v, uint w)
-		{
-			return (u & v) | (u & w) | (v & w);
-		}
+        private static uint G(uint u, uint v, uint w)
+        {
+            return (u & v) | (u & w) | (v & w);
+        }
 
-		private void ProcessBlock()
-		{
-			//
-			// expand 16 word block into 80 word block.
-			//
-			for (int i = 16; i < 80; i++)
-			{
-				uint t = _hashValue[i - 3] ^ _hashValue[i - 8] ^ _hashValue[i - 14] ^ _hashValue[i - 16];
-				_hashValue[i] = t << 1 | t >> 31;
-			}
+        private void ProcessBlock()
+        {
+            //
+            // expand 16 word block into 80 word block.
+            //
+            for (var i = 16; i < 80; i++)
+            {
+                var t = _hashValue[i - 3] ^ _hashValue[i - 8] ^ _hashValue[i - 14] ^ _hashValue[i - 16];
+                _hashValue[i] = t << 1 | t >> 31;
+            }
 
-			//
-			// set up working variables.
-			//
-			uint A = H1;
-			uint B = H2;
-			uint C = H3;
-			uint D = H4;
-			uint E = H5;
+            //
+            // set up working variables.
+            //
+            var A = H1;
+            var B = H2;
+            var C = H3;
+            var D = H4;
+            var E = H5;
 
-			//
-			// round 1
-			//
-			int idx = 0;
+            //
+            // round 1
+            //
+            var idx = 0;
 
             // E = rotateLeft(A, 5) + F(B, C, D) + E + X[idx++] + Y1
             // B = rotateLeft(B, 30)
@@ -333,9 +308,9 @@ namespace Renci.SshNet.Security.Cryptography
 
             A += (B << 5 | (B >> 27)) + F(C, D, E) + _hashValue[idx++] + Y1;
             C = C << 30 | (C >> 2);
-			//
-			// round 2
-			//
+            //
+            // round 2
+            //
             // E = rotateLeft(A, 5) + H(B, C, D) + E + X[idx++] + Y2
             // B = rotateLeft(B, 30)
             E += (A << 5 | (A >> 27)) + H(B, C, D) + _hashValue[idx++] + Y2;
@@ -401,8 +376,8 @@ namespace Renci.SshNet.Security.Cryptography
             A += (B << 5 | (B >> 27)) + H(C, D, E) + _hashValue[idx++] + Y2;
             C = C << 30 | (C >> 2);
 
-			//
-			// round 3
+            //
+            // round 3
             // E = rotateLeft(A, 5) + G(B, C, D) + E + X[idx++] + Y3
             // B = rotateLeft(B, 30)
             E += (A << 5 | (A >> 27)) + G(B, C, D) + _hashValue[idx++] + Y3;
@@ -469,8 +444,8 @@ namespace Renci.SshNet.Security.Cryptography
             C = C << 30 | (C >> 2);
 
             //
-			// round 4
-			//
+            // round 4
+            //
             // E = rotateLeft(A, 5) + H(B, C, D) + E + X[idx++] + Y4
             // B = rotateLeft(B, 30)
             E += (A << 5 | (A >> 27)) + H(B, C, D) + _hashValue[idx++] + Y4;
@@ -536,37 +511,37 @@ namespace Renci.SshNet.Security.Cryptography
             A += (B << 5 | (B >> 27)) + H(C, D, E) + _hashValue[idx++] + Y4;
             C = C << 30 | (C >> 2);
 
-			H1 += A;
-			H2 += B;
-			H3 += C;
-			H4 += D;
-			H5 += E;
+            H1 += A;
+            H2 += B;
+            H3 += C;
+            H4 += D;
+            H5 += E;
 
-			//
-			// reset start of the buffer.
-			//
-			this._offset = 0;
-            for (int i = 0; i < this._hashValue.Length; i++)
+            //
+            // reset start of the buffer.
+            //
+            _offset = 0;
+            for (var i = 0; i < _hashValue.Length; i++)
             {
-                this._hashValue[i] = 0;
+                _hashValue[i] = 0;
             }
-		}
+        }
 
         private static uint BigEndianToUInt32(byte[] bs, int off)
-		{
-			uint n = (uint)bs[off] << 24;
-			n |= (uint)bs[++off] << 16;
-			n |= (uint)bs[++off] << 8;
-			n |= (uint)bs[++off];
-			return n;
-		}
+        {
+            var n = (uint) bs[off] << 24;
+            n |= (uint) bs[++off] << 16;
+            n |= (uint) bs[++off] << 8;
+            n |= bs[++off];
+            return n;
+        }
 
         private static void UInt32ToBigEndian(uint n, byte[] bs, int off)
-		{
-			bs[off] = (byte)(n >> 24);
-			bs[++off] = (byte)(n >> 16);
-			bs[++off] = (byte)(n >> 8);
-			bs[++off] = (byte)(n);
-		}
-	}
+        {
+            bs[off] = (byte) (n >> 24);
+            bs[++off] = (byte) (n >> 16);
+            bs[++off] = (byte) (n >> 8);
+            bs[++off] = (byte) (n);
+        }
+    }
 }

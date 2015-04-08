@@ -13,193 +13,14 @@ using Renci.SshNet.Security.Cryptography.Ciphers.Modes;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Represents remote connection information class.
+    ///     Represents remote connection information class.
     /// </summary>
     public class ConnectionInfo
     {
         internal static int DEFAULT_PORT = 22;
 
         /// <summary>
-        /// Gets supported key exchange algorithms for this connection.
-        /// </summary>
-        public IDictionary<string, Type> KeyExchangeAlgorithms { get; private set; }
-
-        /// <summary>
-        /// Gets supported encryptions for this connection.
-        /// </summary>
-        public IDictionary<string, CipherInfo> Encryptions { get; private set; }
-
-        /// <summary>
-        /// Gets supported hash algorithms for this connection.
-        /// </summary>
-        public IDictionary<string, HashInfo> HmacAlgorithms { get; private set; }
-
-        /// <summary>
-        /// Gets supported host key algorithms for this connection.
-        /// </summary>
-        public IDictionary<string, Func<byte[], KeyHostAlgorithm>> HostKeyAlgorithms { get; private set; }
-
-        /// <summary>
-        /// Gets supported authentication methods for this connection.
-        /// </summary>
-        public IEnumerable<AuthenticationMethod> AuthenticationMethods { get; private set; }
-
-        /// <summary>
-        /// Gets supported compression algorithms for this connection.
-        /// </summary>
-        public IDictionary<string, Type> CompressionAlgorithms { get; private set; }
-
-        /// <summary>
-        /// Gets supported channel requests for this connection.
-        /// </summary>
-        public IDictionary<string, RequestInfo> ChannelRequests { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether connection is authenticated.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if connection is authenticated; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsAuthenticated { get; private set; }
-
-        /// <summary>
-        /// Gets connection host.
-        /// </summary>
-        public string Host { get; private set; }
-
-        /// <summary>
-        /// Gets connection port.
-        /// </summary>
-        public int Port { get; private set; }
-
-        /// <summary>
-        /// Gets connection username.
-        /// </summary>
-        public string Username { get; private set; }
-
-        /// <summary>
-        /// Gets proxy type.
-        /// </summary>
-        /// <value>
-        /// The type of the proxy.
-        /// </value>
-        public ProxyTypes ProxyType { get; private set; }
-
-        /// <summary>
-        /// Gets proxy connection host.
-        /// </summary>
-        public string ProxyHost { get; private set; }
-
-        /// <summary>
-        /// Gets proxy connection port.
-        /// </summary>
-        public int ProxyPort { get; private set; }
-
-        /// <summary>
-        /// Gets proxy connection username.
-        /// </summary>
-        public string ProxyUsername { get; private set; }
-
-        /// <summary>
-        /// Gets proxy connection password.
-        /// </summary>
-        public string ProxyPassword { get; private set; }
-
-        /// <summary>
-        /// Gets or sets connection timeout.
-        /// </summary>
-        /// <value>
-        /// Connection timeout.
-        /// </value>
-        /// <example>
-        ///   <code source="..\..\Renci.SshNet.Tests\Classes\SshClientTest.cs" region="Example SshClient Connect Timeout" language="C#" title="Specify connection timeout" />
-        /// </example>
-        public TimeSpan Timeout { get; set; }
-
-        /// <summary>
-        /// Gets or sets the default encoding.
-        /// </summary>
-        /// <value>
-        /// The default encoding.
-        /// </value>
-        public Encoding Encoding { get; set; }
-
-        /// <summary>
-        /// Gets or sets number of retry attempts when session channel creation failed.
-        /// </summary>
-        /// <value>
-        /// Number of retry attempts.
-        /// </value>
-        public int RetryAttempts { get; set; }
-
-        /// <summary>
-        /// Gets or sets maximum number of session channels to be open simultaneously.
-        /// </summary>
-        /// <value>
-        /// The max sessions.
-        /// </value>
-        public int MaxSessions { get; set; }
-
-        /// <summary>
-        /// Occurs when authentication banner is sent by the server.
-        /// </summary>
-        /// <example>
-        ///     <code source="..\..\Renci.SshNet.Tests\Classes\PasswordConnectionInfoTest.cs" region="Example PasswordConnectionInfo AuthenticationBanner" language="C#" title="Display authentication banner" />
-        /// </example>
-        public event EventHandler<AuthenticationBannerEventArgs> AuthenticationBanner;
-
-        /// <summary>
-        /// Gets the current key exchange algorithm.
-        /// </summary>
-        public string CurrentKeyExchangeAlgorithm { get; internal set; }
-
-        /// <summary>
-        /// Gets the current server encryption.
-        /// </summary>
-        public string CurrentServerEncryption { get; internal set; }
-
-        /// <summary>
-        /// Gets the current client encryption.
-        /// </summary>
-        public string CurrentClientEncryption { get; internal set; }
-
-        /// <summary>
-        /// Gets the current server hash algorithm.
-        /// </summary>
-        public string CurrentServerHmacAlgorithm { get; internal set; }
-
-        /// <summary>
-        /// Gets the current client hash algorithm.
-        /// </summary>
-        public string CurrentClientHmacAlgorithm { get; internal set; }
-
-        /// <summary>
-        /// Gets the current host key algorithm.
-        /// </summary>
-        public string CurrentHostKeyAlgorithm { get; internal set; }
-
-        /// <summary>
-        /// Gets the current server compression algorithm.
-        /// </summary>
-        public string CurrentServerCompressionAlgorithm { get; internal set; }
-
-        /// <summary>
-        /// Gets the server version.
-        /// </summary>
-        public string ServerVersion { get; internal set; }
-
-        /// <summary>
-        /// Get the client version.
-        /// </summary>
-        public string ClientVersion { get; internal set; }
-
-        /// <summary>
-        /// Gets the current client compression algorithm.
-        /// </summary>
-        public string CurrentClientCompressionAlgorithm { get; internal set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="ConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">The host.</param>
         /// <param name="username">The username.</param>
@@ -210,13 +31,14 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="ConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">The host.</param>
         /// <param name="port">The port.</param>
         /// <param name="username">The username.</param>
         /// <param name="authenticationMethods">The authentication methods.</param>
-        public ConnectionInfo(string host, int port, string username, params AuthenticationMethod[] authenticationMethods)
+        public ConnectionInfo(string host, int port, string username,
+            params AuthenticationMethod[] authenticationMethods)
             : this(host, port, username, ProxyTypes.None, null, 0, null, null, authenticationMethods)
         {
         }
@@ -224,7 +46,7 @@ namespace Renci.SshNet
         //  TODO: DOCS Add exception documentation for this class.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionInfo" /> class.
+        ///     Initializes a new instance of the <see cref="ConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="port">Connection port.</param>
@@ -237,10 +59,21 @@ namespace Renci.SshNet
         /// <param name="authenticationMethods">The authentication methods.</param>
         /// <exception cref="System.ArgumentException">host</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">proxyPort</exception>
-        /// <exception cref="ArgumentException"><paramref name="host" /> is invalid, or <paramref name="username" /> is null or contains whitespace characters.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="port" /> is not within <see cref="F:System.Net.IPEndPoint.MinPort" /> and <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
-        /// <exception cref="ArgumentException"><paramref name="host" /> is invalid, or <paramref name="username" /> is null or contains whitespace characters.</exception>
-        public ConnectionInfo(string host, int port, string username, ProxyTypes proxyType, string proxyHost, int proxyPort, string proxyUsername, string proxyPassword, params AuthenticationMethod[] authenticationMethods)
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="host" /> is invalid, or <paramref name="username" /> is null or
+        ///     contains whitespace characters.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     <paramref name="port" /> is not within
+        ///     <see cref="F:System.Net.IPEndPoint.MinPort" /> and <see cref="F:System.Net.IPEndPoint.MaxPort" />.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="host" /> is invalid, or <paramref name="username" /> is null or
+        ///     contains whitespace characters.
+        /// </exception>
+        public ConnectionInfo(string host, int port, string username, ProxyTypes proxyType, string proxyHost,
+            int proxyPort, string proxyUsername, string proxyPassword,
+            params AuthenticationMethod[] authenticationMethods)
         {
             if (!host.IsValidHost())
                 throw new ArgumentException("host");
@@ -264,71 +97,109 @@ namespace Renci.SshNet
                 throw new ArgumentException("authenticationMethods");
 
             //  Set default connection values
-            this.Timeout = TimeSpan.FromSeconds(30);
-            this.RetryAttempts = 10;
-            this.MaxSessions = 10;
-            this.Encoding = Encoding.UTF8;
+            Timeout = TimeSpan.FromSeconds(30);
+            RetryAttempts = 10;
+            MaxSessions = 10;
+            Encoding = Encoding.UTF8;
 
-            this.KeyExchangeAlgorithms = new Dictionary<string, Type>()
+            KeyExchangeAlgorithms = new Dictionary<string, Type>
             {
-                {"diffie-hellman-group-exchange-sha256", typeof(KeyExchangeDiffieHellmanGroupExchangeSha256)},
-                {"diffie-hellman-group-exchange-sha1", typeof(KeyExchangeDiffieHellmanGroupExchangeSha1)},
-                {"diffie-hellman-group14-sha1", typeof(KeyExchangeDiffieHellmanGroup14Sha1)},
-                {"diffie-hellman-group1-sha1", typeof(KeyExchangeDiffieHellmanGroup1Sha1)},
+                {"diffie-hellman-group-exchange-sha256", typeof (KeyExchangeDiffieHellmanGroupExchangeSha256)},
+                {"diffie-hellman-group-exchange-sha1", typeof (KeyExchangeDiffieHellmanGroupExchangeSha1)},
+                {"diffie-hellman-group14-sha1", typeof (KeyExchangeDiffieHellmanGroup14Sha1)},
+                {"diffie-hellman-group1-sha1", typeof (KeyExchangeDiffieHellmanGroup1Sha1)}
                 //{"ecdh-sha2-nistp256", typeof(KeyExchangeEllipticCurveDiffieHellman)},
                 //{"ecdh-sha2-nistp256", typeof(...)},
                 //{"ecdh-sha2-nistp384", typeof(...)},
                 //{"ecdh-sha2-nistp521", typeof(...)},
                 //"gss-group1-sha1-toWM5Slw5Ew8Mqkay+al2g==" - WinSSHD
                 //"gss-gex-sha1-toWM5Slw5Ew8Mqkay+al2g==" - WinSSHD
-
             };
 
-            this.Encryptions = new Dictionary<string, CipherInfo>()
+            Encryptions = new Dictionary<string, CipherInfo>
             {
-                {"aes256-ctr", new CipherInfo(256, (key, iv)=>{ return new AesCipher(key, new CtrCipherMode(iv), null); }) },
-                {"3des-cbc", new CipherInfo(192, (key, iv)=>{ return new TripleDesCipher(key, new CbcCipherMode(iv), null); }) },
-                {"aes128-cbc", new CipherInfo(128, (key, iv)=>{ return new AesCipher(key, new CbcCipherMode(iv), null); }) },
-                {"aes192-cbc", new CipherInfo(192, (key, iv)=>{ return new AesCipher(key, new CbcCipherMode(iv), null); }) },
-                {"aes256-cbc", new CipherInfo(256, (key, iv)=>{ return new AesCipher(key, new CbcCipherMode(iv), null); }) },
-                {"blowfish-cbc", new CipherInfo(128, (key, iv)=>{ return new BlowfishCipher(key, new CbcCipherMode(iv), null); }) },
-                {"twofish-cbc", new CipherInfo(256, (key, iv)=>{ return new TwofishCipher(key, new CbcCipherMode(iv), null); }) },
-                {"twofish192-cbc", new CipherInfo(192, (key, iv)=>{ return new TwofishCipher(key, new CbcCipherMode(iv), null); }) },
-                {"twofish128-cbc", new CipherInfo(128, (key, iv)=>{ return new TwofishCipher(key, new CbcCipherMode(iv), null); }) },
-                {"twofish256-cbc", new CipherInfo(256, (key, iv)=>{ return new TwofishCipher(key, new CbcCipherMode(iv), null); }) },
+                {
+                    "aes256-ctr",
+                    new CipherInfo(256, (key, iv) => { return new AesCipher(key, new CtrCipherMode(iv), null); })
+                },
+                {
+                    "3des-cbc",
+                    new CipherInfo(192, (key, iv) => { return new TripleDesCipher(key, new CbcCipherMode(iv), null); })
+                },
+                {
+                    "aes128-cbc",
+                    new CipherInfo(128, (key, iv) => { return new AesCipher(key, new CbcCipherMode(iv), null); })
+                },
+                {
+                    "aes192-cbc",
+                    new CipherInfo(192, (key, iv) => { return new AesCipher(key, new CbcCipherMode(iv), null); })
+                },
+                {
+                    "aes256-cbc",
+                    new CipherInfo(256, (key, iv) => { return new AesCipher(key, new CbcCipherMode(iv), null); })
+                },
+                {
+                    "blowfish-cbc",
+                    new CipherInfo(128, (key, iv) => { return new BlowfishCipher(key, new CbcCipherMode(iv), null); })
+                },
+                {
+                    "twofish-cbc",
+                    new CipherInfo(256, (key, iv) => { return new TwofishCipher(key, new CbcCipherMode(iv), null); })
+                },
+                {
+                    "twofish192-cbc",
+                    new CipherInfo(192, (key, iv) => { return new TwofishCipher(key, new CbcCipherMode(iv), null); })
+                },
+                {
+                    "twofish128-cbc",
+                    new CipherInfo(128, (key, iv) => { return new TwofishCipher(key, new CbcCipherMode(iv), null); })
+                },
+                {
+                    "twofish256-cbc",
+                    new CipherInfo(256, (key, iv) => { return new TwofishCipher(key, new CbcCipherMode(iv), null); })
+                },
                 ////{"serpent256-cbc", typeof(CipherSerpent256CBC)},
                 ////{"serpent192-cbc", typeof(...)},
                 ////{"serpent128-cbc", typeof(...)},
-                {"arcfour", new CipherInfo(128, (key, iv)=>{ return new Arc4Cipher(key, false); }) },
-                {"arcfour128", new CipherInfo(128, (key, iv)=>{ return new Arc4Cipher(key, true); }) },
-                {"arcfour256", new CipherInfo(256, (key, iv)=>{ return new Arc4Cipher(key, true); }) },
+                {"arcfour", new CipherInfo(128, (key, iv) => { return new Arc4Cipher(key, false); })},
+                {"arcfour128", new CipherInfo(128, (key, iv) => { return new Arc4Cipher(key, true); })},
+                {"arcfour256", new CipherInfo(256, (key, iv) => { return new Arc4Cipher(key, true); })},
                 ////{"idea-cbc", typeof(...)},
-                {"cast128-cbc", new CipherInfo(128, (key, iv)=>{ return new CastCipher(key, new CbcCipherMode(iv), null); }) },
+                {
+                    "cast128-cbc",
+                    new CipherInfo(128, (key, iv) => { return new CastCipher(key, new CbcCipherMode(iv), null); })
+                },
                 ////{"rijndael-cbc@lysator.liu.se", typeof(...)},                
-                {"aes128-ctr", new CipherInfo(128, (key, iv)=>{ return new AesCipher(key, new CtrCipherMode(iv), null); }) },
-                {"aes192-ctr", new CipherInfo(192, (key, iv)=>{ return new AesCipher(key, new CtrCipherMode(iv), null); }) },
+                {
+                    "aes128-ctr",
+                    new CipherInfo(128, (key, iv) => { return new AesCipher(key, new CtrCipherMode(iv), null); })
+                },
+                {
+                    "aes192-ctr",
+                    new CipherInfo(192, (key, iv) => { return new AesCipher(key, new CtrCipherMode(iv), null); })
+                }
             };
 
-            this.HmacAlgorithms = new Dictionary<string, HashInfo>()
+            HmacAlgorithms = new Dictionary<string, HashInfo>
             {
-                {"hmac-md5", new HashInfo(16 * 8, (key)=>{ return new HMac<MD5Hash>(key); }) },
-                {"hmac-sha1", new HashInfo(20 * 8, (key)=>{ return new HMac<SHA1Hash>(key); }) },
-                {"hmac-sha2-256", new HashInfo(32 * 8, (key)=>{ return new HMac<SHA256Hash>(key); }) },
-                {"hmac-sha2-256-96", new HashInfo(32 * 8, (key)=>{ return new HMac<SHA256Hash>(key, 96); }) },
+                {"hmac-md5", new HashInfo(16*8, key => { return new HMac<MD5Hash>(key); })},
+                {"hmac-sha1", new HashInfo(20*8, key => { return new HMac<SHA1Hash>(key); })},
+                {"hmac-sha2-256", new HashInfo(32*8, key => { return new HMac<SHA256Hash>(key); })},
+                {"hmac-sha2-256-96", new HashInfo(32*8, key => { return new HMac<SHA256Hash>(key, 96); })},
                 //{"hmac-sha2-512", new HashInfo(64 * 8, (key)=>{ return new HMac<SHA512Hash>(key); }) },
                 //{"hmac-sha2-512-96", new HashInfo(64 * 8, (key)=>{ return new HMac<SHA512Hash>(key, 96); }) },
                 //{"umac-64@openssh.com", typeof(HMacSha1)},
-                {"hmac-ripemd160", new HashInfo(160, (key)=>{ return new HMac<RIPEMD160Hash>(key); }) },
-                {"hmac-ripemd160@openssh.com", new HashInfo(160, (key)=>{ return new HMac<RIPEMD160Hash>(key); }) },
-                {"hmac-md5-96", new HashInfo(16 * 8, (key)=>{ return new HMac<MD5Hash>(key, 96); }) },
-                {"hmac-sha1-96", new HashInfo(20 * 8, (key)=>{ return new HMac<SHA1Hash>(key, 96); }) },
+                {"hmac-ripemd160", new HashInfo(160, key => { return new HMac<RIPEMD160Hash>(key); })},
+                {"hmac-ripemd160@openssh.com", new HashInfo(160, key => { return new HMac<RIPEMD160Hash>(key); })},
+                {"hmac-md5-96", new HashInfo(16*8, key => { return new HMac<MD5Hash>(key, 96); })},
+                {"hmac-sha1-96", new HashInfo(20*8, key => { return new HMac<SHA1Hash>(key, 96); })}
                 //{"none", typeof(...)},
             };
 
-            this.HostKeyAlgorithms = new Dictionary<string, Func<byte[], KeyHostAlgorithm>>()
+            HostKeyAlgorithms = new Dictionary<string, Func<byte[], KeyHostAlgorithm>>
             {
-                {"ssh-rsa", (data) => { return new KeyHostAlgorithm("ssh-rsa", new RsaKey(), data); }},
-                {"ssh-dss", (data) => { return new KeyHostAlgorithm("ssh-dss", new DsaKey(), data); }},
+                {"ssh-rsa", data => { return new KeyHostAlgorithm("ssh-rsa", new RsaKey(), data); }},
+                {"ssh-dss", data => { return new KeyHostAlgorithm("ssh-dss", new DsaKey(), data); }}
                 //{"ecdsa-sha2-nistp256 "}
                 //{"x509v3-sign-rsa", () => { ... },
                 //{"x509v3-sign-dss", () => { ... },
@@ -338,50 +209,232 @@ namespace Renci.SshNet
                 //{"pgp-sign-dss", () => { ... },
             };
 
-            this.CompressionAlgorithms = new Dictionary<string, Type>()
+            CompressionAlgorithms = new Dictionary<string, Type>
             {
                 //{"zlib@openssh.com", typeof(ZlibOpenSsh)}, 
                 //{"zlib", typeof(Zlib)}, 
-                {"none", null}, 
+                {"none", null}
             };
 
 
-            this.ChannelRequests = new Dictionary<string, RequestInfo>()
+            ChannelRequests = new Dictionary<string, RequestInfo>
             {
-                {EnvironmentVariableRequestInfo.NAME, new EnvironmentVariableRequestInfo()}, 
-                {ExecRequestInfo.NAME, new ExecRequestInfo()}, 
-                {ExitSignalRequestInfo.NAME, new ExitSignalRequestInfo()}, 
-                {ExitStatusRequestInfo.NAME, new ExitStatusRequestInfo()}, 
-                {PseudoTerminalRequestInfo.NAME, new PseudoTerminalRequestInfo()}, 
-                {ShellRequestInfo.NAME, new ShellRequestInfo()}, 
-                {SignalRequestInfo.NAME, new SignalRequestInfo()}, 
-                {SubsystemRequestInfo.NAME, new SubsystemRequestInfo()}, 
-                {WindowChangeRequestInfo.NAME, new WindowChangeRequestInfo()}, 
-                {X11ForwardingRequestInfo.NAME, new X11ForwardingRequestInfo()}, 
-                {XonXoffRequestInfo.NAME, new XonXoffRequestInfo()}, 
-                {EndOfWriteRequestInfo.NAME, new EndOfWriteRequestInfo()}, 
-                {KeepAliveRequestInfo.NAME, new KeepAliveRequestInfo()}, 
+                {EnvironmentVariableRequestInfo.NAME, new EnvironmentVariableRequestInfo()},
+                {ExecRequestInfo.NAME, new ExecRequestInfo()},
+                {ExitSignalRequestInfo.NAME, new ExitSignalRequestInfo()},
+                {ExitStatusRequestInfo.NAME, new ExitStatusRequestInfo()},
+                {PseudoTerminalRequestInfo.NAME, new PseudoTerminalRequestInfo()},
+                {ShellRequestInfo.NAME, new ShellRequestInfo()},
+                {SignalRequestInfo.NAME, new SignalRequestInfo()},
+                {SubsystemRequestInfo.NAME, new SubsystemRequestInfo()},
+                {WindowChangeRequestInfo.NAME, new WindowChangeRequestInfo()},
+                {X11ForwardingRequestInfo.NAME, new X11ForwardingRequestInfo()},
+                {XonXoffRequestInfo.NAME, new XonXoffRequestInfo()},
+                {EndOfWriteRequestInfo.NAME, new EndOfWriteRequestInfo()},
+                {KeepAliveRequestInfo.NAME, new KeepAliveRequestInfo()}
             };
 
-            this.Host = host;
-            this.Port = port;
-            this.Username = username;
+            Host = host;
+            Port = port;
+            Username = username;
 
-            this.ProxyType = proxyType;
-            this.ProxyHost = proxyHost;
-            this.ProxyPort = proxyPort;
-            this.ProxyUsername = proxyUsername;
-            this.ProxyPassword = proxyPassword;
+            ProxyType = proxyType;
+            ProxyHost = proxyHost;
+            ProxyPort = proxyPort;
+            ProxyUsername = proxyUsername;
+            ProxyPassword = proxyPassword;
 
-            this.AuthenticationMethods = authenticationMethods;
+            AuthenticationMethods = authenticationMethods;
         }
 
         /// <summary>
-        /// Authenticates the specified session.
+        ///     Gets supported key exchange algorithms for this connection.
+        /// </summary>
+        public IDictionary<string, Type> KeyExchangeAlgorithms { get; private set; }
+
+        /// <summary>
+        ///     Gets supported encryptions for this connection.
+        /// </summary>
+        public IDictionary<string, CipherInfo> Encryptions { get; private set; }
+
+        /// <summary>
+        ///     Gets supported hash algorithms for this connection.
+        /// </summary>
+        public IDictionary<string, HashInfo> HmacAlgorithms { get; private set; }
+
+        /// <summary>
+        ///     Gets supported host key algorithms for this connection.
+        /// </summary>
+        public IDictionary<string, Func<byte[], KeyHostAlgorithm>> HostKeyAlgorithms { get; private set; }
+
+        /// <summary>
+        ///     Gets supported authentication methods for this connection.
+        /// </summary>
+        public IEnumerable<AuthenticationMethod> AuthenticationMethods { get; }
+
+        /// <summary>
+        ///     Gets supported compression algorithms for this connection.
+        /// </summary>
+        public IDictionary<string, Type> CompressionAlgorithms { get; private set; }
+
+        /// <summary>
+        ///     Gets supported channel requests for this connection.
+        /// </summary>
+        public IDictionary<string, RequestInfo> ChannelRequests { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether connection is authenticated.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if connection is authenticated; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsAuthenticated { get; private set; }
+
+        /// <summary>
+        ///     Gets connection host.
+        /// </summary>
+        public string Host { get; private set; }
+
+        /// <summary>
+        ///     Gets connection port.
+        /// </summary>
+        public int Port { get; private set; }
+
+        /// <summary>
+        ///     Gets connection username.
+        /// </summary>
+        public string Username { get; }
+
+        /// <summary>
+        ///     Gets proxy type.
+        /// </summary>
+        /// <value>
+        ///     The type of the proxy.
+        /// </value>
+        public ProxyTypes ProxyType { get; private set; }
+
+        /// <summary>
+        ///     Gets proxy connection host.
+        /// </summary>
+        public string ProxyHost { get; private set; }
+
+        /// <summary>
+        ///     Gets proxy connection port.
+        /// </summary>
+        public int ProxyPort { get; private set; }
+
+        /// <summary>
+        ///     Gets proxy connection username.
+        /// </summary>
+        public string ProxyUsername { get; private set; }
+
+        /// <summary>
+        ///     Gets proxy connection password.
+        /// </summary>
+        public string ProxyPassword { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets connection timeout.
+        /// </summary>
+        /// <value>
+        ///     Connection timeout.
+        /// </value>
+        /// <example>
+        ///     <code source="..\..\Renci.SshNet.Tests\Classes\SshClientTest.cs" region="Example SshClient Connect Timeout"
+        ///         language="C#" title="Specify connection timeout" />
+        /// </example>
+        public TimeSpan Timeout { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the default encoding.
+        /// </summary>
+        /// <value>
+        ///     The default encoding.
+        /// </value>
+        public Encoding Encoding { get; set; }
+
+        /// <summary>
+        ///     Gets or sets number of retry attempts when session channel creation failed.
+        /// </summary>
+        /// <value>
+        ///     Number of retry attempts.
+        /// </value>
+        public int RetryAttempts { get; set; }
+
+        /// <summary>
+        ///     Gets or sets maximum number of session channels to be open simultaneously.
+        /// </summary>
+        /// <value>
+        ///     The max sessions.
+        /// </value>
+        public int MaxSessions { get; set; }
+
+        /// <summary>
+        ///     Gets the current key exchange algorithm.
+        /// </summary>
+        public string CurrentKeyExchangeAlgorithm { get; internal set; }
+
+        /// <summary>
+        ///     Gets the current server encryption.
+        /// </summary>
+        public string CurrentServerEncryption { get; internal set; }
+
+        /// <summary>
+        ///     Gets the current client encryption.
+        /// </summary>
+        public string CurrentClientEncryption { get; internal set; }
+
+        /// <summary>
+        ///     Gets the current server hash algorithm.
+        /// </summary>
+        public string CurrentServerHmacAlgorithm { get; internal set; }
+
+        /// <summary>
+        ///     Gets the current client hash algorithm.
+        /// </summary>
+        public string CurrentClientHmacAlgorithm { get; internal set; }
+
+        /// <summary>
+        ///     Gets the current host key algorithm.
+        /// </summary>
+        public string CurrentHostKeyAlgorithm { get; internal set; }
+
+        /// <summary>
+        ///     Gets the current server compression algorithm.
+        /// </summary>
+        public string CurrentServerCompressionAlgorithm { get; internal set; }
+
+        /// <summary>
+        ///     Gets the server version.
+        /// </summary>
+        public string ServerVersion { get; internal set; }
+
+        /// <summary>
+        ///     Get the client version.
+        /// </summary>
+        public string ClientVersion { get; internal set; }
+
+        /// <summary>
+        ///     Gets the current client compression algorithm.
+        /// </summary>
+        public string CurrentClientCompressionAlgorithm { get; internal set; }
+
+        /// <summary>
+        ///     Occurs when authentication banner is sent by the server.
+        /// </summary>
+        /// <example>
+        ///     <code source="..\..\Renci.SshNet.Tests\Classes\PasswordConnectionInfoTest.cs"
+        ///         region="Example PasswordConnectionInfo AuthenticationBanner" language="C#"
+        ///         title="Display authentication banner" />
+        /// </example>
+        public event EventHandler<AuthenticationBannerEventArgs> AuthenticationBanner;
+
+        /// <summary>
+        ///     Authenticates the specified session.
         /// </summary>
         /// <param name="session">The session to be authenticated.</param>
         /// <returns>true if authenticated; otherwise false.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="session"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="session" /> is null.</exception>
         /// <exception cref="SshAuthenticationException">No suitable authentication method found to complete authentication.</exception>
         public bool Authenticate(Session session)
         {
@@ -397,7 +450,7 @@ namespace Renci.SshNet
             session.UserAuthenticationBannerReceived += Session_UserAuthenticationBannerReceived;
 
             //  Try to authenticate against none
-            var noneAuthenticationMethod = new NoneAuthenticationMethod(this.Username);
+            var noneAuthenticationMethod = new NoneAuthenticationMethod(Username);
 
             authenticated = noneAuthenticationMethod.Authenticate(session);
 
@@ -407,15 +460,21 @@ namespace Renci.SshNet
             while (authenticated != AuthenticationResult.Success)
             {
                 // Find first authentication method
-                var method = this.AuthenticationMethods.Where((a) => allowedAuthentications.Contains(a.Name) && !triedAuthentications.Contains(a.Name)).FirstOrDefault();
+                var method =
+                    AuthenticationMethods.Where(
+                        a => allowedAuthentications.Contains(a.Name) && !triedAuthentications.Contains(a.Name))
+                        .FirstOrDefault();
                 if (method == null)
-                    throw new SshAuthenticationException("No suitable authentication method found to complete authentication.");
+                    throw new SshAuthenticationException(
+                        "No suitable authentication method found to complete authentication.");
 
                 triedAuthentications.Add(method.Name);
 
                 authenticated = method.Authenticate(session);
 
-                if (authenticated == AuthenticationResult.PartialSuccess || (method.AllowedAuthentications != null && method.AllowedAuthentications.Count() < allowedAuthentications.Count()))
+                if (authenticated == AuthenticationResult.PartialSuccess ||
+                    (method.AllowedAuthentications != null &&
+                     method.AllowedAuthentications.Count() < allowedAuthentications.Count()))
                 {
                     // If further authentication is required then continue to try another method
                     allowedAuthentications = method.AllowedAuthentications;
@@ -423,7 +482,8 @@ namespace Renci.SshNet
                 }
 
                 // If authentication Fail, and all the authentication have been tried.
-                if (authenticated == AuthenticationResult.Failure && (triedAuthentications.Count() == allowedAuthentications.Count()))
+                if (authenticated == AuthenticationResult.Failure &&
+                    (triedAuthentications.Count() == allowedAuthentications.Count()))
                 {
                     break;
                 }
@@ -435,16 +495,17 @@ namespace Renci.SshNet
             session.UnRegisterMessage("SSH_MSG_USERAUTH_SUCCESS");
             session.UnRegisterMessage("SSH_MSG_USERAUTH_BANNER");
 
-            this.IsAuthenticated = authenticated == AuthenticationResult.Success;
+            IsAuthenticated = authenticated == AuthenticationResult.Success;
 
             return authenticated == AuthenticationResult.Success;
         }
 
         private void Session_UserAuthenticationBannerReceived(object sender, MessageEventArgs<BannerMessage> e)
         {
-            if (this.AuthenticationBanner != null)
+            if (AuthenticationBanner != null)
             {
-                this.AuthenticationBanner(this, new AuthenticationBannerEventArgs(this.Username, e.Message.Message, e.Message.Language));
+                AuthenticationBanner(this,
+                    new AuthenticationBannerEventArgs(Username, e.Message.Message, e.Message.Language));
             }
         }
     }

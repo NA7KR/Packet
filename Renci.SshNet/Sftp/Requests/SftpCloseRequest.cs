@@ -5,6 +5,13 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class SftpCloseRequest : SftpRequest
     {
+        public SftpCloseRequest(uint protocolVersion, uint requestId, byte[] handle,
+            Action<SftpStatusResponse> statusAction)
+            : base(protocolVersion, requestId, statusAction)
+        {
+            Handle = handle;
+        }
+
         public override SftpMessageTypes SftpMessageType
         {
             get { return SftpMessageTypes.Close; }
@@ -12,22 +19,16 @@ namespace Renci.SshNet.Sftp.Requests
 
         public byte[] Handle { get; private set; }
 
-        public SftpCloseRequest(uint protocolVersion, uint requestId, byte[] handle, Action<SftpStatusResponse> statusAction)
-            : base(protocolVersion, requestId, statusAction)
-        {
-            this.Handle = handle;
-        }
-
         protected override void LoadData()
         {
             base.LoadData();
-            this.Handle = this.ReadBinaryString();
+            Handle = ReadBinaryString();
         }
 
         protected override void SaveData()
         {
             base.SaveData();
-            this.WriteBinaryString(this.Handle);
+            WriteBinaryString(Handle);
         }
     }
 }

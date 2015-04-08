@@ -5,6 +5,14 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class FStatVfsRequest : SftpExtendedRequest
     {
+        public FStatVfsRequest(uint protocolVersion, uint requestId, byte[] handle,
+            Action<SftpExtendedReplyResponse> extendedAction, Action<SftpStatusResponse> statusAction)
+            : base(protocolVersion, requestId, statusAction)
+        {
+            Handle = handle;
+            SetAction(extendedAction);
+        }
+
         public override SftpMessageTypes SftpMessageType
         {
             get { return SftpMessageTypes.Extended; }
@@ -15,19 +23,12 @@ namespace Renci.SshNet.Sftp.Requests
             get { return "fstatvfs@openssh.com"; }
         }
 
-        public byte[] Handle { get; private set; }
-
-        public FStatVfsRequest(uint protocolVersion, uint requestId, byte[] handle, Action<SftpExtendedReplyResponse> extendedAction, Action<SftpStatusResponse> statusAction)
-            : base(protocolVersion, requestId, statusAction)
-        {
-            this.Handle = handle;
-            this.SetAction(extendedAction);
-        }
+        public byte[] Handle { get; }
 
         protected override void SaveData()
         {
             base.SaveData();
-            this.WriteBinaryString(this.Handle);
+            WriteBinaryString(Handle);
         }
     }
 }

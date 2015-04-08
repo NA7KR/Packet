@@ -6,16 +6,8 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class SftpRealPathRequest : SftpRequest
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.RealPath; }
-        }
-
-        public string Path { get; private set; }
-
-        public Encoding Encoding { get; private set; }
-
-        public SftpRealPathRequest(uint protocolVersion, uint requestId, string path, Encoding encoding, Action<SftpNameResponse> nameAction, Action<SftpStatusResponse> statusAction)
+        public SftpRealPathRequest(uint protocolVersion, uint requestId, string path, Encoding encoding,
+            Action<SftpNameResponse> nameAction, Action<SftpStatusResponse> statusAction)
             : base(protocolVersion, requestId, statusAction)
         {
             if (nameAction == null)
@@ -24,16 +16,23 @@ namespace Renci.SshNet.Sftp.Requests
             if (statusAction == null)
                 throw new ArgumentNullException("status");
 
-            this.Path = path;
-            this.Encoding = encoding;
-            this.SetAction(nameAction);
-            
+            Path = path;
+            Encoding = encoding;
+            SetAction(nameAction);
         }
+
+        public override SftpMessageTypes SftpMessageType
+        {
+            get { return SftpMessageTypes.RealPath; }
+        }
+
+        public string Path { get; }
+        public Encoding Encoding { get; }
 
         protected override void SaveData()
         {
             base.SaveData();
-            this.Write(this.Path, this.Encoding);
+            Write(Path, Encoding);
         }
     }
 }

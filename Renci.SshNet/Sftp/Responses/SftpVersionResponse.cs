@@ -11,20 +11,18 @@ namespace Renci.SshNet.Sftp.Responses
         }
 
         public uint Version { get; private set; }
-
         public IDictionary<string, string> Extentions { get; private set; }
 
         protected override void LoadData()
         {
             base.LoadData();
-            this.Version = this.ReadUInt32();
-            this.Extentions = this.ReadExtensionPair();
+            Version = ReadUInt32();
+            Extentions = ReadExtensionPair();
         }
 
         protected override void SaveData()
         {
             throw new InvalidOperationException();
         }
-
     }
 }

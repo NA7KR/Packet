@@ -7,105 +7,99 @@ using System.Text;
 namespace Renci.SshNet.Common
 {
     /// <summary>
-    /// Base ssh data serialization type
+    ///     Base ssh data serialization type
     /// </summary>
     public abstract class SshData
     {
-        private static Encoding _ascii = new ASCIIEncoding();
+        private static readonly Encoding _ascii = new ASCIIEncoding();
 
 #if SILVERLIGHT
         private static Encoding _utf8 = Encoding.UTF8;
 #else
-        private static Encoding _utf8 = Encoding.Default;
+        private static readonly Encoding _utf8 = Encoding.Default;
 #endif
 
         /// <summary>
-        /// Data byte array that hold message unencrypted data
+        ///     Data byte array that hold message unencrypted data
         /// </summary>
         private List<byte> _data;
 
         private int _readerIndex;
 
         /// <summary>
-        /// Gets a value indicating whether all data from the buffer has been read.
+        ///     Gets a value indicating whether all data from the buffer has been read.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is end of data; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is end of data; otherwise, <c>false</c>.
         /// </value>
         public bool IsEndOfData
         {
-            get
-            {
-                return this._readerIndex >= this._data.Count();
-            }
+            get { return _readerIndex >= _data.Count(); }
         }
 
         private byte[] _loadedData;
 
         /// <summary>
-        /// Gets the index that represents zero in current data type.
+        ///     Gets the index that represents zero in current data type.
         /// </summary>
         /// <value>
-        /// The index of the zero reader.
+        ///     The index of the zero reader.
         /// </value>
         protected virtual int ZeroReaderIndex
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
         }
 
         /// <summary>
-        /// Gets data bytes array
+        ///     Gets data bytes array
         /// </summary>
         /// <returns>Byte array representation of data structure.</returns>
         public virtual byte[] GetBytes()
         {
-            this._data = new List<byte>();
+            _data = new List<byte>();
 
-            this.SaveData();
+            SaveData();
 
-            return this._data.ToArray();
+            return _data.ToArray();
         }
 
         internal T OfType<T>() where T : SshData, new()
         {
             var result = new T();
-            result.LoadBytes(this._loadedData);
+            result.LoadBytes(_loadedData);
             result.LoadData();
             return result;
         }
 
         /// <summary>
-        /// Loads data from specified bytes.
+        ///     Loads data from specified bytes.
         /// </summary>
         /// <param name="value">Bytes array.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="value" /> is null.</exception>
         public void Load(byte[] value)
         {
             if (value == null)
                 throw new ArgumentNullException("value");
 
-            this.LoadBytes(value);
-            this.LoadData();
+            LoadBytes(value);
+            LoadData();
         }
 
         /// <summary>
-        /// Called when type specific data need to be loaded.
+        ///     Called when type specific data need to be loaded.
         /// </summary>
         protected abstract void LoadData();
 
         /// <summary>
-        /// Called when type specific data need to be saved.
+        ///     Called when type specific data need to be saved.
         /// </summary>
         protected abstract void SaveData();
 
         /// <summary>
-        /// Loads data bytes into internal buffer.
+        ///     Loads data bytes into internal buffer.
         /// </summary>
         /// <param name="bytes">The bytes.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="bytes"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="bytes" /> is null.</exception>
         protected void LoadBytes(byte[] bytes)
         {
             // Note about why I check for null here, and in Load(byte[]) in this class.
@@ -113,292 +107,297 @@ namespace Renci.SshNet.Common
             if (bytes == null)
                 throw new ArgumentNullException("bytes");
 
-            this.ResetReader();
-            this._loadedData = bytes;
-            this._data = new List<byte>(bytes);
+            ResetReader();
+            _loadedData = bytes;
+            _data = new List<byte>(bytes);
         }
 
         /// <summary>
-        /// Resets internal data reader index.
+        ///     Resets internal data reader index.
         /// </summary>
         protected void ResetReader()
         {
-            this._readerIndex = this.ZeroReaderIndex;  //  Set to 1 to skip first byte which specifies message type
+            _readerIndex = ZeroReaderIndex; //  Set to 1 to skip first byte which specifies message type
         }
 
         /// <summary>
-        /// Reads all data left in internal buffer at current position.
+        ///     Reads all data left in internal buffer at current position.
         /// </summary>
         /// <returns>An array of bytes containing the remaining data in the internal buffer.</returns>
         protected byte[] ReadBytes()
         {
-            var data = new byte[this._data.Count - this._readerIndex];
-            this._data.CopyTo(this._readerIndex, data, 0, data.Length);
+            var data = new byte[_data.Count - _readerIndex];
+            _data.CopyTo(_readerIndex, data, 0, data.Length);
             return data;
         }
 
         /// <summary>
-        /// Reads next specified number of bytes data type from internal buffer.
+        ///     Reads next specified number of bytes data type from internal buffer.
         /// </summary>
         /// <param name="length">Number of bytes to read.</param>
         /// <returns>An array of bytes that was read from the internal buffer.</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is greater than the internal buffer size.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length" /> is greater than the internal buffer size.</exception>
         protected byte[] ReadBytes(int length)
         {
             // Note that this also prevents allocating non-relevant lengths, such as if length is greater than _data.Count but less than int.MaxValue.
             // For the nerds, the condition translates to: if (length > data.Count && length < int.MaxValue)
             // Which probably would cause all sorts of exception, most notably OutOfMemoryException.
-            if (length > this._data.Count)
+            if (length > _data.Count)
                 throw new ArgumentOutOfRangeException("length");
 
             var result = new byte[length];
-            this._data.CopyTo(this._readerIndex, result, 0, length);
-            this._readerIndex += length;
+            _data.CopyTo(_readerIndex, result, 0, length);
+            _readerIndex += length;
             return result;
         }
 
         /// <summary>
-        /// Reads next byte data type from internal buffer.
+        ///     Reads next byte data type from internal buffer.
         /// </summary>
         /// <returns>Byte read.</returns>
         protected byte ReadByte()
         {
-            return this.ReadBytes(1).FirstOrDefault();
+            return ReadBytes(1).FirstOrDefault();
         }
 
         /// <summary>
-        /// Reads next boolean data type from internal buffer.
+        ///     Reads next boolean data type from internal buffer.
         /// </summary>
         /// <returns>Boolean read.</returns>
         protected bool ReadBoolean()
         {
-            return this.ReadByte() == 0 ? false : true;
+            return ReadByte() == 0 ? false : true;
         }
 
         /// <summary>
-        /// Reads next uint16 data type from internal buffer.
+        ///     Reads next uint16 data type from internal buffer.
         /// </summary>
         /// <returns>uint16 read</returns>
-        protected UInt16 ReadUInt16()
+        protected ushort ReadUInt16()
         {
-            var data = this.ReadBytes(2);
-            return (ushort)(data[0] << 8 | data[1]);
+            var data = ReadBytes(2);
+            return (ushort) (data[0] << 8 | data[1]);
         }
 
         /// <summary>
-        /// Reads next uint32 data type from internal buffer.
+        ///     Reads next uint32 data type from internal buffer.
         /// </summary>
         /// <returns>uint32 read</returns>
-        protected UInt32 ReadUInt32()
+        protected uint ReadUInt32()
         {
-            var data = this.ReadBytes(4);
-            return (uint)(data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3]);
+            var data = ReadBytes(4);
+            return (uint) (data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3]);
         }
 
         /// <summary>
-        /// Reads next uint64 data type from internal buffer.
+        ///     Reads next uint64 data type from internal buffer.
         /// </summary>
         /// <returns>uint64 read</returns>
-        protected UInt64 ReadUInt64()
+        protected ulong ReadUInt64()
         {
-            var data = this.ReadBytes(8);
-            return ((ulong)data[0] << 56 | (ulong)data[1] << 48 | (ulong)data[2] << 40 | (ulong)data[3] << 32 | (ulong)data[4] << 24 | (ulong)data[5] << 16 | (ulong)data[6] << 8 | data[7]);
+            var data = ReadBytes(8);
+            return ((ulong) data[0] << 56 | (ulong) data[1] << 48 | (ulong) data[2] << 40 | (ulong) data[3] << 32 |
+                    (ulong) data[4] << 24 | (ulong) data[5] << 16 | (ulong) data[6] << 8 | data[7]);
         }
 
         /// <summary>
-        /// Reads next int64 data type from internal buffer.
+        ///     Reads next int64 data type from internal buffer.
         /// </summary>
         /// <returns>int64 read</returns>
-        protected Int64 ReadInt64()
+        protected long ReadInt64()
         {
-            var data = this.ReadBytes(8);
-            return (int)(data[0] << 56 | data[1] << 48 | data[2] << 40 | data[3] << 32 | data[4] << 24 | data[5] << 16 | data[6] << 8 | data[7]);
+            var data = ReadBytes(8);
+            return data[0] << 56 | data[1] << 48 | data[2] << 40 | data[3] << 32 | data[4] << 24 | data[5] << 16 |
+                   data[6] << 8 | data[7];
         }
 
         /// <summary>
-        /// Reads next string data type from internal buffer.
+        ///     Reads next string data type from internal buffer.
         /// </summary>
         /// <returns>string read</returns>
         protected string ReadAsciiString()
         {
-            var length = this.ReadUInt32();
+            var length = ReadUInt32();
 
-            if (length > (uint)int.MaxValue)
+            if (length > int.MaxValue)
             {
-                throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Strings longer than {0} is not supported.", int.MaxValue));
+                throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture,
+                    "Strings longer than {0} is not supported.", int.MaxValue));
             }
-            return _ascii.GetString(this.ReadBytes((int)length), 0, (int)length);
+            return _ascii.GetString(ReadBytes((int) length), 0, (int) length);
         }
 
         /// <summary>
-        /// Reads next string data type from internal buffer.
+        ///     Reads next string data type from internal buffer.
         /// </summary>
         /// <returns>string read</returns>
         protected string ReadString()
         {
-            return this.ReadString(_utf8);
+            return ReadString(_utf8);
         }
 
         /// <summary>
-        /// Reads next string data type from internal buffer.
+        ///     Reads next string data type from internal buffer.
         /// </summary>
         /// <returns>string read</returns>
         protected string ReadString(Encoding encoding)
         {
-            var length = this.ReadUInt32();
+            var length = ReadUInt32();
 
-            if (length > (uint)int.MaxValue)
+            if (length > int.MaxValue)
             {
-                throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Strings longer than {0} is not supported.", int.MaxValue));
+                throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture,
+                    "Strings longer than {0} is not supported.", int.MaxValue));
             }
-            return encoding.GetString(this.ReadBytes((int)length), 0, (int)length);
+            return encoding.GetString(ReadBytes((int) length), 0, (int) length);
         }
 
 
         /// <summary>
-        /// Reads next string data type from internal buffer.
+        ///     Reads next string data type from internal buffer.
         /// </summary>
         /// <returns>string read</returns>
         protected byte[] ReadBinaryString()
         {
-            var length = this.ReadUInt32();
+            var length = ReadUInt32();
 
-            if (length > (uint)int.MaxValue)
+            if (length > int.MaxValue)
             {
-                throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Strings longer than {0} is not supported.", int.MaxValue));
+                throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture,
+                    "Strings longer than {0} is not supported.", int.MaxValue));
             }
 
-            return this.ReadBytes((int)length);
+            return ReadBytes((int) length);
         }
 
         /// <summary>
-        /// Reads next mpint data type from internal buffer.
+        ///     Reads next mpint data type from internal buffer.
         /// </summary>
         /// <returns>mpint read.</returns>
         protected BigInteger ReadBigInt()
         {
-            var length = this.ReadUInt32();
+            var length = ReadUInt32();
 
-            var data = this.ReadBytes((int)length);
+            var data = ReadBytes((int) length);
 
             return new BigInteger(data.Reverse().ToArray());
         }
 
         /// <summary>
-        /// Reads next name-list data type from internal buffer.
+        ///     Reads next name-list data type from internal buffer.
         /// </summary>
         /// <returns>String array or read data..</returns>
         protected string[] ReadNamesList()
         {
-            var namesList = this.ReadString();
+            var namesList = ReadString();
             return namesList.Split(',');
         }
 
         /// <summary>
-        /// Reads next extension-pair data type from internal buffer.
+        ///     Reads next extension-pair data type from internal buffer.
         /// </summary>
         /// <returns>Extensions pair dictionary.</returns>
         protected IDictionary<string, string> ReadExtensionPair()
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            while (this._readerIndex < this._data.Count)
+            var result = new Dictionary<string, string>();
+            while (_readerIndex < _data.Count)
             {
-                var extensionName = this.ReadString();
-                var extensionData = this.ReadString();
+                var extensionName = ReadString();
+                var extensionData = ReadString();
                 result.Add(extensionName, extensionData);
             }
             return result;
         }
 
         /// <summary>
-        /// Writes bytes array data into internal buffer.
+        ///     Writes bytes array data into internal buffer.
         /// </summary>
         /// <param name="data">Byte array data to write.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="data" /> is null.</exception>
         protected void Write(IEnumerable<byte> data)
         {
-            this._data.AddRange(data);
+            _data.AddRange(data);
         }
 
         /// <summary>
-        /// Writes byte data into internal buffer.
+        ///     Writes byte data into internal buffer.
         /// </summary>
         /// <param name="data">Byte data to write.</param>
         protected void Write(byte data)
         {
-            this._data.Add(data);
+            _data.Add(data);
         }
 
         /// <summary>
-        /// Writes boolean data into internal buffer.
+        ///     Writes boolean data into internal buffer.
         /// </summary>
         /// <param name="data">Boolean data to write.</param>
         protected void Write(bool data)
         {
             if (data)
             {
-                this.Write(1);
+                Write(1);
             }
             else
             {
-                this.Write(0);
+                Write(0);
             }
         }
 
         /// <summary>
-        /// Writes uint16 data into internal buffer.
+        ///     Writes uint16 data into internal buffer.
         /// </summary>
         /// <param name="data">uint16 data to write.</param>
-        protected void Write(UInt16 data)
+        protected void Write(ushort data)
         {
-            this.Write(data.GetBytes());
+            Write(data.GetBytes());
         }
 
         /// <summary>
-        /// Writes uint32 data into internal buffer.
+        ///     Writes uint32 data into internal buffer.
         /// </summary>
         /// <param name="data">uint32 data to write.</param>
-        protected void Write(UInt32 data)
+        protected void Write(uint data)
         {
-            this.Write(data.GetBytes());
+            Write(data.GetBytes());
         }
 
         /// <summary>
-        /// Writes uint64 data into internal buffer.
+        ///     Writes uint64 data into internal buffer.
         /// </summary>
         /// <param name="data">uint64 data to write.</param>
-        protected void Write(UInt64 data)
+        protected void Write(ulong data)
         {
-            this.Write(data.GetBytes());
+            Write(data.GetBytes());
         }
 
         /// <summary>
-        /// Writes int64 data into internal buffer.
+        ///     Writes int64 data into internal buffer.
         /// </summary>
         /// <param name="data">int64 data to write.</param>
-        protected void Write(Int64 data)
+        protected void Write(long data)
         {
-            this.Write(data.GetBytes());
+            Write(data.GetBytes());
         }
 
 
         /// <summary>
-        /// Writes string data into internal buffer as ASCII.
+        ///     Writes string data into internal buffer as ASCII.
         /// </summary>
         /// <param name="data">string data to write.</param>
         protected void WriteAscii(string data)
         {
-            this.Write(data, _ascii);
+            Write(data, _ascii);
         }
 
         /// <summary>
-        /// Writes string data into internal buffer using default encoding.
+        ///     Writes string data into internal buffer using default encoding.
         /// </summary>
         /// <param name="data">string data to write.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="data" /> is null.</exception>
         protected void Write(string data)
         {
-            this.Write(data, _utf8);
+            Write(data, _utf8);
         }
 
         protected void Write(string data, Encoding encoding)
@@ -407,55 +406,55 @@ namespace Renci.SshNet.Common
                 throw new ArgumentNullException("data");
 
             var bytes = encoding.GetBytes(data);
-            this.Write((uint)bytes.Length);
-            this.Write(bytes);
+            Write((uint) bytes.Length);
+            Write(bytes);
         }
 
         /// <summary>
-        /// Writes string data into internal buffer.
+        ///     Writes string data into internal buffer.
         /// </summary>
         /// <param name="data">string data to write.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="data" /> is null.</exception>
         protected void WriteBinaryString(byte[] data)
         {
             if (data == null)
                 throw new ArgumentNullException("data");
 
-            this.Write((uint)data.Length);
-            this._data.AddRange(data);
+            Write((uint) data.Length);
+            _data.AddRange(data);
         }
 
         /// <summary>
-        /// Writes mpint data into internal buffer.
+        ///     Writes mpint data into internal buffer.
         /// </summary>
         /// <param name="data">mpint data to write.</param>
         protected void Write(BigInteger data)
         {
             var bytes = data.ToByteArray().Reverse().ToList();
-            this.Write((uint)bytes.Count);
-            this.Write(bytes);
+            Write((uint) bytes.Count);
+            Write(bytes);
         }
 
         /// <summary>
-        /// Writes name-list data into internal buffer.
+        ///     Writes name-list data into internal buffer.
         /// </summary>
         /// <param name="data">name-list data to write.</param>
         protected void Write(string[] data)
         {
-            this.WriteAscii(string.Join(",", data));
+            WriteAscii(string.Join(",", data));
         }
 
 
         /// <summary>
-        /// Writes extension-pair data into internal buffer.
+        ///     Writes extension-pair data into internal buffer.
         /// </summary>
         /// <param name="data">extension-pair data to write.</param>
         protected void Write(IDictionary<string, string> data)
         {
             foreach (var item in data)
             {
-                this.WriteAscii(item.Key);
-                this.WriteAscii(item.Value);
+                WriteAscii(item.Key);
+                WriteAscii(item.Value);
             }
         }
     }

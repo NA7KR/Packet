@@ -1,27 +1,12 @@
 ﻿namespace Renci.SshNet.Common
 {
     /// <summary>
-    /// Provides data for <see cref="Renci.SshNet.Channels.Channel.OpenFailed"/> event.
+    ///     Provides data for <see cref="Renci.SshNet.Channels.Channel.OpenFailed" /> event.
     /// </summary>
     internal class ChannelOpenFailedEventArgs : ChannelEventArgs
     {
         /// <summary>
-        /// Gets failure reason code.
-        /// </summary>
-        public uint ReasonCode { get; private set; }
-
-        /// <summary>
-        /// Gets failure description.
-        /// </summary>
-        public string Description { get; private set; }
-
-        /// <summary>
-        /// Gets failure language.
-        /// </summary>
-        public string Language { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChannelOpenFailedEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="ChannelOpenFailedEventArgs" /> class.
         /// </summary>
         /// <param name="channelNumber">Channel number.</param>
         /// <param name="reasonCode">Failure reason code.</param>
@@ -30,9 +15,24 @@
         public ChannelOpenFailedEventArgs(uint channelNumber, uint reasonCode, string description, string language)
             : base(channelNumber)
         {
-            this.ReasonCode = reasonCode;
-            this.Description = description;
-            this.Language = language;
+            ReasonCode = reasonCode;
+            Description = description;
+            Language = language;
         }
+
+        /// <summary>
+        ///     Gets failure reason code.
+        /// </summary>
+        public uint ReasonCode { get; private set; }
+
+        /// <summary>
+        ///     Gets failure description.
+        /// </summary>
+        public string Description { get; private set; }
+
+        /// <summary>
+        ///     Gets failure language.
+        /// </summary>
+        public string Language { get; private set; }
     }
 }

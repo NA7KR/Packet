@@ -5,12 +5,11 @@ using System.Linq;
 namespace Renci.SshNet.Common
 {
     /// <summary>
-    /// Base class for DER encoded data.
+    ///     Base class for DER encoded data.
     /// </summary>
     public class DerData
     {
         private const byte CONSTRUCTED = 0x20;
-
         private const byte BOOLEAN = 0x01;
         private const byte INTEGER = 0x02;
         //private const byte BITSTRING = 0x03;
@@ -40,97 +39,93 @@ namespace Renci.SshNet.Common
         //private const byte APPLICATION = 0x40;
         //private const byte TAGGED = 0x80;
 
-        private List<byte> _data;
-
-        private int _readerIndex = 0;
-        private int _lastIndex;
-
-        /// <summary>
-        /// Gets a value indicating whether end of data is reached.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if end of data is reached; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsEndOfData
-        {
-            get
-            {
-                return this._readerIndex >= this._lastIndex;
-            }
-        }
+        private readonly List<byte> _data;
+        private readonly int _lastIndex;
+        private int _readerIndex;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DerData"/> class.
+        ///     Initializes a new instance of the <see cref="DerData" /> class.
         /// </summary>
         public DerData()
         {
-            this._data = new List<byte>();
+            _data = new List<byte>();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DerData"/> class.
+        ///     Initializes a new instance of the <see cref="DerData" /> class.
         /// </summary>
         /// <param name="data">DER encoded data.</param>
         public DerData(byte[] data)
         {
-            this._data = new List<byte>(data);
-            var dataType = this.ReadByte();
-            var length = this.ReadLength();
-            this._lastIndex = this._readerIndex + length;
+            _data = new List<byte>(data);
+            var dataType = ReadByte();
+            var length = ReadLength();
+            _lastIndex = _readerIndex + length;
         }
 
         /// <summary>
-        /// Encodes written data as DER byte array.
+        ///     Gets a value indicating whether end of data is reached.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if end of data is reached; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsEndOfData
+        {
+            get { return _readerIndex >= _lastIndex; }
+        }
+
+        /// <summary>
+        ///     Encodes written data as DER byte array.
         /// </summary>
         /// <returns>DER Encoded array.</returns>
         public byte[] Encode()
         {
-            var length = this._data.Count();
-            var lengthBytes = this.GetLength(length);
+            var length = _data.Count();
+            var lengthBytes = GetLength(length);
 
-            this._data.InsertRange(0, lengthBytes);
-            this._data.Insert(0, CONSTRUCTED | SEQUENCE);
+            _data.InsertRange(0, lengthBytes);
+            _data.Insert(0, CONSTRUCTED | SEQUENCE);
 
-            return this._data.ToArray();
+            return _data.ToArray();
         }
 
         /// <summary>
-        /// Reads next mpint data type from internal buffer.
+        ///     Reads next mpint data type from internal buffer.
         /// </summary>
         /// <returns>mpint read.</returns>
         public BigInteger ReadBigInteger()
         {
-            var type = this.ReadByte();
+            var type = ReadByte();
             if (type != INTEGER)
                 throw new InvalidOperationException("Invalid data type, INTEGER(02) is expected.");
 
-            var length = this.ReadLength();
+            var length = ReadLength();
 
-            var data = this.ReadBytes(length);
+            var data = ReadBytes(length);
 
             return new BigInteger(data.Reverse().ToArray());
         }
 
         /// <summary>
-        /// Reads next int data type from internal buffer.
+        ///     Reads next int data type from internal buffer.
         /// </summary>
         /// <returns>int read.</returns>
         public int ReadInteger()
         {
-            var type = this.ReadByte();
+            var type = ReadByte();
             if (type != INTEGER)
                 throw new InvalidOperationException("Invalid data type, INTEGER(02) is expected.");
 
-            var length = this.ReadLength();
+            var length = ReadLength();
 
-            var data = this.ReadBytes(length);
+            var data = ReadBytes(length);
 
             if (length > 4)
                 throw new InvalidOperationException("Integer type cannot occupy more then 4 bytes");
 
             var result = 0;
-            var shift = (length - 1) * 8;
-            for (int i = 0; i < length; i++)
+            var shift = (length - 1)*8;
+            for (var i = 0; i < length; i++)
             {
                 result |= data[i] << shift;
                 shift -= 8;
@@ -142,63 +137,64 @@ namespace Renci.SshNet.Common
         }
 
         /// <summary>
-        /// Writes BOOLEAN data into internal buffer.
+        ///     Writes BOOLEAN data into internal buffer.
         /// </summary>
         /// <param name="data">UInt32 data to write.</param>
         public void Write(bool data)
         {
-            this._data.Add(BOOLEAN);
-            this._data.Add(1);
-            this._data.Add((byte)(data ? 1 : 0));
+            _data.Add(BOOLEAN);
+            _data.Add(1);
+            _data.Add((byte) (data ? 1 : 0));
         }
 
         /// <summary>
-        /// Writes UInt32 data into internal buffer.
+        ///     Writes UInt32 data into internal buffer.
         /// </summary>
         /// <param name="data">UInt32 data to write.</param>
-        public void Write(UInt32 data)
+        public void Write(uint data)
         {
             var bytes = data.GetBytes();
-            this._data.Add(INTEGER);
-            var length = this.GetLength(bytes.Length);
-            this.WriteBytes(length);
-            this.WriteBytes(bytes);
+            _data.Add(INTEGER);
+            var length = GetLength(bytes.Length);
+            WriteBytes(length);
+            WriteBytes(bytes);
         }
 
         /// <summary>
-        /// Writes INTEGER data into internal buffer.
+        ///     Writes INTEGER data into internal buffer.
         /// </summary>
         /// <param name="data">BigInteger data to write.</param>
         public void Write(BigInteger data)
         {
             var bytes = data.ToByteArray().Reverse().ToList();
-            this._data.Add(INTEGER);
-            var length = this.GetLength(bytes.Count);
-            this.WriteBytes(length);
-            this.WriteBytes(bytes);
+            _data.Add(INTEGER);
+            var length = GetLength(bytes.Count);
+            WriteBytes(length);
+            WriteBytes(bytes);
         }
 
         /// <summary>
-        /// Writes OCTETSTRING data into internal buffer.
+        ///     Writes OCTETSTRING data into internal buffer.
         /// </summary>
         /// <param name="data">The data.</param>
         public void Write(byte[] data)
         {
-            this._data.Add(OCTETSTRING);
-            var length = this.GetLength(data.Length);
-            this.WriteBytes(length);
-            this.WriteBytes(data);
+            _data.Add(OCTETSTRING);
+            var length = GetLength(data.Length);
+            WriteBytes(length);
+            WriteBytes(data);
         }
 
         /// <summary>
-        /// Writes OBJECTIDENTIFIER data into internal buffer.
+        ///     Writes OBJECTIDENTIFIER data into internal buffer.
         /// </summary>
         /// <param name="identifier">The identifier.</param>
         public void Write(ObjectIdentifier identifier)
         {
             var temp = new ulong[identifier.Identifiers.Length - 1];
-            temp[0] = identifier.Identifiers[0] * 40 + identifier.Identifiers[1];
-            Buffer.BlockCopy(identifier.Identifiers, 2 * sizeof(ulong), temp, 1 * sizeof(ulong), (identifier.Identifiers.Length - 2) * sizeof(ulong));
+            temp[0] = identifier.Identifiers[0]*40 + identifier.Identifiers[1];
+            Buffer.BlockCopy(identifier.Identifiers, 2*sizeof (ulong), temp, 1*sizeof (ulong),
+                (identifier.Identifiers.Length - 2)*sizeof (ulong));
             //Array.Copy(identifier.Identifiers, 2, temp, 1, identifier.Identifiers.Length - 2);
             var bytes = new List<byte>();
             foreach (var subidentifier in temp)
@@ -207,78 +203,74 @@ namespace Renci.SshNet.Common
                 var buffer = new byte[8];
                 var bufferIndex = buffer.Length - 1;
 
-                var current = (byte)(item & 0x7F);
+                var current = (byte) (item & 0x7F);
                 do
                 {
                     buffer[bufferIndex] = current;
                     if (bufferIndex < buffer.Length - 1)
-                        buffer[bufferIndex] |= (byte)0x80;
+                        buffer[bufferIndex] |= 0x80;
                     item >>= 7;
-                    current = (byte)(item & 0x7F);
+                    current = (byte) (item & 0x7F);
                     bufferIndex--;
-                }
-                while (current > 0);
+                } while (current > 0);
 
-                for (int i = bufferIndex + 1; i < buffer.Length; i++)
+                for (var i = bufferIndex + 1; i < buffer.Length; i++)
                 {
                     bytes.Add(buffer[i]);
                 }
             }
 
-            this._data.Add(OBJECTIDENTIFIER);
-            var length = this.GetLength(bytes.Count);
-            this.WriteBytes(length);
-            this.WriteBytes(bytes);
+            _data.Add(OBJECTIDENTIFIER);
+            var length = GetLength(bytes.Count);
+            WriteBytes(length);
+            WriteBytes(bytes);
         }
 
         /// <summary>
-        /// Writes NULL data into internal buffer.
+        ///     Writes NULL data into internal buffer.
         /// </summary>
         public void WriteNull()
         {
-            this._data.Add(NULL);
-            this._data.Add(0);
+            _data.Add(NULL);
+            _data.Add(0);
         }
 
         /// <summary>
-        /// Writes DerData data into internal buffer.
+        ///     Writes DerData data into internal buffer.
         /// </summary>
         /// <param name="data">DerData data to write.</param>
         public void Write(DerData data)
         {
             var bytes = data.Encode();
-            this._data.AddRange(bytes);
+            _data.AddRange(bytes);
         }
 
         private byte[] GetLength(int length)
         {
             if (length > 127)
             {
-                int size = 1;
-                int val = length;
+                var size = 1;
+                var val = length;
 
                 while ((val >>= 8) != 0)
                     size++;
 
                 var data = new byte[size];
-                data[0] = (byte)(size | 0x80);
+                data[0] = (byte) (size | 0x80);
 
-                for (int i = (size - 1) * 8, j = 1; i >= 0; i -= 8, j++)
+                for (int i = (size - 1)*8, j = 1; i >= 0; i -= 8, j++)
                 {
-                    data[j] = (byte)(length >> i);
+                    data[j] = (byte) (length >> i);
                 }
 
                 return data;
             }
-            else
-            {
-                return new byte[] { (byte)length };
-            }
+            return new[] {(byte) length};
         }
 
         private int ReadLength()
         {
-            int length = this.ReadByte();
+            int length = ReadByte();
 
             if (length == 0x80)
             {
@@ -287,16 +279,17 @@ namespace Renci.SshNet.Common
 
             if (length > 127)
             {
-                int size = length & 0x7f;
+                var size = length & 0x7f;
 
                 // Note: The invalid long form "0xff" (see X.690 8.1.3.5c) will be caught here
                 if (size > 4)
-                    throw new InvalidOperationException(string.Format("DER length is '{0}' and cannot be more than 4 bytes.", size));
+                    throw new InvalidOperationException(
+                        string.Format("DER length is '{0}' and cannot be more than 4 bytes.", size));
 
                 length = 0;
-                for (int i = 0; i < size; i++)
+                for (var i = 0; i < size; i++)
                 {
-                    int next = this.ReadByte();
+                    int next = ReadByte();
 
                     length = (length << 8) + next;
                 }
@@ -313,25 +306,25 @@ namespace Renci.SshNet.Common
 
         private void WriteBytes(IEnumerable<byte> data)
         {
-            this._data.AddRange(data);
+            _data.AddRange(data);
         }
 
         private byte ReadByte()
         {
-            if (this._readerIndex > this._data.Count)
+            if (_readerIndex > _data.Count)
                 throw new InvalidOperationException("Read out of boundaries.");
 
-            return this._data[this._readerIndex++];
+            return _data[_readerIndex++];
         }
 
         private byte[] ReadBytes(int length)
         {
-            if (this._readerIndex + length > this._data.Count)
+            if (_readerIndex + length > _data.Count)
                 throw new InvalidOperationException("Read out of boundaries.");
 
             var result = new byte[length];
-            this._data.CopyTo(this._readerIndex, result, 0, length);
-            this._readerIndex += length;
+            _data.CopyTo(_readerIndex, result, 0, length);
+            _readerIndex += length;
             return result;
         }
     }

@@ -5,46 +5,37 @@
         private const int DIGEST_SIZE = 64;
 
         /// <summary>
-        /// Gets the size, in bits, of the computed hash code.
+        ///     Gets the size, in bits, of the computed hash code.
         /// </summary>
         /// <returns>The size, in bits, of the computed hash code.</returns>
         public override int HashSize
         {
-            get
-            {
-                return DIGEST_SIZE * 8;
-            }
+            get { return DIGEST_SIZE*8; }
         }
 
         /// <summary>
-        /// When overridden in a derived class, gets the input block size.
+        ///     When overridden in a derived class, gets the input block size.
         /// </summary>
         /// <returns>The input block size.</returns>
         public override int InputBlockSize
         {
-            get
-            {
-                return DIGEST_SIZE * 2;
-            }
+            get { return DIGEST_SIZE*2; }
         }
 
         /// <summary>
-        /// When overridden in a derived class, gets the output block size.
+        ///     When overridden in a derived class, gets the output block size.
         /// </summary>
         /// <returns>The output block size.</returns>
         public override int OutputBlockSize
         {
-            get
-            {
-                return DIGEST_SIZE * 2;
-            }
+            get { return DIGEST_SIZE*2; }
         }
 
         protected override byte[] HashFinal()
         {
             var output = new byte[DIGEST_SIZE];
 
-            this.Finish();
+            Finish();
 
             UInt64_To_BE(H1, output, 0);
             UInt64_To_BE(H2, output, 8);
@@ -55,7 +46,7 @@
             UInt64_To_BE(H7, output, 48);
             UInt64_To_BE(H8, output, 56);
 
-            this.Initialize();
+            Initialize();
 
             return output;
         }

@@ -6,40 +6,40 @@ using Renci.SshNet.Security.Cryptography.Ciphers;
 namespace Renci.SshNet.Security.Cryptography
 {
     /// <summary>
-    /// Implements RSA digital signature algorithm.
+    ///     Implements RSA digital signature algorithm.
     /// </summary>
     public class RsaDigitalSignature : CipherDigitalSignature, IDisposable
     {
         private HashAlgorithm _hash;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RsaDigitalSignature"/> class.
+        ///     Initializes a new instance of the <see cref="RsaDigitalSignature" /> class.
         /// </summary>
         /// <param name="rsaKey">The RSA key.</param>
         public RsaDigitalSignature(RsaKey rsaKey)
             : base(new ObjectIdentifier(1, 3, 14, 3, 2, 26), new RsaCipher(rsaKey))
         {
-            this._hash = new SHA1Hash();
+            _hash = new SHA1Hash();
         }
 
         /// <summary>
-        /// Hashes the specified input.
+        ///     Hashes the specified input.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns>
-        /// Hashed data.
+        ///     Hashed data.
         /// </returns>
         protected override byte[] Hash(byte[] input)
         {
-            return this._hash.ComputeHash(input);
+            return _hash.ComputeHash(input);
         }
 
         #region IDisposable Members
 
-        private bool _isDisposed = false;
+        private bool _isDisposed;
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged ResourceMessages.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged ResourceMessages.
         /// </summary>
         public void Dispose()
         {
@@ -49,34 +49,37 @@ namespace Renci.SshNet.Security.Cryptography
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        ///     Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged ResourceMessages.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged ResourceMessages.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!this._isDisposed)
+            if (!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged ResourceMessages.
                 if (disposing)
                 {
                     // Dispose managed ResourceMessages.
-                    if (this._hash != null)
+                    if (_hash != null)
                     {
-                        this._hash.Clear();
-                        this._hash = null;
+                        _hash.Clear();
+                        _hash = null;
                     }
                 }
 
                 // Note disposing has been done.
-                this._isDisposed = true;
+                _isDisposed = true;
             }
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="SshCommand"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="SshCommand" /> is reclaimed by garbage collection.
         /// </summary>
         ~RsaDigitalSignature()
         {

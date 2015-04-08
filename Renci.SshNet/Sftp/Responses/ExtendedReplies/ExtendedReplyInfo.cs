@@ -8,10 +8,10 @@ namespace Renci.SshNet.Sftp.Responses
         protected override void LoadData()
         {
             //  Read Message Type
-            var messageType = this.ReadByte();
+            var messageType = ReadByte();
 
             //  Read Response ID
-            var responseId = this.ReadUInt32();
+            var responseId = ReadUInt32();
         }
 
         protected override void SaveData()

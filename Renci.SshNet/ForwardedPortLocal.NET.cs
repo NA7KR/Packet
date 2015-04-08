@@ -8,54 +8,55 @@ using Renci.SshNet.Common;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Provides functionality for local port forwarding
+    ///     Provides functionality for local port forwarding
     /// </summary>
     public partial class ForwardedPortLocal
     {
+        private readonly object _listenerLocker = new object();
         private TcpListener _listener;
-        private object _listenerLocker = new object();
 
         partial void InternalStart()
         {
             //  If port already started don't start it again
-            if (this.IsStarted)
+            if (IsStarted)
                 return;
 
-            IPAddress addr = this.BoundHost.GetIPAddress();
-            var ep = new IPEndPoint(addr, (int)this.BoundPort); 
+            var addr = BoundHost.GetIPAddress();
+            var ep = new IPEndPoint(addr, (int) BoundPort);
 
-            this._listener = new TcpListener(ep);
-            this._listener.Start();
+            _listener = new TcpListener(ep);
+            _listener.Start();
 
-            this.Session.ErrorOccured += Session_ErrorOccured;
-            this.Session.Disconnected += Session_Disconnected;
+            Session.ErrorOccured += Session_ErrorOccured;
+            Session.Disconnected += Session_Disconnected;
 
-            this._listenerTaskCompleted = new ManualResetEvent(false);
-            this.ExecuteThread(() =>
+            _listenerTaskCompleted = new ManualResetEvent(false);
+            ExecuteThread(() =>
             {
                 try
                 {
                     while (true)
                     {
-                        lock (this._listenerLocker)
+                        lock (_listenerLocker)
                         {
-                            if (this._listener == null)
+                            if (_listener == null)
                                 break;
                         }
 
-                        var socket = this._listener.AcceptSocket();
+                        var socket = _listener.AcceptSocket();
 
-                        this.ExecuteThread(() =>
+                        ExecuteThread(() =>
                         {
                             try
                             {
-                                IPEndPoint originatorEndPoint = socket.RemoteEndPoint as IPEndPoint;
+                                var originatorEndPoint = socket.RemoteEndPoint as IPEndPoint;
 
-                                this.RaiseRequestReceived(originatorEndPoint.Address.ToString(), (uint)originatorEndPoint.Port);
+                                RaiseRequestReceived(originatorEndPoint.Address.ToString(),
+                                    (uint) originatorEndPoint.Port);
 
-                                var channel = this.Session.CreateChannel<ChannelDirectTcpip>();
+                                var channel = Session.CreateChannel<ChannelDirectTcpip>();
 
-                                channel.Open(this.Host, this.Port, socket);
+                                channel.Open(Host, Port, socket);
 
                                 channel.Bind();
 
@@ -63,7 +64,7 @@ namespace Renci.SshNet
                             }
                             catch (Exception exp)
                             {
-                                this.RaiseExceptionEvent(exp);
+                                RaiseExceptionEvent(exp);
                             }
                         });
                     }
@@ -72,48 +73,48 @@ namespace Renci.SshNet
                 {
                     if (!(exp.SocketErrorCode == SocketError.Interrupted))
                     {
-                        this.RaiseExceptionEvent(exp);
+                        RaiseExceptionEvent(exp);
                     }
                 }
                 catch (Exception exp)
                 {
-                    this.RaiseExceptionEvent(exp);
+                    RaiseExceptionEvent(exp);
                 }
                 finally
                 {
-                    this._listenerTaskCompleted.Set();
+                    _listenerTaskCompleted.Set();
                 }
             });
 
-            this.IsStarted = true;
+            IsStarted = true;
         }
 
         partial void InternalStop()
         {
             //  If port not started you cant stop it
-            if (!this.IsStarted)
+            if (!IsStarted)
                 return;
 
-            lock (this._listenerLocker)
+            lock (_listenerLocker)
             {
-                this._listener.Stop();
-                this._listener = null;
+                _listener.Stop();
+                _listener = null;
             }
-            this._listenerTaskCompleted.WaitOne(this.Session.ConnectionInfo.Timeout);
-            this._listenerTaskCompleted.Dispose();
-            this._listenerTaskCompleted = null;
+            _listenerTaskCompleted.WaitOne(Session.ConnectionInfo.Timeout);
+            _listenerTaskCompleted.Dispose();
+            _listenerTaskCompleted = null;
 
-            this.IsStarted = false;
+            IsStarted = false;
         }
 
         private void Session_ErrorOccured(object sender, ExceptionEventArgs e)
         {
-            this._listener.Stop();
+            _listener.Stop();
         }
 
         private void Session_Disconnected(object sender, EventArgs e)
         {
-            this._listener.Stop();
+            _listener.Stop();
         }
     }
 }

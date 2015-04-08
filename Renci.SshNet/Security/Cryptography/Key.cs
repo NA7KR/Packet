@@ -6,38 +6,17 @@ using Renci.SshNet.Security.Cryptography;
 namespace Renci.SshNet.Security
 {
     /// <summary>
-    /// Base class for asymmetric cipher algorithms
+    ///     Base class for asymmetric cipher algorithms
     /// </summary>
     public abstract class Key
     {
         /// <summary>
-        /// Specifies array of big integers that represent private key
+        ///     Specifies array of big integers that represent private key
         /// </summary>
         protected BigInteger[] _privateKey;
 
         /// <summary>
-        /// Gets the key specific digital signature.
-        /// </summary>
-        protected abstract DigitalSignature DigitalSignature { get; }
-
-        /// <summary>
-        /// Gets or sets the public key.
-        /// </summary>
-        /// <value>
-        /// The public.
-        /// </value>
-        public abstract BigInteger[] Public { get; set; }
-
-        /// <summary>
-        /// Gets the length of the key.
-        /// </summary>
-        /// <value>
-        /// The length of the key.
-        /// </value>
-        public abstract int KeyLength { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Key"/> class.
+        ///     Initializes a new instance of the <see cref="Key" /> class.
         /// </summary>
         /// <param name="data">DER encoded private key data.</param>
         public Key(byte[] data)
@@ -54,39 +33,58 @@ namespace Renci.SshNet.Security
                 keys.Add(der.ReadBigInteger());
             }
 
-            this._privateKey = keys.ToArray();
+            _privateKey = keys.ToArray();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Key"/> class.
+        ///     Initializes a new instance of the <see cref="Key" /> class.
         /// </summary>
         public Key()
-            : base()
         {
-
         }
 
         /// <summary>
-        /// Signs the specified data with the key.
+        ///     Gets the key specific digital signature.
+        /// </summary>
+        protected abstract DigitalSignature DigitalSignature { get; }
+
+        /// <summary>
+        ///     Gets or sets the public key.
+        /// </summary>
+        /// <value>
+        ///     The public.
+        /// </value>
+        public abstract BigInteger[] Public { get; set; }
+
+        /// <summary>
+        ///     Gets the length of the key.
+        /// </summary>
+        /// <value>
+        ///     The length of the key.
+        /// </value>
+        public abstract int KeyLength { get; }
+
+        /// <summary>
+        ///     Signs the specified data with the key.
         /// </summary>
         /// <param name="data">The data to sign.</param>
         /// <returns>
-        /// Signed data.
+        ///     Signed data.
         /// </returns>
         public byte[] Sign(byte[] data)
         {
-            return this.DigitalSignature.Sign(data);
+            return DigitalSignature.Sign(data);
         }
 
         /// <summary>
-        /// Verifies the signature.
+        ///     Verifies the signature.
         /// </summary>
         /// <param name="data">The data to verify.</param>
         /// <param name="signature">The signature to verify against.</param>
         /// <returns><c>True</c> is signature was successfully verifies; otherwise <c>false</c>.</returns>
         public bool VerifySignature(byte[] data, byte[] signature)
         {
-            return this.DigitalSignature.Verify(data, signature);
+            return DigitalSignature.Verify(data, signature);
         }
     }
 }

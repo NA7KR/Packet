@@ -14,7 +14,7 @@ namespace Renci.SshNet
 {
     public partial class Session
     {
-        private TraceSource _log =
+        private readonly TraceSource _log =
 #if DEBUG
  new TraceSource("SshNet.Logging", SourceLevels.All);
 #else
@@ -23,39 +23,40 @@ namespace Renci.SshNet
 
         partial void IsSocketConnected(ref bool isConnected)
         {
-                isConnected = (!this._isDisconnecting && this._socket != null && this._socket.Connected && this._isAuthenticated && this._messageListenerCompleted != null)
-                    && this._socket.Poll(-1, SelectMode.SelectWrite);
+            isConnected = (!_isDisconnecting && _socket != null && _socket.Connected && _isAuthenticated &&
+                           _messageListenerCompleted != null)
+                          && _socket.Poll(-1, SelectMode.SelectWrite);
         }
 
         partial void SocketConnect(string host, int port)
         {
-            IPAddress addr = host.GetIPAddress();
+            var addr = host.GetIPAddress();
 
             var ep = new IPEndPoint(addr, port);
-            this._socket = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            _socket = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            var socketBufferSize = 2 * MAXIMUM_PACKET_SIZE;
+            var socketBufferSize = 2*MAXIMUM_PACKET_SIZE;
 
-            this._socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
-            this._socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendBuffer, socketBufferSize);
-            this._socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveBuffer, socketBufferSize);
+            _socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
+            _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendBuffer, socketBufferSize);
+            _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveBuffer, socketBufferSize);
 
-            this.Log(string.Format("Initiating connect to '{0}:{1}'.", this.ConnectionInfo.Host, this.ConnectionInfo.Port));
+            Log(string.Format("Initiating connect to '{0}:{1}'.", ConnectionInfo.Host, ConnectionInfo.Port));
 
             //  Connect socket with specified timeout
-            var connectResult = this._socket.BeginConnect(ep, null, null);
+            var connectResult = _socket.BeginConnect(ep, null, null);
 
-            if (!connectResult.AsyncWaitHandle.WaitOne(this.ConnectionInfo.Timeout, false))
+            if (!connectResult.AsyncWaitHandle.WaitOne(ConnectionInfo.Timeout, false))
             {
                 throw new SshOperationTimeoutException("Connection Could Not Be Established");
             }
 
-            this._socket.EndConnect(connectResult);
+            _socket.EndConnect(connectResult);
         }
 
         partial void SocketDisconnect()
         {
-            this._socket.Disconnect(true);
+            _socket.Disconnect(true);
         }
 
         partial void SocketReadLine(ref string response)
@@ -69,20 +70,19 @@ namespace Renci.SshNet
             var data = new byte[1];
             do
             {
-                var asyncResult = this._socket.BeginReceive(data, 0, data.Length, SocketFlags.None, null, null);
+                var asyncResult = _socket.BeginReceive(data, 0, data.Length, SocketFlags.None, null, null);
 
-                if (!asyncResult.AsyncWaitHandle.WaitOne(this.ConnectionInfo.Timeout))
+                if (!asyncResult.AsyncWaitHandle.WaitOne(ConnectionInfo.Timeout))
                     throw new SshOperationTimeoutException("Socket read operation has timed out");
 
-                var received = this._socket.EndReceive(asyncResult);
+                var received = _socket.EndReceive(asyncResult);
 
                 //  If zero bytes received then exit
                 if (received == 0)
                     break;
 
                 buffer.Add(data[0]);
-            }
-            while (!(buffer.Count > 0 && (buffer[buffer.Count - 1] == 0x0A || buffer[buffer.Count - 1] == 0x00)));
+            } while (!(buffer.Count > 0 && (buffer[buffer.Count - 1] == 0x0A || buffer[buffer.Count - 1] == 0x00)));
 
             // Return an empty version string if the buffer consists of a 0x00 character.
             if (buffer.Count > 0 && buffer[buffer.Count - 1] == 0x00)
@@ -96,7 +96,7 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Function to read <paramref name="length"/> amount of data before returning, or throwing an exception.
+        ///     Function to read <paramref name="length" /> amount of data before returning, or throwing an exception.
         /// </summary>
         /// <param name="length">The amount wanted.</param>
         /// <param name="buffer">The buffer to read to.</param>
@@ -105,64 +105,63 @@ namespace Renci.SshNet
         partial void SocketRead(int length, ref byte[] buffer)
         {
             var offset = 0;
-            int receivedTotal = 0;  // how many bytes is already received
+            var receivedTotal = 0; // how many bytes is already received
 
             do
             {
                 try
                 {
-                    var receivedBytes = this._socket.Receive(buffer, offset + receivedTotal, length - receivedTotal, SocketFlags.None);
+                    var receivedBytes = _socket.Receive(buffer, offset + receivedTotal, length - receivedTotal,
+                        SocketFlags.None);
                     if (receivedBytes > 0)
                     {
                         receivedTotal += receivedBytes;
-                        continue;
                     }
-                    else
-                    {
-                        // 2012-09-11: Kenneth_aa
-                        // When Disconnect or Dispose is called, this throws SshConnectionException(), which...
-                        // 1 - goes up to ReceiveMessage() 
-                        // 2 - up again to MessageListener()
-                        // which is where there is a catch-all exception block so it can notify event listeners.
-                        // 3 - MessageListener then again calls RaiseError().
-                        // There the exception is checked for the exception thrown here (ConnectionLost), and if it matches it will not call Session.SendDisconnect().
-                        //
-                        // Adding a check for this._isDisconnecting causes ReceiveMessage() to throw SshConnectionException: "Bad packet length {0}".
-                        //
-                        throw new SshConnectionException("An established connection was aborted by the software in your host machine.", DisconnectReason.ConnectionLost);
-                    }
+                    // 2012-09-11: Kenneth_aa
+                    // When Disconnect or Dispose is called, this throws SshConnectionException(), which...
+                    // 1 - goes up to ReceiveMessage() 
+                    // 2 - up again to MessageListener()
+                    // which is where there is a catch-all exception block so it can notify event listeners.
+                    // 3 - MessageListener then again calls RaiseError().
+                    // There the exception is checked for the exception thrown here (ConnectionLost), and if it matches it will not call Session.SendDisconnect().
+                    //
+                    // Adding a check for this._isDisconnecting causes ReceiveMessage() to throw SshConnectionException: "Bad packet length {0}".
+                    //
+                    throw new SshConnectionException(
+                        "An established connection was aborted by the software in your host machine.",
+                        DisconnectReason.ConnectionLost);
                 }
                 catch (SocketException exp)
                 {
                     if (exp.SocketErrorCode == SocketError.ConnectionAborted)
                     {
                         buffer = new byte[length];
-                        this.Disconnect();
+                        Disconnect();
                         return;
                     }
-                    else if (exp.SocketErrorCode == SocketError.WouldBlock ||
-                       exp.SocketErrorCode == SocketError.IOPending ||
-                       exp.SocketErrorCode == SocketError.NoBufferSpaceAvailable)
+                    if (exp.SocketErrorCode == SocketError.WouldBlock ||
+                        exp.SocketErrorCode == SocketError.IOPending ||
+                        exp.SocketErrorCode == SocketError.NoBufferSpaceAvailable)
                     {
                         // socket buffer is probably empty, wait and try again
                         Thread.Sleep(30);
                     }
                     else
-                        throw;  // any serious error occurred
+                        throw; // any serious error occurred
                 }
             } while (receivedTotal < length);
         }
 
         partial void SocketWrite(byte[] data)
         {
-            int sent = 0;  // how many bytes is already sent
-            int length = data.Length;
+            var sent = 0; // how many bytes is already sent
+            var length = data.Length;
 
             do
             {
                 try
                 {
-                    sent += this._socket.Send(data, sent, length - sent, SocketFlags.None);
+                    sent += _socket.Send(data, sent, length - sent, SocketFlags.None);
                 }
                 catch (SocketException ex)
                 {
@@ -174,14 +173,14 @@ namespace Renci.SshNet
                         Thread.Sleep(30);
                     }
                     else
-                        throw;  // any serious error occurr
+                        throw; // any serious error occurr
                 }
             } while (sent < length);
         }
 
         partial void Log(string text)
         {
-            this._log.TraceEvent(TraceEventType.Verbose, 1, text);
+            _log.TraceEvent(TraceEventType.Verbose, 1, text);
         }
     }
 }

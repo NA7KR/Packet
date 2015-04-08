@@ -3,22 +3,12 @@
 namespace Renci.SshNet.Common
 {
     /// <summary>
-    /// Provides data for <see cref="Renci.SshNet.ForwardedPort.RequestReceived"/> event.
+    ///     Provides data for <see cref="Renci.SshNet.ForwardedPort.RequestReceived" /> event.
     /// </summary>
     public class PortForwardEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets request originator host.
-        /// </summary>
-        public string OriginatorHost { get; private set; }
-
-        /// <summary>
-        /// Gets request originator port.
-        /// </summary>
-        public uint OriginatorPort { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortForwardEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="PortForwardEventArgs" /> class.
         /// </summary>
         /// <param name="host">The host.</param>
         /// <param name="port">The port.</param>
@@ -33,8 +23,18 @@ namespace Renci.SshNet.Common
             if (!port.IsValidPort())
                 throw new ArgumentOutOfRangeException("port");
 
-            this.OriginatorHost = host;
-            this.OriginatorPort = port;
+            OriginatorHost = host;
+            OriginatorPort = port;
         }
+
+        /// <summary>
+        ///     Gets request originator host.
+        /// </summary>
+        public string OriginatorHost { get; private set; }
+
+        /// <summary>
+        ///     Gets request originator port.
+        /// </summary>
+        public uint OriginatorPort { get; private set; }
     }
 }

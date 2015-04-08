@@ -1,22 +1,38 @@
-﻿using System;
-
-namespace Renci.SshNet.Messages.Connection
+﻿namespace Renci.SshNet.Messages.Connection
 {
     /// <summary>
-    /// Represents "break" type channel request information
+    ///     Represents "break" type channel request information
     /// </summary>
     internal class BreakRequestInfo : RequestInfo
     {
         /// <summary>
-        /// Channel request name
+        ///     Channel request name
         /// </summary>
         public const string NAME = "break";
 
         /// <summary>
-        /// Gets the name of the request.
+        ///     Initializes a new instance of the <see cref="ExecRequestInfo" /> class.
+        /// </summary>
+        public BreakRequestInfo()
+        {
+            WantReply = true;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ExecRequestInfo" /> class.
+        /// </summary>
+        /// <param name="breakLength">Length of the break.</param>
+        public BreakRequestInfo(uint breakLength)
+            : this()
+        {
+            BreakLength = breakLength;
+        }
+
+        /// <summary>
+        ///     Gets the name of the request.
         /// </summary>
         /// <value>
-        /// The name of the request.
+        ///     The name of the request.
         /// </value>
         public override string RequestName
         {
@@ -24,46 +40,28 @@ namespace Renci.SshNet.Messages.Connection
         }
 
         /// <summary>
-        /// Gets break length in milliseconds.
+        ///     Gets break length in milliseconds.
         /// </summary>
-        public UInt32 BreakLength { get; private set; }
+        public uint BreakLength { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExecRequestInfo"/> class.
-        /// </summary>
-        public BreakRequestInfo()
-        {
-            this.WantReply = true;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExecRequestInfo"/> class.
-        /// </summary>
-        /// <param name="breakLength">Length of the break.</param>
-        public BreakRequestInfo(UInt32 breakLength)
-            : this()
-        {
-            this.BreakLength = breakLength;
-        }
-
-        /// <summary>
-        /// Called when type specific data need to be loaded.
+        ///     Called when type specific data need to be loaded.
         /// </summary>
         protected override void LoadData()
         {
             base.LoadData();
 
-            this.BreakLength = this.ReadUInt32();
+            BreakLength = ReadUInt32();
         }
 
         /// <summary>
-        /// Called when type specific data need to be saved.
+        ///     Called when type specific data need to be saved.
         /// </summary>
         protected override void SaveData()
         {
             base.SaveData();
 
-            this.Write(this.BreakLength);
+            Write(BreakLength);
         }
     }
 }

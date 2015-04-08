@@ -596,6 +596,5 @@ namespace Packet
         public Int32 Speed;
         public string StopBits;
         public Int32 Data;
-        private Encrypting _myEncrypt = new Encrypting();
     }
 }

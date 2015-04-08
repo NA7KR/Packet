@@ -2,28 +2,26 @@
 {
     public class DtoCustom
     {
-        private int _id;
         private string _customName;
-		private string _customQuery;
-		private string _tableName;
+        private string _customQuery;
         private string _enable;
-
-    
+        private int _id;
+        private string _tableName;
 
         #region Constructor
 
-		public DtoCustom()
-		{
-		    _id = 0;
-		    _customName = null;
-		    _customQuery = null;
-		    _tableName = null;
-		    _enable = null;
-		}
+        public DtoCustom()
+        {
+            _id = 0;
+            _customName = null;
+            _customQuery = null;
+            _tableName = null;
+            _enable = null;
+        }
 
-		#endregion
+        #endregion
 
-		#region DtoList
+        #region DtoList
 
         public DtoCustom(int id, string customName, string customQuery, string tableName, string enable)
         {
@@ -32,27 +30,27 @@
             _customQuery = customQuery;
             _tableName = tableName;
             _enable = enable;
-		}
+        }
 
-		#endregion
+        #endregion
 
         #region get_ID
 
-		public int get_ID()
-		{
-			return _id;
-		}
+        public int get_ID()
+        {
+            return _id;
+        }
 
-		#endregion
+        #endregion
 
         #region get_CustomQuery
 
         public string get_CustomQuery()
-		{
+        {
             return _customQuery;
-		}
+        }
 
-		#endregion
+        #endregion
 
         #region get_CustomName
 
@@ -66,11 +64,11 @@
         #region get_TableName
 
         public string get_TableName()
-		{
+        {
             return _tableName;
-		}
+        }
 
-		#endregion
+        #endregion
 
         #region get_Enable
 
@@ -81,14 +79,14 @@
 
         #endregion
 
-		#region set_ID
+        #region set_ID
 
-		public void set_ID(int id)
-		{
-			_id = id;
-		}
+        public void set_ID(int id)
+        {
+            _id = id;
+        }
 
-		#endregion
+        #endregion
 
         #region set_CustomName
 
@@ -102,20 +100,20 @@
         #region set_CustomQuery
 
         public void set_CustomQuery(string customQuery)
-		{
+        {
             _customQuery = customQuery;
-		}
+        }
 
-		#endregion
+        #endregion
 
         #region set_TableName
 
         public void set_TableName(string tableName)
-		{
+        {
             _tableName = tableName;
-		}
+        }
 
-		#endregion
+        #endregion
 
         #region set_Enable
 

@@ -7,7 +7,7 @@ namespace Renci.SshNet
     {
         partial void ExecuteThread(Action action)
         {
-            ThreadPool.QueueUserWorkItem((o) => { action(); });
+            ThreadPool.QueueUserWorkItem(o => { action(); });
         }
     }
 }

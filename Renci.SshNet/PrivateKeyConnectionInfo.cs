@@ -6,36 +6,34 @@ using System.Linq;
 namespace Renci.SshNet
 {
     /// <summary>
-    /// Provides connection information when private key authentication method is used
+    ///     Provides connection information when private key authentication method is used
     /// </summary>
     /// <example>
-    ///   <code source="..\..\Renci.SshNet.Tests\Classes\PrivateKeyConnectionInfoTest.cs" region="Example PrivateKeyConnectionInfo PrivateKeyFile" language="C#" title="Connect using private key" />
-    ///   </example>
+    ///     <code source="..\..\Renci.SshNet.Tests\Classes\PrivateKeyConnectionInfoTest.cs"
+    ///         region="Example PrivateKeyConnectionInfo PrivateKeyFile" language="C#" title="Connect using private key" />
+    /// </example>
     public class PrivateKeyConnectionInfo : ConnectionInfo, IDisposable
     {
         /// <summary>
-        /// Gets the key files used for authentication.
-        /// </summary>
-        public ICollection<PrivateKeyFile> KeyFiles { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PrivateKeyConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="PrivateKeyConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="username">Connection username.</param>
         /// <param name="keyFiles">Connection key files.</param>
         /// <example>
-        ///     <code source="..\..\Renci.SshNet.Tests\Classes\PrivateKeyConnectionInfoTest.cs" region="Example PrivateKeyConnectionInfo PrivateKeyFile" language="C#" title="Connect using private key" />
-        ///     <code source="..\..\Renci.SshNet.Tests\Classes\PrivateKeyConnectionInfoTest.cs" region="Example PrivateKeyConnectionInfo PrivateKeyFile Multiple" language="C#" title="Connect using multiple private key" />
+        ///     <code source="..\..\Renci.SshNet.Tests\Classes\PrivateKeyConnectionInfoTest.cs"
+        ///         region="Example PrivateKeyConnectionInfo PrivateKeyFile" language="C#" title="Connect using private key" />
+        ///     <code source="..\..\Renci.SshNet.Tests\Classes\PrivateKeyConnectionInfoTest.cs"
+        ///         region="Example PrivateKeyConnectionInfo PrivateKeyFile Multiple" language="C#"
+        ///         title="Connect using multiple private key" />
         /// </example>
         public PrivateKeyConnectionInfo(string host, string username, params PrivateKeyFile[] keyFiles)
             : this(host, DEFAULT_PORT, username, ProxyTypes.None, string.Empty, 0, string.Empty, string.Empty, keyFiles)
         {
-
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrivateKeyConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="PrivateKeyConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="port">Connection port.</param>
@@ -47,7 +45,7 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="PasswordConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="port">The port.</param>
@@ -56,13 +54,14 @@ namespace Renci.SshNet
         /// <param name="proxyHost">The proxy host.</param>
         /// <param name="proxyPort">The proxy port.</param>
         /// <param name="keyFiles">The key files.</param>
-        public PrivateKeyConnectionInfo(string host, int port, string username, ProxyTypes proxyType, string proxyHost, int proxyPort, params PrivateKeyFile[] keyFiles)
+        public PrivateKeyConnectionInfo(string host, int port, string username, ProxyTypes proxyType, string proxyHost,
+            int proxyPort, params PrivateKeyFile[] keyFiles)
             : this(host, port, username, proxyType, proxyHost, proxyPort, string.Empty, string.Empty, keyFiles)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="PasswordConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="port">The port.</param>
@@ -72,13 +71,14 @@ namespace Renci.SshNet
         /// <param name="proxyPort">The proxy port.</param>
         /// <param name="proxyUsername">The proxy username.</param>
         /// <param name="keyFiles">The key files.</param>
-        public PrivateKeyConnectionInfo(string host, int port, string username, ProxyTypes proxyType, string proxyHost, int proxyPort, string proxyUsername, params PrivateKeyFile[] keyFiles)
+        public PrivateKeyConnectionInfo(string host, int port, string username, ProxyTypes proxyType, string proxyHost,
+            int proxyPort, string proxyUsername, params PrivateKeyFile[] keyFiles)
             : this(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, string.Empty, keyFiles)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="PasswordConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="username">Connection username.</param>
@@ -86,13 +86,14 @@ namespace Renci.SshNet
         /// <param name="proxyHost">The proxy host.</param>
         /// <param name="proxyPort">The proxy port.</param>
         /// <param name="keyFiles">The key files.</param>
-        public PrivateKeyConnectionInfo(string host, string username, ProxyTypes proxyType, string proxyHost, int proxyPort, params PrivateKeyFile[] keyFiles)
+        public PrivateKeyConnectionInfo(string host, string username, ProxyTypes proxyType, string proxyHost,
+            int proxyPort, params PrivateKeyFile[] keyFiles)
             : this(host, DEFAULT_PORT, username, proxyType, proxyHost, proxyPort, string.Empty, string.Empty, keyFiles)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="PasswordConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="username">Connection username.</param>
@@ -101,13 +102,14 @@ namespace Renci.SshNet
         /// <param name="proxyPort">The proxy port.</param>
         /// <param name="proxyUsername">The proxy username.</param>
         /// <param name="keyFiles">The key files.</param>
-        public PrivateKeyConnectionInfo(string host, string username, ProxyTypes proxyType, string proxyHost, int proxyPort, string proxyUsername, params PrivateKeyFile[] keyFiles)
+        public PrivateKeyConnectionInfo(string host, string username, ProxyTypes proxyType, string proxyHost,
+            int proxyPort, string proxyUsername, params PrivateKeyFile[] keyFiles)
             : this(host, DEFAULT_PORT, username, proxyType, proxyHost, proxyPort, proxyUsername, string.Empty, keyFiles)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="PasswordConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="username">Connection username.</param>
@@ -117,13 +119,15 @@ namespace Renci.SshNet
         /// <param name="proxyUsername">The proxy username.</param>
         /// <param name="proxyPassword">The proxy password.</param>
         /// <param name="keyFiles">The key files.</param>
-        public PrivateKeyConnectionInfo(string host, string username, ProxyTypes proxyType, string proxyHost, int proxyPort, string proxyUsername, string proxyPassword, params PrivateKeyFile[] keyFiles)
-            : this(host, DEFAULT_PORT, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword, keyFiles)
+        public PrivateKeyConnectionInfo(string host, string username, ProxyTypes proxyType, string proxyHost,
+            int proxyPort, string proxyUsername, string proxyPassword, params PrivateKeyFile[] keyFiles)
+            : this(host, DEFAULT_PORT, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword, keyFiles
+                )
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordConnectionInfo"/> class.
+        ///     Initializes a new instance of the <see cref="PasswordConnectionInfo" /> class.
         /// </summary>
         /// <param name="host">Connection host.</param>
         /// <param name="port">The port.</param>
@@ -134,18 +138,26 @@ namespace Renci.SshNet
         /// <param name="proxyUsername">The proxy username.</param>
         /// <param name="proxyPassword">The proxy password.</param>
         /// <param name="keyFiles">The key files.</param>
-        public PrivateKeyConnectionInfo(string host, int port, string username, ProxyTypes proxyType, string proxyHost, int proxyPort, string proxyUsername, string proxyPassword, params PrivateKeyFile[] keyFiles)
-            : base(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword, new PrivateKeyAuthenticationMethod(username, keyFiles))
+        public PrivateKeyConnectionInfo(string host, int port, string username, ProxyTypes proxyType, string proxyHost,
+            int proxyPort, string proxyUsername, string proxyPassword, params PrivateKeyFile[] keyFiles)
+            : base(
+                host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword,
+                new PrivateKeyAuthenticationMethod(username, keyFiles))
         {
-            this.KeyFiles = new Collection<PrivateKeyFile>(keyFiles);
+            KeyFiles = new Collection<PrivateKeyFile>(keyFiles);
         }
+
+        /// <summary>
+        ///     Gets the key files used for authentication.
+        /// </summary>
+        public ICollection<PrivateKeyFile> KeyFiles { get; private set; }
 
         #region IDisposable Members
 
-        private bool isDisposed = false;
+        private bool isDisposed;
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -155,22 +167,25 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        ///     Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!this.isDisposed)
+            if (!isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (this.AuthenticationMethods != null)
+                    if (AuthenticationMethods != null)
                     {
-                        foreach (var authenticationMethods in this.AuthenticationMethods.OfType<IDisposable>())
+                        foreach (var authenticationMethods in AuthenticationMethods.OfType<IDisposable>())
                         {
                             authenticationMethods.Dispose();
                         }
@@ -183,8 +198,8 @@ namespace Renci.SshNet
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="PasswordConnectionInfo"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="PasswordConnectionInfo" /> is reclaimed by garbage collection.
         /// </summary>
         ~PrivateKeyConnectionInfo()
         {

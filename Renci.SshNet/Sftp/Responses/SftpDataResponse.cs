@@ -2,29 +2,28 @@
 {
     internal class SftpDataResponse : SftpResponse
     {
+        public SftpDataResponse(uint protocolVersion)
+            : base(protocolVersion)
+        {
+        }
+
         public override SftpMessageTypes SftpMessageType
         {
             get { return SftpMessageTypes.Data; }
         }
 
         public byte[] Data { get; set; }
-
         public bool IsEof { get; set; }
-
-        public SftpDataResponse(uint protocolVersion)
-            : base(protocolVersion)
-        {
-        }
 
         protected override void LoadData()
         {
             base.LoadData();
-            
-            this.Data = this.ReadBinaryString();
 
-            if (!this.IsEndOfData)
+            Data = ReadBinaryString();
+
+            if (!IsEndOfData)
             {
-                this.IsEof = this.ReadBoolean();
+                IsEof = ReadBoolean();
             }
         }
     }
