@@ -2,6 +2,7 @@
 
 using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -18,6 +19,7 @@ namespace Packet
     public partial class Main : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
+        private static readonly FileCheck FileCheck = new FileCheck();
         private static readonly Sql Sql = new Sql();
         private readonly ModifyRegistry _myRegistryKeep = new ModifyRegistry();
 
@@ -49,12 +51,12 @@ namespace Packet
             {
                 case 0:
                     _myRegistry.Write("BBS-Mode", "Telnet");
-                    iPConfigToolStripMenuItem.Text = "IP BBS Config";
+                    iPConfigToolStripMenuItem.Text = "IP BBS Configure";
                     toolStripButton_bbs.Enabled = true;
                     break;
                 case 1:
                     _myRegistry.Write("BBS-Mode", "Com");
-                    iPConfigToolStripMenuItem.Text = "BBS Config";
+                    iPConfigToolStripMenuItem.Text = "BBS Configure";
                     toolStripButton_bbs.Enabled = true;
                     break;
             }
@@ -70,12 +72,12 @@ namespace Packet
             {
                 case 0:
                     _myRegistry.Write("Cluster-Mode", "Telnet");
-                    clusterIPConfigToolStripMenuItem.Text = "IP Cluster Config";
+                    clusterIPConfigToolStripMenuItem.Text = "IP Cluster Configure";
                     toolStripButton_cls.Enabled = true;
                     break;
                 case 1:
                     _myRegistry.Write("Cluster-Mode", "Com");
-                    clusterIPConfigToolStripMenuItem.Text = "Cluster Config";
+                    clusterIPConfigToolStripMenuItem.Text = "Cluster Configure";
                     toolStripButton_cls.Enabled = true;
                     break;
             }
@@ -91,13 +93,13 @@ namespace Packet
             {
                 case 0:
                     _myRegistry.Write("Node-Mode", "Telnet");
-                    nodeIPConfigToolStripMenuItem.Text = "IP Node Config";
+                    nodeIPConfigToolStripMenuItem.Text = "IP Node Configure";
                     toolStripButton_Node.Enabled = true;
                     break;
 
                 case 1:
                     _myRegistry.Write("Node-Mode", "Com");
-                    nodeIPConfigToolStripMenuItem.Text = "Node Config";
+                    nodeIPConfigToolStripMenuItem.Text = "Node Configure";
                     toolStripButton_Node.Enabled = true;
                     break;
             }
@@ -242,37 +244,37 @@ namespace Packet
             if (_myRegistry.Read("BBS-Mode") == "Telnet")
             {
                 toolStripComboBox1.SelectedIndex = 0;
-                iPConfigToolStripMenuItem.Text = "IP BBS Config";
+                iPConfigToolStripMenuItem.Text = "IP BBS Configure";
                 toolStripButton_bbs.Enabled = true;
             }
             else if (_myRegistry.Read("BBS-Mode") == "Com")
             {
                 toolStripComboBox1.SelectedIndex = 1;
-                iPConfigToolStripMenuItem.Text = "BBS Config";
+                iPConfigToolStripMenuItem.Text = "BBS Configure";
                 toolStripButton_bbs.Enabled = true;
             }
             else
             {
                 toolStripButton_bbs.Enabled = false;
-                iPConfigToolStripMenuItem.Text = "BBS Config";
+                iPConfigToolStripMenuItem.Text = "BBS Configure";
             }
 
             if (_myRegistry.Read("Cluster-Mode") == "Telnet")
             {
                 toolStripComboBox2.SelectedIndex = 0;
-                clusterIPConfigToolStripMenuItem.Text = "IP Cluster Config";
+                clusterIPConfigToolStripMenuItem.Text = "IP Cluster Configure";
                 toolStripButton_cls.Enabled = true;
             }
             else if (_myRegistry.Read("Cluster-Mode") == "Com")
             {
                 toolStripComboBox2.SelectedIndex = 1;
-                clusterIPConfigToolStripMenuItem.Text = "Cluster Config";
+                clusterIPConfigToolStripMenuItem.Text = "Cluster Configure";
                 toolStripButton_cls.Enabled = true;
             }
             else
             {
                 toolStripButton_cls.Enabled = false;
-                clusterIPConfigToolStripMenuItem.Text = "Cluster Config";
+                clusterIPConfigToolStripMenuItem.Text = "Cluster Configure";
             }
 
             if (_myRegistry.Read("Node-Mode") == "Telnet")
@@ -283,13 +285,13 @@ namespace Packet
             else if (_myRegistry.Read("Node-Mode") == "Com")
             {
                 toolStripComboBox3.SelectedIndex = 1;
-                nodeIPConfigToolStripMenuItem.Text = "IP Node Config";
+                nodeIPConfigToolStripMenuItem.Text = "IP Node Configure";
                 toolStripButton_Node.Enabled = true;
             }
             else
             {
                 toolStripButton_Node.Enabled = false;
-                nodeIPConfigToolStripMenuItem.Text = "Node Config";
+                nodeIPConfigToolStripMenuItem.Text = "Node Configure";
             }
             if (_myRegistrySsh.Read("Active") == "No")
             {
@@ -466,7 +468,7 @@ namespace Packet
 
         #endregion
 
-        #region toolStripMenu click show Com port config
+        #region toolStripMenu click show Com port configure
 
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
@@ -590,6 +592,8 @@ namespace Packet
 
         private void toolStripButton_FWD_Click(object sender, EventArgs e)
         {
+            backgroundWorker1.RunWorkerAsync("");
+
             var idays = _myRegistryKeep.ReadDw("DaystoKeep");
             if (idays > 0)
             {
@@ -897,13 +901,19 @@ namespace Packet
 
         #region private TelnetConnection
 
-        //private static readonly Sql Sql = new Sql();
+        //private static read only Sql Sql = new Sql();
 
         private bool _bBeep = true;
         private Color _backgroundColor = Color.Black;
         private Color _textColor = Color.Yellow;
 
         #endregion
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            Thread.Sleep(1000);
+            FileCheck.CreateFileWatcher("E:\\Code\\Packet\\Packet\\bin\\x86\\Debug\\Data\\7plus");
+        }
     }
 
     //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";

@@ -96,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileCheck.cs" />
     <Compile Include="PlusFrm.cs">
       <SubType>Form</SubType>
     </Compile>

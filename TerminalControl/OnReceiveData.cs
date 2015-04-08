@@ -126,7 +126,7 @@ namespace PacketComs
                                         Invoke(RxdTextEvent, string.Copy(sReceived));
 
                                         Invoke(RefreshEvent);
-                                        // Re-Establish the next asyncronous receveived data callback as
+                                        // Re-Establish the next asynchronous received data callback as
                                         stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
                                             SocketFlags.None, OnReceivedData, stateObject);
                                         return;
@@ -153,7 +153,7 @@ namespace PacketComs
                                         {
                                             var start = lines[i].IndexOf("(", StringComparison.Ordinal) + 1;
                                             var end = lines[i].IndexOf("/", start, StringComparison.Ordinal);
-                                            if (end == 0)
+                                            if (end == -1)
                                             {
                                                 end = lines[i].IndexOf(")", start, StringComparison.Ordinal);
                                             }
@@ -174,7 +174,7 @@ namespace PacketComs
                                 _dataFile = "";
                                 fstmsg = 1;
                                 _msgno++;
-                                _msgstate = "First";
+                                _msgstate = "Second";
                             }
 
                             // }
@@ -199,7 +199,7 @@ namespace PacketComs
                     }
                     Invoke(RxdTextEvent, string.Copy(sReceived));
                     Invoke(RefreshEvent);
-                    // Re-Establish the next asyncronous receveived data callback as
+                    // Re-Establish the next asynchronous received data callback as
                     if (stateObject.Socket.Connected)
                     {
                         stateObject.Socket.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,
@@ -208,10 +208,11 @@ namespace PacketComs
                 }
                 else
                 {
-                    // If no data was recieved then the connection is probably dead
+                    // If no data was received then the connection is probably dead
                     stateObject.Socket.Shutdown(SocketShutdown.Both);
                     stateObject.Socket.Close();
                     Disconnectby();
+                    //}
                 }
             }
             catch (Exception)

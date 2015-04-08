@@ -64,7 +64,7 @@ namespace PacketComs
             _charAttribs.GR = _g2;
             _charAttribs.Gs = null;
             GetFontInfo();
-            // Create and initialize contextmenu
+            // Create and initialize context menu
             var contextMenu1 = new ContextMenu();
             var mnuCopy = new MenuItem("Copy");
             var mnuPaste = new MenuItem("Paste");
@@ -180,7 +180,7 @@ namespace PacketComs
 
         #endregion
 
-        #region Startforward
+        #region Start-forward
 
         public void Startforward()
         {
@@ -195,7 +195,7 @@ namespace PacketComs
 
         #endregion
 
-        #region Disccocted by remote
+        #region Disconnected by remote
 
         public void Disconnectby()
         {
@@ -317,7 +317,7 @@ namespace PacketComs
 
                 #endregion
 
-                #region case databits
+                #region case data bits
 
                 switch (DataBitsType)
                 {
@@ -528,7 +528,7 @@ namespace PacketComs
                 // This is a non blocking IO
                 _curSocket.Blocking = false;
 
-                // Begin Asyncronous Connection
+                // Begin Asynchronous Connection
                 _curSocket.BeginConnect(iep, ConnectCallback, _curSocket);
             }
             catch (Exception curException)
@@ -560,7 +560,7 @@ namespace PacketComs
                         foundStart = true;
                     }
 
-                    // this next check will first find the first non-inverse coord with a
+                    // this next check will first find the first non-inverse cord with a
                     // character in it. If it happens to be at the beginning of a line, 
                     // then we'll back up and stop at the last char in the prev line
                     if (foundStart &&
@@ -886,9 +886,9 @@ namespace PacketComs
                 {
                     var stateObject = new UcCommsStateObject();
                     stateObject.Socket = sock1;
-                    // Assign Callback function to read from Asyncronous Socket
+                    // Assign Callback function to read from Asynchronous Socket
                     _callbackProc = OnReceivedData;
-                    // Begin reading data asyncronously
+                    // Begin reading data asynchronously
                     sock1.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length, SocketFlags.None, _callbackProc,
                         stateObject);
                 }
@@ -907,7 +907,7 @@ namespace PacketComs
         {
             if (_xoff)
             {
-                // store the characters in the outputbuffer
+                // store the characters in the output buffer
                 _outBuff += strText;
                 return;
             }
@@ -1045,7 +1045,7 @@ namespace PacketComs
         {
             // DrawString doesn't actually print where you tell it to but instead consistently prints
             // with an offset. This is annoying when the other draw commands do not print with an offset
-            // this method returns a point defining the offset so we can take it off the printstring command.
+            // this method returns a point defining the offset so we can take it off the print string command.
 
             CharacterRange[] characterRanges =
             {
@@ -1079,7 +1079,7 @@ namespace PacketComs
         {
             // DrawString doesn't actually print where you tell it to but instead consistently prints
             // with an offset. This is annoying when the other draw commands do not print with an offset
-            // this method returns a point defining the offset so we can take it off the printstring command.
+            // this method returns a point defining the offset so we can take it off the print string command.
 
             CharacterRange[] characterRanges =
             {
@@ -1174,7 +1174,7 @@ namespace PacketComs
             if ((curBgColor != BackColor && (_modes.Flags & UcMode.LightBackground) == 0) ||
                 (curBgColor != _fgColor && (_modes.Flags & UcMode.LightBackground) > 0))
             {
-                // Erase the current Character underneath the cursor postion
+                // Erase the current Character underneath the cursor position
                 _eraseBuffer.Clear(curBgColor);
 
                 // paint a rectangle over the cursor position in the character's BGColor
@@ -1735,7 +1735,7 @@ namespace PacketComs
 
         #endregion
 
-        #region Insertline
+        #region Insert line
 
         private void InsertLine(UcParams curParams)
         {
@@ -1814,7 +1814,7 @@ namespace PacketComs
         {
             SetScrollBarValues();
 
-            // capture the new line into the scrollback buffer
+            // capture the new line into the scroll back buffer
             if (_scrollbackBuffer.Count < _scrollbackBufferSize)
             {
             }
@@ -1954,7 +1954,7 @@ namespace PacketComs
             curAttribs.IsUnderscored = _attribGrid[y][x].IsUnderscored;
             curAttribs.IsDECSG = _attribGrid[y][x].IsDECSG;
 
-            // redispay the current char in the background colour
+            // redisplay the current char in the background color
             ShowChar(
                 curGraphics,
                 _charGrid[y][x],
@@ -2034,8 +2034,8 @@ namespace PacketComs
             /* This code is used when we get a cursor position command from
                    the host. Even if we're not in relative mode we use this as this will
                    sort that out for us. The ToAbs code is used internally by this prog 
-                   but is smart enough to stay within the margins if the originrelative 
-                   flagis set. */
+                   but is smart enough to stay within the margins if the origin relative 
+                   flags set. */
 
             if ((_modes.Flags & UcMode.OriginRelative) == 0)
             {
@@ -2544,7 +2544,7 @@ namespace PacketComs
                         CaretToRel(0, 0);
                         break;
 
-                    case 7: // Autowrap On
+                    case 7: // Auto wrap On
                         _modes.Flags = _modes.Flags | UcMode.AutoWrap;
                         break;
 
@@ -2552,7 +2552,7 @@ namespace PacketComs
                         _modes.Flags = _modes.Flags | UcMode.Repeat;
                         break;
 
-                    case 42: // DECNRCM Multinational Charset
+                    case 42: // DECNRCM Multinational Char set
                         _modes.Flags = _modes.Flags | UcMode.National;
                         break;
 
@@ -2606,7 +2606,7 @@ namespace PacketComs
                         CaretToAbs(0, 0);
                         break;
 
-                    case 7: // Autowrap Off
+                    case 7: // Auto wrap Off
                         _modes.Flags = _modes.Flags & ~UcMode.AutoWrap;
                         break;
 
@@ -2614,7 +2614,7 @@ namespace PacketComs
                         _modes.Flags = _modes.Flags & ~UcMode.Repeat;
                         break;
 
-                    case 42: // DECNRCM National Charset
+                    case 42: // DECNRCM National Char set
                         _modes.Flags = _modes.Flags & ~UcMode.National;
                         break;
 
@@ -2870,7 +2870,7 @@ namespace PacketComs
         {
             switch (curChar)
             {
-                case '\x05': // ENQ request for the answerback message
+                case '\x05': // ENQ request for the answer back message
                     DispatchMessage(this, "vt220");
                     break;
 
@@ -3120,7 +3120,7 @@ namespace PacketComs
 
         #endregion
 
-        #region calss uc_Chars
+        #region class uc_Chars
 
         private class UcChars
         {
@@ -3155,7 +3155,7 @@ namespace PacketComs
             {
                 new UcCharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
                 //            new uc_CharSet (0x60, 0x25C6), // Filled Diamond 
-                new UcCharSet(0x61, 0x0000), // Pi over upsidedown Pi ?  
+                new UcCharSet(0x61, 0x0000), // Pi over upside down Pi ?  
                 new UcCharSet(0x62, 0x2409), // HT symbol 
                 new UcCharSet(0x63, 0x240C), // LF Symbol  
                 new UcCharSet(0x64, 0x240D), // CR Symbol  
@@ -3194,9 +3194,9 @@ namespace PacketComs
             public static readonly UcCharSet[] DECS =
             {
                 new UcCharSet(0xA8, 0x0020), // Currency Sign
-                new UcCharSet(0xD7, 0x0152), // latin small ligature OE 
+                new UcCharSet(0xD7, 0x0152), // Latin small ligature OE 
                 new UcCharSet(0xDD, 0x0178), // Capital Y with diaeresis
-                new UcCharSet(0xF7, 0x0153), // latin small ligature oe 
+                new UcCharSet(0xF7, 0x0153), // Latin small ligature oe 
                 new UcCharSet(0xFD, 0x00FF) // Lowercase y with diaeresis
             };
 
@@ -3311,12 +3311,12 @@ namespace PacketComs
             public static readonly UcCharSet[] NRCNorDanish = // Norwegian Danish National Replacement
             {
                 new UcCharSet(0x5B, 0x00C6), // AE ligature
-                new UcCharSet(0x5C, 0x00D8), // O with strikethough
-                new UcCharSet(0x5D, 0x00D8), // O with strikethough
+                new UcCharSet(0x5C, 0x00D8), // O with strike though
+                new UcCharSet(0x5D, 0x00D8), // O with strike though
                 new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
-                new UcCharSet(0x7B, 0x00E6), // ae ligature
-                new UcCharSet(0x7C, 0x00F8), // o with strikethough
-                new UcCharSet(0x7D, 0x00F8), // o with strikethough
+                new UcCharSet(0x7B, 0x00E6), // eye ligature
+                new UcCharSet(0x7C, 0x00F8), // o with strike though
+                new UcCharSet(0x7D, 0x00F8), // o with strike though
                 new UcCharSet(0x7D, 0x00E5) // a with hollow dot above
             };
 
@@ -3821,7 +3821,7 @@ namespace PacketComs
                     // add the default key mappings here
                     Elements.Clear();
 
-                    // TOPNZ Customisations these should be commented out
+                    // TOPNZ Customizations these should be commented out
                     //Elements.Add (new uc_KeyInfo (15,  false, "Shift", "\x1B[OI~", uc_Mode.Any,       0)); //ShTab
                     //Elements.Add (new uc_KeyInfo (63,  false, "Key",   "\x1BOT",   uc_Mode.Any,       0)); //F5
                     //Elements.Add (new uc_KeyInfo (64,  false, "Key",   "\x1BOU",   uc_Mode.Any,       0)); //F6
@@ -4716,7 +4716,7 @@ namespace PacketComs
 
         #endregion
 
-        #region Public Properties of Comonent
+        #region Public Properties of Component
 
         public int Rows
         {
@@ -4880,7 +4880,7 @@ namespace PacketComs
         private int _lastVisibleLine; // used for scrolling
         private string _outBuff = "";
         private int _rows;
-        private string _textAtCursor; // used to store Cursortext while scrolling
+        private string _textAtCursor; // used to store Cursor text while scrolling
         private int _topMargin;
         private int _underlinePos;
         private bool _xoff;
@@ -4927,7 +4927,7 @@ namespace PacketComs
             Font = new Font(_typeFace, TypeSize, TypeStyle);
             // reset scrollbar values
             SetScrollBarValues();
-            // capture text at cursor b/c it's not in the scrollback buffer yet
+            // capture text at cursor b/c it's not in the scroll back buffer yet
             var textAtCursor = "";
             for (var x = 0; x < _cols; x++)
             {
