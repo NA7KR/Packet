@@ -9,13 +9,10 @@ using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.IO.Ports;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Windows.Forms;
-using PacketComs;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 
@@ -28,12 +25,12 @@ namespace PacketComs
 
     public sealed partial class TerminalEmulator : Control
     {
-        private SshClient _client;
-        private ShellStream _stream;
-        private readonly FileSql _myFiles = new FileSql();
-        private readonly SerialPort _port = new SerialPort();
         private static readonly FileSql FileSql = new FileSql();
         private static readonly RunCustom RunCustom = new RunCustom();
+        private readonly FileSql _myFiles = new FileSql();
+        private readonly SerialPort _port = new SerialPort();
+        private SshClient _client;
+        private ShellStream _stream;
 
         #region TerminalEmulator
 
@@ -73,11 +70,11 @@ namespace PacketComs
             var mnuPaste = new MenuItem("Paste");
             var mnuCopyPaste = new MenuItem("Copy and Paste");
             contextMenu1.MenuItems.AddRange(new[]
-			{
-				mnuCopyPaste,
-				mnuPaste,
-				mnuCopy
-			});
+            {
+                mnuCopyPaste,
+                mnuPaste,
+                mnuCopy
+            });
             mnuCopy.Index = 0;
             mnuPaste.Index = 1;
             mnuCopyPaste.Index = 2;
@@ -140,7 +137,7 @@ namespace PacketComs
         public void Write(byte[] data, int offset, int length)
         {
             var sReceived = Encoding.ASCII.GetString(data, offset, length);
-            Invoke(RxdTextEvent, String.Copy(sReceived));
+            Invoke(RxdTextEvent, string.Copy(sReceived));
             Invoke(RefreshEvent);
         }
 
@@ -153,31 +150,31 @@ namespace PacketComs
             switch (ConnectionType)
             {
                 case ConnectionTypes.Telnet:
-                    {
-                        _cType = "Telnet";
-                        ConnectTelnet(Hostname, Port);
-                        break;
-                    }
+                {
+                    _cType = "Telnet";
+                    ConnectTelnet(Hostname, Port);
+                    break;
+                }
                 case ConnectionTypes.COM:
-                    {
-                        _cType = "Com";
-                        ConnectCom();
-                        break;
-                    }
+                {
+                    _cType = "Com";
+                    ConnectCom();
+                    break;
+                }
                 case ConnectionTypes.SSH1:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case ConnectionTypes.SSH2:
-                    {
-                        _cType = "SSH";
-                        ConnectSsh2(Hostname, Username, Password, Port);
-                        break;
-                    }
+                {
+                    _cType = "SSH";
+                    ConnectSsh2(Hostname, Username, Password, Port);
+                    break;
+                }
                 default:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
             }
         }
 
@@ -194,7 +191,6 @@ namespace PacketComs
             var nb = ("LR " + ln + "-999999");
             DispatchMessage(this, nb);
             DispatchMessage(this, Environment.NewLine);
-
         }
 
         #endregion
@@ -203,9 +199,8 @@ namespace PacketComs
 
         public void Disconnectby()
         {
-           
-            Invoke(RxdTextEvent, String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
-            Invoke(RxdTextEvent, String.Copy(Environment.NewLine));
+            Invoke(RxdTextEvent, string.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
+            Invoke(RxdTextEvent, string.Copy(Environment.NewLine));
             Invoke(RefreshEvent);
             if (Disconnected != null)
             {
@@ -227,65 +222,65 @@ namespace PacketComs
                 {
                     case
                         BaudRateTypes.Baud_110:
-                        {
-                            _port.BaudRate = 110;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 110;
+                        break;
+                    }
                     case
                         BaudRateTypes.Baud_300:
-                        {
-                            _port.BaudRate = 300;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 300;
+                        break;
+                    }
                     case
                         BaudRateTypes.Baud_600:
-                        {
-                            _port.BaudRate = 600;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 600;
+                        break;
+                    }
                     case
                         BaudRateTypes.Baud_1200:
-                        {
-                            _port.BaudRate = 1200;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 1200;
+                        break;
+                    }
                     case
                         BaudRateTypes.Baud_2400:
-                        {
-                            _port.BaudRate = 2400;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 2400;
+                        break;
+                    }
                     case
                         BaudRateTypes.Baud_4800:
-                        {
-                            _port.BaudRate = 4800;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 4800;
+                        break;
+                    }
                     case
                         BaudRateTypes.Baud_9600:
-                        {
-                            _port.BaudRate = 9600;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 9600;
+                        break;
+                    }
                     case
                         BaudRateTypes.Baud_19200:
-                        {
-                            _port.BaudRate = 19200;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 19200;
+                        break;
+                    }
                     case
                         BaudRateTypes.Baud_38400:
-                        {
-                            _port.BaudRate = 38400;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 38400;
+                        break;
+                    }
 
                     case
                         BaudRateTypes.Baud_57600:
-                        {
-                            _port.BaudRate = 57600;
-                            break;
-                        }
+                    {
+                        _port.BaudRate = 57600;
+                        break;
+                    }
                 }
 
                 #endregion
@@ -296,28 +291,28 @@ namespace PacketComs
                 {
                     case
                         StopBitsTypes.None:
-                        {
-                            _port.StopBits = StopBits.None;
-                            break;
-                        }
+                    {
+                        _port.StopBits = StopBits.None;
+                        break;
+                    }
                     case
                         StopBitsTypes.One:
-                        {
-                            _port.StopBits = StopBits.One;
-                            break;
-                        }
+                    {
+                        _port.StopBits = StopBits.One;
+                        break;
+                    }
                     case
                         StopBitsTypes.OnePointFive:
-                        {
-                            _port.StopBits = StopBits.OnePointFive;
-                            break;
-                        }
+                    {
+                        _port.StopBits = StopBits.OnePointFive;
+                        break;
+                    }
                     case
                         StopBitsTypes.Two:
-                        {
-                            _port.StopBits = StopBits.Two;
-                            break;
-                        }
+                    {
+                        _port.StopBits = StopBits.Two;
+                        break;
+                    }
                 }
 
                 #endregion
@@ -328,28 +323,28 @@ namespace PacketComs
                 {
                     case
                         DataBitsTypes.Data_Bits_5:
-                        {
-                            _port.DataBits = 5;
-                            break;
-                        }
+                    {
+                        _port.DataBits = 5;
+                        break;
+                    }
                     case
                         DataBitsTypes.Data_Bits_6:
-                        {
-                            _port.DataBits = 6;
-                            break;
-                        }
+                    {
+                        _port.DataBits = 6;
+                        break;
+                    }
                     case
                         DataBitsTypes.Data_Bits_7:
-                        {
-                            _port.DataBits = 7;
-                            break;
-                        }
+                    {
+                        _port.DataBits = 7;
+                        break;
+                    }
                     case
                         DataBitsTypes.Data_Bits_8:
-                        {
-                            _port.DataBits = 8;
-                            break;
-                        }
+                    {
+                        _port.DataBits = 8;
+                        break;
+                    }
                 }
 
                 #endregion
@@ -360,28 +355,28 @@ namespace PacketComs
                 {
                     case
                         FlowTypes.XOnXOff:
-                        {
-                            _port.Handshake = Handshake.XOnXOff;
-                            break;
-                        }
+                    {
+                        _port.Handshake = Handshake.XOnXOff;
+                        break;
+                    }
                     case
                         FlowTypes.RequestToSend:
-                        {
-                            _port.Handshake = Handshake.RequestToSend;
-                            break;
-                        }
+                    {
+                        _port.Handshake = Handshake.RequestToSend;
+                        break;
+                    }
                     case
                         FlowTypes.RequestToSendXOnXOff:
-                        {
-                            _port.Handshake = Handshake.RequestToSendXOnXOff;
-                            break;
-                        }
+                    {
+                        _port.Handshake = Handshake.RequestToSendXOnXOff;
+                        break;
+                    }
                     case
                         FlowTypes.None:
-                        {
-                            _port.Handshake = Handshake.None;
-                            break;
-                        }
+                    {
+                        _port.Handshake = Handshake.None;
+                        break;
+                    }
                 }
 
                 #endregion
@@ -392,34 +387,34 @@ namespace PacketComs
                 {
                     case
                         ParityTypes.None:
-                        {
-                            _port.Parity = Parity.None;
-                            break;
-                        }
+                    {
+                        _port.Parity = Parity.None;
+                        break;
+                    }
                     case
                         ParityTypes.Odd:
-                        {
-                            _port.Parity = Parity.Odd;
-                            break;
-                        }
+                    {
+                        _port.Parity = Parity.Odd;
+                        break;
+                    }
                     case
                         ParityTypes.Even:
-                        {
-                            _port.Parity = Parity.Even;
-                            break;
-                        }
+                    {
+                        _port.Parity = Parity.Even;
+                        break;
+                    }
                     case
                         ParityTypes.Mark:
-                        {
-                            _port.Parity = Parity.Mark;
-                            break;
-                        }
+                    {
+                        _port.Parity = Parity.Mark;
+                        break;
+                    }
                     case
                         ParityTypes.Space:
-                        {
-                            _port.Parity = Parity.Space;
-                            break;
-                        }
+                    {
+                        _port.Parity = Parity.Space;
+                        break;
+                    }
                 }
 
                 #endregion
@@ -444,9 +439,9 @@ namespace PacketComs
             try
             {
                 _inputData = Encoding.ASCII.GetString(e.Data);
-                if (_inputData != String.Empty && _inputData != null)
+                if (_inputData != string.Empty && _inputData != null)
                 {
-                    Invoke(RxdTextEvent, String.Copy(_inputData));
+                    Invoke(RxdTextEvent, string.Copy(_inputData));
                     if (_inputData == "\r")
                     {
                         _inputData = Environment.NewLine;
@@ -469,11 +464,11 @@ namespace PacketComs
             try
             {
                 _inputData = _port.ReadExisting();
-                if (_inputData != String.Empty)
+                if (_inputData != string.Empty)
                 {
                     //_parser.ParseString(_inputData);
                     //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
-                    Invoke(RxdTextEvent, String.Copy(_inputData));
+                    Invoke(RxdTextEvent, string.Copy(_inputData));
                     if (_inputData == "/r")
                     {
                         _inputData = Environment.NewLine;
@@ -483,17 +478,17 @@ namespace PacketComs
                     {
                         _dataFile = _dataFile + _inputData;
 
-                        var lines = _dataFile.Split(new[] { Environment.NewLine },
+                        var lines = _dataFile.Split(new[] {Environment.NewLine},
                             StringSplitOptions.RemoveEmptyEntries);
 
                         if (_dataFile.Contains(BBSPrompt))
-                        //if (Regex.Match(sReceived,BBSPrompt).Success )
+                            //if (Regex.Match(sReceived,BBSPrompt).Success )
                         {
                             ForwardDone(this, new EventArgs());
                             FileActive = false;
 
                             for (var i = 1; i < lines.Length - 1; i++)
-                            //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
+                                //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
                             {
                                 FileSql.WriteSqlPacket(lines[i]);
                                 //LastNumber = lines[i].Substring(0, 5);
@@ -515,7 +510,7 @@ namespace PacketComs
 
         #region Connect Telnet
 
-        private void ConnectTelnet(string hostName, Int32 port)
+        private void ConnectTelnet(string hostName, int port)
         {
             Focus();
             var ipHost = Dns.GetHostEntry(hostName);
@@ -864,7 +859,7 @@ namespace PacketComs
                 _vertScrollBar.Value = _scrollbackBuffer.Count + 1;
 
                 _vertScrollBar.LargeChange = _rows;
-                _vertScrollBar.SmallChange = _vertScrollBar.Maximum / _charSize.Height;
+                _vertScrollBar.SmallChange = _vertScrollBar.Maximum/_charSize.Height;
             }
             catch (Exception curException)
             {
@@ -881,7 +876,7 @@ namespace PacketComs
             try
             {
                 // Get The connection socket from the callback
-                var sock1 = (Socket)ar.AsyncState;
+                var sock1 = (Socket) ar.AsyncState;
                 if (_cType == "Com")
                 {
                     Refresh();
@@ -894,7 +889,8 @@ namespace PacketComs
                     // Assign Callback function to read from Asyncronous Socket
                     _callbackProc = OnReceivedData;
                     // Begin reading data asyncronously
-                    sock1.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length,  SocketFlags.None, _callbackProc, stateObject);
+                    sock1.BeginReceive(stateObject.Buffer, 0, stateObject.Buffer.Length, SocketFlags.None, _callbackProc,
+                        stateObject);
                 }
             }
             catch (Exception curException)
@@ -905,12 +901,9 @@ namespace PacketComs
 
         #endregion
 
-    
-
-
         #region  DispatchMessage
 
-        private void DispatchMessage(Object sender, string strText)
+        private void DispatchMessage(object sender, string strText)
         {
             if (_xoff)
             {
@@ -921,7 +914,7 @@ namespace PacketComs
             var i = 0;
             try
             {
-                var smk = new Byte[strText.Length];
+                var smk = new byte[strText.Length];
 
                 if (_outBuff != "")
                 {
@@ -998,7 +991,7 @@ namespace PacketComs
         {
             try
             {
-                var sock = (Socket)ar.AsyncState;
+                var sock = (Socket) ar.AsyncState;
                 sock.EndSend(ar);
             }
             catch (Exception curException)
@@ -1011,7 +1004,7 @@ namespace PacketComs
 
         #region PrintChar
 
-        private void PrintChar(Char curChar)
+        private void PrintChar(char curChar)
         {
             if (_caret.EOL)
             {
@@ -1047,17 +1040,17 @@ namespace PacketComs
 
         #region System.Drawing.Point GetDrawStringOffset
 
-        private Point GetDrawStringOffset(Graphics curGraphics, Int32 x,
-            Int32 y, Char curChar)
+        private Point GetDrawStringOffset(Graphics curGraphics, int x,
+            int y, char curChar)
         {
             // DrawString doesn't actually print where you tell it to but instead consistently prints
             // with an offset. This is annoying when the other draw commands do not print with an offset
             // this method returns a point defining the offset so we can take it off the printstring command.
 
             CharacterRange[] characterRanges =
-			{
-				new CharacterRange(0, 1)
-			};
+            {
+                new CharacterRange(0, 1)
+            };
 
             var layoutRect = new RectangleF(x, y, 100, 100);
 
@@ -1075,7 +1068,7 @@ namespace PacketComs
 
             var measureRect1 = stringRegions[0].GetBounds(curGraphics);
 
-            return new Point((int)(measureRect1.X + 0.5), (int)(measureRect1.Y + 0.5));
+            return new Point((int) (measureRect1.X + 0.5), (int) (measureRect1.Y + 0.5));
         }
 
         #endregion
@@ -1089,9 +1082,9 @@ namespace PacketComs
             // this method returns a point defining the offset so we can take it off the printstring command.
 
             CharacterRange[] characterRanges =
-			{
-				new CharacterRange(0, 1)
-			};
+            {
+                new CharacterRange(0, 1)
+            };
 
             var layoutRect = new RectangleF(0, 0, 100, 100);
 
@@ -1107,7 +1100,7 @@ namespace PacketComs
 
             var measureRect1 = stringRegions[0].GetBounds(curGraphics);
 
-            return new Point((int)(measureRect1.Width + 0.5), (int)(measureRect1.Height + 0.5));
+            return new Point((int) (measureRect1.Width + 0.5), (int) (measureRect1.Height + 0.5));
         }
 
         #endregion
@@ -1165,7 +1158,7 @@ namespace PacketComs
 
         #region ShowChar
 
-        private void ShowChar(Graphics curGraphics, Char curChar, Int32 y, Int32 x,
+        private void ShowChar(Graphics curGraphics, char curChar, int y, int x,
             CharAttribStruct curAttribs)
         {
             if (curChar == '\0')
@@ -1234,7 +1227,7 @@ namespace PacketComs
 
         #region SSH Connect
 
-        private void ConnectSsh2(string hostname, string username, string password, Int32 port)
+        private void ConnectSsh2(string hostname, string username, string password, int port)
         {
             string ip;
             try
@@ -1260,8 +1253,8 @@ namespace PacketComs
 
         #region ShowSpecialChar
 
-        private void ShowSpecialChar(Graphics curGraphics, Char curChar, Int32 y,
-            Int32 x, Color curFgColor)
+        private void ShowSpecialChar(Graphics curGraphics, char curChar, int y,
+            int x, Color curFgColor)
         {
             if (curChar == '\0')
             {
@@ -1273,10 +1266,10 @@ namespace PacketComs
             {
                 case '`': // diamond
 
-                    curPoints[0] = new Point(x + _charSize.Width / 2, y + _charSize.Height / 6);
-                    curPoints[1] = new Point(x + 5 * _charSize.Width / 6, y + _charSize.Height / 2);
-                    curPoints[2] = new Point(x + _charSize.Width / 2, y + 5 * _charSize.Height / 6);
-                    curPoints[3] = new Point(x + _charSize.Width / 6, y + _charSize.Height / 2);
+                    curPoints[0] = new Point(x + _charSize.Width/2, y + _charSize.Height/6);
+                    curPoints[1] = new Point(x + 5*_charSize.Width/6, y + _charSize.Height/2);
+                    curPoints[2] = new Point(x + _charSize.Width/2, y + 5*_charSize.Height/6);
+                    curPoints[3] = new Point(x + _charSize.Width/6, y + _charSize.Height/2);
 
                     curGraphics.FillPolygon(
                         new SolidBrush(curFgColor),
@@ -1285,95 +1278,95 @@ namespace PacketComs
 
                 case 'l': // top left bracket
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2 - 1, y + _charSize.Height / 2,
-                        x + _charSize.Width, y + _charSize.Height / 2);
+                        x + _charSize.Width/2 - 1, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                        x + _charSize.Width / 2, y + _charSize.Height);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 'q': // horizontal line
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + _charSize.Height / 2,
-                        x + _charSize.Width, y + _charSize.Height / 2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     break;
 
                 case 'w': // top tee-piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + _charSize.Height / 2,
-                        x + _charSize.Width, y + _charSize.Height / 2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                        x + _charSize.Width / 2, y + _charSize.Height);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 'k': // top right bracket
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + _charSize.Height / 2,
-                        x + _charSize.Width / 2, y + _charSize.Height / 2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                        x + _charSize.Width / 2, y + _charSize.Height);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 'x': // vertical line
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y,
-                        x + _charSize.Width / 2, y + _charSize.Height);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 't': // left hand tee-piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y,
-                        x + _charSize.Width / 2, y + _charSize.Height);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                        x + _charSize.Width, y + _charSize.Height / 2);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     break;
 
                 case 'n': // cross piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y,
-                        x + _charSize.Width / 2, y + _charSize.Height);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + _charSize.Height / 2,
-                        x + _charSize.Width, y + _charSize.Height / 2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     break;
 
                 case 'u': // right hand tee-piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + _charSize.Height / 2,
-                        x + _charSize.Width / 2, y + _charSize.Height / 2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y,
-                        x + _charSize.Width / 2, y + _charSize.Height);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height);
                     break;
 
                 case 'm': // bottom left bracket
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                        x + _charSize.Width, y + _charSize.Height / 2);
+                        x + _charSize.Width/2, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y,
-                        x + _charSize.Width / 2, y + _charSize.Height / 2);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     break;
 
                 case 'v': // bottom tee-piece
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + _charSize.Height / 2,
-                        x + _charSize.Width, y + _charSize.Height / 2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y,
-                        x + _charSize.Width / 2, y + _charSize.Height / 2);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     break;
 
                 case 'j': // bottom right bracket
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x, y + _charSize.Height / 2,
-                        x + _charSize.Width / 2, y + _charSize.Height / 2);
+                        x, y + _charSize.Height/2,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     curGraphics.DrawLine(new Pen(curFgColor, 1),
-                        x + _charSize.Width / 2, y,
-                        x + _charSize.Width / 2, y + _charSize.Height / 2);
+                        x + _charSize.Width/2, y,
+                        x + _charSize.Width/2, y + _charSize.Height/2);
                     break;
             }
         }
@@ -1399,7 +1392,7 @@ namespace PacketComs
 
         #region ClearDown
 
-        private void ClearDown(Int32 param)
+        private void ClearDown(int param)
         {
             var x = _caret.Pos.X;
             var y = _caret.Pos.Y;
@@ -1445,7 +1438,7 @@ namespace PacketComs
 
         #region ClearRight
 
-        private void ClearRight(Int32 param)
+        private void ClearRight(int param)
         {
             var x = _caret.Pos.X;
             var y = _caret.Pos.Y;
@@ -1485,7 +1478,7 @@ namespace PacketComs
 
         private void Redraw(Graphics curGraphics)
         {
-            Char CurChar;
+            char CurChar;
 
 
             // refresh the screen
@@ -1501,8 +1494,8 @@ namespace PacketComs
                     }
 
                     var curPoint = new Point(
-                        x * _charSize.Width,
-                        y * _charSize.Height);
+                        x*_charSize.Width,
+                        y*_charSize.Height);
 
                     ShowChar(
                         curGraphics,
@@ -1518,7 +1511,7 @@ namespace PacketComs
 
         #region NvtSendWill
 
-        private void NvtSendWill(Char curChar)
+        private void NvtSendWill(char curChar)
         {
             DispatchMessage(this, string.Format("\xFF\xFB{0}", curChar));
         }
@@ -1527,7 +1520,7 @@ namespace PacketComs
 
         #region NvtSendWont
 
-        private void NvtSendWont(Char curChar)
+        private void NvtSendWont(char curChar)
         {
             DispatchMessage(this, string.Format("\xFF\xFC{0}", curChar));
         }
@@ -1536,7 +1529,7 @@ namespace PacketComs
 
         #region NvtSendDont
 
-        private void NvtSendDont(Char curChar)
+        private void NvtSendDont(char curChar)
         {
             DispatchMessage(this, string.Format("\xFF\xFE{0}", curChar));
         }
@@ -1545,7 +1538,7 @@ namespace PacketComs
 
         #region NvtSendDo
 
-        private void NvtSendDo(Char curChar)
+        private void NvtSendDo(char curChar)
         {
             DispatchMessage(this, string.Format("\xFF\xFD{0}", curChar));
         }
@@ -1554,7 +1547,7 @@ namespace PacketComs
 
         #region NvtSendSubNeg
 
-        private void NvtSendSubNeg(Char curChar, String curString)
+        private void NvtSendSubNeg(char curChar, string curString)
         {
             DispatchMessage(this, string.Format("\xFF\xFA{0}\x00{1}\xFF\xF0", curChar, curString));
         }
@@ -1733,7 +1726,7 @@ namespace PacketComs
                     _charGrid[i] = _charGrid[i - 1];
                     _attribGrid[i] = _attribGrid[i - 1];
                 }
-                _charGrid[_topMargin] = new Char[_cols];
+                _charGrid[_topMargin] = new char[_cols];
                 _attribGrid[_topMargin] = new CharAttribStruct[_cols];
             }
 
@@ -1770,7 +1763,7 @@ namespace PacketComs
                 }
 
 
-                _charGrid[_caret.Pos.Y] = new Char[_cols];
+                _charGrid[_caret.Pos.Y] = new char[_cols];
                 _attribGrid[_caret.Pos.Y] = new CharAttribStruct[_cols];
 
                 nbrOff--;
@@ -1806,7 +1799,7 @@ namespace PacketComs
                     _attribGrid[i] = _attribGrid[i + 1];
                 }
 
-                _charGrid[_bottomMargin] = new Char[_cols];
+                _charGrid[_bottomMargin] = new char[_cols];
                 _attribGrid[_bottomMargin] = new CharAttribStruct[_cols];
 
                 nbrOff--;
@@ -1853,7 +1846,7 @@ namespace PacketComs
                     _charGrid[i] = _charGrid[i + 1];
                     _attribGrid[i] = _attribGrid[i + 1];
                 }
-                _charGrid[i] = new Char[_cols];
+                _charGrid[i] = new char[_cols];
                 _attribGrid[i] = new CharAttribStruct[_cols];
             }
             CaretDown();
@@ -1863,7 +1856,7 @@ namespace PacketComs
 
         #region Index
 
-        private void Index(Int32 param)
+        private void Index(int param)
         {
             if (param == 0) param = 1;
 
@@ -1877,7 +1870,7 @@ namespace PacketComs
 
         #region ReverseIndex
 
-        private void ReverseIndex(Int32 param)
+        private void ReverseIndex(int param)
         {
             if (param == 0) param = 1;
 
@@ -1932,8 +1925,8 @@ namespace PacketComs
             // paint a rectangle over the cursor position
             curGraphics.DrawImageUnscaled(
                 _caret.Bitmap,
-                x * _charSize.Width,
-                y * _charSize.Height);
+                x*_charSize.Width,
+                y*_charSize.Height);
 
             // if we don't have a char to redraw then leave
             if (_charGrid[y][x] == '\0')
@@ -1965,8 +1958,8 @@ namespace PacketComs
             ShowChar(
                 curGraphics,
                 _charGrid[y][x],
-                _caret.Pos.Y * _charSize.Height,
-                _caret.Pos.X * _charSize.Width,
+                _caret.Pos.Y*_charSize.Height,
+                _caret.Pos.X*_charSize.Width,
                 curAttribs);
         }
 
@@ -2035,7 +2028,7 @@ namespace PacketComs
 
         #region CaretToRel
 
-        private void CaretToRel(Int32 y, Int32 x)
+        private void CaretToRel(int y, int x)
         {
             _caret.EOL = false;
             /* This code is used when we get a cursor position command from
@@ -2082,7 +2075,7 @@ namespace PacketComs
 
         #region CaretToAbs
 
-        private void CaretToAbs(Int32 y, Int32 x)
+        private void CaretToAbs(int y, int x)
         {
             _caret.EOL = false;
 
@@ -2162,13 +2155,13 @@ namespace PacketComs
                     break;
 
                 case "\x1b" + "8": //DECRC Restore Cursor position and attributes
-                    _caret.Pos = ((UcCaretAttribs)_savedCarets[_savedCarets.Count - 1]).Pos;
-                    _charAttribs = ((UcCaretAttribs)_savedCarets[_savedCarets.Count - 1]).Attribs;
+                    _caret.Pos = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).Pos;
+                    _charAttribs = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).Attribs;
 
-                    _g0.Set = ((UcCaretAttribs)_savedCarets[_savedCarets.Count - 1]).G0Set;
-                    _g1.Set = ((UcCaretAttribs)_savedCarets[_savedCarets.Count - 1]).G1Set;
-                    _g2.Set = ((UcCaretAttribs)_savedCarets[_savedCarets.Count - 1]).G2Set;
-                    _g3.Set = ((UcCaretAttribs)_savedCarets[_savedCarets.Count - 1]).G3Set;
+                    _g0.Set = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).G0Set;
+                    _g1.Set = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).G1Set;
+                    _g2.Set = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).G2Set;
+                    _g3.Set = ((UcCaretAttribs) _savedCarets[_savedCarets.Count - 1]).G3Set;
 
                     _savedCarets.RemoveAt(_savedCarets.Count - 1);
 
@@ -2423,7 +2416,7 @@ namespace PacketComs
 
         #region SelectCharSet
 
-        private void SelectCharSet(ref UcChars.Sets curTarget, String curString)
+        private void SelectCharSet(ref UcChars.Sets curTarget, string curString)
         {
             switch (curString)
             {
@@ -2516,7 +2509,7 @@ namespace PacketComs
         {
             var optInt = 0;
 
-            foreach (String curOption in curParams.Elements)
+            foreach (string curOption in curParams.Elements)
             {
                 try
                 {
@@ -2578,7 +2571,7 @@ namespace PacketComs
         {
             var optInt = 0;
 
-            foreach (String curOption in curParams.Elements)
+            foreach (string curOption in curParams.Elements)
             {
                 try
                 {
@@ -2640,7 +2633,7 @@ namespace PacketComs
         {
             var optInt = 0;
 
-            foreach (String curOption in curParams.Elements)
+            foreach (string curOption in curParams.Elements)
             {
                 try
                 {
@@ -2668,7 +2661,7 @@ namespace PacketComs
         {
             var optInt = 0;
 
-            foreach (String curOption in curParams.Elements)
+            foreach (string curOption in curParams.Elements)
             {
                 try
                 {
@@ -2873,7 +2866,7 @@ namespace PacketComs
 
         #region ExecuteChar
 
-        private void ExecuteChar(Char curChar)
+        private void ExecuteChar(char curChar)
         {
             switch (curChar)
             {
@@ -2961,7 +2954,7 @@ namespace PacketComs
 
         #region SetSize
 
-        private void SetSize(Int32 rows, Int32 columns)
+        private void SetSize(int rows, int columns)
         {
             _rows = rows;
             _cols = columns;
@@ -2969,11 +2962,11 @@ namespace PacketComs
             _bottomMargin = rows - 1;
 
             // create the character grid (rows by columns) this is a shadow of what's displayed
-            _charGrid = new Char[_rows][];
+            _charGrid = new char[_rows][];
 
             for (var i = 0; i < _charGrid.Length; i++)
             {
-                _charGrid[i] = new Char[_cols];
+                _charGrid[i] = new char[_cols];
             }
             _attribGrid = new CharAttribStruct[_rows][];
 
@@ -3023,8 +3016,8 @@ namespace PacketComs
                 }
                 else if (_cType == "SSH")
                 {
-                    Invoke(RxdTextEvent, String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
-                    Invoke(RxdTextEvent, String.Copy(Environment.NewLine));
+                    Invoke(RxdTextEvent, string.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
+                    Invoke(RxdTextEvent, string.Copy(Environment.NewLine));
                     Invoke(RefreshEvent);
                     _stream.Close();
                     _stream.Dispose();
@@ -3033,10 +3026,9 @@ namespace PacketComs
                 {
                     _curSocket.Shutdown(SocketShutdown.Both);
                     _curSocket.Close();
-                    Invoke(RxdTextEvent, String.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
-                    Invoke(RxdTextEvent, String.Copy(Environment.NewLine));
+                    Invoke(RxdTextEvent, string.Copy("\u001B[31m DISCONNECTED !!! \u001B[0m"));
+                    Invoke(RxdTextEvent, string.Copy(Environment.NewLine));
                     Invoke(RefreshEvent);
-                   
                 }
             }
             catch (Exception)
@@ -3050,14 +3042,14 @@ namespace PacketComs
 
         private class UcCommsStateObject
         {
+            public readonly byte[] Buffer;
             public Socket Socket;
-            public readonly Byte[] Buffer;
 
             #region UcCommsStateObject
 
             public UcCommsStateObject()
             {
-                Buffer = new Byte[8192];
+                Buffer = new byte[8192];
             }
 
             #endregion
@@ -3069,13 +3061,13 @@ namespace PacketComs
 
         private class UcTabStops
         {
-            public readonly Boolean[] Columns;
+            public readonly bool[] Columns;
 
             #region UcTabStops
 
             public UcTabStops()
             {
-                Columns = new Boolean[256];
+                Columns = new bool[256];
                 Columns[8] = true;
                 Columns[16] = true;
                 Columns[24] = true;
@@ -3160,251 +3152,251 @@ namespace PacketComs
             #region UcCharSet[] DECSG
 
             public static readonly UcCharSet[] DECSG =
-			{
-				new UcCharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
-				//            new uc_CharSet (0x60, 0x25C6), // Filled Diamond 
-				new UcCharSet(0x61, 0x0000), // Pi over upsidedown Pi ?  
-				new UcCharSet(0x62, 0x2409), // HT symbol 
-				new UcCharSet(0x63, 0x240C), // LF Symbol  
-				new UcCharSet(0x64, 0x240D), // CR Symbol  
-				new UcCharSet(0x65, 0x240A), // LF Symbol  
-				new UcCharSet(0x66, 0x00B0), // Degree  
-				new UcCharSet(0x67, 0x00B1), // Plus over Minus  
-				new UcCharSet(0x68, 0x2424), // NL Symbol  
-				new UcCharSet(0x69, 0x240B), // VT Symbol 
-				//            new uc_CharSet (0x6A, 0x2518), // Bottom Right Box 
-				//            new uc_CharSet (0x6B, 0x2510), // Top Right Box
-				//            new uc_CharSet (0x6C, 0x250C), // TopLeft Box
-				//            new uc_CharSet (0x6D, 0x2514), // Bottom Left Box
-				//            new uc_CharSet (0x6E, 0x253C), // Cross Piece
-				new UcCharSet(0x6F, 0x23BA), // Scan Line 1
-				new UcCharSet(0x70, 0x25BB), // Scan Line 3
-				//            new uc_CharSet (0x71, 0x2500), // Horizontal Line (scan line 5 as well?)
-				new UcCharSet(0x72, 0x23BC), // Scan Line 7 
-				new UcCharSet(0x73, 0x23BD), // Scan Line 9 
-				//            new uc_CharSet (0x74, 0x251C), // Left Tee Piece
-				//            new uc_CharSet (0x75, 0x2524), // Right Tee Piece
-				//            new uc_CharSet (0x76, 0x2534), // Bottom Tee Piece
-				//            new uc_CharSet (0x77, 0x252C), // Top Tee Piece
-				//            new uc_CharSet (0x78, 0x2502), // Vertical Line
-				new UcCharSet(0x79, 0x2264), // Less than or equal  
-				new UcCharSet(0x7A, 0x2265), // Greater than or equal 
-				new UcCharSet(0x7B, 0x03A0), // Capital Pi
-				new UcCharSet(0x7C, 0x2260), // Not Equal 
-				new UcCharSet(0x7D, 0x00A3), // Pound Sign 
-				new UcCharSet(0x7E, 0x00B7) // Middle Dot 
-			};
+            {
+                new UcCharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
+                //            new uc_CharSet (0x60, 0x25C6), // Filled Diamond 
+                new UcCharSet(0x61, 0x0000), // Pi over upsidedown Pi ?  
+                new UcCharSet(0x62, 0x2409), // HT symbol 
+                new UcCharSet(0x63, 0x240C), // LF Symbol  
+                new UcCharSet(0x64, 0x240D), // CR Symbol  
+                new UcCharSet(0x65, 0x240A), // LF Symbol  
+                new UcCharSet(0x66, 0x00B0), // Degree  
+                new UcCharSet(0x67, 0x00B1), // Plus over Minus  
+                new UcCharSet(0x68, 0x2424), // NL Symbol  
+                new UcCharSet(0x69, 0x240B), // VT Symbol 
+                //            new uc_CharSet (0x6A, 0x2518), // Bottom Right Box 
+                //            new uc_CharSet (0x6B, 0x2510), // Top Right Box
+                //            new uc_CharSet (0x6C, 0x250C), // TopLeft Box
+                //            new uc_CharSet (0x6D, 0x2514), // Bottom Left Box
+                //            new uc_CharSet (0x6E, 0x253C), // Cross Piece
+                new UcCharSet(0x6F, 0x23BA), // Scan Line 1
+                new UcCharSet(0x70, 0x25BB), // Scan Line 3
+                //            new uc_CharSet (0x71, 0x2500), // Horizontal Line (scan line 5 as well?)
+                new UcCharSet(0x72, 0x23BC), // Scan Line 7 
+                new UcCharSet(0x73, 0x23BD), // Scan Line 9 
+                //            new uc_CharSet (0x74, 0x251C), // Left Tee Piece
+                //            new uc_CharSet (0x75, 0x2524), // Right Tee Piece
+                //            new uc_CharSet (0x76, 0x2534), // Bottom Tee Piece
+                //            new uc_CharSet (0x77, 0x252C), // Top Tee Piece
+                //            new uc_CharSet (0x78, 0x2502), // Vertical Line
+                new UcCharSet(0x79, 0x2264), // Less than or equal  
+                new UcCharSet(0x7A, 0x2265), // Greater than or equal 
+                new UcCharSet(0x7B, 0x03A0), // Capital Pi
+                new UcCharSet(0x7C, 0x2260), // Not Equal 
+                new UcCharSet(0x7D, 0x00A3), // Pound Sign 
+                new UcCharSet(0x7E, 0x00B7) // Middle Dot 
+            };
 
             #endregion
 
             #region  UcCharSet[] DECS
 
             public static readonly UcCharSet[] DECS =
-			{
-				new UcCharSet(0xA8, 0x0020), // Currency Sign
-				new UcCharSet(0xD7, 0x0152), // latin small ligature OE 
-				new UcCharSet(0xDD, 0x0178), // Capital Y with diaeresis
-				new UcCharSet(0xF7, 0x0153), // latin small ligature oe 
-				new UcCharSet(0xFD, 0x00FF) // Lowercase y with diaeresis
-			};
+            {
+                new UcCharSet(0xA8, 0x0020), // Currency Sign
+                new UcCharSet(0xD7, 0x0152), // latin small ligature OE 
+                new UcCharSet(0xDD, 0x0178), // Capital Y with diaeresis
+                new UcCharSet(0xF7, 0x0153), // latin small ligature oe 
+                new UcCharSet(0xFD, 0x00FF) // Lowercase y with diaeresis
+            };
 
             #endregion
 
             #region UcCharSet[] ASCII
 
             public static readonly UcCharSet[] ASCII = // same as Basic Latin
-			{
-				new UcCharSet(0x00, 0x0000) //
-			};
+            {
+                new UcCharSet(0x00, 0x0000) //
+            };
 
             #endregion
 
             #region UcCharSet[] NRCUK
 
             public static readonly UcCharSet[] NRCUK = // UK National Replacement
-			{
-				new UcCharSet(0x23, 0x00A3) //
-			};
+            {
+                new UcCharSet(0x23, 0x00A3) //
+            };
 
             #endregion
 
             #region  UcCharSet[] NRCFinnish
 
             public static readonly UcCharSet[] NRCFinnish = // Finnish National Replacement
-			{
-				new UcCharSet(0x5B, 0x00C4), // A with diearesis
-				new UcCharSet(0x5C, 0x00D6), // O with diearesis
-				new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
-				new UcCharSet(0x5E, 0x00DC), // U with diearesis
-				new UcCharSet(0x60, 0x00E9), // e with accute accent
-				new UcCharSet(0x7B, 0x00E4), // a with diearesis
-				new UcCharSet(0x7C, 0x00F6), // o with diearesis
-				new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
-				new UcCharSet(0x7E, 0x00FC) // u with diearesis
-			};
+            {
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x5E, 0x00DC), // U with diearesis
+                new UcCharSet(0x60, 0x00E9), // e with accute accent
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
+                new UcCharSet(0x7E, 0x00FC) // u with diearesis
+            };
 
             #endregion
 
             #region UcCharSet[] NRCFrench
 
             public static readonly UcCharSet[] NRCFrench = // French National Replacement
-			{
-				new UcCharSet(0x23, 0x00A3), // Pound Sign
-				new UcCharSet(0x40, 0x00E0), // a with grav accent
-				new UcCharSet(0x5B, 0x00B0), // Degree Symbol
-				new UcCharSet(0x5C, 0x00E7), // little cedila
-				new UcCharSet(0x5D, 0x00A7), // funny s (technical term)
-				new UcCharSet(0x7B, 0x00E9), // e with accute accent
-				new UcCharSet(0x7C, 0x00F9), // u with grav accent
-				new UcCharSet(0x7D, 0x00E8), // e with grav accent
-				new UcCharSet(0x7E, 0x00A8) // diearesis
-			};
+            {
+                new UcCharSet(0x23, 0x00A3), // Pound Sign
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00B0), // Degree Symbol
+                new UcCharSet(0x5C, 0x00E7), // little cedila
+                new UcCharSet(0x5D, 0x00A7), // funny s (technical term)
+                new UcCharSet(0x7B, 0x00E9), // e with accute accent
+                new UcCharSet(0x7C, 0x00F9), // u with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00A8) // diearesis
+            };
 
             #endregion
 
             #region UcCharSet[] NRCFrenchCanadian
 
             public static readonly UcCharSet[] NRCFrenchCanadian = // French Canadian National Replacement
-			{
-				new UcCharSet(0x40, 0x00E0), // a with grav accent
-				new UcCharSet(0x5B, 0x00E2), // a with circumflex
-				new UcCharSet(0x5C, 0x00E7), // little cedila
-				new UcCharSet(0x5D, 0x00EA), // e with circumflex
-				new UcCharSet(0x5E, 0x00CE), // i with circumflex
-				new UcCharSet(0x60, 0x00F4), // o with circumflex
-				new UcCharSet(0x7B, 0x00E9), // e with accute accent
-				new UcCharSet(0x7C, 0x00F9), // u with grav accent
-				new UcCharSet(0x7D, 0x00E8), // e with grav accent
-				new UcCharSet(0x7E, 0x00FB) // u with circumflex
-			};
+            {
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00E2), // a with circumflex
+                new UcCharSet(0x5C, 0x00E7), // little cedila
+                new UcCharSet(0x5D, 0x00EA), // e with circumflex
+                new UcCharSet(0x5E, 0x00CE), // i with circumflex
+                new UcCharSet(0x60, 0x00F4), // o with circumflex
+                new UcCharSet(0x7B, 0x00E9), // e with accute accent
+                new UcCharSet(0x7C, 0x00F9), // u with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00FB) // u with circumflex
+            };
 
             #endregion
 
             #region UcCharSet[] NRCGerman
 
             public static readonly UcCharSet[] NRCGerman = // German National Replacement
-			{
-				new UcCharSet(0x40, 0x00A7), // funny s
-				new UcCharSet(0x5B, 0x00C4), // A with diearesis
-				new UcCharSet(0x5C, 0x00D6), // O with diearesis
-				new UcCharSet(0x5D, 0x00DC), // U with diearesis
-				new UcCharSet(0x7B, 0x00E4), // a with diearesis
-				new UcCharSet(0x7C, 0x00F6), // o with diearesis
-				new UcCharSet(0x7D, 0x00FC), // u with diearesis
-				new UcCharSet(0x7E, 0x00DF) // funny B
-			};
+            {
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00DC), // U with diearesis
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00FC), // u with diearesis
+                new UcCharSet(0x7E, 0x00DF) // funny B
+            };
 
             #endregion
 
             #region UcCharSet[] NRCItalian
 
             public static readonly UcCharSet[] NRCItalian = // Italian National Replacement
-			{
-				new UcCharSet(0x23, 0x00A3), // pound sign
-				new UcCharSet(0x40, 0x00A7), // funny s
-				new UcCharSet(0x5B, 0x00B0), // Degree Symbol
-				new UcCharSet(0x5C, 0x00E7), // little cedilla
-				new UcCharSet(0x5D, 0x00E9), // e with accute accent
-				new UcCharSet(0x60, 0x00F9), // u with grav accent
-				new UcCharSet(0x7B, 0x00E0), // a with grav accent
-				new UcCharSet(0x7C, 0x00F2), // o with grav accent
-				new UcCharSet(0x7D, 0x00E8), // e with grav accent
-				new UcCharSet(0x7E, 0x00CC) // I with grav accent
-			};
+            {
+                new UcCharSet(0x23, 0x00A3), // pound sign
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00B0), // Degree Symbol
+                new UcCharSet(0x5C, 0x00E7), // little cedilla
+                new UcCharSet(0x5D, 0x00E9), // e with accute accent
+                new UcCharSet(0x60, 0x00F9), // u with grav accent
+                new UcCharSet(0x7B, 0x00E0), // a with grav accent
+                new UcCharSet(0x7C, 0x00F2), // o with grav accent
+                new UcCharSet(0x7D, 0x00E8), // e with grav accent
+                new UcCharSet(0x7E, 0x00CC) // I with grav accent
+            };
 
             #endregion
 
             #region UcCharSet[] NRCNorDanish
 
             public static readonly UcCharSet[] NRCNorDanish = // Norwegian Danish National Replacement
-			{
-				new UcCharSet(0x5B, 0x00C6), // AE ligature
-				new UcCharSet(0x5C, 0x00D8), // O with strikethough
-				new UcCharSet(0x5D, 0x00D8), // O with strikethough
-				new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
-				new UcCharSet(0x7B, 0x00E6), // ae ligature
-				new UcCharSet(0x7C, 0x00F8), // o with strikethough
-				new UcCharSet(0x7D, 0x00F8), // o with strikethough
-				new UcCharSet(0x7D, 0x00E5) // a with hollow dot above
-			};
+            {
+                new UcCharSet(0x5B, 0x00C6), // AE ligature
+                new UcCharSet(0x5C, 0x00D8), // O with strikethough
+                new UcCharSet(0x5D, 0x00D8), // O with strikethough
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x7B, 0x00E6), // ae ligature
+                new UcCharSet(0x7C, 0x00F8), // o with strikethough
+                new UcCharSet(0x7D, 0x00F8), // o with strikethough
+                new UcCharSet(0x7D, 0x00E5) // a with hollow dot above
+            };
 
             #endregion
 
             #region UcCharSet[] NRCPortuguese
 
             public static readonly UcCharSet[] NRCPortuguese = // Portuguese National Replacement
-			{
-				new UcCharSet(0x5B, 0x00C3), // A with tilde
-				new UcCharSet(0x5C, 0x00C7), // big cedilla
-				new UcCharSet(0x5D, 0x00D5), // O with tilde
-				new UcCharSet(0x7B, 0x00E3), // a with tilde
-				new UcCharSet(0x7C, 0x00E7), // little cedilla
-				new UcCharSet(0x7D, 0x00F6) // o with tilde
-			};
+            {
+                new UcCharSet(0x5B, 0x00C3), // A with tilde
+                new UcCharSet(0x5C, 0x00C7), // big cedilla
+                new UcCharSet(0x5D, 0x00D5), // O with tilde
+                new UcCharSet(0x7B, 0x00E3), // a with tilde
+                new UcCharSet(0x7C, 0x00E7), // little cedilla
+                new UcCharSet(0x7D, 0x00F6) // o with tilde
+            };
 
             #endregion
 
             #region UcCharSet[] NRCSpanish
 
             public static readonly UcCharSet[] NRCSpanish = // Spanish National Replacement
-			{
-				new UcCharSet(0x23, 0x00A3), // pound sign
-				new UcCharSet(0x40, 0x00A7), // funny s
-				new UcCharSet(0x5B, 0x00A1), // I with dot
-				new UcCharSet(0x5C, 0x00D1), // N with tilde
-				new UcCharSet(0x5D, 0x00BF), // Upside down question mark
-				new UcCharSet(0x7B, 0x0060), // back single quote
-				new UcCharSet(0x7C, 0x00B0), // Degree Symbol
-				new UcCharSet(0x7D, 0x00F1), // n with tilde
-				new UcCharSet(0x7E, 0x00E7) // small cedilla
-			};
+            {
+                new UcCharSet(0x23, 0x00A3), // pound sign
+                new UcCharSet(0x40, 0x00A7), // funny s
+                new UcCharSet(0x5B, 0x00A1), // I with dot
+                new UcCharSet(0x5C, 0x00D1), // N with tilde
+                new UcCharSet(0x5D, 0x00BF), // Upside down question mark
+                new UcCharSet(0x7B, 0x0060), // back single quote
+                new UcCharSet(0x7C, 0x00B0), // Degree Symbol
+                new UcCharSet(0x7D, 0x00F1), // n with tilde
+                new UcCharSet(0x7E, 0x00E7) // small cedilla
+            };
 
             #endregion
 
             #region UcCharSet[] NRCSwedish
 
             public static readonly UcCharSet[] NRCSwedish = // Swedish National Replacement
-			{
-				new UcCharSet(0x40, 0x00C9), // E with acute
-				new UcCharSet(0x5B, 0x00C4), // A with diearesis
-				new UcCharSet(0x5C, 0x00D6), // O with diearesis
-				new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
-				new UcCharSet(0x5E, 0x00DC), // U with diearesis
-				new UcCharSet(0x60, 0x00E9), // e with accute accent
-				new UcCharSet(0x7B, 0x00E4), // a with diearesis
-				new UcCharSet(0x7C, 0x00F6), // o with diearesis
-				new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
-				new UcCharSet(0x7E, 0x00FC) // u with diearesis
-			};
+            {
+                new UcCharSet(0x40, 0x00C9), // E with acute
+                new UcCharSet(0x5B, 0x00C4), // A with diearesis
+                new UcCharSet(0x5C, 0x00D6), // O with diearesis
+                new UcCharSet(0x5D, 0x00C5), // A with hollow dot above
+                new UcCharSet(0x5E, 0x00DC), // U with diearesis
+                new UcCharSet(0x60, 0x00E9), // e with accute accent
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00E5), // a with hollow dot above
+                new UcCharSet(0x7E, 0x00FC) // u with diearesis
+            };
 
             #endregion
 
             #region UcCharSet[] NRCSwiss
 
             public static readonly UcCharSet[] NRCSwiss = // Swiss National Replacement
-			{
-				new UcCharSet(0x23, 0x00F9), // u with grav accent
-				new UcCharSet(0x40, 0x00E0), // a with grav accent
-				new UcCharSet(0x5B, 0x00E9), // e with accute accent
-				new UcCharSet(0x5C, 0x00E7), // small cedilla
-				new UcCharSet(0x5D, 0x00EA), // e with circumflex
-				new UcCharSet(0x5E, 0x00CE), // i with circumflex
-				new UcCharSet(0x5F, 0x00E8), // e with grav accent
-				new UcCharSet(0x60, 0x00F4), // o with circumflex
-				new UcCharSet(0x7B, 0x00E4), // a with diearesis
-				new UcCharSet(0x7C, 0x00F6), // o with diearesis
-				new UcCharSet(0x7D, 0x00FC), // u with diearesis
-				new UcCharSet(0x7E, 0x00FB) // u with circumflex
-			};
+            {
+                new UcCharSet(0x23, 0x00F9), // u with grav accent
+                new UcCharSet(0x40, 0x00E0), // a with grav accent
+                new UcCharSet(0x5B, 0x00E9), // e with accute accent
+                new UcCharSet(0x5C, 0x00E7), // small cedilla
+                new UcCharSet(0x5D, 0x00EA), // e with circumflex
+                new UcCharSet(0x5E, 0x00CE), // i with circumflex
+                new UcCharSet(0x5F, 0x00E8), // e with grav accent
+                new UcCharSet(0x60, 0x00F4), // o with circumflex
+                new UcCharSet(0x7B, 0x00E4), // a with diearesis
+                new UcCharSet(0x7C, 0x00F6), // o with diearesis
+                new UcCharSet(0x7D, 0x00FC), // u with diearesis
+                new UcCharSet(0x7E, 0x00FB) // u with circumflex
+            };
 
             #endregion
 
             #region  UcCharSet
 
             public static readonly UcCharSet[] ISOLatin1S = // Same as Latin-1 Supplemental
-			{
-				new UcCharSet(0x00, 0x0000) //
-			};
+            {
+                new UcCharSet(0x00, 0x0000) //
+            };
 
             #endregion
 
@@ -3421,7 +3413,7 @@ namespace PacketComs
 
             #region Char
 
-            public static Char Get(Char curChar, Sets gl, Sets gr)
+            public static char Get(char curChar, Sets gl, Sets gr)
             {
                 UcCharSet[] curSet;
 
@@ -3526,12 +3518,12 @@ namespace PacketComs
 
             public struct UcCharSet
             {
-                public readonly Int32 Location;
-                public readonly Int16 UnicodeNo;
+                public readonly int Location;
+                public readonly short UnicodeNo;
 
                 #region UcCharSet
 
-                public UcCharSet(Int32 p1, Int16 p2)
+                public UcCharSet(int p1, short p2)
                 {
                     Location = p1;
                     UnicodeNo = p2;
@@ -3551,8 +3543,8 @@ namespace PacketComs
         {
             public Bitmap Bitmap;
             public Graphics Buffer;
-            public Boolean EOL;
-            public Boolean IsOff;
+            public bool EOL;
+            public bool IsOff;
             public Point Pos;
 
             #region UcCaret
@@ -3591,21 +3583,21 @@ namespace PacketComs
 
         private class UcMode
         {
-            public static readonly UInt32 Locked = 1; // Unlocked           = off 
-            public static UInt32 BackSpace = 2; // Delete             = off 
-            public static UInt32 NewLine = 4; // Line Feed          = off 
-            public static readonly UInt32 Repeat = 8; // No Repeat          = off 
-            public static readonly UInt32 AutoWrap = 16; // No AutoWrap        = off 
-            public static readonly UInt32 CursorAppln = 32; // Std Cursor Codes   = off 
-            public static readonly UInt32 KeypadAppln = 64; // Std Numeric Codes  = off 
-            public static UInt32 DataProcessing = 128; // Typewriter         = off 
-            public static UInt32 PositionReports = 256; // CharacterCodes     = off
-            public static readonly UInt32 LocalEchoOff = 512; // LocalEchoOn        = off
-            public static readonly UInt32 OriginRelative = 1024; // OriginAbsolute     = off
-            public static readonly UInt32 LightBackground = 2048; // DarkBackground     = off
-            public static readonly UInt32 National = 4096; // Multinational      = off
-            public static readonly UInt32 Any = 0x80000000; // Any Flags
-            public UInt32 Flags;
+            public static readonly uint Locked = 1; // Unlocked           = off 
+            public static uint BackSpace = 2; // Delete             = off 
+            public static uint NewLine = 4; // Line Feed          = off 
+            public static readonly uint Repeat = 8; // No Repeat          = off 
+            public static readonly uint AutoWrap = 16; // No AutoWrap        = off 
+            public static readonly uint CursorAppln = 32; // Std Cursor Codes   = off 
+            public static readonly uint KeypadAppln = 64; // Std Numeric Codes  = off 
+            public static uint DataProcessing = 128; // Typewriter         = off 
+            public static uint PositionReports = 256; // CharacterCodes     = off
+            public static readonly uint LocalEchoOff = 512; // LocalEchoOn        = off
+            public static readonly uint OriginRelative = 1024; // OriginAbsolute     = off
+            public static readonly uint LightBackground = 2048; // DarkBackground     = off
+            public static readonly uint National = 4096; // Multinational      = off
+            public static readonly uint Any = 0x80000000; // Any Flags
+            public uint Flags;
 
             #region UcMode
 
@@ -3623,12 +3615,12 @@ namespace PacketComs
 
         private class UcKeyboard
         {
-            private bool _altIsDown;
-            private bool _ctrlIsDown;
-            private Boolean _lastKeyDownSent; // next WM_CHAR ignored if true 
-            private bool _shiftIsDown;
             private readonly UcKeyMap _keyMap = new UcKeyMap();
             private readonly TerminalEmulator _parent;
+            private bool _altIsDown;
+            private bool _ctrlIsDown;
+            private bool _lastKeyDownSent; // next WM_CHAR ignored if true 
+            private bool _shiftIsDown;
 
             #region UcKeyboard
 
@@ -3645,12 +3637,12 @@ namespace PacketComs
 
             public void KeyDown(Message keyMess)
             {
-                Byte[] lBytes;
-                Byte[] wBytes;
-                UInt16 keyValue = 0;
-                Byte scanCode = 0;
-                Byte AnsiChar = 0;
-                Byte flags = 0;
+                byte[] lBytes;
+                byte[] wBytes;
+                ushort keyValue = 0;
+                byte scanCode = 0;
+                byte AnsiChar = 0;
+                byte flags = 0;
 
                 lBytes = BitConverter.GetBytes(keyMess.LParam.ToInt32());
                 wBytes = BitConverter.GetBytes(keyMess.WParam.ToInt32());
@@ -3701,7 +3693,8 @@ namespace PacketComs
                         modifier = "Alt";
                     }
 
-                    var outString = _keyMap.Find(scanCode, Convert.ToBoolean(flags & 0x01), modifier, _parent._modes.Flags);
+                    var outString = _keyMap.Find(scanCode, Convert.ToBoolean(flags & 0x01), modifier,
+                        _parent._modes.Flags);
 
                     _lastKeyDownSent = false;
 
@@ -3739,13 +3732,13 @@ namespace PacketComs
                             break;
 
                         default:
+                        {
+                            if (_parent.LocalEcho && keyValue == 13)
                             {
-                                if (_parent.LocalEcho && keyValue == 13)
-                                {
-                                    _parent.RxdTextEvent(Environment.NewLine);
-                                    _parent.Refresh();
-                                }
+                                _parent.RxdTextEvent(Environment.NewLine);
+                                _parent.Refresh();
                             }
+                        }
                             break;
                     }
                 }
@@ -3766,7 +3759,8 @@ namespace PacketComs
                         {
                             if (_parent.LocalEcho)
                             {
-                                _parent.RxdTextEvent(Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
+                                _parent.RxdTextEvent(
+                                    Convert.ToString(Convert.ToChar(AnsiChar).ToString(CultureInfo.InvariantCulture)));
                                 _parent.Refresh();
                             }
                         }
@@ -3780,16 +3774,16 @@ namespace PacketComs
 
             private class UcKeyInfo
             {
-                public readonly Boolean ExtendFlag;
-                public readonly UInt32 Flag;
-                public readonly UInt32 FlagValue;
-                public readonly String Modifier;
-                public readonly String OutString;
-                public readonly UInt16 ScanCode;
+                public readonly bool ExtendFlag;
+                public readonly uint Flag;
+                public readonly uint FlagValue;
+                public readonly string Modifier;
+                public readonly string OutString;
+                public readonly ushort ScanCode;
 
                 #region UcKeyInfo
 
-                public UcKeyInfo(UInt16 p1, Boolean p2, String p3, String p4, UInt32 p5, UInt32 p6)
+                public UcKeyInfo(ushort p1, bool p2, string p3, string p4, uint p5, uint p6)
                 {
                     ScanCode = p1;
                     ExtendFlag = p2;
@@ -3917,12 +3911,12 @@ namespace PacketComs
 
                 #region Find
 
-                public String Find(UInt16 scanCode, Boolean extendFlag, String modifier, UInt32 modeFlags)
+                public string Find(ushort scanCode, bool extendFlag, string modifier, uint modeFlags)
                 {
                     var outString = "";
                     for (var i = 0; i < Elements.Count; i++)
                     {
-                        var element = (UcKeyInfo)Elements[i];
+                        var element = (UcKeyInfo) Elements[i];
 
                         if (element.ScanCode == scanCode &&
                             element.ExtendFlag == extendFlag &&
@@ -3965,7 +3959,7 @@ namespace PacketComs
         {
             public readonly ArrayList Elements = new ArrayList();
 
-            public Int32 Count()
+            public int Count()
             {
                 return Elements.Count;
             }
@@ -3975,7 +3969,7 @@ namespace PacketComs
                 Elements.Clear();
             }
 
-            public void Add(Char curChar)
+            public void Add(char curChar)
             {
                 if (Count() < 1)
                 {
@@ -4000,13 +3994,13 @@ namespace PacketComs
 
         private class UcParser
         {
-            private Char _curChar = '\0';
-            private String _curSequence = "";
-            private ArrayList _paramList = new ArrayList();
-            private States _state = States.Ground;
             private readonly UcCharEvents _charEvents = new UcCharEvents();
             private readonly UcParams _curParams = new UcParams();
             private readonly UcStateChangeEvents _stateChangeEvents = new UcStateChangeEvents();
+            private char _curChar = '\0';
+            private string _curSequence = "";
+            private ArrayList _paramList = new ArrayList();
+            private States _state = States.Ground;
             public event ParserEventHandler ParserEvent;
             // Every character received is treated as an event which could change the state of
             // the parser. The following section finds out which event or state change this character
@@ -4017,7 +4011,7 @@ namespace PacketComs
 
             #region ParseString
 
-            public void ParseString(String inString)
+            public void ParseString(string inString)
             {
                 var nextState = States.None;
                 var nextAction = Actions.None;
@@ -4156,16 +4150,16 @@ namespace PacketComs
 
             private struct UcCharEventInfo
             {
-                public readonly Char CharFrom;
-                public readonly Char CharTo;
+                public readonly char CharFrom;
+                public readonly char CharTo;
                 public readonly States CurState;
                 public readonly Actions NextAction;
                 public readonly States NextState; // the next state we are going to 
 
                 public UcCharEventInfo(
                     States p1,
-                    Char p2,
-                    Char p3,
+                    char p2,
+                    char p3,
                     Actions p4,
                     States p5)
                 {
@@ -4186,107 +4180,107 @@ namespace PacketComs
                 #region UcCharEventInfo
 
                 public static readonly UcCharEventInfo[] Elements =
-				{
-					new UcCharEventInfo(States.Anywhere, '\x1B', '\x1B', Actions.NewCollect, States.Escape),
-					new UcCharEventInfo(States.Anywhere, '\x18', '\x18', Actions.Execute, States.Ground),
-					new UcCharEventInfo(States.Anywhere, '\x1A', '\x1A', Actions.Execute, States.Ground),
-					new UcCharEventInfo(States.Anywhere, '\x1A', '\x1A', Actions.Execute, States.Ground),
-					new UcCharEventInfo(States.Anywhere, '\x80', '\x8F', Actions.Execute, States.Ground),
-					new UcCharEventInfo(States.Anywhere, '\x91', '\x97', Actions.Execute, States.Ground),
-					new UcCharEventInfo(States.Anywhere, '\x99', '\x99', Actions.Execute, States.Ground),
-					new UcCharEventInfo(States.Anywhere, '\x9A', '\x9A', Actions.Execute, States.Ground),
-					new UcCharEventInfo(States.Anywhere, '\x9C', '\x9C', Actions.Execute, States.Ground),
-					new UcCharEventInfo(States.Anywhere, '\x98', '\x98', Actions.None, States.SosPmApcString),
-					new UcCharEventInfo(States.Anywhere, '\x9E', '\x9F', Actions.None, States.SosPmApcString),
-					new UcCharEventInfo(States.Anywhere, '\x90', '\x90', Actions.NewCollect, States.DcsEntry),
-					new UcCharEventInfo(States.Anywhere, '\x9D', '\x9D', Actions.None, States.OscString),
-					new UcCharEventInfo(States.Anywhere, '\x9B', '\x9B', Actions.NewCollect, States.CsiEntry),
-					new UcCharEventInfo(States.Ground, '\x00', '\x17', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Ground, '\x00', '\x17', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Ground, '\x19', '\x19', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Ground, '\x1C', '\x1F', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Ground, '\x20', '\x7F', Actions.Print, States.None),
-					new UcCharEventInfo(States.Ground, '\x80', '\x8F', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Ground, '\x91', '\x9A', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Ground, '\x9C', '\x9C', Actions.Execute, States.None),
-					new UcCharEventInfo(States.EscapeIntrmdt, '\x00', '\x17', Actions.Execute, States.None),
-					new UcCharEventInfo(States.EscapeIntrmdt, '\x19', '\x19', Actions.Execute, States.None),
-					new UcCharEventInfo(States.EscapeIntrmdt, '\x1C', '\x1F', Actions.Execute, States.None),
-					new UcCharEventInfo(States.EscapeIntrmdt, '\x20', '\x2F', Actions.Collect, States.None),
-					new UcCharEventInfo(States.EscapeIntrmdt, '\x30', '\x7E', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.Escape, '\x00', '\x17', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Escape, '\x19', '\x19', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Escape, '\x1C', '\x1F', Actions.Execute, States.None),
-					new UcCharEventInfo(States.Escape, '\x58', '\x58', Actions.None, States.SosPmApcString),
-					new UcCharEventInfo(States.Escape, '\x5E', '\x5F', Actions.None, States.SosPmApcString),
-					new UcCharEventInfo(States.Escape, '\x50', '\x50', Actions.Collect, States.DcsEntry),
-					new UcCharEventInfo(States.Escape, '\x5D', '\x5D', Actions.None, States.OscString),
-					new UcCharEventInfo(States.Escape, '\x5B', '\x5B', Actions.Collect, States.CsiEntry),
-					new UcCharEventInfo(States.Escape, '\x30', '\x4F', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.Escape, '\x51', '\x57', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.Escape, '\x59', '\x5A', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.Escape, '\x5C', '\x5C', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.Escape, '\x60', '\x7E', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.Escape, '\x20', '\x2F', Actions.Collect, States.EscapeIntrmdt),
-					new UcCharEventInfo(States.CsiEntry, '\x00', '\x17', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiEntry, '\x19', '\x19', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiEntry, '\x1C', '\x1F', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiEntry, '\x20', '\x2F', Actions.Collect, States.CsiIntrmdt),
-					new UcCharEventInfo(States.CsiEntry, '\x3A', '\x3A', Actions.None, States.CsiIgnore),
-					new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
-					new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
-					new UcCharEventInfo(States.CsiEntry, '\x30', '\x39', Actions.Param, States.CsiParam),
-					new UcCharEventInfo(States.CsiEntry, '\x3B', '\x3B', Actions.Param, States.CsiParam),
-					new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
-					new UcCharEventInfo(States.CsiEntry, '\x40', '\x7E', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.CsiParam, '\x00', '\x17', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiParam, '\x19', '\x19', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiParam, '\x1C', '\x1F', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiParam, '\x30', '\x39', Actions.Param, States.None),
-					new UcCharEventInfo(States.CsiParam, '\x3B', '\x3B', Actions.Param, States.None),
-					new UcCharEventInfo(States.CsiParam, '\x3A', '\x3A', Actions.None, States.CsiIgnore),
-					new UcCharEventInfo(States.CsiParam, '\x3C', '\x3F', Actions.None, States.CsiIgnore),
-					new UcCharEventInfo(States.CsiParam, '\x20', '\x2F', Actions.Collect, States.CsiIntrmdt),
-					new UcCharEventInfo(States.CsiParam, '\x40', '\x7E', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.CsiIgnore, '\x00', '\x17', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiIgnore, '\x19', '\x19', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiIgnore, '\x1C', '\x1F', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiIgnore, '\x40', '\x7E', Actions.None, States.Ground),
-					new UcCharEventInfo(States.CsiIntrmdt, '\x00', '\x17', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiIntrmdt, '\x19', '\x19', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiIntrmdt, '\x1C', '\x1F', Actions.Execute, States.None),
-					new UcCharEventInfo(States.CsiIntrmdt, '\x20', '\x2F', Actions.Collect, States.None),
-					new UcCharEventInfo(States.CsiIntrmdt, '\x30', '\x3F', Actions.None, States.CsiIgnore),
-					new UcCharEventInfo(States.CsiIntrmdt, '\x40', '\x7E', Actions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.SosPmApcString, '\x9C', '\x9C', Actions.None, States.Ground),
-					new UcCharEventInfo(States.DcsEntry, '\x20', '\x2F', Actions.Collect, States.DcsIntrmdt),
-					new UcCharEventInfo(States.DcsEntry, '\x3A', '\x3A', Actions.None, States.DcsIgnore),
-					new UcCharEventInfo(States.DcsEntry, '\x30', '\x39', Actions.Param, States.DcsParam),
-					new UcCharEventInfo(States.DcsEntry, '\x3B', '\x3B', Actions.Param, States.DcsParam),
-					new UcCharEventInfo(States.DcsEntry, '\x3C', '\x3F', Actions.Collect, States.DcsParam),
-					new UcCharEventInfo(States.DcsEntry, '\x40', '\x7E', Actions.None, States.DcsPassthrough),
-					new UcCharEventInfo(States.DcsIntrmdt, '\x30', '\x3F', Actions.None, States.DcsIgnore),
-					new UcCharEventInfo(States.DcsIntrmdt, '\x40', '\x7E', Actions.None, States.DcsPassthrough),
-					new UcCharEventInfo(States.DcsIgnore, '\x9C', '\x9C', Actions.None, States.Ground),
-					new UcCharEventInfo(States.DcsParam, '\x30', '\x39', Actions.Param, States.None),
-					new UcCharEventInfo(States.DcsParam, '\x3B', '\x3B', Actions.Param, States.None),
-					new UcCharEventInfo(States.DcsParam, '\x20', '\x2F', Actions.Collect, States.DcsIntrmdt),
-					new UcCharEventInfo(States.DcsParam, '\x3A', '\x3A', Actions.None, States.DcsIgnore),
-					new UcCharEventInfo(States.DcsParam, '\x3C', '\x3F', Actions.None, States.DcsIgnore),
-					new UcCharEventInfo(States.DcsPassthrough, '\x00', '\x17', Actions.Put, States.None),
-					new UcCharEventInfo(States.DcsPassthrough, '\x19', '\x19', Actions.Put, States.None),
-					new UcCharEventInfo(States.DcsPassthrough, '\x1C', '\x1F', Actions.Put, States.None),
-					new UcCharEventInfo(States.DcsPassthrough, '\x20', '\x7E', Actions.Put, States.None),
-					new UcCharEventInfo(States.DcsPassthrough, '\x9C', '\x9C', Actions.None, States.Ground),
-					new UcCharEventInfo(States.OscString, '\x20', '\x7F', Actions.OscPut, States.None),
-					new UcCharEventInfo(States.OscString, '\x9C', '\x9C', Actions.None, States.Ground)
-				};
+                {
+                    new UcCharEventInfo(States.Anywhere, '\x1B', '\x1B', Actions.NewCollect, States.Escape),
+                    new UcCharEventInfo(States.Anywhere, '\x18', '\x18', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x1A', '\x1A', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x1A', '\x1A', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x80', '\x8F', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x91', '\x97', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x99', '\x99', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x9A', '\x9A', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x9C', '\x9C', Actions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Anywhere, '\x98', '\x98', Actions.None, States.SosPmApcString),
+                    new UcCharEventInfo(States.Anywhere, '\x9E', '\x9F', Actions.None, States.SosPmApcString),
+                    new UcCharEventInfo(States.Anywhere, '\x90', '\x90', Actions.NewCollect, States.DcsEntry),
+                    new UcCharEventInfo(States.Anywhere, '\x9D', '\x9D', Actions.None, States.OscString),
+                    new UcCharEventInfo(States.Anywhere, '\x9B', '\x9B', Actions.NewCollect, States.CsiEntry),
+                    new UcCharEventInfo(States.Ground, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x20', '\x7F', Actions.Print, States.None),
+                    new UcCharEventInfo(States.Ground, '\x80', '\x8F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x91', '\x9A', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Ground, '\x9C', '\x9C', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x20', '\x2F', Actions.Collect, States.None),
+                    new UcCharEventInfo(States.EscapeIntrmdt, '\x30', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Escape, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Escape, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.Escape, '\x58', '\x58', Actions.None, States.SosPmApcString),
+                    new UcCharEventInfo(States.Escape, '\x5E', '\x5F', Actions.None, States.SosPmApcString),
+                    new UcCharEventInfo(States.Escape, '\x50', '\x50', Actions.Collect, States.DcsEntry),
+                    new UcCharEventInfo(States.Escape, '\x5D', '\x5D', Actions.None, States.OscString),
+                    new UcCharEventInfo(States.Escape, '\x5B', '\x5B', Actions.Collect, States.CsiEntry),
+                    new UcCharEventInfo(States.Escape, '\x30', '\x4F', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x51', '\x57', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x59', '\x5A', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x5C', '\x5C', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x60', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.Escape, '\x20', '\x2F', Actions.Collect, States.EscapeIntrmdt),
+                    new UcCharEventInfo(States.CsiEntry, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiEntry, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiEntry, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiEntry, '\x20', '\x2F', Actions.Collect, States.CsiIntrmdt),
+                    new UcCharEventInfo(States.CsiEntry, '\x3A', '\x3A', Actions.None, States.CsiIgnore),
+                    new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x30', '\x39', Actions.Param, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x3B', '\x3B', Actions.Param, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x3C', '\x3F', Actions.Collect, States.CsiParam),
+                    new UcCharEventInfo(States.CsiEntry, '\x40', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.CsiParam, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x30', '\x39', Actions.Param, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x3B', '\x3B', Actions.Param, States.None),
+                    new UcCharEventInfo(States.CsiParam, '\x3A', '\x3A', Actions.None, States.CsiIgnore),
+                    new UcCharEventInfo(States.CsiParam, '\x3C', '\x3F', Actions.None, States.CsiIgnore),
+                    new UcCharEventInfo(States.CsiParam, '\x20', '\x2F', Actions.Collect, States.CsiIntrmdt),
+                    new UcCharEventInfo(States.CsiParam, '\x40', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.CsiIgnore, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIgnore, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIgnore, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIgnore, '\x40', '\x7E', Actions.None, States.Ground),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x00', '\x17', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x19', '\x19', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x1C', '\x1F', Actions.Execute, States.None),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x20', '\x2F', Actions.Collect, States.None),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x30', '\x3F', Actions.None, States.CsiIgnore),
+                    new UcCharEventInfo(States.CsiIntrmdt, '\x40', '\x7E', Actions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.SosPmApcString, '\x9C', '\x9C', Actions.None, States.Ground),
+                    new UcCharEventInfo(States.DcsEntry, '\x20', '\x2F', Actions.Collect, States.DcsIntrmdt),
+                    new UcCharEventInfo(States.DcsEntry, '\x3A', '\x3A', Actions.None, States.DcsIgnore),
+                    new UcCharEventInfo(States.DcsEntry, '\x30', '\x39', Actions.Param, States.DcsParam),
+                    new UcCharEventInfo(States.DcsEntry, '\x3B', '\x3B', Actions.Param, States.DcsParam),
+                    new UcCharEventInfo(States.DcsEntry, '\x3C', '\x3F', Actions.Collect, States.DcsParam),
+                    new UcCharEventInfo(States.DcsEntry, '\x40', '\x7E', Actions.None, States.DcsPassthrough),
+                    new UcCharEventInfo(States.DcsIntrmdt, '\x30', '\x3F', Actions.None, States.DcsIgnore),
+                    new UcCharEventInfo(States.DcsIntrmdt, '\x40', '\x7E', Actions.None, States.DcsPassthrough),
+                    new UcCharEventInfo(States.DcsIgnore, '\x9C', '\x9C', Actions.None, States.Ground),
+                    new UcCharEventInfo(States.DcsParam, '\x30', '\x39', Actions.Param, States.None),
+                    new UcCharEventInfo(States.DcsParam, '\x3B', '\x3B', Actions.Param, States.None),
+                    new UcCharEventInfo(States.DcsParam, '\x20', '\x2F', Actions.Collect, States.DcsIntrmdt),
+                    new UcCharEventInfo(States.DcsParam, '\x3A', '\x3A', Actions.None, States.DcsIgnore),
+                    new UcCharEventInfo(States.DcsParam, '\x3C', '\x3F', Actions.None, States.DcsIgnore),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x00', '\x17', Actions.Put, States.None),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x19', '\x19', Actions.Put, States.None),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x1C', '\x1F', Actions.Put, States.None),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x20', '\x7E', Actions.Put, States.None),
+                    new UcCharEventInfo(States.DcsPassthrough, '\x9C', '\x9C', Actions.None, States.Ground),
+                    new UcCharEventInfo(States.OscString, '\x20', '\x7F', Actions.OscPut, States.None),
+                    new UcCharEventInfo(States.OscString, '\x9C', '\x9C', Actions.None, States.Ground)
+                };
 
                 #endregion
 
                 #region GetStateEventAction
 
-                public Boolean GetStateEventAction(States curState, Char curChar, ref States nextState,
+                public bool GetStateEventAction(States curState, char curChar, ref States nextState,
                     ref Actions nextAction)
                 {
                     UcCharEventInfo Element;
@@ -4330,18 +4324,18 @@ namespace PacketComs
                 #region  uc_CharEventInfo
 
                 private readonly UcStateChangeInfo[] _elements =
-				{
-					new UcStateChangeInfo(States.OscString, Transitions.Entry, Actions.OscStart),
-					new UcStateChangeInfo(States.OscString, Transitions.Exit, Actions.OscEnd),
-					new UcStateChangeInfo(States.DcsPassthrough, Transitions.Entry, Actions.Hook),
-					new UcStateChangeInfo(States.DcsPassthrough, Transitions.Exit, Actions.Unhook)
-				};
+                {
+                    new UcStateChangeInfo(States.OscString, Transitions.Entry, Actions.OscStart),
+                    new UcStateChangeInfo(States.OscString, Transitions.Exit, Actions.OscEnd),
+                    new UcStateChangeInfo(States.DcsPassthrough, Transitions.Entry, Actions.Hook),
+                    new UcStateChangeInfo(States.DcsPassthrough, Transitions.Exit, Actions.Unhook)
+                };
 
                 #endregion
 
                 #region GetStateChangeAction
 
-                public Boolean GetStateChangeAction(States state, Transitions transition, ref Actions nextAction)
+                public bool GetStateChangeAction(States state, Transitions transition, ref Actions nextAction)
                 {
                     UcStateChangeInfo Element;
 
@@ -4393,18 +4387,18 @@ namespace PacketComs
 
         private class UcTelnetParser
         {
-            private Char _curChar = '\0';
-            private String _curSequence = "";
-            private ArrayList _paramList = new ArrayList();
-            private States _state = States.Ground;
             private readonly UcCharEvents _charEvents = new UcCharEvents();
             private readonly UcParams _curParams = new UcParams();
             private readonly UcStateChangeEvents _stateChangeEvents = new UcStateChangeEvents();
+            private char _curChar = '\0';
+            private string _curSequence = "";
+            private ArrayList _paramList = new ArrayList();
+            private States _state = States.Ground;
             public event NvtParserEventHandler NvtParserEvent;
 
             #region ParseString
 
-            public void ParseString(String inString)
+            public void ParseString(string inString)
             {
                 var nextState = States.None;
                 var nextAction = NvtActions.None;
@@ -4539,15 +4533,15 @@ namespace PacketComs
 
             private struct UcCharEventInfo
             {
-                public readonly Char CharFrom;
-                public readonly Char CharTo;
+                public readonly char CharFrom;
+                public readonly char CharTo;
                 public readonly States CurState;
                 public readonly NvtActions NextAction;
                 public readonly States NextState; // the next state we are going to 
 
                 #region UcCharEventInfo
 
-                public UcCharEventInfo(States p1, Char p2, Char p3, NvtActions p4, States p5)
+                public UcCharEventInfo(States p1, char p2, char p3, NvtActions p4, States p5)
                 {
                     CurState = p1;
                     CharFrom = p2;
@@ -4568,35 +4562,36 @@ namespace PacketComs
                 #region UcCharEventInfo
 
                 public static readonly UcCharEventInfo[] Elements =
-				{
-					new UcCharEventInfo(States.Ground, (char) 000, (char) 254, NvtActions.SendUp, States.None),
-					new UcCharEventInfo(States.Ground, (char) 255, (char) 255, NvtActions.None, States.Command),
-					new UcCharEventInfo(States.Command, (char) 000, (char) 239, NvtActions.SendUp, States.Ground),
-					new UcCharEventInfo(States.Command, (char) 240, (char) 241, NvtActions.None, States.Ground),
-					new UcCharEventInfo(States.Command, (char) 242, (char) 249, NvtActions.Execute, States.Ground),
-					new UcCharEventInfo(States.Command, (char) 250, (char) 250, NvtActions.NewCollect,
-						States.SubNegotiate),
-					new UcCharEventInfo(States.Command, (char) 251, (char) 254, NvtActions.NewCollect, States.Negotiate),
-					new UcCharEventInfo(States.Command, (char) 255, (char) 255, NvtActions.SendUp, States.Ground),
-					new UcCharEventInfo(States.SubNegotiate, (char) 000, (char) 255, NvtActions.Collect,
-						States.SubNegValue),
-					new UcCharEventInfo(States.SubNegValue, (char) 000, (char) 001, NvtActions.Collect,
-						States.SubNegParam),
-					new UcCharEventInfo(States.SubNegValue, (char) 002, (char) 255, NvtActions.None, States.Ground),
-					new UcCharEventInfo(States.SubNegParam, (char) 000, (char) 254, NvtActions.Param, States.None),
-					new UcCharEventInfo(States.SubNegParam, (char) 255, (char) 255, NvtActions.None, States.SubNegEnd),
-					new UcCharEventInfo(States.SubNegEnd, (char) 000, (char) 239, NvtActions.None, States.Ground),
-					new UcCharEventInfo(States.SubNegEnd, (char) 240, (char) 240, NvtActions.Dispatch, States.Ground),
-					new UcCharEventInfo(States.SubNegEnd, (char) 241, (char) 254, NvtActions.None, States.Ground),
-					new UcCharEventInfo(States.SubNegEnd, (char) 255, (char) 255, NvtActions.Param, States.SubNegParam),
-					new UcCharEventInfo(States.Negotiate, (char) 000, (char) 255, NvtActions.Dispatch, States.Ground)
-				};
+                {
+                    new UcCharEventInfo(States.Ground, (char) 000, (char) 254, NvtActions.SendUp, States.None),
+                    new UcCharEventInfo(States.Ground, (char) 255, (char) 255, NvtActions.None, States.Command),
+                    new UcCharEventInfo(States.Command, (char) 000, (char) 239, NvtActions.SendUp, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 240, (char) 241, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 242, (char) 249, NvtActions.Execute, States.Ground),
+                    new UcCharEventInfo(States.Command, (char) 250, (char) 250, NvtActions.NewCollect,
+                        States.SubNegotiate),
+                    new UcCharEventInfo(States.Command, (char) 251, (char) 254, NvtActions.NewCollect, States.Negotiate),
+                    new UcCharEventInfo(States.Command, (char) 255, (char) 255, NvtActions.SendUp, States.Ground),
+                    new UcCharEventInfo(States.SubNegotiate, (char) 000, (char) 255, NvtActions.Collect,
+                        States.SubNegValue),
+                    new UcCharEventInfo(States.SubNegValue, (char) 000, (char) 001, NvtActions.Collect,
+                        States.SubNegParam),
+                    new UcCharEventInfo(States.SubNegValue, (char) 002, (char) 255, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegParam, (char) 000, (char) 254, NvtActions.Param, States.None),
+                    new UcCharEventInfo(States.SubNegParam, (char) 255, (char) 255, NvtActions.None, States.SubNegEnd),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 000, (char) 239, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 240, (char) 240, NvtActions.Dispatch, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 241, (char) 254, NvtActions.None, States.Ground),
+                    new UcCharEventInfo(States.SubNegEnd, (char) 255, (char) 255, NvtActions.Param, States.SubNegParam),
+                    new UcCharEventInfo(States.Negotiate, (char) 000, (char) 255, NvtActions.Dispatch, States.Ground)
+                };
 
                 #endregion
 
                 #region GetStateEventAction
 
-                public Boolean GetStateEventAction(States curState, Char curChar, ref States nextState, ref NvtActions nextAction)
+                public bool GetStateEventAction(States curState, char curChar, ref States nextState,
+                    ref NvtActions nextAction)
                 {
                     UcCharEventInfo Element;
 
@@ -4630,15 +4625,15 @@ namespace PacketComs
                 #region UcStateChangeInfo
 
                 private readonly UcStateChangeInfo[] _elements =
-				{
-					new UcStateChangeInfo(States.None, Transitions.None, NvtActions.None)
-				};
+                {
+                    new UcStateChangeInfo(States.None, Transitions.None, NvtActions.None)
+                };
 
                 #endregion
 
                 #region GetStateChangeAction
 
-                public Boolean GetStateChangeAction(States state, Transitions transition, ref NvtActions nextAction)
+                public bool GetStateChangeAction(States state, Transitions transition, ref NvtActions nextAction)
                 {
                     UcStateChangeInfo Element;
                     for (var i = 0; i < _elements.Length; i++)
@@ -4730,7 +4725,6 @@ namespace PacketComs
         }
 
 
-
         public int Columns
         {
             get { return _cols; }
@@ -4756,7 +4750,7 @@ namespace PacketComs
 
         public int Port { get; set; }
 
-        public Boolean Beep { get; set; }
+        public bool Beep { get; set; }
 
         public bool LocalEcho { get; set; }
 
@@ -4857,13 +4851,13 @@ namespace PacketComs
         private readonly StringCollection _scrollbackBuffer;
         private readonly int _scrollbackBufferSize;
         private readonly UcTabStops _tabStops;
-        private readonly String _typeFace = FontFamily.GenericMonospace.GetName(0);
+        private readonly string _typeFace = FontFamily.GenericMonospace.GetName(0);
         private readonly UcVertScrollBar _vertScrollBar;
-        private const Int32 TypeSize = 8;
+        private const int TypeSize = 8;
         private readonly FontStyle TypeStyle = FontStyle.Regular;
         private CharAttribStruct[][] _attribGrid;
         private Point _beginDrag; // used in Mouse Selecting Text
-        private Int32 _bottomMargin;
+        private int _bottomMargin;
         private string _cType;
         private string _msgstate;
         private int fstmsg;
@@ -4872,31 +4866,30 @@ namespace PacketComs
         private AsyncCallback _callbackEndDispatch;
         private AsyncCallback _callbackProc;
         private CharAttribStruct _charAttribs;
-        private Char[][] _charGrid;
+        private char[][] _charGrid;
         private Size _charSize;
-        private Int32 _cols;
-        private Int16 _count;
+        private int _cols;
+        private short _count;
         private Socket _curSocket;
         private string _dataFile = "";
         private Point _drawStringOffset;
         private Point _endDrag; // used in mouse selecting text
         private Bitmap _eraseBitmap;
         private Graphics _eraseBuffer;
-        private string _inputData = String.Empty;
+        private string _inputData = string.Empty;
         private int _lastVisibleLine; // used for scrolling
-        private String _outBuff = "";
-        private Int32 _rows;
+        private string _outBuff = "";
+        private int _rows;
         private string _textAtCursor; // used to store Cursortext while scrolling
-        private Int32 _topMargin;
-        private Int32 _underlinePos;
-        private Boolean _xoff;
-
+        private int _topMargin;
+        private int _underlinePos;
+        private bool _xoff;
 
         #endregion
 
         #region Delegates
 
-        private delegate void KeyboardEventHandler(object sender, String e);
+        private delegate void KeyboardEventHandler(object sender, string e);
 
         private delegate void NvtParserEventHandler(object sender, NvtParserEventArgs e);
 
@@ -4904,7 +4897,7 @@ namespace PacketComs
 
         private delegate void RefreshEventHandler();
 
-        private delegate void RxdTextEventHandler(String sReceived);
+        private delegate void RxdTextEventHandler(string sReceived);
 
         #endregion
 
@@ -4946,21 +4939,21 @@ namespace PacketComs
                 textAtCursor = textAtCursor + Convert.ToString(curChar);
             }
             // calculate new rows and columns
-            var columns = ClientSize.Width / _charSize.Width - 1;
-            var rows = ClientSize.Height / _charSize.Height;
+            var columns = ClientSize.Width/_charSize.Width - 1;
+            var rows = ClientSize.Height/_charSize.Height;
 
             // make sure at least 1 row and 1 col or Control will throw
             if (rows < 5)
             {
                 rows = 5;
-                Height = _charSize.Height * rows;
+                Height = _charSize.Height*rows;
             }
 
             // make sure at least 1 row and 1 col or Control will throw
             if (columns < 5)
             {
                 columns = 5;
-                Width = _charSize.Width * columns;
+                Width = _charSize.Width*columns;
             }
 
             // make sure the bottom of this doesn't exceed bottom of parent client area
@@ -5078,11 +5071,11 @@ namespace PacketComs
             _endDrag.X = curArgs.X;
             _endDrag.Y = curArgs.Y;
 
-            var endCol = _endDrag.X / _charSize.Width;
-            var endRow = _endDrag.Y / _charSize.Height;
+            var endCol = _endDrag.X/_charSize.Width;
+            var endRow = _endDrag.Y/_charSize.Height;
 
-            var begCol = _beginDrag.X / _charSize.Width;
-            var begRow = _beginDrag.Y / _charSize.Height;
+            var begCol = _beginDrag.X/_charSize.Width;
+            var begRow = _beginDrag.Y/_charSize.Height;
 
 
             // reset highlights
@@ -5217,14 +5210,14 @@ namespace PacketComs
         private struct ParserEventArgs
         {
             public readonly Actions Action;
-            public readonly Char CurChar;
+            public readonly char CurChar;
             public readonly UcParams CurParams;
-            public readonly String CurSequence;
+            public readonly string CurSequence;
 
             public ParserEventArgs(
                 Actions p1,
-                Char p2,
-                String p3,
+                char p2,
+                string p3,
                 UcParams p4)
             {
                 Action = p1;
@@ -5245,16 +5238,16 @@ namespace PacketComs
             public UcChars Gl;
             public UcChars GR;
             public UcChars Gs;
-            public Boolean IsAlternateFont;
-            public Boolean IsBlinking;
-            public Boolean IsBold;
-            public Boolean IsDECSG;
-            public Boolean IsDim;
-            public Boolean IsInverse;
-            public Boolean IsPrimaryFont;
-            public Boolean IsUnderscored;
-            public Boolean UseAltBGColor;
-            public Boolean UseAltColor;
+            public bool IsAlternateFont;
+            public bool IsBlinking;
+            public bool IsBold;
+            public bool IsDECSG;
+            public bool IsDim;
+            public bool IsInverse;
+            public bool IsPrimaryFont;
+            public bool IsUnderscored;
+            public bool UseAltBGColor;
+            public bool UseAltColor;
         }
 
         #endregion
@@ -5263,14 +5256,14 @@ namespace PacketComs
 
         private struct NvtParserEventArgs
         {
-            public UcParams CurParams;
             public readonly NvtActions Action;
-            public readonly Char CurChar;
-            public readonly String CurSequence;
+            public readonly char CurChar;
+            public readonly string CurSequence;
+            public UcParams CurParams;
 
             #region  NvtParserEventArgs
 
-            public NvtParserEventArgs(NvtActions p1, Char p2, String p3, UcParams p4)
+            public NvtParserEventArgs(NvtActions p1, char p2, string p3, UcParams p4)
             {
                 Action = p1;
                 CurChar = p2;
