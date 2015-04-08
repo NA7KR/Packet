@@ -56,8 +56,9 @@ namespace Packet
 
             string newfile = path + file + ".P01";
             var args = newfile + " -SAVE \"c:\\temp\\out\\\"";
+           // MessageBox.Show(newfile);
             Do_7plus(args);
-            MessageBox.Show("File: " + e.FullPath + " " + e.ChangeType);
+           // MessageBox.Show("File: " + e.FullPath + " " + e.ChangeType);
         }
 
         private static void OnRenamed(object source, RenamedEventArgs e)
