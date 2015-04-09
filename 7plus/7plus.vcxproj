@@ -70,6 +70,7 @@
       <CallingConvention>StdCall</CallingConvention>
       <CompileAs>CompileAsC</CompileAs>
       <EnablePREfast>false</EnablePREfast>
+      <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>

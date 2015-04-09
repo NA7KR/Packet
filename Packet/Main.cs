@@ -4,6 +4,8 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Windows.Forms;
 using PacketComs;
@@ -21,7 +23,6 @@ namespace Packet
     public partial class Main : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
-        private static readonly FileCheck FileCheck = new FileCheck();
         private static readonly Sql Sql = new Sql();
         private readonly ModifyRegistry _myRegistryKeep = new ModifyRegistry();
 
@@ -461,11 +462,8 @@ namespace Packet
 
         private void Disconnected(object sender, EventArgs e)
         {
-            button_check();
-            //Invoke((Action) delegate { toolStripButton_bbs.Enabled = true; });
-            //Invoke((Action) delegate { toolStripButton_cls.Enabled = true; });
-            //Invoke((Action) delegate { toolStripButton_Node.Enabled = true; });
-            //Invoke((Action) delegate { toolStripButton_Disconnect.Enabled = false; });
+            // maybe called from terminiat in other threrad
+            Invoke((Action) delegate { button_check(); });  
         }
 
         #endregion
@@ -918,6 +916,7 @@ namespace Packet
         {
             var path = Directory.GetCurrentDirectory() + @"\Data\7plus" + @"\";
             Thread.Sleep(1000);
+            FileCheck FileCheck = new FileCheck();
             FileCheck.CreateFileWatcher(path);
         }
         #endregion
@@ -926,10 +925,10 @@ namespace Packet
         private void StartThread()
         {
             // Initialize the object that the background worker calls.
-            FileCheck WC = new FileCheck();
+            FileCheck FileCheck = new FileCheck();
 
             // Start the asynchronous operation.
-            backgroundWorker1.RunWorkerAsync(WC);
+            backgroundWorker1.RunWorkerAsync(FileCheck);
         }
         #endregion 
 
