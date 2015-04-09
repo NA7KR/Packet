@@ -24,6 +24,7 @@ namespace Packet
         public void CreateFileWatcher(string path)
         {
             // Create a new FileSystemWatcher and set its properties.
+            
             FileSystemWatcher watcher = new FileSystemWatcher
             {
                 Path = path,

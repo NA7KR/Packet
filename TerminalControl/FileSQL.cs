@@ -7,6 +7,7 @@ using System.Data.Odbc;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Windows.Forms;
 
 #endregion
@@ -430,7 +431,7 @@ namespace PacketComs
                 {
                     filePath = path + @"\" + fileName;
                 }
-                File.WriteAllText(filePath, textVale);
+                File.WriteAllText(filePath, textVale, Encoding.ASCII);
                 return true;
             } //end try
             catch (Exception e)
