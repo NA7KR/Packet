@@ -594,7 +594,7 @@ namespace Packet
 
         private void toolStripButton_FWD_Click(object sender, EventArgs e)
         {
-            backgroundWorker1.RunWorkerAsync("");
+            StartThread();
 
             var idays = _myRegistryKeep.ReadDw("DaystoKeep");
             if (idays > 0)
@@ -752,6 +752,8 @@ namespace Packet
 
         private void toolStripButton_Disconnect_Click(object sender, EventArgs e)
         {
+            // Cancel the asynchronous operation. 
+            backgroundWorker1.CancelAsync();
             button_check();
             toolStripButton_Disconnect.Enabled = false;
             terminalEmulator1.Closeconnection();
@@ -911,12 +913,26 @@ namespace Packet
 
         #endregion
 
+        #region background worker
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             var path = Directory.GetCurrentDirectory() + @"\Data\7plus" + @"\";
             Thread.Sleep(1000);
             FileCheck.CreateFileWatcher(path);
         }
+        #endregion
+
+        #region start thread
+        private void StartThread()
+        {
+            // Initialize the object that the background worker calls.
+            FileCheck WC = new FileCheck();
+
+            // Start the asynchronous operation.
+            backgroundWorker1.RunWorkerAsync(WC);
+        }
+        #endregion 
+
     }
 
     //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Packet
 {
-    internal class FileCheck
+    public class FileCheck
     {
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
@@ -57,9 +57,9 @@ namespace Packet
 
             string newfile = path + file + ".P01";
             var args = newfile + " -SAVE \"c:\\temp\\out\\\"";
-           // MessageBox.Show(newfile);
+            MessageBox.Show(newfile);
             Do_7plus(args);
-           // MessageBox.Show("File: " + e.FullPath + " " + e.ChangeType);
+            MessageBox.Show("File: " + e.FullPath + " " + e.ChangeType);
         }
 
         private static void OnRenamed(object source, RenamedEventArgs e)
