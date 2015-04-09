@@ -21,13 +21,11 @@ namespace Packet
         {
             var fbd = new OpenFileDialog();
             if (fbd.ShowDialog() == DialogResult.OK)
-
             {
                 var fp = (Path.GetFullPath(fbd.FileName));
                 var args = fp + " -SAVE \"c:\\temp\\out\\\"";
                 Do_7plus(args);
             }
-
 
             //    c:\temp\7plus.zip -SAVE "c:\temp\"  -SB 5000          
             //    c:\temp\7plus.p01 - SAVE "c:\temp\"                 
@@ -35,10 +33,6 @@ namespace Packet
             //	  c:\temp\7plus.cor -SAVE "c:\temp\	
         }
 
-        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
-        {
-        }
 
-       
     }
 }
