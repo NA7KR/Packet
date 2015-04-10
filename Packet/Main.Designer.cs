@@ -80,6 +80,7 @@ namespace Packet
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_7plus = new System.Windows.Forms.ToolStripButton();
             this.terminalEmulator1 = new PacketComs.TerminalEmulator();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -311,7 +312,8 @@ namespace Packet
             this.toolStripSeparator7,
             this.toolStripButton1,
             this.toolStripSeparator8,
-            this.toolStripButton_7plus});
+            this.toolStripButton_7plus,
+            this.toolStripButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1278, 43);
@@ -495,6 +497,16 @@ namespace Packet
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(99, 40);
+            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -572,6 +584,7 @@ namespace Packet
         private ToolStripButton toolStripButton1;
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripButton toolStripButton_7plus;
+        private ToolStripButton toolStripButton2;
     }
 }
 
