@@ -628,18 +628,11 @@ void kill_dest(FILE* in, FILE* out, const char* name)
 
 int test_exist(const char* filename)
 {
+	// check if file exists
 	if (_access(filename, 0))
 		return (1);
 	return (0);
 
-	/*  FILE *in;
-
-	  if ((in = fopen (filename, OPEN_READ_TEXT)) != NULLFP)
-	  {
-	  fclose (in);
-	  return (0);
-	  }
-	  return (1); */
 }
 
 
