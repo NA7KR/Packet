@@ -80,7 +80,6 @@ namespace Packet
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_7plus = new System.Windows.Forms.ToolStripButton();
             this.terminalEmulator1 = new PacketComs.TerminalEmulator();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -496,10 +495,6 @@ namespace Packet
             this.terminalEmulator1.ForwardDone += new System.EventHandler(this.terminalEmulator1_ForwardDone);
             this.terminalEmulator1.LastNumberevt += new System.EventHandler(this.terminalEmulator1_LastNumberevt);
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -577,7 +572,6 @@ namespace Packet
         private ToolStripButton toolStripButton1;
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripButton toolStripButton_7plus;
-        private BackgroundWorker backgroundWorker1;
     }
 }
 

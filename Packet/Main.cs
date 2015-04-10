@@ -593,7 +593,7 @@ namespace Packet
         private void toolStripButton_FWD_Click(object sender, EventArgs e)
         {
             StartThread();
-
+            
             var idays = _myRegistryKeep.ReadDw("DaystoKeep");
             if (idays > 0)
             {
@@ -609,6 +609,7 @@ namespace Packet
             toolStripButton_fwd.Text = "Forward active";
             terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.ReadDw("Start Number"));
             terminalEmulator1.Startforward();
+            
         }
 
         #endregion
@@ -751,7 +752,7 @@ namespace Packet
         private void toolStripButton_Disconnect_Click(object sender, EventArgs e)
         {
             // Cancel the asynchronous operation. 
-            backgroundWorker1.CancelAsync();
+           
             button_check();
             toolStripButton_Disconnect.Enabled = false;
             terminalEmulator1.Closeconnection();
@@ -911,15 +912,7 @@ namespace Packet
 
         #endregion
 
-        #region background worker
-        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            var path = Directory.GetCurrentDirectory() + @"\Data\7plus" + @"\";
-            Thread.Sleep(1000);
-            FileCheck FileCheck = new FileCheck();
-            FileCheck.CreateFileWatcher(path);
-        }
-        #endregion
+        
 
         #region start thread
         private void StartThread()
@@ -927,8 +920,9 @@ namespace Packet
             // Initialize the object that the background worker calls.
             FileCheck FileCheck = new FileCheck();
 
-            // Start the asynchronous operation.
-            backgroundWorker1.RunWorkerAsync(FileCheck);
+            var path = Directory.GetCurrentDirectory() + @"\Data\7plus" + @"\";
+
+            FileCheck.CreateFileWatcher(path);
         }
         #endregion 
 

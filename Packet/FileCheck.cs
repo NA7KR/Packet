@@ -50,12 +50,19 @@ namespace Packet
         private static void OnChanged(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            
+            string newfile = "";
             string ext = Path.GetExtension(e.FullPath);
             string file = Path.GetFileNameWithoutExtension(e.FullPath);
             string path = Path.GetDirectoryName(e.FullPath) + Path.DirectorySeparatorChar;
-
-            string newfile = path + file + ".P01";
+            if (ext == ".7pl")
+            {
+                 newfile = path + file + ".7pl";
+            }
+            else
+            {
+                 newfile = path + file + ".P01";
+            }
+            
             var args = newfile + " -SAVE \"c:\\temp\\out\\\"";
             //MessageBox.Show(newfile);
             Do_7plus(args);
