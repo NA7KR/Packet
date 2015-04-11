@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -9,11 +8,6 @@ namespace Packet
     {
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
-
-
-
-
-
 
         //    c:\temp\7plus.zip -SAVE "c:\temp\"  -SB 5000          
         //    c:\temp\7plus.p01 - SAVE "c:\temp\"                 

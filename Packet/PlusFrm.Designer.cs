@@ -1,11 +1,14 @@
-﻿namespace Packet
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Packet
 {
     partial class PlusFrm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -74,8 +77,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_ok;
-        private System.Windows.Forms.Button button_cancel;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private Button button_ok;
+        private Button button_cancel;
+        private FolderBrowserDialog folderBrowserDialog1;
     }
 }
