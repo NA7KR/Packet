@@ -914,11 +914,11 @@ namespace Packet
         private void StartThread()
         {
             // Initialize the object that the background worker calls.
-            FileCheck FileCheck = new FileCheck();
+            
 
             var path = Directory.GetCurrentDirectory() + @"\Data\7plus" + @"\";
 
-            FileCheck.CreateFileWatcher(path);
+            CreateFileWatcher(path);
         }
         #endregion
 
