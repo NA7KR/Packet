@@ -17,6 +17,7 @@ char spaces[] = "                                                   ";
 char* endstr;
 char* sendstr;
 char* pathstr;
+char* errorlog;
 char genpath[MAXPATH ];
 char ErrorF[MAXPATH ];
 char altname[MAXPATH ];
@@ -266,6 +267,25 @@ int go_at_it(int argc, char** argv)
 			}
 		}
 		//end save
+		if (!_strnicmp(argv[i], "-LOG", 5))
+		{
+			fclose(ErrorFile);
+			i++;
+			if (i == argc)
+				i--;
+			else
+			{
+				if (t12 != def_format)
+				{
+					errorlog = (char *)malloc((int)strlen(argv[i]) + 1);
+					strcpy(errorlog, argv[i]);
+				}
+			}
+			strcpy(ErrorF, errorlog);
+			ErrorFile = fopen(ErrorF, "w");
+		}
+		//end log
+		// end krr
 		if (!_strnicmp(argv[i], "-SEND", 5)) /* Define send string, */
 		{ /* e.g. "sp dg1bbq @db0ver.#nds.deu.eu" */
 			if (argv[i][5] == '2')

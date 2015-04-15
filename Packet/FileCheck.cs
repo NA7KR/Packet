@@ -44,11 +44,12 @@ namespace Packet
             {
                 newfile = path + file + ".7pl";
                 string lockfile = newfile + ".lock";
+                string logfile = newfile + ".LOG";
                 if (!File.Exists(lockfile))
                 {
                     using (File.Create(lockfile))
                     {
-                        var args = newfile + " -SAVE \"c:\\temp\\out\\\"";
+                        var args = newfile + " -SAVE \"c:\\temp\\out\\ \" -LOG " + logfile;
                         Run7Plus(args);
                     }
                 }
@@ -61,11 +62,12 @@ namespace Packet
             {
                 newfile = path + file + ".P01";
                 string lockfile = newfile + ".lock";
+                string logfile = newfile + ".LOG";
                 if (!File.Exists(lockfile))
                 {
                     using (File.Create(lockfile))
                     {
-                        var args = newfile + " -SAVE \"c:\\temp\\out\\\"";
+                        var args = newfile + " -SAVE \"c:\\temp\\out\\ \" -LOG " + logfile ;
                         Run7Plus(args);
                     }
                 }
@@ -86,6 +88,34 @@ namespace Packet
             Thread.Sleep(5000);
             int rn = Do_7plus(args);
             Msg(newfile, rn);
+        }
+        #endregion
+
+        #region 
+        protected virtual bool IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
         }
         #endregion
 
