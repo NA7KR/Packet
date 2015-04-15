@@ -162,7 +162,17 @@ namespace PacketComs
                                     }
                                     if (plus)
                                     {
-                                        FileSql.WriteSt(dfile, result, "7plus", false);
+                                        FileSql.WriteSt(dfile, result, "7plus" +
+                                                                       "" +
+                                                                       "" +
+                                                                       "" +
+                                                                       "" +
+                                                                       "" +
+                                                                       "" +
+                                                                       "" +
+                                                                       "" +
+                                                                       "" +
+                                                                       "", false);
                                     }
                                     else
                                     {

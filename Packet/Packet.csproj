@@ -145,6 +145,9 @@
     <Compile Include="Reply.Designer.cs">
       <DependentUpon>Reply.cs</DependentUpon>
     </Compile>
+    <Compile Include="SafeStatusStrip.cs">
+      <SubType>component</SubType>
+    </Compile>
     <Compile Include="Sort.cs">
       <SubType>Form</SubType>
     </Compile>

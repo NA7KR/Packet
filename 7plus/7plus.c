@@ -544,7 +544,17 @@ int go_at_it(int argc, char** argv)
  0 No errors detected.
  1 Write error.
  2 File not found.
- 3 7PLUS header not found.
+ 3 
+
+
+
+
+
+
+
+
+
+ header not found.
  4 File does not contain expected part.
  5 7PLUS header corrrupted.
  6 No filename for extracting defined.

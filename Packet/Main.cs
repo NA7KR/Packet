@@ -906,26 +906,54 @@ namespace Packet
         private Color _backgroundColor = Color.Black;
         private Color _textColor = Color.Yellow;
 
-        #endregion
-
-        
+        #endregion      
 
         #region start thread
         private void StartThread()
         {
             // Initialize the object that the background worker calls.
-            
 
             var path = Directory.GetCurrentDirectory() + @"\Data\7plus" + @"\";
+            if (!Directory.Exists(path))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(path);
+            }
 
+            var outpath = Directory.GetCurrentDirectory() + @"\Data\Out" + @"\";
+            if (!Directory.Exists(outpath))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(outpath);
+            }
+
+            var logpath = Directory.GetCurrentDirectory() + @"\Data\Log" + @"\";
+            if (!Directory.Exists(logpath))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(logpath);
+            }
+            var donepath = Directory.GetCurrentDirectory() + @"\Data\Done" + @"\";
+            if (!Directory.Exists(donepath))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(path);
+            }
+            
             CreateFileWatcher(path);
         }
         #endregion
 
+        #region tool Strip Button
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             StartThread();
-            //http://stackoverflow.com/questions/1764809/filesystemwatcher-changed-event-is-raised-twice
+        }
+        #endregion
+
+        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 

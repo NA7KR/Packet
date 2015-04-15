@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -8,7 +9,7 @@ namespace Packet
     public partial class Main
 
     {
-
+        
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
 
@@ -17,7 +18,7 @@ namespace Packet
         //    c:\temp\7plus.err -SAVE "c:\temp\"					
         //	  c:\temp\7plus.cor -SAVE "c:\temp\	
 
-
+        #region CreateFile Watch
         public void CreateFileWatcher(string path)
         {
             // Create a new FileSystemWatcher and set its properties.
@@ -31,6 +32,7 @@ namespace Packet
             watcher.EnableRaisingEvents = true;
 
         }
+        #endregion
 
         #region OnChange
         private static void OnChanged(object source, FileSystemEventArgs e)
@@ -45,11 +47,12 @@ namespace Packet
                 newfile = path + file + ".7pl";
                 string lockfile = newfile + ".lock";
                 string logfile = newfile + ".LOG";
+                string outpath = path + "Out";
                 if (!File.Exists(lockfile))
                 {
                     using (File.Create(lockfile))
                     {
-                        var args = newfile + " -SAVE \"c:\\temp\\out\\ \" -LOG " + logfile;
+                        var args = newfile + " -SAVE " + outpath + " -LOG " + logfile;
                         Run7Plus(args);
                     }
                 }
@@ -63,11 +66,12 @@ namespace Packet
                 newfile = path + file + ".P01";
                 string lockfile = newfile + ".lock";
                 string logfile = newfile + ".LOG";
+                string outpath = path + "Out";
                 if (!File.Exists(lockfile))
                 {
                     using (File.Create(lockfile))
                     {
-                        var args = newfile + " -SAVE \"c:\\temp\\out\\ \" -LOG " + logfile ;
+                        var args = newfile + " -SAVE " + outpath + " -LOG " + logfile;
                         Run7Plus(args);
                     }
                 }
@@ -80,8 +84,7 @@ namespace Packet
         }
         #endregion OnChange 
 
-        #region
-
+        #region  Run 7plus
         public static void Run7Plus(string newfile)
         {
             var args = newfile + " -SAVE \"c:\\temp\\out\\\"";
@@ -91,7 +94,7 @@ namespace Packet
         }
         #endregion
 
-        #region 
+        #region   is File locked
         protected virtual bool IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
@@ -119,7 +122,7 @@ namespace Packet
         }
         #endregion
 
-        #region
+        #region    msg
         public static void Msg(string newfile, int rn)
         {
             string txt;
@@ -245,7 +248,12 @@ namespace Packet
                     }
 
             }
-            MessageBox.Show(txt + " " + newfile);
+            //this.safeStatusStrip = new SafeControls.SafeStatusStrip();
+            //safeStatusStrip.SafeSetText(toolStripStatusLabel, "Event1 Raised and displayed using SafeStatusStrip control");
+            //toolStripStatusLabel1.Text = txt + " " + newfile;
+            //http://www.codeproject.com/Articles/19506/A-thread-safe-ToolStripStatusLabel-control
+            MessageBox.Show(txt);
+
         }
         #endregion
 
