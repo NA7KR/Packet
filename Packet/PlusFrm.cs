@@ -20,10 +20,18 @@ namespace Packet
         private void button_ok_Click(object sender, EventArgs e)
         {
             var fbd = new OpenFileDialog();
-            if (fbd.ShowDialog() == DialogResult.OK)
-            {
+            string newfile;
+            
+                if (fbd.ShowDialog() == DialogResult.OK)
+            { 
+                string file = Path.GetFileNameWithoutExtension(fbd.FileName);
+                string path = Path.GetDirectoryName(fbd.FileName) + Path.DirectorySeparatorChar;
+                newfile = path + file ;
+                string logfile = newfile + ".LOG";
+                string inpath = path + "Out";
+
                 var fp = (Path.GetFullPath(fbd.FileName));
-                var args = fp + " -SAVE \"c:\\temp\\out\\\"";
+                var args = fp + " -SAVE " + inpath + " -LOG " + logfile;
                 Do_7plus(args);
             }
 

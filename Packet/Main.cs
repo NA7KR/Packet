@@ -927,6 +927,13 @@ namespace Packet
                 Directory.CreateDirectory(outpath);
             }
 
+            var inpath = Directory.GetCurrentDirectory() + @"\Data\IN" + @"\";
+            if (!Directory.Exists(inpath))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(inpath);
+            }
+
             var logpath = Directory.GetCurrentDirectory() + @"\Data\Log" + @"\";
             if (!Directory.Exists(logpath))
             {
@@ -949,12 +956,10 @@ namespace Packet
         {
             StartThread();
         }
+
         #endregion
 
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
+  
     }
 
     //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
