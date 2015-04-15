@@ -1,23 +1,15 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows.Forms;
-using PacketComs;
-using SafeControls;
 
 namespace Packet
 {
     public partial class Main
 
     {
+
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
-
-        //    c:\temp\7plus.zip -SAVE "c:\temp\"  -SB 5000          
-        //    c:\temp\7plus.p01 - SAVE "c:\temp\"                 
-        //    c:\temp\7plus.err -SAVE "c:\temp\"					
-        //	  c:\temp\7plus.cor -SAVE "c:\temp\	
 
         #region CreateFile Watch
         public void CreateFileWatcher(string path)
@@ -31,7 +23,6 @@ namespace Packet
             };
             watcher.Changed += OnChanged;
             watcher.EnableRaisingEvents = true;
-
         }
         #endregion
 
@@ -73,7 +64,7 @@ namespace Packet
                     using (File.Create(lockfile))
                     {
                         var args = newfile + " -SAVE " + outpath + " -LOG " + logfile;
-                        Run7Plus(args);
+                        Run7Plus(args); 
                     }
                 }
                 else
@@ -81,18 +72,16 @@ namespace Packet
                     File.Delete(lockfile);
                 }
             }
-
         }
         #endregion OnChange 
 
         #region  Run 7plus
         public static void Run7Plus(string newfile)
         {
-            var args = newfile + " -SAVE \"c:\\temp\\out\\\"";
+            var args = newfile ;
             Thread.Sleep(5000);
             int rn = Do_7plus(args);
-            Msg(newfile, rn);
-
+            Msg(newfile, rn);   
         }
         #endregion
 
@@ -100,7 +89,6 @@ namespace Packet
         protected virtual bool IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
-
             try
             {
                 stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
@@ -118,7 +106,6 @@ namespace Packet
                 if (stream != null)
                     stream.Close();
             }
-
             //file is not locked
             return false;
         }
@@ -251,13 +238,9 @@ namespace Packet
 
             }
 
-            this.toolStripStatusLabel.Text = txt + " " + newfile;
-
-            MessageBox.Show(txt);
-            
+            toolStripStatusLabel.Text = txt + " " + newfile;
 
         }
         #endregion
-
     }
 }

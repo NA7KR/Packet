@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 using PacketComs;
-using SafeControls;
 
 namespace Packet
 {
