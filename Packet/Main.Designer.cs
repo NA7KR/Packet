@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 using PacketComs;
+using SafeControls;
 
 namespace Packet
 {
@@ -503,7 +504,6 @@ namespace Packet
             this.terminalEmulator1.Size = new System.Drawing.Size(1235, 561);
             this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
             this.terminalEmulator1.TabIndex = 5;
-            this.terminalEmulator1.Text = "terminalEmulator1";
             this.terminalEmulator1.UernamePrompt = null;
             this.terminalEmulator1.Username = null;
             this.terminalEmulator1.Disconnected += new System.EventHandler(this.Disconnected);
@@ -523,7 +523,8 @@ namespace Packet
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // Main
             // 

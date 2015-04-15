@@ -96,7 +96,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileCheck.cs" />
+    <Compile Include="FileCheck.cs">
+      <SubType>form</SubType>
+    </Compile>
     <Compile Include="PlusFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,9 +146,6 @@
     </Compile>
     <Compile Include="Reply.Designer.cs">
       <DependentUpon>Reply.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SafeStatusStrip.cs">
-      <SubType>component</SubType>
     </Compile>
     <Compile Include="Sort.cs">
       <SubType>Form</SubType>

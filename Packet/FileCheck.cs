@@ -3,13 +3,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using PacketComs;
+using SafeControls;
 
 namespace Packet
 {
     public partial class Main
 
     {
-        
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
 
@@ -91,6 +92,7 @@ namespace Packet
             Thread.Sleep(5000);
             int rn = Do_7plus(args);
             Msg(newfile, rn);
+
         }
         #endregion
 
@@ -123,7 +125,7 @@ namespace Packet
         #endregion
 
         #region    msg
-        public static void Msg(string newfile, int rn)
+        public static  void Msg(string newfile, int rn)
         {
             string txt;
             switch (rn)
@@ -248,11 +250,11 @@ namespace Packet
                     }
 
             }
-            //this.safeStatusStrip = new SafeControls.SafeStatusStrip();
-            //safeStatusStrip.SafeSetText(toolStripStatusLabel, "Event1 Raised and displayed using SafeStatusStrip control");
-            //toolStripStatusLabel1.Text = txt + " " + newfile;
-            //http://www.codeproject.com/Articles/19506/A-thread-safe-ToolStripStatusLabel-control
+
+            this.toolStripStatusLabel.Text = txt + " " + newfile;
+
             MessageBox.Show(txt);
+            
 
         }
         #endregion
