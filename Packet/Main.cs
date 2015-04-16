@@ -3,6 +3,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using PacketComs;
 
@@ -18,6 +19,12 @@ namespace Packet
 
     public partial class Main : Form
     {
+        private StringBuilder m_Sb;
+        private string  m_FullPath;
+        private bool _mBDirty;
+        private FileSystemWatcher _fmWatcher;
+        
+        
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
         private readonly ModifyRegistry _myRegistryKeep = new ModifyRegistry();
@@ -747,7 +754,7 @@ namespace Packet
         private void toolStripButton_Disconnect_Click(object sender, EventArgs e)
         {
             // Cancel the asynchronous operation. 
-           
+            FilewatchStop();
             button_check();
             toolStripButton_Disconnect.Enabled = false;
             terminalEmulator1.Closeconnection();
@@ -840,6 +847,9 @@ namespace Packet
         public Main()
         {
             InitializeComponent();
+            m_Sb = new StringBuilder();  
+            _mBDirty = false;
+            
             _myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             _myRegistry.ShowError = true;
             _myRegistryCom.SubKey = "SOFTWARE\\NA7KR\\Packet\\Port";
@@ -939,13 +949,19 @@ namespace Packet
                 // Try to create the directory.
                 Directory.CreateDirectory(logpath);
             }
-            var donepath = Directory.GetCurrentDirectory() + @"\Data\Done" + @"\";
+            var donepath = Directory.GetCurrentDirectory() + @"\Data\7plus\Done" + @"\";
             if (!Directory.Exists(donepath))
             {
                 // Try to create the directory.
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(donepath);
             }
-            
+
+            var lockpath = Directory.GetCurrentDirectory() + @"\Data\Lock" + @"\";
+            if (!Directory.Exists(lockpath))
+            {
+                // Try to create the directory.
+                Directory.CreateDirectory(lockpath);
+            }
             CreateFileWatcher(path);
         }
         #endregion
@@ -956,9 +972,10 @@ namespace Packet
             StartThread();
         }
 
+
         #endregion
 
-  
+      
     }
 
     //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";

@@ -1,14 +1,11 @@
-﻿using System.IO;
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace Packet
 {
-    public partial class Main : Form
+    public partial class Main
     {
-        
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
 
@@ -16,104 +13,104 @@ namespace Packet
         public void CreateFileWatcher(string path)
         {
             // Create a new FileSystemWatcher and set its properties.
-            FileSystemWatcher watcher = new FileSystemWatcher
-            {
-                Path = path,
-                NotifyFilter = NotifyFilters.LastWrite,
-                Filter = "*.*"
-            };
-            watcher.Changed += OnChanged;
-            watcher.EnableRaisingEvents = true;
+            tmrEditNotify.Enabled = true;
+            _fmWatcher = new FileSystemWatcher();
+            _fmWatcher.Filter = "*.*";
+            _fmWatcher.Path = path ;
+            _fmWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            _fmWatcher.Changed += OnChanged;
+            _fmWatcher.Created += OnChanged;
+            _fmWatcher.EnableRaisingEvents = true;
+        }
+        #endregion
+
+        #region Stop watching files
+        public void FilewatchStop()
+        {
+            _fmWatcher.EnableRaisingEvents = false;
+            _fmWatcher.Dispose();
+            tmrEditNotify.Enabled = false;
         }
         #endregion
 
         #region OnChange
-        private static void OnChanged(object source, FileSystemEventArgs e)
+        private void OnChanged(object sender, FileSystemEventArgs e)
         {
-            // Specify what is done when a file is changed, created, or deleted.
-            string newfile;
-            string ext = Path.GetExtension(e.FullPath);
-            string file = Path.GetFileNameWithoutExtension(e.FullPath);
-            string path = Path.GetDirectoryName(e.FullPath) + Path.DirectorySeparatorChar;
-            if (ext == ".7pl")
+            if (!_mBDirty)
             {
-                newfile = path + file + ".7pl";
-                string lockfile = newfile + ".lock";
-                string logfile = newfile + ".LOG";
-                string outpath = path + "Out";
-                if (!File.Exists(lockfile))
-                {
-                    using (File.Create(lockfile))
-                    {
-                        var args = newfile + " -SAVE " + outpath + " -LOG " + logfile;
-                        Run7Plus(args);
-                    }
-                }
-                else
-                {
-                    File.Delete(lockfile);
-                }
-            }
-            else
-            {
-                newfile = path + file + ".P01";
-                string lockfile = newfile + ".lock";
-                string logfile = newfile + ".LOG";
-                string outpath = path + "Out";
-                if (!File.Exists(lockfile))
-                {
-                    using (File.Create(lockfile))
-                    {
-                        var args = newfile + " -SAVE " + outpath + " -LOG " + logfile;
-                        Run7Plus(args); 
-                    }
-                }
-                else
-                {
-                    File.Delete(lockfile);
-                }
-            }
-        }
-        #endregion OnChange 
+                m_FullPath = e.FullPath;
 
-        #region  Run 7plus
-        public static void Run7Plus(string newfile)
-        {
-            var args = newfile ;
-            Thread.Sleep(5000);
-            int rn = Do_7plus(args);
-
-            Main Main = new Main();
-            Main.Msg(newfile, rn);
-              
+                m_Sb.Remove(0, m_Sb.Length);
+                m_Sb.Append(e.FullPath);
+                m_Sb.Append(" ");
+                m_Sb.Append(e.ChangeType);
+                m_Sb.Append("    ");
+                m_Sb.Append(DateTime.Now);
+                _mBDirty = true;
+            }
         }
         #endregion
 
-        #region   is File locked
-        protected virtual bool IsFileLocked(FileInfo file)
+        #region
+        private void tmrEditNotify_Tick(object sender, EventArgs e)
         {
-            FileStream stream = null;
-            try
+            if (_mBDirty)
             {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                toolStripStatusLabel1.Text = (m_Sb.ToString());
+                _mBDirty = false;
+
+
+                // Specify what is done when a file is changed, created, or deleted.
+                string newfile;
+                string ext = Path.GetExtension(m_FullPath);
+                string file = Path.GetFileNameWithoutExtension(m_FullPath);
+                string path = Path.GetDirectoryName(m_FullPath) + Path.DirectorySeparatorChar;
+                if (ext == ".7pl")
+                {
+                    newfile = path + file + ".7pl";
+                    string lockfile = Directory.GetCurrentDirectory() + "\\Data\\Lock\\" + file + ".lock";
+                    string logfile = Directory.GetCurrentDirectory() + "\\Data\\Log\\" + file + ".LOG";
+                    string outpath = Directory.GetCurrentDirectory() + "\\Data\\Out\\";
+                    if (!File.Exists(lockfile))
+                    {
+                        using (File.Create(lockfile))
+                        {
+                            var args = newfile + " -SAVE " + outpath + " -LOG " + logfile;
+                            int rn = Do_7plus(args);
+                            Msg(newfile, rn);
+                        }
+                    }
+                    else
+                    {
+                        File.Delete(lockfile);
+                    }
+                }
+                else if (ext == ".lock" || ext == ".LOG")
+                {
+                }
+                else
+                {
+                    newfile = path + file + ".P01";
+                    string lockfile = Directory.GetCurrentDirectory() + "\\Data\\Lock\\" + file + ".lock";
+                    string logfile = Directory.GetCurrentDirectory() + "\\Data\\Log\\" + file + ".LOG";
+                    string outpath = Directory.GetCurrentDirectory() + "\\Data\\Out\\";
+                    if (!File.Exists(lockfile))
+                    {
+                        using (File.Create(lockfile))
+                        {
+                            var args = newfile + " -SAVE " + outpath + " -LOG " + logfile;
+                            int rn = Do_7plus(args);
+                            Msg(newfile, rn);
+                        }
+                    }
+                    else
+                    {
+                        File.Delete(lockfile);
+                    }
+                }
             }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                    stream.Close();
-            }
-            //file is not locked
-            return false;
         }
-        #endregion
+        #endregion  
 
         #region    msg
         public void Msg(string newfile, int rn) 
@@ -240,14 +237,11 @@ namespace Packet
                         break;
                     }
             }
-            //toolStripStatusLabel.Text = 
+            
             toolStripStatusLabel1.Text = txt + " " + newfile;
+
         }
         #endregion
-
-        public class MainForm
-        {
-        }
        
     }
 }

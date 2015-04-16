@@ -1,0 +1,69 @@
+using System;
+using System.IO;
+using System.Text;
+using System.Windows.Forms;
+
+namespace Packet
+{
+    public partial class Main : Form
+    {
+        private StringBuilder m_Sb;
+        private bool _mBDirty;
+        private FileSystemWatcher _fmWatcher;
+        private bool m_bIsWatching;
+
+        public Main()
+        {
+            InitializeComponent();
+            m_Sb = new StringBuilder();
+			
+            _mBDirty = false;
+            m_bIsWatching = false;
+        }
+
+        private void btnWatchFile_Click(object sender, EventArgs e)
+        {
+            fw();
+        }
+
+        private  void fw()
+        {
+            /* stop
+           m_bIsWatching = false;
+           m_Watcher.EnableRaisingEvents = false;
+           m_Watcher.Dispose();
+          */
+
+            _fmWatcher = new FileSystemWatcher();
+            _fmWatcher.Filter = "*.*";
+            _fmWatcher.Path = "C:\\Temp\\";
+            _fmWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            _fmWatcher.Changed += OnChanged;
+            _fmWatcher.Created += OnChanged;
+            _fmWatcher.EnableRaisingEvents = true;
+        }
+
+        private void OnChanged(object sender, FileSystemEventArgs e)
+        {
+            if (!_mBDirty)
+            {
+                m_Sb.Remove(0, m_Sb.Length);
+                m_Sb.Append(e.FullPath);
+                m_Sb.Append(" ");
+                m_Sb.Append(e.ChangeType);
+                m_Sb.Append("    ");
+                m_Sb.Append(DateTime.Now);
+                _mBDirty = true;
+            }
+        }
+
+        private void tmrEditNotify_Tick(object sender, EventArgs e)
+        {
+            if (_mBDirty)
+            {
+                toolStripStatusLabel1.Text = (m_Sb.ToString());
+                _mBDirty = false;
+            }
+        }
+    }
+}

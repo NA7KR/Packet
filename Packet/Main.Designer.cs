@@ -83,6 +83,7 @@ namespace Packet
             this.terminalEmulator1 = new PacketComs.TerminalEmulator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tmrEditNotify = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -492,7 +493,7 @@ namespace Packet
             this.terminalEmulator1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.terminalEmulator1.LastNumber = 0;
             this.terminalEmulator1.LocalEcho = false;
-            this.terminalEmulator1.Location = new System.Drawing.Point(12, 64);
+            this.terminalEmulator1.Location = new System.Drawing.Point(12, 51);
             this.terminalEmulator1.Name = "terminalEmulator1";
             this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
             this.terminalEmulator1.Password = null;
@@ -524,6 +525,11 @@ namespace Packet
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // tmrEditNotify
+            // 
+            this.tmrEditNotify.Enabled = true;
+            this.tmrEditNotify.Tick += new System.EventHandler(this.tmrEditNotify_Tick);
             // 
             // Main
             // 
@@ -608,6 +614,7 @@ namespace Packet
         private ToolStripButton toolStripButton2;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusLabel1;
+        private Timer tmrEditNotify;
     }
 }
 
