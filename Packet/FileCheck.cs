@@ -1,13 +1,14 @@
 ﻿using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Packet
 {
-    public partial class Main
-
+    public partial class Main : Form
     {
-
+        
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
 
@@ -81,7 +82,10 @@ namespace Packet
             var args = newfile ;
             Thread.Sleep(5000);
             int rn = Do_7plus(args);
-            Msg(newfile, rn);   
+
+            Main Main = new Main();
+            Main.Msg(newfile, rn);
+              
         }
         #endregion
 
@@ -112,7 +116,7 @@ namespace Packet
         #endregion
 
         #region    msg
-        public static  void Msg(string newfile, int rn)
+        public void Msg(string newfile, int rn) 
         {
             string txt;
             switch (rn)
@@ -235,12 +239,15 @@ namespace Packet
                         txt = "?";
                         break;
                     }
-
             }
-
-            toolStripStatusLabel.Text = txt + " " + newfile;
-
+            //toolStripStatusLabel.Text = 
+            toolStripStatusLabel1.Text = txt + " " + newfile;
         }
         #endregion
+
+        public class MainForm
+        {
+        }
+       
     }
 }
