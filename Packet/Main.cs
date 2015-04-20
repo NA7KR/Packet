@@ -236,7 +236,7 @@ namespace Packet
         {
             terminalEmulator1.Left = 10;
             terminalEmulator1.Top = 60;
-            terminalEmulator1.Height = (Height - 20);
+            terminalEmulator1.Height = (Height - 140);
             terminalEmulator1.Width = (Width - 60);         
         }
 

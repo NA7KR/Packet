@@ -417,6 +417,11 @@ namespace PacketComs
             filePath = null;
             try
             {
+                
+                
+                //bool index = textVale.Contains("\u00B1");
+                //MessageBox.Show(index.ToString());
+
                 var path = Directory.GetCurrentDirectory() + @"\Data\" + pathNo + @"\";
                 if (!Directory.Exists(path))
                 {
@@ -431,7 +436,7 @@ namespace PacketComs
                 {
                     filePath = path + @"\" + fileName;
                 }
-                File.WriteAllText(filePath, textVale, Encoding.ASCII);
+                File.WriteAllText(filePath, textVale, Encoding.UTF8);
                 return true;
             } //end try
             catch (Exception e)
