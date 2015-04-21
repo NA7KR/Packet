@@ -17,6 +17,7 @@ namespace PacketComs
                 var stateObject = (UcCommsStateObject) ar.AsyncState;
                 // Get The data , if any
                 var nBytesRec = stateObject.Socket.EndReceive(ar);
+                bool makefile = false;
                 if (nBytesRec > 0)
                 {
                     var sReceived = "";
@@ -146,9 +147,29 @@ namespace PacketComs
                                     var plus = sReceived.Contains("go_7+.");
 
                                     string result = null;
+                                   
                                     for (var i = fstmsg; i < (lines.Length - 1); i++)
                                     {
-                                        dfile = dfile + lines[i] + Environment.NewLine;
+                                        
+                                        if (lines[i].Contains("go_7+"))
+                                        {
+                                            var start = lines[i].IndexOf("go_7+", 0, StringComparison.Ordinal);
+                                            if (start == 1)
+                                            {
+                                                dfile = null;
+                                                makefile = true;
+                                                
+                                            }
+                                            if (makefile)
+                                            {
+                                                dfile = dfile + lines[i] + Environment.NewLine;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dfile = dfile + lines[i] + Environment.NewLine;
+                                        }
+
                                         if (lines[i].Contains("stop_7+"))
                                         {
                                             var start = lines[i].IndexOf("(", StringComparison.Ordinal) + 1;
@@ -158,21 +179,12 @@ namespace PacketComs
                                                 end = lines[i].IndexOf(")", start, StringComparison.Ordinal);
                                             }
                                             result = lines[i].Substring(start, end - start);
+                                            
                                         }
                                     }
                                     if (plus)
                                     {
-                                        FileSql.WriteSt(dfile, result, "7plus" +
-                                                                       "" +
-                                                                       "" +
-                                                                       "" +
-                                                                       "" +
-                                                                       "" +
-                                                                       "" +
-                                                                       "" +
-                                                                       "" +
-                                                                       "" +
-                                                                       "", false);
+                                        FileSql.WriteSt(dfile, result, "7plus", false);
                                     }
                                     else
                                     {
@@ -234,7 +246,7 @@ namespace PacketComs
                 DispatchMessage(this, Environment.NewLine);
             }
         }
-
         #endregion
+       
     }
 }

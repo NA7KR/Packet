@@ -417,8 +417,6 @@ namespace PacketComs
             filePath = null;
             try
             {
-                
-                
                 //bool index = textVale.Contains("\u00B1");
                 //MessageBox.Show(index.ToString());
 
