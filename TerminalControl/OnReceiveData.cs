@@ -167,7 +167,10 @@ namespace PacketComs
                                         }
                                         else
                                         {
-                                            dfile = dfile + lines[i] + Environment.NewLine;
+                                            if (makefile)
+                                            {
+                                                dfile = dfile + lines[i] + Environment.NewLine;
+                                            }
                                         }
 
                                         if (lines[i].Contains("stop_7+"))
@@ -179,7 +182,7 @@ namespace PacketComs
                                                 end = lines[i].IndexOf(")", start, StringComparison.Ordinal);
                                             }
                                             result = lines[i].Substring(start, end - start);
-                                            
+                                            makefile = false;
                                         }
                                     }
                                     if (plus)
