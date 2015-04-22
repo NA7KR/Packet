@@ -434,7 +434,8 @@ namespace PacketComs
                 {
                     filePath = path + @"\" + fileName;
                 }
-                File.WriteAllText(filePath, textVale, Encoding.UTF8);
+                
+                File.WriteAllText(filePath, textVale, Encoding.GetEncoding(1252));
                 return true;
             } //end try
             catch (Exception e)

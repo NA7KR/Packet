@@ -260,7 +260,7 @@ int decode_file(char* name, int flag)
 		/* p == NULL? then no starting line found. File no good. */
 		if (!p)
 		{
-			fprintf(ErrorFile, "\007'%s': 7PLUS-startline ", filename);
+			fprintf(ErrorFile, "\007'%s': 7PLUS start line ", filename);
 			fprintf(ErrorFile, "not found. Break.\n");
 			kill_dest(in, out, metafile);
 			return (3);
