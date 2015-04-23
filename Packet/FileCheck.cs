@@ -65,7 +65,7 @@ namespace Packet
                 string ext = Path.GetExtension(m_FullPath);
                 string file = Path.GetFileNameWithoutExtension(m_FullPath);
                 string path = Path.GetDirectoryName(m_FullPath) + Path.DirectorySeparatorChar;
-                if (ext == ".7pl")
+                if (ext == ".7pl" || ext == ".7PL")
                 {
                     newfile = path + file + ".7pl";
                     string lockfile = Directory.GetCurrentDirectory() + "\\Data\\Lock\\" + file + ".lock";
@@ -121,6 +121,7 @@ namespace Packet
                 case 0:
                     {
                         txt = "No errors detected.";
+                        
                         break;
                     }
                 case 1:

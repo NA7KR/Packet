@@ -314,6 +314,7 @@ namespace Packet
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            toolStripStatusLabel1.Text = "";
             button_check();
             if (_myRegistry.Read("Beep") == "Yes")
             {
@@ -971,6 +972,7 @@ namespace Packet
         {
             StartThread();
         }
+
 
 
         #endregion
