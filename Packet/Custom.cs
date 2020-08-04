@@ -1,7 +1,10 @@
 ﻿#region Using Directive
+
 using System;
 using System.Windows.Forms;
-#endregion
+
+#endregion Using Directive
+
 namespace Packet
 {
     public partial class Custom : Form
@@ -15,13 +18,18 @@ namespace Packet
         private bool _selectedCheck;
         private string _tableId;
         private int _textId;
+
         #region Custom
+
         public Custom()
         {
             InitializeComponent();
         }
-        #endregion
+
+        #endregion Custom
+
         #region Custom Loader
+
         private void Custom_Load(object sender, EventArgs e)
         {
             DataGridView1.Columns.Add("ID", "ID");
@@ -49,8 +57,11 @@ namespace Packet
             Width = DataGridView1.Right + 48;
             Loader();
         }
-        #endregion
+
+        #endregion Custom Loader
+
         #region Loader
+
         private void Loader()
         {
             _selectedCheck = false;
@@ -67,8 +78,11 @@ namespace Packet
             }
                 );
         }
-        #endregion
+
+        #endregion Loader
+
         #region resize
+
         private void Custom_Resize(object sender, EventArgs e)
         {
             MSGFrom_radioButton.Left = 20;
@@ -81,8 +95,11 @@ namespace Packet
             MSGSubject_radioButton.Top = 80;
             Width = DataGridView1.Right + 48;
         }
-        #endregion
+
+        #endregion resize
+
         #region OK button
+
         private void OK_button_Click(object sender, EventArgs e)
         {
             _nameId = name_textBox.Text;
@@ -123,8 +140,11 @@ namespace Packet
             OK_button.Text = "OK";
             Loader();
         }
-        #endregion
+
+        #endregion OK button
+
         #region DataGridView1_CellClick(
+
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             _textId = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);
@@ -134,8 +154,11 @@ namespace Packet
             _enableId = DataGridView1[4, e.RowIndex].Value.ToString().Trim();
             _selectedCheck = true;
         }
-        #endregion
+
+        #endregion DataGridView1_CellClick(
+
         #region button click
+
         private void edit_button_Click(object sender, EventArgs e)
         {
             if (_selectedCheck)
@@ -169,12 +192,16 @@ namespace Packet
                 MessageBox.Show("Select to edit!");
             }
         }
-        #endregion
+
+        #endregion button click
+
         #region cancel
+
         private void Cancel_button_Click(object sender, EventArgs e)
         {
             OK_button.Text = "OK";
         }
-        #endregion
+
+        #endregion cancel
     }
 }

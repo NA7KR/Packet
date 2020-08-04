@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+
 namespace Packet
 {
     internal static class Program
@@ -24,6 +25,7 @@ namespace Packet
                 Application.Run(new Main());
             }
         }
+
         private static string appGuid = "6f02a0f5-3b66-4de6-9853-5fc5b7031e85";
     }
 }

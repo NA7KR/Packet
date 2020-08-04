@@ -4,11 +4,10 @@ using System;
 using System.IO.Ports;
 using System.Windows.Forms;
 
-#endregion
+#endregion Using Directive
 
 namespace Packet
 {
-
     #region partial class Com_Form
 
     public partial class ComForm : Form
@@ -35,13 +34,13 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion button
 
         #region load
 
         private void Com_Form_Load(object sender, EventArgs e)
         {
-            #region  case switch baud
+            #region case switch baud
 
             speed = Convert.ToInt32(_myRegistry.Read("Baud"));
             switch (speed)
@@ -98,9 +97,9 @@ namespace Packet
                     }
             }
 
-            #endregion
+            #endregion case switch baud
 
-            #region  case switch Data Bits
+            #region case switch Data Bits
 
             Data = Convert.ToInt32(_myRegistry.Read("Data Bits"));
             switch (Data)
@@ -127,9 +126,9 @@ namespace Packet
                     }
             }
 
-            #endregion
+            #endregion case switch Data Bits
 
-            #region  case switch Stop Bits
+            #region case switch Stop Bits
 
             stop = _myRegistry.Read("Stop Bits");
             switch (stop)
@@ -156,9 +155,9 @@ namespace Packet
                     }
             }
 
-            #endregion
+            #endregion case switch Stop Bits
 
-            #region  case switch Parity
+            #region case switch Parity
 
             parity = _myRegistry.Read("Parity");
             switch (parity)
@@ -190,9 +189,9 @@ namespace Packet
                     }
             }
 
-            #endregion
+            #endregion case switch Parity
 
-            #region  case switch flow
+            #region case switch flow
 
             flow = _myRegistry.Read("Flow");
             switch (flow)
@@ -214,7 +213,7 @@ namespace Packet
                     }
             }
 
-            #endregion
+            #endregion case switch flow
 
             comboBoxPort.Items.Clear();
             foreach (var item in SerialPort.GetPortNames())
@@ -225,7 +224,7 @@ namespace Packet
             // needs work
         }
 
-        #endregion
+        #endregion load
 
         #region combbox changed
 
@@ -234,7 +233,7 @@ namespace Packet
             port = Convert.ToString(comboBoxPort.SelectedItem);
         }
 
-        #endregion
+        #endregion combbox changed
 
         #region Com_Form()
 
@@ -259,7 +258,6 @@ namespace Packet
             groupBoxBaudRate.Top = top;
             groupBoxBaudRate.Left = top;
             radioButton9600.Checked = true;
-
 
             radioButton_Data_5.Top = top;
             radioButton_Data_6.Top = top;
@@ -314,7 +312,7 @@ namespace Packet
 
         public Encrypting MyEncrypt { get; set; } = new Encrypting();
 
-        #endregion
+        #endregion Com_Form()
 
         #region screen layout
 
@@ -443,8 +441,8 @@ namespace Packet
             Flow = "None";
         }
 
-        #endregion
+        #endregion screen layout
     }
 
-    #endregion
+    #endregion partial class Com_Form
 }

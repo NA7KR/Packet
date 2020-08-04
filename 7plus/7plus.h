@@ -2,7 +2,7 @@
 >  7plus.h  <
 \*---------*/
 
-#define _CRT_SECURE_NO_WARNINGS 
+#define _CRT_SECURE_NO_WARNINGS
 #define YES "yes"
 #define ALWAYS "always"
 #define NO  "no"
@@ -13,13 +13,11 @@
 #define LSEPS "\x0a"
 #define _7PLUS_FLS "7plus.fls"
 
-
 #include <conio.h>
 
 /* Some compilers are very strict abt the type of NULL-pointers */
 #define NULLFP ((FILE *) 0)
 #define NULLCP ((char *) 0)
-
 
 #include <stdio.h>
 #include <ctype.h>
@@ -36,7 +34,6 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
 
 #define MAXDRIVE _MAX_DRIVE
 #define MAXDIR   _MAX_DIR
@@ -86,7 +83,6 @@ typedef unsigned char byte; /* 8bit unsigned char */
 typedef unsigned int uint; /* 16 or 32bit unsigned int */
 typedef unsigned long ulong; /* 32bit unsigned long      */
 
-
 struct m_index
 {
 	char filename[14]; /*12  chars +2*/
@@ -121,7 +117,7 @@ void decode_n_write(FILE* raus, char* p, int length);
 void w_index_err(struct m_index* idxptr, const char* localname, int flag);
 int make_new_err(const char* name);
 void progress(const char* filename, int part, int of_parts,
-              long errors, long rebuilt, const char* status);
+	long errors, long rebuilt, const char* status);
 /* correct.c */
 int correct_meta(char* name, int itsacor, int quietmode);
 
@@ -139,14 +135,13 @@ uint read_uint(FILE* in);
 void write_ulong(FILE* out, ulong val);
 void write_uint(FILE* out, uint val);
 int crc_file(const char* file, const char* s1, const char* s2,
-             int flag);
+	int flag);
 int copy_file(const char* to, const char* from, ulong timestamp);
 void replace(const char* oldfil, const char* newfil, ulong timestamp);
 
-
 void kill_em(const char* name, const char* inpath, const char* one,
-             const char* two, const char* three, const char* four,
-             const char* five, int _one, int no_lf);
+	const char* two, const char* three, const char* four,
+	const char* five, int _one, int no_lf);
 void kill_dest(FILE* in, FILE* out, const char* name);
 int test_exist(const char* filename);
 int test_file(FILE* in, char* destnam, int flag, int namsize);
@@ -157,25 +152,25 @@ void build_DOS_name(char* name, char* ext);
 void strip(char* string);
 
 #ifndef _HAVE_GMTIME
-struct tm *__offtime(const time_t *t, long int offset);
-struct tm *gmtime(const time_t *t);
+struct tm* __offtime(const time_t* t, long int offset);
+struct tm* gmtime(const time_t* t);
 
 #ifndef _HAVE_MKTIME
-time_t    mktime(register struct tm *tp);
+time_t    mktime(register struct tm* tp);
 #endif
-ulong get_filetime(const char *filename);
-void  set_filetime(const char *filename, ulong ftimestamp);
+ulong get_filetime(const char* filename);
+void  set_filetime(const char* filename, ulong ftimestamp);
 #endif
 uint get_hex(char* hex);
 #ifndef _HAVE_FNSPLIT
-void  fnsplit(char *pth, char *dr, char *pa, char *fn, char *ft);
+void  fnsplit(char* pth, char* dr, char* pa, char* fn, char* ft);
 #endif
 #ifndef _HAVE_ICMP
-char  *_strupr(char *string);
-char  *_strlwr(char *string);
-char  *strcnvt(char *string, int flag);
-int   _stricmp(const char *s1, const char *s2);
-int   _strnicmp(const char *s1, const char *s2, size_t n);
+char* _strupr(char* string);
+char* _strlwr(char* string);
+char* strcnvt(char* string, int flag);
+int   _stricmp(const char* s1, const char* s2);
+int   _strnicmp(const char* s1, const char* s2, size_t n);
 #endif
 
 /** rebuild.c **/

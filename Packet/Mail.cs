@@ -1,21 +1,29 @@
 ﻿#region Using Directive
+
 using System;
 using System.IO;
 using System.Windows.Forms;
-#endregion
+
+#endregion Using Directive
+
 namespace Packet
 {
     public partial class Mail : Form
     {
         private static readonly Sql Sql = new Sql();
         private readonly ModifyRegistry _myRegistryKeep = new ModifyRegistry();
+
         #region Mail InitializeComponent
+
         public Mail()
         {
             InitializeComponent();
         }
-        #endregion
+
+        #endregion Mail InitializeComponent
+
         #region OK
+
         private void button_OK_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
@@ -26,8 +34,11 @@ namespace Packet
             }
             Close();
         }
-        #endregion
+
+        #endregion OK
+
         #region Mid
+
         public static string Mid(string param, int startIndex, int length)
         {
             if (param == "")
@@ -37,14 +48,20 @@ namespace Packet
             var result = param.Substring(startIndex, length);
             return result;
         }
-        #endregion
+
+        #endregion Mid
+
         #region cancel
+
         private void button_Cancel_Click(object sender, EventArgs e)
         {
             Close();
         }
-        #endregion
+
+        #endregion cancel
+
         #region Mail_Load
+
         public void Mail_Load(object sender, EventArgs e)
         {
             try
@@ -102,8 +119,11 @@ namespace Packet
                 MessageBox.Show("Error loading" + " " + ex.Source);
             }
         }
-        #endregion
+
+        #endregion Mail_Load
+
         #region Loader
+
         private void Loader()
         {
             _myRegistryKeep.SubKey = "SOFTWARE\\NA7KR\\Packet\\Keep";
@@ -197,76 +217,109 @@ namespace Packet
                 MessageBox.Show("Error in file read" + " " + ex.Source);
             }
         }
-        #endregion
+
+        #endregion Loader
+
         #region DataGridView1_Scroll
+
         private void DataGridView1_Scroll(object sender, ScrollEventArgs e)
         {
             DataGridView1.Invalidate();
         }
-        #endregion
+
+        #endregion DataGridView1_Scroll
+
         #region exitToolStripMenuItem
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
-        #endregion
+
+        #endregion exitToolStripMenuItem
+
         #region TO Y
+
         private void toolStripMenuItemTO_Click(object sender, EventArgs e)
         {
             var box = new Sort(6, "MSGTO", 'Y');
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion TO Y
+
         #region From Y
+
         private void configToolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
             var box = new Sort(6, "MSGFrom", 'Y');
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion From Y
+
         #region Route Y
+
         private void configToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             var box = new Sort(7, "MSGRoute", 'Y');
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion Route Y
+
         #region Subject Y
+
         private void configToolStripMenuItem2_Click_1(object sender, EventArgs e)
         {
             var box = new Sort(30, "MSGSubject", 'Y');
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion Subject Y
+
         #region To D
+
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
             var box = new Sort(6, "MSGTO", 'D');
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion To D
+
         #region From D
+
         private void toolStripMenuItem7_Click(object sender, EventArgs e)
         {
             var box = new Sort(6, "MSGFrom", 'D');
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion From D
+
         #region Route D
+
         private void toolStripMenuItem9_Click(object sender, EventArgs e)
         {
             var box = new Sort(7, "MSGRoute", 'D');
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion Route D
+
         #region Subject D
+
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             var box = new Sort(30, "MSGSubject", 'D');
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion Subject D
+
         #region Resize
+
         private void Mail_Resize(object sender, EventArgs e)
         {
             DataGridView1.Left = 10;
@@ -278,8 +331,11 @@ namespace Packet
             button_Cancel.Left = ((Width / 2) + (button_OK.Width / 2));
             button_OK.Left = ((Width / 3) - (button_OK.Width / 2));
         }
-        #endregion
-        #region Date 
+
+        #endregion Resize
+
+        #region Date
+
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxTime.SelectedIndex)
@@ -287,23 +343,30 @@ namespace Packet
                 case 0:
                     _myRegistryKeep.Write("DaystoKeep", 0);
                     break;
+
                 case 1:
                     _myRegistryKeep.Write("DaystoKeep", 30);
                     break;
+
                 case 2:
                     _myRegistryKeep.Write("DaystoKeep", 60);
                     break;
+
                 case 4:
                     _myRegistryKeep.Write("DaystoKeep", 90);
                     break;
+
                 case 5:
                     _myRegistryKeep.Write("DaystoKeep", 180);
                     break;
             }
             Loader();
         }
-        #endregion
-        #region  Clear
+
+        #endregion Date
+
+        #region Clear
+
         private void allToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var result1 = MessageBox.Show("Sure you want to do this?", "Important Query", MessageBoxButtons.YesNo,
@@ -317,8 +380,11 @@ namespace Packet
                 Close();
             }
         }
-        #endregion
+
+        #endregion Clear
+
         #region QTY to keep
+
         private void toolStripComboBoxQTY_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxQTY.SelectedIndex)
@@ -326,40 +392,52 @@ namespace Packet
                 case 0:
                     _myRegistryKeep.Write("QTYtoKeep", 0);
                     break;
+
                 case 1:
                     _myRegistryKeep.Write("QTYtoKeep", 100);
                     break;
+
                 case 2:
                     _myRegistryKeep.Write("QTYtoKeep", 500);
                     break;
+
                 case 4:
                     _myRegistryKeep.Write("QTYtoKeep", 1000);
                     break;
+
                 case 5:
                     _myRegistryKeep.Write("QTYtoKeep", 1500);
                     break;
+
                 case 6:
                     _myRegistryKeep.Write("QTYtoKeep", 2000);
                     break;
+
                 case 7:
                     _myRegistryKeep.Write("QTYtoKeep", 5000);
                     break;
+
                 case 8:
                     _myRegistryKeep.Write("QTYtoKeep", 10000);
                     break;
+
                 case 9:
                     _myRegistryKeep.Write("QTYtoKeep", 20000);
                     break;
             }
             Loader();
         }
-        #endregion
+
+        #endregion QTY to keep
+
         #region Custom
+
         private void customToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var box = new Custom();
             box.ShowDialog();
         }
-        #endregion
+
+        #endregion Custom
     }
 }

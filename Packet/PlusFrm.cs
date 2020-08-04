@@ -35,12 +35,10 @@ namespace Packet
                 Do_7plus(args);
             }
 
-            //    c:\temp\7plus.zip -SAVE "c:\temp\"  -SB 5000          
-            //    c:\temp\7plus.p01 - SAVE "c:\temp\"                 
-            //    c:\temp\7plus.err -SAVE "c:\temp\"					
-            //	  c:\temp\7plus.cor -SAVE "c:\temp\	
+            //    c:\temp\7plus.zip -SAVE "c:\temp\"  -SB 5000
+            //    c:\temp\7plus.p01 - SAVE "c:\temp\"
+            //    c:\temp\7plus.err -SAVE "c:\temp\"
+            //	  c:\temp\7plus.cor -SAVE "c:\temp\
         }
-
-
     }
 }

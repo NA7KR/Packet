@@ -19,7 +19,7 @@
             _enable = null;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region DtoList
 
@@ -32,7 +32,7 @@
             _enable = enable;
         }
 
-        #endregion
+        #endregion DtoList
 
         #region get_ID
 
@@ -41,7 +41,7 @@
             return _id;
         }
 
-        #endregion
+        #endregion get_ID
 
         #region get_CustomQuery
 
@@ -50,7 +50,7 @@
             return _customQuery;
         }
 
-        #endregion
+        #endregion get_CustomQuery
 
         #region get_CustomName
 
@@ -59,7 +59,7 @@
             return _customName;
         }
 
-        #endregion
+        #endregion get_CustomName
 
         #region get_TableName
 
@@ -68,7 +68,7 @@
             return _tableName;
         }
 
-        #endregion
+        #endregion get_TableName
 
         #region get_Enable
 
@@ -77,7 +77,7 @@
             return _enable;
         }
 
-        #endregion
+        #endregion get_Enable
 
         #region set_ID
 
@@ -86,7 +86,7 @@
             _id = id;
         }
 
-        #endregion
+        #endregion set_ID
 
         #region set_CustomName
 
@@ -95,7 +95,7 @@
             _customName = customName;
         }
 
-        #endregion
+        #endregion set_CustomName
 
         #region set_CustomQuery
 
@@ -104,7 +104,7 @@
             _customQuery = customQuery;
         }
 
-        #endregion
+        #endregion set_CustomQuery
 
         #region set_TableName
 
@@ -113,7 +113,7 @@
             _tableName = tableName;
         }
 
-        #endregion
+        #endregion set_TableName
 
         #region set_Enable
 
@@ -122,6 +122,6 @@
             _enable = enable;
         }
 
-        #endregion
+        #endregion set_Enable
     }
 }

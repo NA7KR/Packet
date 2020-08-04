@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+
 //endregion
 namespace Packet
 {
@@ -20,12 +21,14 @@ namespace Packet
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
         private readonly ModifyRegistry _myRegistryKeep = new ModifyRegistry();
+
         //region private void aboutToolStripMenuItem_Click
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var box = new AboutBox1();
             box.ShowDialog();
         }
+
         //endregion
         //region private void exitToolStripMenuItem1_Click
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -33,6 +36,7 @@ namespace Packet
             Close();
             Application.Exit();
         }
+
         //endregion
         //region toolStripComboBox1_SelectedIndexChanged
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -44,6 +48,7 @@ namespace Packet
                     iPConfigToolStripMenuItem.Text = "IP BBS Configure";
                     toolStripButton_bbs.Enabled = true;
                     break;
+
                 case 1:
                     _myRegistry.Write("BBS-Mode", "Com");
                     iPConfigToolStripMenuItem.Text = "BBS Configure";
@@ -51,6 +56,7 @@ namespace Packet
                     break;
             }
         }
+
         //endregion
         //region private void toolStripComboBox2_SelectedIndexChanged
         private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -62,6 +68,7 @@ namespace Packet
                     clusterIPConfigToolStripMenuItem.Text = "IP Cluster Configure";
                     toolStripButton_cls.Enabled = true;
                     break;
+
                 case 1:
                     _myRegistry.Write("Cluster-Mode", "Com");
                     clusterIPConfigToolStripMenuItem.Text = "Cluster Configure";
@@ -69,6 +76,7 @@ namespace Packet
                     break;
             }
         }
+
         //endregion
         //region private void toolStripComboBox3_SelectedIndexChanged
         private void toolStripComboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -80,6 +88,7 @@ namespace Packet
                     nodeIPConfigToolStripMenuItem.Text = "IP Node Configure";
                     toolStripButton_Node.Enabled = true;
                     break;
+
                 case 1:
                     _myRegistry.Write("Node-Mode", "Com");
                     nodeIPConfigToolStripMenuItem.Text = "Node Configure";
@@ -87,6 +96,7 @@ namespace Packet
                     break;
             }
         }
+
         //endregion
         //region private void toolStripComboBoxBeep_SelectedIndexChanged
         private void toolStripComboBoxBeep_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,12 +107,14 @@ namespace Packet
                     _myRegistry.Write("Beep", "Yes");
                     _bBeep = true;
                     break;
+
                 case 1:
                     _myRegistry.Write("Beep", "No");
                     _bBeep = false;
                     break;
             }
         }
+
         //endregion
         //region toolStripComboBoxTXTC_SelectedIndexChanged
         private void toolStripComboBoxTXTC_SelectedIndexChanged(object sender, EventArgs e)
@@ -113,30 +125,37 @@ namespace Packet
                     _myRegistry.Write("Color Text", "Black");
                     _textColor = Color.Black;
                     break;
+
                 case 1:
                     _myRegistry.Write("Color Text", "Red");
                     _textColor = Color.Red;
                     break;
+
                 case 2:
                     _myRegistry.Write("Color Text", "Green");
                     _textColor = Color.Green;
                     break;
+
                 case 3:
                     _myRegistry.Write("Color Text", "Yellow");
                     _textColor = Color.Yellow;
                     break;
+
                 case 4:
                     _myRegistry.Write("Color Text", "Blue");
                     _textColor = Color.Blue;
                     break;
+
                 case 5:
                     _myRegistry.Write("Color Text", "Magenta");
                     _textColor = Color.Magenta;
                     break;
+
                 case 6:
                     _myRegistry.Write("Color Text", "Cyan");
                     _textColor = Color.Cyan;
                     break;
+
                 case 7:
                     _myRegistry.Write("Color Text", "White");
                     _textColor = Color.White;
@@ -144,6 +163,7 @@ namespace Packet
             }
             terminalEmulator1.ForeColor = _textColor;
         }
+
         //endregion
         //region toolStripComboBoxBGC
         private void toolStripComboBoxBGC_SelectedIndexChanged(object sender, EventArgs e)
@@ -154,30 +174,37 @@ namespace Packet
                     _myRegistry.Write("Color Background", "Black");
                     _backgroundColor = Color.Black;
                     break;
+
                 case 1:
                     _myRegistry.Write("Color Background", "Red");
                     _backgroundColor = Color.Red;
                     break;
+
                 case 2:
                     _myRegistry.Write("Color Background", "Green");
                     _backgroundColor = Color.Green;
                     break;
+
                 case 3:
                     _myRegistry.Write("Color Background", "Yellow");
                     _backgroundColor = Color.Yellow;
                     break;
+
                 case 4:
                     _myRegistry.Write("Color Background", "Blue");
                     _backgroundColor = Color.Blue;
                     break;
+
                 case 5:
                     _myRegistry.Write("Color Background", "Magenta");
                     _backgroundColor = Color.Magenta;
                     break;
+
                 case 6:
                     _myRegistry.Write("Color Background", "Cyan");
                     _backgroundColor = Color.Cyan;
                     break;
+
                 case 7:
                     _myRegistry.Write("Color Background", "White");
                     _backgroundColor = Color.White;
@@ -185,6 +212,7 @@ namespace Packet
             }
             terminalEmulator1.BackColor = _backgroundColor;
         }
+
         //endregion
         //region private void iPConfigToolStripMenuItem_Click
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
@@ -192,6 +220,7 @@ namespace Packet
             var box = new IpForm("BBS", (_myRegistry.Read("BBS-Mode")));
             box.ShowDialog();
         }
+
         //endregion
         //region private void Form1_Resize_1
         private void Form1_Resize_1(object sender, EventArgs e)
@@ -201,6 +230,7 @@ namespace Packet
             terminalEmulator1.Height = (Height - 140);
             terminalEmulator1.Width = (Width - 60);
         }
+
         //endregion
         //region button check
         private void button_check()
@@ -264,6 +294,7 @@ namespace Packet
                 toolStripButton_SSH.Enabled = true;
             }
         }
+
         //endregion
         //region load
         private void Form1_Load(object sender, EventArgs e)
@@ -287,34 +318,42 @@ namespace Packet
                     toolStripComboBoxTXTC.SelectedIndex = 0;
                     _textColor = Color.Black;
                     break;
+
                 case "Red":
                     toolStripComboBoxTXTC.SelectedIndex = 1;
                     _textColor = Color.Red;
                     break;
+
                 case "Green":
                     toolStripComboBoxTXTC.SelectedIndex = 2;
                     _textColor = Color.Green;
                     break;
+
                 case "Yellow":
                     toolStripComboBoxTXTC.SelectedIndex = 3;
                     _textColor = Color.Yellow;
                     break;
+
                 case "Blue":
                     toolStripComboBoxTXTC.SelectedIndex = 4;
                     _textColor = Color.Blue;
                     break;
+
                 case "Magenta":
                     toolStripComboBoxTXTC.SelectedIndex = 5;
                     _textColor = Color.Magenta;
                     break;
+
                 case "Cyan":
                     toolStripComboBoxTXTC.SelectedIndex = 6;
                     _textColor = Color.Cyan;
                     break;
+
                 case "White":
                     toolStripComboBoxTXTC.SelectedIndex = 7;
                     _textColor = Color.White;
                     break;
+
                 default:
                     _textColor = Color.White;
                     break;
@@ -327,34 +366,42 @@ namespace Packet
                     toolStripComboBoxBGC.SelectedIndex = 0;
                     _backgroundColor = Color.Black;
                     break;
+
                 case "Red":
                     toolStripComboBoxBGC.SelectedIndex = 1;
                     _backgroundColor = Color.Red;
                     break;
+
                 case "Green":
                     toolStripComboBoxBGC.SelectedIndex = 2;
                     _backgroundColor = Color.Green;
                     break;
+
                 case "Yellow":
                     toolStripComboBoxBGC.SelectedIndex = 3;
                     _backgroundColor = Color.Yellow;
                     break;
+
                 case "Blue":
                     toolStripComboBoxBGC.SelectedIndex = 4;
                     _backgroundColor = Color.Blue;
                     break;
+
                 case "Magenta":
                     toolStripComboBoxBGC.SelectedIndex = 5;
                     _backgroundColor = Color.Magenta;
                     break;
+
                 case "Cyan":
                     toolStripComboBoxBGC.SelectedIndex = 6;
                     _backgroundColor = Color.Cyan;
                     break;
+
                 case "White":
                     toolStripComboBoxBGC.SelectedIndex = 7;
                     _backgroundColor = Color.White;
                     break;
+
                 default:
                     _backgroundColor = Color.Black;
                     break;
@@ -372,6 +419,7 @@ namespace Packet
             else
                 toolStripButton_SSH.Visible = false;
         }
+
         //endregion
         //region private void clusterIPConfigToolStripMenuItem_Click
         private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
@@ -379,6 +427,7 @@ namespace Packet
             var box = new IpForm("Cluster", (_myRegistry.Read("Cluster-Mode")));
             box.ShowDialog();
         }
+
         //endregion
         //region private void nodeIPConfigToolStripMenuItem_Click
         private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
@@ -386,6 +435,7 @@ namespace Packet
             var box = new IpForm("Node", (_myRegistry.Read("Node-Mode")));
             box.ShowDialog();
         }
+
         //endregion
         //region toolStripMenuItem1_Click SSH
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -399,6 +449,7 @@ namespace Packet
             else
                 toolStripButton_SSH.Visible = true;
         }
+
         //endregion
         //region disconnect
         private void Disconnected(object sender, EventArgs e)
@@ -406,6 +457,7 @@ namespace Packet
             // maybe called from terminiat in other threrad
             Invoke((Action)delegate { button_check(); });
         }
+
         //endregion
         //region toolStripMenu click show Com port configure
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
@@ -413,6 +465,7 @@ namespace Packet
             var box = new ComForm();
             box.ShowDialog();
         }
+
         //endregion
         //region ParseEnum
         public static T ParseEnum<T>(string value)
@@ -426,12 +479,14 @@ namespace Packet
                 return (T)Enum.Parse(typeof(T), null, false);
             }
         }
+
         //endregion
         //region terminalEmulator1_ForwardDone
         private void terminalEmulator1_ForwardDone(object sender, EventArgs e)
         {
             Invoke((Action)delegate { toolStripButton_fwd.Enabled = true; });
         }
+
         //endregion
         //region terminalEmulator1_LastNumberevt
         private void terminalEmulator1_LastNumberevt(object sender, EventArgs e)
@@ -439,6 +494,7 @@ namespace Packet
             var number = (terminalEmulator1.LastNumber);
             _myRegistryBbs.Write("Start Number", number);
         }
+
         //endregion
         //region BBS Click
         private void toolStripButton_BBS_Click(object sender, EventArgs e)
@@ -509,6 +565,7 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
+
         //endregion
         //region FWD
         private void toolStripButton_FWD_Click(object sender, EventArgs e)
@@ -530,6 +587,7 @@ namespace Packet
             terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.ReadDw("Start Number"));
             terminalEmulator1.Startforward();
         }
+
         //endregion
         //region Cluster Click
         private void toolStripButton_Cluster_Click(object sender, EventArgs e)
@@ -594,6 +652,7 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
+
         //endregion
         //region Node Click
         private void toolStripButton_Node_Click(object sender, EventArgs e)
@@ -657,6 +716,7 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
+
         //endregion
         //region Disconnect Click
         private void toolStripButton_Disconnect_Click(object sender, EventArgs e)
@@ -670,6 +730,7 @@ namespace Packet
             toolStripButton_fwd.Enabled = false;
             toolStripButton_fwd.Text = "Forward";
         }
+
         //endregion
         //region SSH Click
         private void toolStripButton_SSH_Click(object sender, EventArgs e)
@@ -703,6 +764,7 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
+
         //endregion
         //region MailConfig
         private void toolStripButton_MailConfig_Click(object sender, EventArgs e)
@@ -710,6 +772,7 @@ namespace Packet
             var box = new Mail();
             box.ShowDialog();
         }
+
         //endregion
         //region  Read Mail
         private void toolStripButton_ReadMail_Click(object sender, EventArgs e)
@@ -717,12 +780,14 @@ namespace Packet
             var box = new Read();
             box.ShowDialog();
         }
+
         //endregion
         //region Personal Mail
         private void toolStripButton_PersonalMail_Click(object sender, EventArgs e)
         {
             MessageBox.Show("To come soon");
         }
+
         //endregion
         //region 7plus click
         private void toolStripButton_7plus_Click(object sender, EventArgs e)
@@ -730,9 +795,11 @@ namespace Packet
             var box = new PlusFrm();
             box.ShowDialog();
         }
+
         //endregion
         //region Form1
         public const string DsnName = "DSN=Packet";
+
         public Main()
         {
             InitializeComponent();
@@ -785,16 +852,20 @@ namespace Packet
             OnResize(EventArgs.Empty);
             terminalEmulator1.DnsName = DsnName;
         }
+
         protected override sealed void OnResize(EventArgs e)
         {
             base.OnResize(e);
         }
+
         //endregion
         //region private TelnetConnection
         //private static read only Sql Sql = new Sql();
         private bool _bBeep = true;
+
         private Color _backgroundColor = Color.Black;
         private Color _textColor = Color.Yellow;
+
         //endregion
         //region start thread
         private void StartThread()
@@ -838,13 +909,16 @@ namespace Packet
             }
             CreateFileWatcher(path);
         }
+
         //endregion
         //region tool Strip Button
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             StartThread();
         }
+
         //endregion
     }
+
     //endregion
 }

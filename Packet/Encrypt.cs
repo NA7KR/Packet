@@ -5,7 +5,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-#endregion
+#endregion Using Directive
 
 namespace Packet
 {
@@ -39,7 +39,7 @@ namespace Packet
             return clearText;
         }
 
-        #endregion
+        #endregion Encrypt
 
         #region Decrypt
 
@@ -81,6 +81,6 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Decrypt
     }
 }

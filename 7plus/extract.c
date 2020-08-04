@@ -1,7 +1,6 @@
 #include "7plus.h"
 #include "globals.h"
 
-
 // extract 7plus-files from log-file.
 
 const char list_top[] = "File         Length Lines\n"
@@ -9,8 +8,8 @@ const char list_top[] = "File         Length Lines\n"
 
 int extract_files(char* name, char* search)
 {
-	FILE *in, *out;
-	char string[81], destnam[13], writenam[MAXPATH ], dummi[20], *p, *q;
+	FILE* in, * out;
+	char string[81], destnam[13], writenam[MAXPATH], dummi[20], * p, * q;
 
 	int i, part, file, /*filen,*/ err, errn, cor, corn, ret, lines, info, offset;
 	ulong bytes, sum;
@@ -24,8 +23,8 @@ int extract_files(char* name, char* search)
 		_strlwr(search);
 
 	fprintf(ErrorFile, "\n--------------------\n"
-	        "7PLUS file extractor\n"
-	        "--------------------\n");
+		"7PLUS file extractor\n"
+		"--------------------\n");
 
 	if ((in = fopen(name, OPEN_READ_BINARY)) == NULLFP)
 	{
@@ -110,8 +109,7 @@ int extract_files(char* name, char* search)
 						sprintf(dummi, ".e%02x", errn++);
 						strcat(destnam, dummi);
 						sprintf(writenam, "%s%s", genpath, destnam);
-					}
-					while (!test_exist(writenam));
+					} while (!test_exist(writenam));
 				}
 
 				if (cor && !test_exist(writenam))
@@ -124,8 +122,7 @@ int extract_files(char* name, char* search)
 						sprintf(dummi, ".c%02x", corn++);
 						strcat(destnam, dummi);
 						sprintf(writenam, "%s%s", genpath, destnam);
-					}
-					while (!test_exist(writenam));
+					} while (!test_exist(writenam));
 				}
 
 				file++;
@@ -193,7 +190,7 @@ int extract_files(char* name, char* search)
 	if (file)
 	{
 		fprintf(ErrorFile, "------------ ====== -----\n"
-		        "      Total: %6lu\n", sum);
+			"      Total: %6lu\n", sum);
 		fprintf(ErrorFile, "\nAll done!\n");
 	}
 	else

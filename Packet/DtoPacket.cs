@@ -1,12 +1,5 @@
-﻿#region Using Directive
-
-
-
-#endregion
-
-namespace Packet
+﻿namespace Packet
 {
-
     #region class DtoPacket
 
     public class DtoPacket
@@ -36,7 +29,7 @@ namespace Packet
             _msgState = null;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region DTOPacket
 
@@ -54,7 +47,7 @@ namespace Packet
             _msgState = msgState;
         }
 
-        #endregion
+        #endregion DTOPacket
 
         #region get_MSG
 
@@ -63,7 +56,7 @@ namespace Packet
             return _msg;
         }
 
-        #endregion
+        #endregion get_MSG
 
         #region get_MSGTSLD
 
@@ -72,7 +65,7 @@ namespace Packet
             return _msgtsld;
         }
 
-        #endregion
+        #endregion get_MSGTSLD
 
         #region get_MSGTO
 
@@ -81,7 +74,7 @@ namespace Packet
             return _msgto;
         }
 
-        #endregion
+        #endregion get_MSGTO
 
         #region get_MSGSize
 
@@ -90,7 +83,7 @@ namespace Packet
             return _msgSize;
         }
 
-        #endregion
+        #endregion get_MSGSize
 
         #region get_MSGRoute
 
@@ -99,7 +92,7 @@ namespace Packet
             return _msgRoute;
         }
 
-        #endregion
+        #endregion get_MSGRoute
 
         #region get_MSGFrom
 
@@ -108,7 +101,7 @@ namespace Packet
             return _msgFrom;
         }
 
-        #endregion
+        #endregion get_MSGFrom
 
         #region get_MSGDateTime
 
@@ -117,7 +110,7 @@ namespace Packet
             return _msgDateTime;
         }
 
-        #endregion
+        #endregion get_MSGDateTime
 
         #region get_MSGSubject
 
@@ -126,7 +119,7 @@ namespace Packet
             return _msgSubject;
         }
 
-        #endregion
+        #endregion get_MSGSubject
 
         #region get_MSGState
 
@@ -135,7 +128,7 @@ namespace Packet
             return _msgState;
         }
 
-        #endregion
+        #endregion get_MSGState
 
         #region set_MSG
 
@@ -144,7 +137,7 @@ namespace Packet
             _msg = msg;
         }
 
-        #endregion
+        #endregion set_MSG
 
         #region set_MSGTSLD
 
@@ -153,7 +146,7 @@ namespace Packet
             _msgtsld = msgtsld;
         }
 
-        #endregion
+        #endregion set_MSGTSLD
 
         #region set_MSGTO
 
@@ -162,7 +155,7 @@ namespace Packet
             _msgto = msgto;
         }
 
-        #endregion
+        #endregion set_MSGTO
 
         #region set_MSGSize
 
@@ -171,7 +164,7 @@ namespace Packet
             _msgSize = msgSize;
         }
 
-        #endregion
+        #endregion set_MSGSize
 
         #region set_MSGRoute
 
@@ -180,7 +173,7 @@ namespace Packet
             _msgRoute = msgRoute;
         }
 
-        #endregion
+        #endregion set_MSGRoute
 
         #region set_MSGFrom
 
@@ -189,7 +182,7 @@ namespace Packet
             _msgFrom = msgFrom;
         }
 
-        #endregion
+        #endregion set_MSGFrom
 
         #region set_MSGDateTime
 
@@ -198,7 +191,7 @@ namespace Packet
             _msgDateTime = msgDateTime;
         }
 
-        #endregion
+        #endregion set_MSGDateTime
 
         #region set_MSGSubject
 
@@ -207,7 +200,7 @@ namespace Packet
             _msgSubject = msgSubject;
         }
 
-        #endregion
+        #endregion set_MSGSubject
 
         #region set_MSGState
 
@@ -216,8 +209,8 @@ namespace Packet
             _msgState = msgState;
         }
 
-        #endregion
+        #endregion set_MSGState
     }
 
-    #endregion
+    #endregion class DtoPacket
 }

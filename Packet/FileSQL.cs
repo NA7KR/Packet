@@ -1,4 +1,5 @@
 ﻿#region Using Directive
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,9 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
-#endregion
+
+#endregion Using Directive
+
 namespace Packet
 {
     public class FileSql
@@ -19,6 +22,7 @@ namespace Packet
         private readonly OdbcManager _odbc;
         private readonly DtoPacket _packet = new DtoPacket();
         #region Constructor
+
         public FileSql()
         {
             var dsnTableName = "Packet";
@@ -59,8 +63,10 @@ namespace Packet
                 }
             }
         }
-        #endregion
+
+        #endregion Constructor
         #region SQLMakeTable
+
         private void SqlMakeTable(string query)
         {
             try
@@ -82,8 +88,10 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-        #endregion
+
+        #endregion SQLMakeTable
         #region SQLInsertPacket
+
         private void SqlInsertPacket(DtoPacket packetdto)
         {
             try
@@ -107,8 +115,10 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-        #endregion
+
+        #endregion SQLInsertPacket
         #region DoesTableExist
+
         public bool DoesTableExist(string tableName, string dsnName)
         {
             using (var con = new OdbcConnection(dsnName))
@@ -138,8 +148,10 @@ namespace Packet
                 return tableExists;
             }
         }
-        #endregion
+
+        #endregion DoesTableExist
         #region WriteSQLPacket
+
         public void WriteSqlPacket(string textValue)
         {
             try
@@ -159,8 +171,10 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-        #endregion
+
+        #endregion WriteSQLPacket
         #region SelectMakeTable
+
         public void SelectMakeTable(string textVale, int intsize, string tableName, string systemDsn)
         {
             if (_odbc.CheckForDsn(systemDsn) > 0)
@@ -177,8 +191,10 @@ namespace Packet
                 Environment.Exit(1);
             }
         }
-        #endregion
+
+        #endregion SelectMakeTable
         #region ReplyMakeTable
+
         public void ReplyMakeTable(string systemDsn)
         {
             if (_odbc.CheckForDsn(systemDsn) > 0)
@@ -195,8 +211,10 @@ namespace Packet
                 Environment.Exit(1);
             }
         }
-        #endregion
+
+        #endregion ReplyMakeTable
         #region SelectMakeCustomQuery
+
         public bool SelectMakeCustomQuery(string systemDsn)
         {
             if (_odbc.CheckForDsn(systemDsn) > 0)
@@ -214,8 +232,10 @@ namespace Packet
             Environment.Exit(1);
             return false;
         }
-        #endregion
+
+        #endregion SelectMakeCustomQuery
         #region Mid
+
         private static string Mid(string param, int startIndex, int length)
         {
             if (param == " ")
@@ -225,8 +245,10 @@ namespace Packet
             var result = param.Substring(startIndex, length);
             return result;
         }
-        #endregion
+
+        #endregion Mid
         #region SQLPacket Delete
+
         public void SqlPacketDelete(string tableName)
         {
             if (DoesTableExist(tableName, DsnName))
@@ -255,8 +277,10 @@ namespace Packet
                 }
             }
         }
-        #endregion
+
+        #endregion SQLPacket Delete
         #region SQLSelectMail
+
         public int[] SqlSelectMail()
         {
             using (var con = new OdbcConnection(DsnName))
@@ -287,8 +311,10 @@ namespace Packet
                 }
             }
         }
-        #endregion
+
+        #endregion SQLSelectMail
         #region SqlupdateRead
+
         public void SqlupdateRead(int msgNumber)
         {
             if (DoesTableExist("Packet", DsnName))
@@ -318,8 +344,10 @@ namespace Packet
                 }
             }
         }
-        #endregion
+
+        #endregion SqlupdateRead
         #region SqlCustomRead
+
         public List<DtoCustom> SqlCustomRead()
         {
             var packets = new List<DtoCustom>();
@@ -357,8 +385,10 @@ namespace Packet
             }
             return packets;
         }
-        #endregion
+
+        #endregion SqlCustomRead
         #region WriteST
+
         public bool WriteSt(string textVale, string fileName, string pathNo, bool txt)
         {
             string filePath;
@@ -392,8 +422,10 @@ namespace Packet
                 return false;
             }
         } //end write
-        #endregion
+
+        #endregion WriteST
         #region	   UpdateSqlto
+
         public void UpdateSqlto(string tableName)
         {
             if (DoesTableExist(tableName, DsnName))
@@ -428,8 +460,10 @@ namespace Packet
                 }
             }
         }
+
         #endregion
         #region	   UpdateSqlCistom
+
         public void UpdateSqlCustom(string tableName, string customQuery)
         {
             if (DoesTableExist("Packet", DsnName))
@@ -464,8 +498,10 @@ namespace Packet
                 }
             }
         }
+
         #endregion
         #region Check for Internet
+
         public static bool CheckForInternetConnection()
         {
             try
@@ -481,6 +517,7 @@ namespace Packet
                 return false;
             }
         }
+
         #endregion
     }
 } //end name-space

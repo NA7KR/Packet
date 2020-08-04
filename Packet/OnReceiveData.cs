@@ -5,11 +5,12 @@ using System.Net.Sockets;
 
 namespace Packet
 {
-
     public sealed partial class TerminalEmulator
     {
         #region OnReveiveData
+
         public bool plus = false;
+
         private void OnReceivedData(IAsyncResult ar)
         {
             try
@@ -124,7 +125,6 @@ namespace Packet
                                         DispatchMessage(this, Environment.NewLine);
                                         _msgstate = "prompt";
 
-
                                         Invoke(RxdTextEvent, string.Copy(sReceived));
 
                                         Invoke(RefreshEvent);
@@ -137,14 +137,12 @@ namespace Packet
                             }
                             //if (sReceived.Contains(BBSPrompt))
 
-
                             if (_msgstate == "prompt")
                             {
                                 var dfile = "";
                                 if (_nb != null)
                                 {
                                     var lastNumber = _nb[_msgno] % 10;
-
 
                                     //var
                                     plus = sReceived.Contains("go_7+.");
@@ -153,7 +151,6 @@ namespace Packet
 
                                     for (var i = _fstmsg; i < (lines.Length - 1); i++)
                                     {
-
                                         if (lines[i].Contains("go_7+"))
                                         {
                                             var start = lines[i].IndexOf("go_7+", 0, StringComparison.Ordinal);
@@ -161,7 +158,6 @@ namespace Packet
                                             {
                                                 dfile = null;
                                                 makefile = true;
-
                                             }
                                             if (makefile)
                                             {
@@ -252,7 +248,7 @@ namespace Packet
                 DispatchMessage(this, Environment.NewLine);
             }
         }
-        #endregion
 
+        #endregion OnReveiveData
     }
 }

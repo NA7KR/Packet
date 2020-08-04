@@ -1,13 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+
 namespace Packet
 {
     public partial class Main
     {
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
+
         #region CreateFile Watch
+
         public void CreateFileWatcher(string path)
         {
             // Create a new FileSystemWatcher and set its properties.
@@ -20,8 +23,10 @@ namespace Packet
             _fmWatcher.Created += OnChanged;
             _fmWatcher.EnableRaisingEvents = true;
         }
-        #endregion
+
+        #endregion CreateFile Watch
         #region Stop watching files
+
         public void FilewatchStop()
         {
             try
@@ -35,8 +40,10 @@ namespace Packet
                 Console.WriteLine(e);
             }
         }
-        #endregion
+
+        #endregion Stop watching files
         #region OnChange
+
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (!_mBDirty)
@@ -51,8 +58,10 @@ namespace Packet
                 _mBDirty = true;
             }
         }
-        #endregion
+
+        #endregion OnChange
         #region
+
         private void tmrEditNotify_Tick(object sender, EventArgs e)
         {
             if (_mBDirty)
@@ -109,8 +118,10 @@ namespace Packet
                 }
             }
         }
-        #endregion  
+
+        #endregion
         #region    msg
+
         public void Msg(string newfile, int rn)
         {
             string txt;
@@ -234,6 +245,7 @@ namespace Packet
             }
             toolStripStatusLabel1.Text = txt + " " + newfile;
         }
+
         #endregion
     }
 }

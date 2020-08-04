@@ -113,6 +113,6 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Assembly Attribute Accessors
     }
 }

@@ -69,14 +69,14 @@ const char* rebuilding[] = { "### rebuilding a line ###",
 
 int decode_file(char* name, int flag)
 {
-	FILE *in, *out;
+	FILE* in, * out;
 	int part, _part, parts, _parts, _parts0;
 	int c_line, c_line2, c_line3, f_lines, blocklines;
 	int defect, rest, length, hcorrupted, ignored;
 	uint csequence, crc;
 	long binbytes, _binbytes, lines, rebuilt, k, line;
 	ulong ftimestamp;
-	char rline[81], *p, dummi[20], dummi2[81];
+	char rline[81], * p, dummi[20], dummi2[81];
 	char inpath[MAXFPATH], indexfile[MAXPATH], metafile[MAXPATH];
 	char filename[13], srcname[MAXPATH], orgname[MAXFNAME];
 	char orgname2[66], destname[13], orgdestname[13];
@@ -515,7 +515,6 @@ int decode_file(char* name, int flag)
 	}
 	progress(filename, part - 1, parts, lines, rebuilt, "done...");
 
-
 	idxptr->lines_left = lines;
 
 	/* Get size of metafile */
@@ -535,7 +534,6 @@ int decode_file(char* name, int flag)
 				return (10);
 			replace(srcname, metafile, ftimestamp);
 
-
 			if (autokill)
 				kill_em(_file, inpath, (parts == 1) ? "7pl" : "p", "cor", "c", "err", "e", parts, 0);
 
@@ -544,7 +542,6 @@ int decode_file(char* name, int flag)
 			return (0);
 		}
 	}
-
 
 	if (!flag || no_tty)
 	{
@@ -555,13 +552,13 @@ int decode_file(char* name, int flag)
 
 		if ((idxptr->lines_left > (idxptr->length / 620L)) && !sysop)
 			fprintf(ErrorFile,
-			"\nWARNING:\n"
-			"========\n"
-			"More than 10%% of all lines are corrupted! Are you sure, your "
-			"communications\nprogramm is set correctly to handle 7PLUS files "
-			"(character conversion ect..)?\nMaybe you didn't get parts of "
-			"the files because of link failures?\nOf course, the cause may "
-			"lie with the originating source...\n\n");
+				"\nWARNING:\n"
+				"========\n"
+				"More than 10%% of all lines are corrupted! Are you sure, your "
+				"communications\nprogramm is set correctly to handle 7PLUS files "
+				"(character conversion ect..)?\nMaybe you didn't get parts of "
+				"the files because of link failures?\nOf course, the cause may "
+				"lie with the originating source...\n\n");
 	}
 	if (_binbytes != binbytes)
 	{
@@ -574,7 +571,6 @@ int decode_file(char* name, int flag)
 	return (11);
 }
 
-
 /*
 ***
 *** split up longs into 2 * 31 binary bytes and write to file.
@@ -582,7 +578,7 @@ int decode_file(char* name, int flag)
 */
 void decode_n_write(FILE* out, char* p, int length)
 {
-	static ulong after[16], *af;
+	static ulong after[16], * af;
 	static int i, j, k;
 
 	/* Re-arrange data-characters to 2*8 longs containing 31 bits each.*/
@@ -718,7 +714,6 @@ int make_new_err(const char* name)
 
 	return (0);
 }
-
 
 // Progress indication
 

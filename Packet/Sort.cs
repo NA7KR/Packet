@@ -1,10 +1,14 @@
 ﻿#region Using Directive
+
 using System;
 using System.Windows.Forms;
-#endregion
+
+#endregion Using Directive
+
 namespace Packet
 {
     #region class Sort
+
     public partial class Sort : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
@@ -13,7 +17,9 @@ namespace Packet
         public int DSize;
         public bool Loaded;
         public string SListType;
+
         #region Sort
+
         public Sort(int dsize, string sListType, char cKey)
         {
             InitializeComponent();
@@ -21,8 +27,11 @@ namespace Packet
             DSize = dsize;
             DKey = cKey;
         }
-        #endregion
+
+        #endregion Sort
+
         #region OK
+
         private void button_ok_Click(object sender, EventArgs e)
         {
             MyFiles.UpdateSqlto("MSGTO");
@@ -35,8 +44,11 @@ namespace Packet
             MyFiles.SqlPacketDelete("MSGSubject");
             Close();
         }
-        #endregion
+
+        #endregion OK
+
         #region Load
+
         private void Sort_Load(object sender, EventArgs e)
         {
             MyFiles.SelectMakeTable(SListType, DSize, SListType, "Packet");
@@ -233,8 +245,11 @@ namespace Packet
             }
             Loaded = true;
         }
-        #endregion
+
+        #endregion Load
+
         #region resize
+
         private void Sort_Resize(object sender, EventArgs e)
         {
             listView1.Left = 5;
@@ -244,8 +259,11 @@ namespace Packet
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
         }
-        #endregion
+
+        #endregion resize
+
         #region listView1_ItemChecked
+
         private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             var checkedItems = listView1.CheckedItems;
@@ -293,7 +311,9 @@ namespace Packet
                 }
             }
         }
-        #endregion
+
+        #endregion listView1_ItemChecked
     }
-    #endregion
+
+    #endregion class Sort
 }

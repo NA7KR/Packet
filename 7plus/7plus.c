@@ -12,15 +12,15 @@ byte code[216];
 char range[257];
 byte _extended = '*'; /* Allow long filenames */
 size_t buflen;
-char _drive[MAXDRIVE ], _dir[MAXDIR ], _file[MAXFILE ], _ext[MAXEXT ];
+char _drive[MAXDRIVE], _dir[MAXDIR], _file[MAXFILE], _ext[MAXEXT];
 char spaces[] = "                                                   ";
 char* endstr;
 char* sendstr;
 char* pathstr;
 char* errorlog;
-char genpath[MAXPATH ];
-char ErrorF[MAXPATH ];
-char altname[MAXPATH ];
+char genpath[MAXPATH];
+char ErrorF[MAXPATH];
+char altname[MAXPATH];
 char delimit[] = "\n";
 char def_format[] = "format.def";
 const char cant[] = "\007\n'%s': Can't open. Break.\n";
@@ -41,13 +41,10 @@ const char s_logon[] = "\n[7+ v"VERSION""_LFN" ("PL7_DATE"), (C) DG1BBQ]\n";
 
 HANDLE hDLLInst = 0;
 
-
 #include <direct.h>
 #define GetCurrentDir _getcwd
 
-
 char cCurrentPath[FILENAME_MAX];
-
 
 BOOL WINAPI DllMain(HANDLE hModule, DWORD dwFunction, LPVOID lpNot)
 {
@@ -63,12 +60,11 @@ BOOL WINAPI DllMain(HANDLE hModule, DWORD dwFunction, LPVOID lpNot)
 	return TRUE;
 }
 
-
 // The real DLL entry point
 //int __export CALLBACK Do_7plus(char *cmd_line)
 __declspec(dllexport) int Do_7plus(char* cmd_line)
 {
-	char *p1, *p2;
+	char* p1, * p2;
 	char** argv;
 	int argc = 0;
 	int i, l;
@@ -101,7 +97,7 @@ __declspec(dllexport) int Do_7plus(char* cmd_line)
 
 	// Allocate the pointers.
 
-	argv = (char **)calloc(argc, sizeof(char *));
+	argv = (char**)calloc(argc, sizeof(char*));
 
 	// Process cmd_line again setting up argv.
 
@@ -135,8 +131,8 @@ __declspec(dllexport) int Do_7plus(char* cmd_line)
 /* This is the real main() */
 int go_at_it(int argc, char** argv)
 {
-	char *p12, *r12, *s12, *t12;
-	char argname[MAXPATH ];
+	char* p12, * r12, * s12, * t12;
+	char argname[MAXPATH];
 	int ret, i, extract, genflag, join, cor;
 	long blocksize;
 
@@ -146,7 +142,6 @@ int go_at_it(int argc, char** argv)
 
 	i = -1;
 	//ErrorFile = stdout;
-
 
 	if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
 	{
@@ -246,7 +241,7 @@ int go_at_it(int argc, char** argv)
 			{
 				if (t12 != def_format)
 				{
-					endstr = (char *)malloc((int)strlen(argv[i]) + 1);
+					endstr = (char*)malloc((int)strlen(argv[i]) + 1);
 					strcpy(endstr, argv[i]);
 				}
 			}
@@ -261,7 +256,7 @@ int go_at_it(int argc, char** argv)
 			{
 				if (t12 != def_format)
 				{
-					pathstr = (char *)malloc((int)strlen(argv[i]) + 1);
+					pathstr = (char*)malloc((int)strlen(argv[i]) + 1);
 					strcpy(pathstr, argv[i]);
 				}
 			}
@@ -277,7 +272,7 @@ int go_at_it(int argc, char** argv)
 			{
 				if (t12 != def_format)
 				{
-					errorlog = (char *)malloc((int)strlen(argv[i]) + 1);
+					errorlog = (char*)malloc((int)strlen(argv[i]) + 1);
 					strcpy(errorlog, argv[i]);
 				}
 			}
@@ -297,7 +292,7 @@ int go_at_it(int argc, char** argv)
 			{
 				if (t12 != def_format)
 				{
-					sendstr = (char *)malloc((int)strlen(argv[i]) + 1);
+					sendstr = (char*)malloc((int)strlen(argv[i]) + 1);
 					strcpy(sendstr, argv[i]);
 				}
 			}
@@ -334,10 +329,8 @@ int go_at_it(int argc, char** argv)
 		if (!_stricmp(argv[i], "-J")) /* Join two error reports / Produce single */
 			join = 1; /* output file when encoding               */
 
-
 		if (!_stricmp(argv[i], "-P")) /* Write encoded files in Packet format */
 			sprintf(delimit, "\r"); /* for direct binary upload. */
-
 
 		if (!_stricmp(argv[i], "-SIM")) /* Simulate encoding and report */
 			simulate = 1; /* number of parts and parts */
@@ -368,7 +361,6 @@ int go_at_it(int argc, char** argv)
 		/* How many lines fit on screen? */
 		scrlines = 40;
 
-
 		ret = 0;
 		if (ErrorFile != stdout)
 			fclose(ErrorFile);
@@ -376,7 +368,7 @@ int go_at_it(int argc, char** argv)
 		return (ret);
 	}
 
-	if ((s12 = (char *)malloc((size_t)4000UL)) == NULLCP)
+	if ((s12 = (char*)malloc((size_t)4000UL)) == NULLCP)
 	{
 		fprintf(ErrorFile, nomem);
 		if (ErrorFile != stdout)
@@ -386,7 +378,7 @@ int go_at_it(int argc, char** argv)
 	}
 	free(s12);
 
-	if ((idxptr = (struct m_index *)malloc(sizeof(struct m_index))) == NULL)
+	if ((idxptr = (struct m_index*)malloc(sizeof(struct m_index))) == NULL)
 	{
 		fprintf(ErrorFile, nomem);
 		if (ErrorFile != stdout)
@@ -424,7 +416,7 @@ int go_at_it(int argc, char** argv)
 			//free(c);
 		}
 	}
-	//KRR 
+	//KRR
 	// fnsplit(argname, _drive, _dir, _file, _ext);
 	if (genflag)
 		sprintf(genpath, "%s%s", _drive, _dir);
@@ -536,7 +528,6 @@ int go_at_it(int argc, char** argv)
 	return (ret);
 }
 
-
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
  *+ Possible return codes:                                                 +*
  *++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
@@ -565,4 +556,3 @@ int go_at_it(int argc, char** argv)
  21 Not enough memory available
 
  *++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-

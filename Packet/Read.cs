@@ -1,9 +1,12 @@
 ﻿#region Using Directive
+
 using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-#endregion
+
+#endregion Using Directive
+
 namespace Packet
 {
     public partial class Read : Form
@@ -14,13 +17,18 @@ namespace Packet
         private int _textId;
         private string _to;
         private string _tsld;
+
         #region Read
+
         public Read()
         {
             InitializeComponent();
         }
-        #endregion
+
+        #endregion Read
+
         #region Read_Load
+
         private void Read_Load(object sender, EventArgs e)
         {
             DataGridView1.Columns.Add("RXMSG", "MSG");
@@ -51,8 +59,11 @@ namespace Packet
             _selectedCkeck = false;
             Loader();
         }
-        #endregion
+
+        #endregion Read_Load
+
         #region Loader
+
         private void Loader()
         {
             try
@@ -80,8 +91,11 @@ namespace Packet
                 MessageBox.Show("Error in file read" + " " + ex.Source);
             }
         }
-        #endregion
+
+        #endregion Loader
+
         #region resize
+
         private void Read_Resize(object sender, EventArgs e)
         {
             {
@@ -103,8 +117,11 @@ namespace Packet
                 richTextBox1.Height = Height - 150;
             }
         }
-        #endregion
+
+        #endregion resize
+
         #region RowPost
+
         private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             foreach (DataGridViewRow row in DataGridView1.Rows)
@@ -127,8 +144,11 @@ namespace Packet
                 }
             }
         }
-        #endregion
+
+        #endregion RowPost
+
         #region CellContentDoubleClick
+
         private void DataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
@@ -150,16 +170,22 @@ namespace Packet
                 Loader();
             }
         }
-        #endregion
+
+        #endregion CellContentDoubleClick
+
         #region OK
+
         private void button_OK_Click(object sender, EventArgs e)
         {
             DataGridView1.Visible = true;
             richTextBox1.Visible = false;
             _selectedCkeck = false;
         }
-        #endregion
+
+        #endregion OK
+
         #region Delete
+
         private void button_Delete_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
@@ -172,8 +198,11 @@ namespace Packet
             _selectedCkeck = false;
             Loader();
         }
-        #endregion
+
+        #endregion Delete
+
         #region Reply
+
         private void button_Relpy_Click(object sender, EventArgs e)
         {
             if (_selectedCkeck)
@@ -186,7 +215,9 @@ namespace Packet
                 MessageBox.Show("Select a message first");
             }
         }
-        #endregion
+
+        #endregion Reply
+
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             _textId = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);

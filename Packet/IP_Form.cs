@@ -1,7 +1,10 @@
 ﻿#region Using Directive
+
 using System;
 using System.Windows.Forms;
-#endregion
+
+#endregion Using Directive
+
 namespace Packet
 {
     public partial class IpForm : Form
@@ -10,18 +13,24 @@ namespace Packet
         {
             MessageBox.Show("Must match what BBS sends. Like BBS>");
         }
+
         private void textBox_username_prompt_Enter(object sender, EventArgs e)
         {
             MessageBox.Show("Must match what BBS sends. Like Callsign:");
         }
+
         private void textBox_password_prompt_Enter(object sender, EventArgs e)
         {
             MessageBox.Show("Must match what BBS sends. Like Password:");
         }
+
         #region IP_Form2
+
         private readonly Encrypting _myEncrypt = new Encrypting();
         private readonly ModifyRegistry _myRegistry = new ModifyRegistry();
+
         #region IP_Form2
+
         public IpForm(string var1, string var2)
         {
             if (var1 == null) throw new ArgumentNullException(nameof(var1));
@@ -32,8 +41,11 @@ namespace Packet
             _var1 = var1;
             _var2 = var2;
         }
-        #endregion
+
+        #endregion IP_Form2
+
         #region Done_button
+
         private void Done_button_Click(object sender, EventArgs e)
         {
             if (_var2 == "Telnet")
@@ -70,11 +82,15 @@ namespace Packet
             }
             Close();
         }
-        #endregion
+
+        #endregion Done_button
+
         #region Load
+
         private void IP_Form2_Load(object sender, EventArgs e)
         {
             #region Telnet
+
             if (_var2 == "Telnet")
             {
                 Text = "Telnet";
@@ -240,8 +256,11 @@ namespace Packet
                     Height = Done_button.Top + 80;
                 }
             }
-            #endregion
+
+            #endregion Telnet
+
             #region SSH
+
             else if (_var1 == "SSH")
             {
                 Text = "SSH";
@@ -294,8 +313,11 @@ namespace Packet
                 Height = 260;
                 echo_comboBox.Top = 140;
             }
-            #endregion
+
+            #endregion SSH
+
             #region else com
+
             else
             {
                 Text = "Com Port";
@@ -360,9 +382,12 @@ namespace Packet
                     Height = Done_button.Top + 80;
                 }
             }
-            #endregion
-            #endregion
+
+            #endregion else com
+
+            #endregion Load
         }
-        #endregion
+
+        #endregion IP_Form2
     }
 }

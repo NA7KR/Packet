@@ -16,12 +16,11 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 
-#endregion
+#endregion Using Directive
 
 namespace Packet
 {
-
-    #region  class TerminalEmulator : Control
+    #region class TerminalEmulator : Control
 
     public sealed partial class TerminalEmulator : Control
     {
@@ -109,7 +108,7 @@ namespace Packet
             ConnectionType = ConnectionTypes.Telnet; // default
         }
 
-        #endregion
+        #endregion TerminalEmulator
 
         #region Close Connection
 
@@ -119,7 +118,7 @@ namespace Packet
             Disconnect();
         }
 
-        #endregion
+        #endregion Close Connection
 
         #region StringCollection
 
@@ -129,7 +128,7 @@ namespace Packet
             return scrapedText;
         }
 
-        #endregion
+        #endregion StringCollection
 
         #region Write
 
@@ -140,7 +139,7 @@ namespace Packet
             Invoke(RefreshEvent);
         }
 
-        #endregion
+        #endregion Write
 
         #region Connect
 
@@ -177,7 +176,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Connect
 
         #region Start-forward
 
@@ -192,7 +191,7 @@ namespace Packet
             DispatchMessage(this, Environment.NewLine);
         }
 
-        #endregion
+        #endregion Start-forward
 
         #region Disconnected by remote
 
@@ -207,7 +206,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Disconnected by remote
 
         #region Com Port
 
@@ -282,7 +281,7 @@ namespace Packet
                         }
                 }
 
-                #endregion
+                #endregion case baud
 
                 #region case stop
 
@@ -314,7 +313,7 @@ namespace Packet
                         }
                 }
 
-                #endregion
+                #endregion case stop
 
                 #region case data bits
 
@@ -346,9 +345,9 @@ namespace Packet
                         }
                 }
 
-                #endregion
+                #endregion case data bits
 
-                #region  case flow
+                #region case flow
 
                 switch (FlowType)
                 {
@@ -378,7 +377,7 @@ namespace Packet
                         }
                 }
 
-                #endregion
+                #endregion case flow
 
                 #region case parity
 
@@ -416,12 +415,12 @@ namespace Packet
                         }
                 }
 
-                #endregion
+                #endregion case parity
 
                 _port.PortName = SerialPort;
                 _port.Open();
                 _port.DataReceived += port_DataReceived;
-                //this.Focus();  
+                //this.Focus();
             }
             catch (IOException e)
             {
@@ -429,7 +428,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Com Port
 
         #region ReadStreamSSH
 
@@ -454,7 +453,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ReadStreamSSH
 
         #region port_DataReceived
 
@@ -487,7 +486,7 @@ namespace Packet
                             FileActive = false;
 
                             for (var i = 1; i < lines.Length - 1; i++)
-                            //for (int i = lines.Length -2 ; i >= 1 ; i-- )  
+                            //for (int i = lines.Length -2 ; i >= 1 ; i-- )
                             {
                                 FileSql.WriteSqlPacket(lines[i]);
                                 //LastNumber = lines[i].Substring(0, 5);
@@ -505,7 +504,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion port_DataReceived
 
         #region Connect Telnet
 
@@ -516,7 +515,7 @@ namespace Packet
             var addr = ipHost.AddressList;
             try
             {
-                // Create New Socket 
+                // Create New Socket
                 _curSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 // Create New EndPoint
@@ -534,7 +533,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Connect Telnet
 
         #region mnuCopy
 
@@ -558,7 +557,7 @@ namespace Packet
                     }
 
                     // this next check will first find the first non-inverse cord with a
-                    // character in it. If it happens to be at the beginning of a line, 
+                    // character in it. If it happens to be at the beginning of a line,
                     // then we'll back up and stop at the last char in the prev line
                     if (foundStart &&
                         foundStop == false &&
@@ -618,7 +617,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion mnuCopy
 
         #region mnuPaste
 
@@ -626,7 +625,7 @@ namespace Packet
         {
         }
 
-        #endregion
+        #endregion mnuPaste
 
         #region mnuCopyPaste
 
@@ -634,7 +633,7 @@ namespace Packet
         {
         }
 
-        #endregion
+        #endregion mnuCopyPaste
 
         #region HandleScroll
 
@@ -659,7 +658,6 @@ namespace Packet
                     }
                 }
 
-
                 switch (se)
                 {
                     case 0: // page up
@@ -679,6 +677,7 @@ namespace Packet
                             _vertScrollBar.Value = 0;
                         }
                         break;
+
                     case 1: // page down
                         if (_vertScrollBar.Value < (_vertScrollBar.Maximum))
                         {
@@ -690,7 +689,6 @@ namespace Packet
                             _vertScrollBar.Value = _vertScrollBar.Maximum;
                         }
                         break;
-
 
                     case 2: // up
                         if (_lastVisibleLine > -(_scrollbackBuffer.Count - _rows))
@@ -727,6 +725,7 @@ namespace Packet
                         _lastVisibleLine += _rows;
                         _vertScrollBar.Value += _rows;
                         break;
+
                     case -7864320:
                         if (_vertScrollBar.Value < (_vertScrollBar.Maximum))
                         {
@@ -830,14 +829,13 @@ namespace Packet
 
                 Refresh();
             }
-
             catch (Exception curException)
             {
                 MessageBox.Show("Error HandleScroll: " + curException.Message);
             }
         }
 
-        #endregion
+        #endregion HandleScroll
 
         #region SetScrollBarValues
 
@@ -864,7 +862,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SetScrollBarValues
 
         #region ConnectCallback
 
@@ -896,9 +894,9 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ConnectCallback
 
-        #region  DispatchMessage
+        #region DispatchMessage
 
         private void DispatchMessage(object sender, string strText)
         {
@@ -934,7 +932,6 @@ namespace Packet
                 {
                     _port.Write(strText);
                 }
-
                 else if (_cType == "SSH")
                 {
                     strText = strText.Replace("\r\n", "\n");
@@ -980,7 +977,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion DispatchMessage
 
         #region EndDispatchMessage
 
@@ -997,7 +994,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion EndDispatchMessage
 
         #region PrintChar
 
@@ -1033,7 +1030,7 @@ namespace Packet
             CaretRight();
         }
 
-        #endregion
+        #endregion PrintChar
 
         #region System.Drawing.Point GetDrawStringOffset
 
@@ -1068,7 +1065,7 @@ namespace Packet
             return new Point((int)(measureRect1.X + 0.5), (int)(measureRect1.Y + 0.5));
         }
 
-        #endregion
+        #endregion System.Drawing.Point GetDrawStringOffset
 
         #region System.Drawing.Point GetCharSize
 
@@ -1100,7 +1097,7 @@ namespace Packet
             return new Point((int)(measureRect1.Width + 0.5), (int)(measureRect1.Height + 0.5));
         }
 
-        #endregion
+        #endregion System.Drawing.Point GetCharSize
 
         #region AssignColors
 
@@ -1151,7 +1148,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion AssignColors
 
         #region ShowChar
 
@@ -1220,7 +1217,7 @@ namespace Packet
                 y - _drawStringOffset.Y);
         }
 
-        #endregion
+        #endregion ShowChar
 
         #region SSH Connect
 
@@ -1246,7 +1243,7 @@ namespace Packet
             Focus();
         }
 
-        #endregion
+        #endregion SSH Connect
 
         #region ShowSpecialChar
 
@@ -1371,7 +1368,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ShowSpecialChar
 
         #region WipeScreen
 
@@ -1388,7 +1385,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion WipeScreen
 
         #region ClearDown
 
@@ -1434,7 +1431,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ClearDown
 
         #region ClearRight
 
@@ -1463,7 +1460,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ClearRight
 
         #region ShowBuffer
 
@@ -1472,14 +1469,13 @@ namespace Packet
             Invalidate();
         }
 
-        #endregion
+        #endregion ShowBuffer
 
         #region Redraw
 
         private void Redraw(Graphics curGraphics)
         {
             char CurChar;
-
 
             // refresh the screen
             for (var y = 0; y < _rows; y++)
@@ -1507,7 +1503,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Redraw
 
         #region NvtSendWill
 
@@ -1516,7 +1512,7 @@ namespace Packet
             DispatchMessage(this, string.Format("\xFF\xFB{0}", curChar));
         }
 
-        #endregion
+        #endregion NvtSendWill
 
         #region NvtSendWont
 
@@ -1525,7 +1521,7 @@ namespace Packet
             DispatchMessage(this, string.Format("\xFF\xFC{0}", curChar));
         }
 
-        #endregion
+        #endregion NvtSendWont
 
         #region NvtSendDont
 
@@ -1534,7 +1530,7 @@ namespace Packet
             DispatchMessage(this, string.Format("\xFF\xFE{0}", curChar));
         }
 
-        #endregion
+        #endregion NvtSendDont
 
         #region NvtSendDo
 
@@ -1543,7 +1539,7 @@ namespace Packet
             DispatchMessage(this, string.Format("\xFF\xFD{0}", curChar));
         }
 
-        #endregion
+        #endregion NvtSendDo
 
         #region NvtSendSubNeg
 
@@ -1552,7 +1548,7 @@ namespace Packet
             DispatchMessage(this, string.Format("\xFF\xFA{0}\x00{1}\xFF\xF0", curChar, curString));
         }
 
-        #endregion
+        #endregion NvtSendSubNeg
 
         #region NvtExecuteChar
 
@@ -1560,7 +1556,7 @@ namespace Packet
         {
         }
 
-        #endregion
+        #endregion NvtExecuteChar
 
         #region TelnetInterpreter
 
@@ -1571,6 +1567,7 @@ namespace Packet
                 case NvtActions.SendUp:
                     _parser.ParseString(e.CurChar.ToString(CultureInfo.InvariantCulture));
                     break;
+
                 case NvtActions.Execute:
                     NvtExecuteChar();
                     break;
@@ -1583,14 +1580,14 @@ namespace Packet
 
             //    switch (curCmd)
             //    {
-            //        // 24 - terminal type 
+            //        // 24 - terminal type
             //        case '\x18':
             //            NvtSendWill(curCmd);
             //            break;
 
             //        default:
             //            NvtSendWont(curCmd);
-            //            //System.Console.Write ("unsupported telnet DO sequence {0} happened\n", 
+            //            //System.Console.Write ("unsupported telnet DO sequence {0} happened\n",
             //            //System.Convert.ToInt32 (System.Convert.ToChar (e.CurSequence.Substring (1,1))));
             //            break;
             //    }
@@ -1609,7 +1606,7 @@ namespace Packet
 
             //        default:
             //            NvtSendDont(curCmd);
-            //            //System.Console.Write ("unsupported telnet WILL sequence {0} happened\n", 
+            //            //System.Console.Write ("unsupported telnet WILL sequence {0} happened\n",
             //            //System.Convert.ToInt32 (System.Convert.ToChar (e.CurSequence.Substring (1,1))));
             //            break;
             //    }
@@ -1628,7 +1625,7 @@ namespace Packet
 
             //    switch (curCmd)
             //    {
-            //        // 24 - terminal type 
+            //        // 24 - terminal type
             //        case '\x18':
             //            NvtSendSubNeg(curCmd, "vt220");
             //            break;
@@ -1642,7 +1639,7 @@ namespace Packet
             //}
         }
 
-        #endregion
+        #endregion TelnetInterpreter
 
         #region CarriageReturn
 
@@ -1651,7 +1648,7 @@ namespace Packet
             CaretToAbs(_caret.Pos.Y, 0);
         }
 
-        #endregion
+        #endregion CarriageReturn
 
         #region Tab
 
@@ -1669,7 +1666,7 @@ namespace Packet
             CaretToAbs(_caret.Pos.Y, _cols - 1);
         }
 
-        #endregion
+        #endregion Tab
 
         #region TabSet
 
@@ -1678,11 +1675,11 @@ namespace Packet
             _tabStops.Columns[_caret.Pos.X] = true;
         }
 
-        #endregion
+        #endregion TabSet
 
         #region ClearTabs
 
-        private void ClearTabs(UcParams curParams) // TBC 
+        private void ClearTabs(UcParams curParams) // TBC
         {
             var param = 0;
 
@@ -1706,7 +1703,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ClearTabs
 
         #region ReverseLineFeed
 
@@ -1733,7 +1730,7 @@ namespace Packet
             CaretUp();
         }
 
-        #endregion
+        #endregion ReverseLineFeed
 
         #region Insert line
 
@@ -1762,7 +1759,6 @@ namespace Packet
                     _attribGrid[i] = _attribGrid[i - 1];
                 }
 
-
                 _charGrid[_caret.Pos.Y] = new char[_cols];
                 _attribGrid[_caret.Pos.Y] = new CharAttribStruct[_cols];
 
@@ -1770,7 +1766,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Insert line
 
         #region DeleteLine
 
@@ -1806,7 +1802,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion DeleteLine
 
         #region LineFeed
 
@@ -1852,7 +1848,7 @@ namespace Packet
             CaretDown();
         }
 
-        #endregion
+        #endregion LineFeed
 
         #region Index
 
@@ -1866,7 +1862,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Index
 
         #region ReverseIndex
 
@@ -1880,7 +1876,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ReverseIndex
 
         #region CaretOff
 
@@ -1894,7 +1890,7 @@ namespace Packet
             _caret.IsOff = true;
         }
 
-        #endregion
+        #endregion CaretOff
 
         #region CaretOn
 
@@ -1908,7 +1904,7 @@ namespace Packet
             _caret.IsOff = false;
         }
 
-        #endregion
+        #endregion CaretOn
 
         #region ShowCaret
 
@@ -1963,7 +1959,7 @@ namespace Packet
                 curAttribs);
         }
 
-        #endregion
+        #endregion ShowCaret
 
         #region CaretUp
 
@@ -1978,7 +1974,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion CaretUp
 
         #region CaretDown
 
@@ -1993,7 +1989,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion CaretDown
 
         #region CaretLeft
 
@@ -2007,7 +2003,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion CaretLeft
 
         #region CaretRight
 
@@ -2024,7 +2020,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion CaretRight
 
         #region CaretToRel
 
@@ -2033,8 +2029,8 @@ namespace Packet
             _caret.EOL = false;
             /* This code is used when we get a cursor position command from
                    the host. Even if we're not in relative mode we use this as this will
-                   sort that out for us. The ToAbs code is used internally by this prog 
-                   but is smart enough to stay within the margins if the origin relative 
+                   sort that out for us. The ToAbs code is used internally by this prog
+                   but is smart enough to stay within the margins if the origin relative
                    flags set. */
 
             if ((_modes.Flags & UcMode.OriginRelative) == 0)
@@ -2071,7 +2067,7 @@ namespace Packet
             _caret.Pos.X = x;
         }
 
-        #endregion
+        #endregion CaretToRel
 
         #region CaretToAbs
 
@@ -2113,7 +2109,7 @@ namespace Packet
             _caret.Pos.X = x;
         }
 
-        #endregion
+        #endregion CaretToAbs
 
         #region CommandRouter
 
@@ -2416,7 +2412,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion CommandRouter
 
         #region SelectCharSet
 
@@ -2510,7 +2506,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SelectCharSet
 
         #region SetqmhMode
 
@@ -2572,7 +2568,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SetqmhMode
 
         #region SetqmlMode
 
@@ -2634,7 +2630,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SetqmlMode
 
         #region SethMode
 
@@ -2662,7 +2658,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SethMode
 
         #region SetlMode
 
@@ -2690,7 +2686,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SetlMode
 
         #region SetScrollRegion
 
@@ -2717,7 +2713,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SetScrollRegion
 
         #region ClearCharAttribs
 
@@ -2736,7 +2732,7 @@ namespace Packet
             //_charAttribs.AltBgColor = Color.Black;
         }
 
-        #endregion
+        #endregion ClearCharAttribs
 
         #region SetCharAttribs
 
@@ -2871,7 +2867,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SetCharAttribs
 
         #region ExecuteChar
 
@@ -2941,11 +2937,11 @@ namespace Packet
                     CaretToAbs(_caret.Pos.Y, 0);
                     break;
 
-                    //case '\x88': // HTS Horizontal tab set 
+                    //case '\x88': // HTS Horizontal tab set
                     //    TabSet();
                     //    break;
 
-                    //case '\x8D': // RI Reverse Index 
+                    //case '\x8D': // RI Reverse Index
                     //    ReverseLineFeed();
                     //    break;
 
@@ -2959,7 +2955,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ExecuteChar
 
         #region SetSize
 
@@ -2985,7 +2981,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion SetSize
 
         #region GetFontInfo
 
@@ -3011,7 +3007,7 @@ namespace Packet
             _eraseBuffer = Graphics.FromImage(_eraseBitmap);
         }
 
-        #endregion
+        #endregion GetFontInfo
 
         #region Disconnect
 
@@ -3048,7 +3044,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion Disconnect
 
         #region class uc_CommsStateObject
 
@@ -3064,10 +3060,10 @@ namespace Packet
                 Buffer = new byte[8192];
             }
 
-            #endregion
+            #endregion UcCommsStateObject
         }
 
-        #endregion
+        #endregion class uc_CommsStateObject
 
         #region class uc_TabStops
 
@@ -3098,10 +3094,10 @@ namespace Packet
                 Columns[128] = true;
             }
 
-            #endregion
+            #endregion UcTabStops
         }
 
-        #endregion
+        #endregion class uc_TabStops
 
         #region class uc_CaretAttribs
 
@@ -3127,10 +3123,10 @@ namespace Packet
                 Attribs = p6;
             }
 
-            #endregion
+            #endregion UcCaretAttribs
         }
 
-        #endregion
+        #endregion class uc_CaretAttribs
 
         #region class uc_Chars
 
@@ -3159,24 +3155,24 @@ namespace Packet
                 NRCSwiss
             }
 
-            #endregion
+            #endregion enum Sets
 
             #region UcCharSet[] DECSG
 
             public static readonly UcCharSet[] DECSG =
             {
                 new UcCharSet(0x5F, 0x0020), // Blank (I've used space here so you may want to change this)
-                //            new uc_CharSet (0x60, 0x25C6), // Filled Diamond 
-                new UcCharSet(0x61, 0x0000), // Pi over upside down Pi ?  
-                new UcCharSet(0x62, 0x2409), // HT symbol 
-                new UcCharSet(0x63, 0x240C), // LF Symbol  
-                new UcCharSet(0x64, 0x240D), // CR Symbol  
-                new UcCharSet(0x65, 0x240A), // LF Symbol  
-                new UcCharSet(0x66, 0x00B0), // Degree  
-                new UcCharSet(0x67, 0x00B1), // Plus over Minus  
-                new UcCharSet(0x68, 0x2424), // NL Symbol  
-                new UcCharSet(0x69, 0x240B), // VT Symbol 
-                //            new uc_CharSet (0x6A, 0x2518), // Bottom Right Box 
+                //            new uc_CharSet (0x60, 0x25C6), // Filled Diamond
+                new UcCharSet(0x61, 0x0000), // Pi over upside down Pi ?
+                new UcCharSet(0x62, 0x2409), // HT symbol
+                new UcCharSet(0x63, 0x240C), // LF Symbol
+                new UcCharSet(0x64, 0x240D), // CR Symbol
+                new UcCharSet(0x65, 0x240A), // LF Symbol
+                new UcCharSet(0x66, 0x00B0), // Degree
+                new UcCharSet(0x67, 0x00B1), // Plus over Minus
+                new UcCharSet(0x68, 0x2424), // NL Symbol
+                new UcCharSet(0x69, 0x240B), // VT Symbol
+                //            new uc_CharSet (0x6A, 0x2518), // Bottom Right Box
                 //            new uc_CharSet (0x6B, 0x2510), // Top Right Box
                 //            new uc_CharSet (0x6C, 0x250C), // TopLeft Box
                 //            new uc_CharSet (0x6D, 0x2514), // Bottom Left Box
@@ -3184,23 +3180,22 @@ namespace Packet
                 new UcCharSet(0x6F, 0x23BA), // Scan Line 1
                 new UcCharSet(0x70, 0x25BB), // Scan Line 3
                 //            new uc_CharSet (0x71, 0x2500), // Horizontal Line (scan line 5 as well?)
-                new UcCharSet(0x72, 0x23BC), // Scan Line 7 
-                new UcCharSet(0x73, 0x23BD), // Scan Line 9 
+                new UcCharSet(0x72, 0x23BC), // Scan Line 7
+                new UcCharSet(0x73, 0x23BD), // Scan Line 9
                 //            new uc_CharSet (0x74, 0x251C), // Left Tee Piece
                 //            new uc_CharSet (0x75, 0x2524), // Right Tee Piece
                 //            new uc_CharSet (0x76, 0x2534), // Bottom Tee Piece
                 //            new uc_CharSet (0x77, 0x252C), // Top Tee Piece
                 //            new uc_CharSet (0x78, 0x2502), // Vertical Line
-                new UcCharSet(0x79, 0x2264), // Less than or equal  
-                new UcCharSet(0x7A, 0x2265), // Greater than or equal 
+                new UcCharSet(0x79, 0x2264), // Less than or equal
+                new UcCharSet(0x7A, 0x2265), // Greater than or equal
                 new UcCharSet(0x7B, 0x03A0), // Capital Pi
-                new UcCharSet(0x7C, 0x2260), // Not Equal 
-                new UcCharSet(0x7D, 0x00A3), // Pound Sign 
-                new UcCharSet(0x7E, 0x00B7) // Middle Dot 
+                new UcCharSet(0x7C, 0x2260), // Not Equal
+                new UcCharSet(0x7D, 0x00A3), // Pound Sign
+                new UcCharSet(0x7E, 0x00B7) // Middle Dot
             };
 
-            #endregion
-
+            #endregion UcCharSet[] DECSG
 
             #region UcCharSet[] ASCII
 
@@ -3209,8 +3204,7 @@ namespace Packet
                 new UcCharSet(0x00, 0x0000) //
             };
 
-
-            #endregion
+            #endregion UcCharSet[] ASCII
 
             public Sets Set;
 
@@ -3221,7 +3215,7 @@ namespace Packet
                 Set = p1;
             }
 
-            #endregion
+            #endregion UcChars
 
             #region Char
 
@@ -3244,7 +3238,7 @@ namespace Packet
                 return curChar;
             }
 
-            #endregion
+            #endregion Char
 
             #region UcCharSet
 
@@ -3261,13 +3255,13 @@ namespace Packet
                     UnicodeNo = p2;
                 }
 
-                #endregion
+                #endregion UcCharSet
             }
 
-            #endregion
+            #endregion UcCharSet
         }
 
-        #endregion
+        #endregion class uc_Chars
 
         #region class uc_Caret
 
@@ -3286,10 +3280,10 @@ namespace Packet
                 Pos = new Point(0, 0);
             }
 
-            #endregion
+            #endregion UcCaret
         }
 
-        #endregion
+        #endregion class uc_Caret
 
         #region class WMCodes
 
@@ -3309,20 +3303,20 @@ namespace Packet
             public const int OCM_VSCROLL = 0x0115;
         }
 
-        #endregion
+        #endregion class WMCodes
 
         #region class uc_Mode
 
         private class UcMode
         {
-            public static readonly uint Locked = 1; // Unlocked           = off 
-            public static uint BackSpace = 2; // Delete             = off 
-            public static uint NewLine = 4; // Line Feed          = off 
-            public static readonly uint Repeat = 8; // No Repeat          = off 
-            public static readonly uint AutoWrap = 16; // No AutoWrap        = off 
-            public static readonly uint CursorAppln = 32; // Std Cursor Codes   = off 
-            public static readonly uint KeypadAppln = 64; // Std Numeric Codes  = off 
-            public static uint DataProcessing = 128; // Typewriter         = off 
+            public static readonly uint Locked = 1; // Unlocked           = off
+            public static uint BackSpace = 2; // Delete             = off
+            public static uint NewLine = 4; // Line Feed          = off
+            public static readonly uint Repeat = 8; // No Repeat          = off
+            public static readonly uint AutoWrap = 16; // No AutoWrap        = off
+            public static readonly uint CursorAppln = 32; // Std Cursor Codes   = off
+            public static readonly uint KeypadAppln = 64; // Std Numeric Codes  = off
+            public static uint DataProcessing = 128; // Typewriter         = off
             public static uint PositionReports = 256; // CharacterCodes     = off
             public static readonly uint LocalEchoOff = 512; // LocalEchoOn        = off
             public static readonly uint OriginRelative = 1024; // OriginAbsolute     = off
@@ -3338,10 +3332,10 @@ namespace Packet
                 Flags = 0;
             }
 
-            #endregion
+            #endregion UcMode
         }
 
-        #endregion
+        #endregion class uc_Mode
 
         #region class uc_Keyboard
 
@@ -3351,7 +3345,7 @@ namespace Packet
             private readonly TerminalEmulator _parent;
             private bool _altIsDown;
             private bool _ctrlIsDown;
-            private bool _lastKeyDownSent; // next WM_CHAR ignored if true 
+            private bool _lastKeyDownSent; // next WM_CHAR ignored if true
             private bool _shiftIsDown;
 
             #region UcKeyboard
@@ -3361,7 +3355,7 @@ namespace Packet
                 _parent = p1;
             }
 
-            #endregion
+            #endregion UcKeyboard
 
             public event KeyboardEventHandler KeyboardEvent;
 
@@ -3382,7 +3376,6 @@ namespace Packet
                 scanCode = lBytes[2];
                 flags = lBytes[3];
                 //keyValue = BitConverter.ToUInt16(wBytes, 0);
-
 
                 // key down messages send the scan code in wParam whereas
                 // key press messages send the char and unicode values in this word
@@ -3480,7 +3473,6 @@ namespace Packet
                     _parent.Refresh();
                     //KRR
                 }
-
                 else if (keyMess.Msg == WMCodes.WM_SYSCHAR || keyMess.Msg == WMCodes.WM_CHAR)
                 {
                     AnsiChar = wBytes[0];
@@ -3500,7 +3492,7 @@ namespace Packet
                 }
             }
 
-            #endregion
+            #endregion KeyDown
 
             #region class UcKeyInfo
 
@@ -3525,10 +3517,10 @@ namespace Packet
                     FlagValue = p6;
                 }
 
-                #endregion
+                #endregion UcKeyInfo
             }
 
-            #endregion
+            #endregion class UcKeyInfo
 
             #region UcKeyMap
 
@@ -3543,7 +3535,7 @@ namespace Packet
                     SetToDefault();
                 }
 
-                #endregion
+                #endregion UcKeyMap
 
                 #region SetToDefault
 
@@ -3573,7 +3565,6 @@ namespace Packet
                     //Elements.Add (new uc_KeyInfo (68,  false, "Shift", "\x1B[37~", uc_Mode.Any,       0)); //ShF10
                     //Elements.Add (new uc_KeyInfo (87,  false, "Shift", "\x1B[38~", uc_Mode.Any,       0)); //ShF11
                     //Elements.Add (new uc_KeyInfo (88,  false, "Shift", "\x1B[39~", uc_Mode.Any,       0)); //ShF12
-
 
                     //// this is the initial list of keyboard codes
                     //Elements.Add(new UcKeyInfo(15, false, "Shift", "\x1B[Z", UcMode.Any, 0)); //ShTab
@@ -3639,7 +3630,7 @@ namespace Packet
                     //Elements.Add(new UcKeyInfo(09, false, "Ctrl", "\x7F", UcMode.Any, 0)); //Ctrl8->DEL
                 }
 
-                #endregion
+                #endregion SetToDefault
 
                 #region Find
 
@@ -3664,13 +3655,13 @@ namespace Packet
                     return outString;
                 }
 
-                #endregion
+                #endregion Find
             }
 
-            #endregion
+            #endregion UcKeyMap
         }
 
-        #endregion
+        #endregion class uc_Keyboard
 
         #region class uc_VertScrollBar
 
@@ -3683,7 +3674,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion class uc_VertScrollBar
 
         #region class uc_Params
 
@@ -3720,7 +3711,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion class uc_Params
 
         #region class uc_Parser
 
@@ -3733,7 +3724,9 @@ namespace Packet
             private string _curSequence = "";
             private ArrayList _paramList = new ArrayList();
             private States _state = States.Ground;
+
             public event ParserEventHandler ParserEvent;
+
             // Every character received is treated as an event which could change the state of
             // the parser. The following section finds out which event or state change this character
             // should trigger and also finds out where we should store the incoming character.
@@ -3754,7 +3747,7 @@ namespace Packet
                 {
                     _curChar = c;
 
-                    // Get the next state and associated action based 
+                    // Get the next state and associated action based
                     // on the current state and char event
                     _charEvents.GetStateEventAction(_state, _curChar, ref nextState, ref nextAction);
 
@@ -3786,7 +3779,7 @@ namespace Packet
                 }
             }
 
-            #endregion
+            #endregion ParseString
 
             #region DoAction
 
@@ -3824,13 +3817,12 @@ namespace Packet
                     case Actions.Print:
 
                         //                    System.Console.Write ("Sequence = {0}, Char = {1}, PrmCount = {2}, State = {3}, NextAction = {4}\n",
-                        //                        this.CurSequence, this.CurChar.ToString (), this.CurParams.Count ().ToString (), 
+                        //                        this.CurSequence, this.CurChar.ToString (), this.CurParams.Count ().ToString (),
                         //                        this.State.ToString (), NextAction.ToString ());
 
                         ParserEvent(this, new ParserEventArgs(nextAction, _curChar, _curSequence, _curParams));
                         break;
                 }
-
 
                 switch (nextAction)
                 {
@@ -3841,7 +3833,7 @@ namespace Packet
                 }
             }
 
-            #endregion
+            #endregion DoAction
 
             #region enum States
 
@@ -3865,7 +3857,7 @@ namespace Packet
                 Anywhere = 16
             }
 
-            #endregion
+            #endregion enum States
 
             #region Transition
 
@@ -3876,7 +3868,7 @@ namespace Packet
                 Exit = 2
             }
 
-            #endregion
+            #endregion Transition
 
             #region struct UcCharEventInfo
 
@@ -3886,7 +3878,7 @@ namespace Packet
                 public readonly char CharTo;
                 public readonly States CurState;
                 public readonly Actions NextAction;
-                public readonly States NextState; // the next state we are going to 
+                public readonly States NextState; // the next state we are going to
 
                 public UcCharEventInfo(
                     States p1,
@@ -3903,7 +3895,7 @@ namespace Packet
                 }
             }
 
-            #endregion
+            #endregion struct UcCharEventInfo
 
             #region UcCharEvents
 
@@ -4008,7 +4000,7 @@ namespace Packet
                     new UcCharEventInfo(States.OscString, '\x9C', '\x9C', Actions.None, States.Ground)
                 };
 
-                #endregion
+                #endregion UcCharEventInfo
 
                 #region GetStateEventAction
 
@@ -4044,16 +4036,16 @@ namespace Packet
                     return false;
                 }
 
-                #endregion
+                #endregion GetStateEventAction
             }
 
-            #endregion
+            #endregion UcCharEvents
 
             #region UcStateChangeEvents
 
             private class UcStateChangeEvents
             {
-                #region  uc_CharEventInfo
+                #region uc_CharEventInfo
 
                 private readonly UcStateChangeInfo[] _elements =
                 {
@@ -4063,7 +4055,7 @@ namespace Packet
                     new UcStateChangeInfo(States.DcsPassthrough, Transitions.Exit, Actions.Unhook)
                 };
 
-                #endregion
+                #endregion uc_CharEventInfo
 
                 #region GetStateChangeAction
 
@@ -4085,10 +4077,10 @@ namespace Packet
                     return false;
                 }
 
-                #endregion
+                #endregion GetStateChangeAction
             }
 
-            #endregion
+            #endregion UcStateChangeEvents
 
             #region UcStateChangeInfo
 
@@ -4096,7 +4088,7 @@ namespace Packet
             {
                 public readonly Actions NextAction;
                 public readonly States State;
-                public readonly Transitions Transition; // the next state we are going to 
+                public readonly Transitions Transition; // the next state we are going to
 
                 #region UcStateChangeInfo
 
@@ -4107,13 +4099,13 @@ namespace Packet
                     NextAction = p3;
                 }
 
-                #endregion
+                #endregion UcStateChangeInfo
             }
 
-            #endregion
+            #endregion UcStateChangeInfo
         }
 
-        #endregion
+        #endregion class uc_Parser
 
         #region class uc_TelnetParser
 
@@ -4126,6 +4118,7 @@ namespace Packet
             private string _curSequence = "";
             private ArrayList _paramList = new ArrayList();
             private States _state = States.Ground;
+
             public event NvtParserEventHandler NvtParserEvent;
 
             #region ParseString
@@ -4141,7 +4134,7 @@ namespace Packet
                 {
                     _curChar = c;
 
-                    // Get the next state and associated action based 
+                    // Get the next state and associated action based
                     // on the current state and char event
                     _charEvents.GetStateEventAction(_state, _curChar, ref nextState, ref nextAction);
 
@@ -4173,7 +4166,7 @@ namespace Packet
                 }
             }
 
-            #endregion
+            #endregion ParseString
 
             #region DoAction
 
@@ -4203,7 +4196,7 @@ namespace Packet
                     case NvtActions.Dispatch:
 
                         //                    System.Console.Write ("Sequence = {0}, Char = {1}, PrmCount = {2}, State = {3}, NextAction = {4}\n",
-                        //                        this.CurSequence, (int) this.CurChar, this.CurParams.Count (), 
+                        //                        this.CurSequence, (int) this.CurChar, this.CurParams.Count (),
                         //                        this.State, NextAction);
 
                         NvtParserEvent(this, new NvtParserEventArgs(nextAction, _curChar, _curSequence, _curParams));
@@ -4214,7 +4207,7 @@ namespace Packet
                         NvtParserEvent(this, new NvtParserEventArgs(nextAction, _curChar, _curSequence, _curParams));
 
                         //                    System.Console.Write ("Sequence = {0}, Char = {1}, PrmCount = {2}, State = {3}, NextAction = {4}\n",
-                        //                        this.CurSequence, (int) this.CurChar, this.CurParams.Count (), 
+                        //                        this.CurSequence, (int) this.CurChar, this.CurParams.Count (),
                         //                        this.State, NextAction);
                         break;
                 }
@@ -4228,7 +4221,7 @@ namespace Packet
                 }
             }
 
-            #endregion
+            #endregion DoAction
 
             #region enum States
 
@@ -4248,7 +4241,7 @@ namespace Packet
                 SynchSubNegotiate = 11
             }
 
-            #endregion
+            #endregion enum States
 
             #region enum Transitions
 
@@ -4259,7 +4252,7 @@ namespace Packet
                 Exit = 2
             }
 
-            #endregion
+            #endregion enum Transitions
 
             #region UcCharEventInfo
 
@@ -4269,7 +4262,7 @@ namespace Packet
                 public readonly char CharTo;
                 public readonly States CurState;
                 public readonly NvtActions NextAction;
-                public readonly States NextState; // the next state we are going to 
+                public readonly States NextState; // the next state we are going to
 
                 #region UcCharEventInfo
 
@@ -4282,10 +4275,10 @@ namespace Packet
                     NextState = p5;
                 }
 
-                #endregion
+                #endregion UcCharEventInfo
             }
 
-            #endregion
+            #endregion UcCharEventInfo
 
             #region UcCharEvents
 
@@ -4315,7 +4308,7 @@ namespace Packet
                     new UcCharEventInfo(States.Negotiate, (char) 000, (char) 255, NvtActions.Dispatch, States.Ground)
                 };
 
-                #endregion
+                #endregion UcCharEventInfo
 
                 #region GetStateEventAction
 
@@ -4323,7 +4316,6 @@ namespace Packet
                     ref NvtActions nextAction)
                 {
                     UcCharEventInfo Element;
-
 
                     for (var i = 0; i < Elements.Length; i++)
                     {
@@ -4341,10 +4333,10 @@ namespace Packet
                     }
                 }
 
-                #endregion
+                #endregion GetStateEventAction
             }
 
-            #endregion
+            #endregion UcCharEvents
 
             #region UcStateChangeEvents
 
@@ -4357,7 +4349,7 @@ namespace Packet
                     new UcStateChangeInfo(States.None, Transitions.None, NvtActions.None)
                 };
 
-                #endregion
+                #endregion UcStateChangeInfo
 
                 #region GetStateChangeAction
 
@@ -4377,18 +4369,18 @@ namespace Packet
                     }
                 }
 
-                #endregion
+                #endregion GetStateChangeAction
             }
 
-            #endregion
+            #endregion UcStateChangeEvents
 
-            #region  UcStateChangeInfo
+            #region UcStateChangeInfo
 
             private struct UcStateChangeInfo
             {
                 public readonly NvtActions NextAction;
                 public readonly States State;
-                public readonly Transitions Transition; // the next state we are going to 
+                public readonly Transitions Transition; // the next state we are going to
 
                 public UcStateChangeInfo(
                     States p1,
@@ -4401,10 +4393,10 @@ namespace Packet
                 }
             }
 
-            #endregion
+            #endregion UcStateChangeInfo
         }
 
-        #endregion
+        #endregion class uc_TelnetParser
 
         #region Private Enums
 
@@ -4413,8 +4405,10 @@ namespace Packet
             None = 0,
             Dispatch = 1,
             Execute = 2,
+
             //Ignore = 3,
             Collect = 4,
+
             NewCollect = 5,
             Param = 6,
             OscStart = 8,
@@ -4426,7 +4420,7 @@ namespace Packet
             Print = 14
         }
 
-        #endregion
+        #endregion Private Enums
 
         #region NvtActions
 
@@ -4441,7 +4435,7 @@ namespace Packet
             Execute = 7
         }
 
-        #endregion
+        #endregion NvtActions
 
         #region Public Properties of Component
 
@@ -4450,7 +4444,6 @@ namespace Packet
             get { return _rows; }
             set { }
         }
-
 
         public int Columns
         {
@@ -4499,7 +4492,7 @@ namespace Packet
 
         public string Header { get; set; }
 
-        #endregion
+        #endregion Public Properties of Component
 
         #region enum BaudRateTypes
 
@@ -4558,7 +4551,7 @@ namespace Packet
             Two
         }
 
-        #endregion
+        #endregion enum BaudRateTypes
 
         #region Fields
 
@@ -4608,10 +4601,11 @@ namespace Packet
         private int _rows;
         private string _textAtCursor; // used to store Cursor text while scrolling
         private int _topMargin;
+
         //private int _underlinePos;
         private bool _xoff;
 
-        #endregion
+        #endregion Fields
 
         #region Delegates
 
@@ -4625,24 +4619,28 @@ namespace Packet
 
         private delegate void RxdTextEventHandler(string sReceived);
 
-        #endregion
+        #endregion Delegates
 
         #region Events private
 
         private event RefreshEventHandler RefreshEvent;
+
         private event RxdTextEventHandler RxdTextEvent;
+
         //private event CaretOffEventHandler CaretOffEvent;
         //private event CaretOnEventHandler CaretOnEvent;
 
-        #endregion
+        #endregion Events private
 
         #region Constructors
 
         public event EventHandler Disconnected;
+
         public event EventHandler ForwardDone;
+
         public event EventHandler LastNumberevt;
 
-        #endregion
+        #endregion Constructors
 
         #region Overrides
 
@@ -4732,7 +4730,7 @@ namespace Packet
             base.OnResize(e);
         }
 
-        #endregion
+        #endregion override OnResize
 
         #region override OnPaint
 
@@ -4748,7 +4746,7 @@ namespace Packet
             ShowCaret(e.Graphics);
         }
 
-        #endregion
+        #endregion override OnPaint
 
         #region override OnPaintBackground
 
@@ -4756,7 +4754,7 @@ namespace Packet
         {
         }
 
-        #endregion
+        #endregion override OnPaintBackground
 
         #region override WndProc
 
@@ -4784,7 +4782,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion override WndProc
 
         #region override OnMouseMove
 
@@ -4803,12 +4801,10 @@ namespace Packet
             var begCol = _beginDrag.X / _charSize.Width;
             var begRow = _beginDrag.Y / _charSize.Height;
 
-
             // reset highlights
             for (var iRow = 0; iRow < _rows; iRow++)
                 for (var iCol = 0; iCol < _cols; iCol++)
                     _attribGrid[iRow][iCol].IsInverse = false;
-
 
             if (endRow < begRow) // we're parsing backwards
             {
@@ -4881,7 +4877,7 @@ namespace Packet
             Refresh();
         }
 
-        #endregion
+        #endregion override OnMouseMove
 
         #region override OnMouseUp
 
@@ -4900,7 +4896,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion override OnMouseUp
 
         #region override OnMouseDown
 
@@ -4916,7 +4912,7 @@ namespace Packet
             base.OnMouseDown(curArgs);
         }
 
-        #endregion
+        #endregion override OnMouseDown
 
         #region
 
@@ -4925,9 +4921,9 @@ namespace Packet
             //MessageBox.Show(this.Font.Name + " " + Convert.ToString(this.Font.Size));
         }
 
-        #endregion
+        #endregion Overrides
 
-        #endregion
+        #endregion class TerminalEmulator : Control
 
         #region Private Structs
 
@@ -4953,7 +4949,7 @@ namespace Packet
             }
         }
 
-        #endregion
+        #endregion ParserEventArgs
 
         #region CharAttribStruct
 
@@ -4976,7 +4972,7 @@ namespace Packet
             public bool UseAltColor;
         }
 
-        #endregion
+        #endregion CharAttribStruct
 
         #region NvtParserEventArgs
 
@@ -4987,7 +4983,7 @@ namespace Packet
             public readonly string CurSequence;
             public UcParams CurParams;
 
-            #region  NvtParserEventArgs
+            #region NvtParserEventArgs
 
             public NvtParserEventArgs(NvtActions p1, char p2, string p3, UcParams p4)
             {
@@ -4997,10 +4993,10 @@ namespace Packet
                 CurParams = p4;
             }
 
-            #endregion
+            #endregion NvtParserEventArgs
         }
 
-        #endregion
+        #endregion NvtParserEventArgs
 
         #endregion Private Structs
     }

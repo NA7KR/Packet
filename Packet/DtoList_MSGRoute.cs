@@ -17,7 +17,7 @@ namespace Packet
             _selected = null;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region DtoList
 
@@ -28,7 +28,7 @@ namespace Packet
             _selected = selected;
         }
 
-        #endregion
+        #endregion DtoList
 
         #region get_MSGRoute
 
@@ -37,7 +37,7 @@ namespace Packet
             return _msgroute;
         }
 
-        #endregion
+        #endregion get_MSGRoute
 
         #region get_dateCreate
 
@@ -46,7 +46,7 @@ namespace Packet
         //    return _dateCreate;
         //}
 
-        #endregion
+        #endregion get_dateCreate
 
         #region get_Selected
 
@@ -55,7 +55,7 @@ namespace Packet
             return _selected;
         }
 
-        #endregion
+        #endregion get_Selected
 
         #region set_MSGRoute
 
@@ -64,7 +64,7 @@ namespace Packet
             _msgroute = msgroute;
         }
 
-        #endregion
+        #endregion set_MSGRoute
 
         #region set_dateCreate
 
@@ -73,7 +73,7 @@ namespace Packet
         //    _dateCreate = dateCreate;
         //}
 
-        #endregion
+        #endregion set_dateCreate
 
         #region set_Selected
 
@@ -82,6 +82,6 @@ namespace Packet
             _selected = selected;
         }
 
-        #endregion
+        #endregion set_Selected
     }
 }

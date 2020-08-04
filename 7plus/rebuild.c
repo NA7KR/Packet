@@ -1,9 +1,9 @@
-#include "7plus.h" 
+#include "7plus.h"
 #include "globals.h"
 
 int rebuild(char* line, int flag)
 {
-	char buf[100], *p;
+	char buf[100], * p;
 	uint cs1, cs2, _cs1, _cs2, xcrc;
 	int oldcode, c_line, cflag, len, sw, i, j, k, end, end2;
 
@@ -65,7 +65,7 @@ int rebuild(char* line, int flag)
 		}
 
 		if (j < 66)
-		crc_calc(xcrc, p[j + 1]);
+			crc_calc(xcrc, p[j + 1]);
 
 		for (k = 0; k < end2; k++)
 		{
@@ -84,7 +84,7 @@ int rebuild(char* line, int flag)
 			}
 
 			for (; i > -1; i--)
-			crc_calc(cs1, p[i]);
+				crc_calc(cs1, p[i]);
 
 			if (_cs1 == (cs1 & 0x7fffU))
 			{
@@ -94,7 +94,7 @@ int rebuild(char* line, int flag)
 					crc_n_lnum(&_cs2, &c_line, p);
 					cs2 = 0;
 					for (i = 0; i < 64; i++)
-					crc_calc(cs2, p[i]);
+						crc_calc(cs2, p[i]);
 					cs2 &= 0x3fff; /* strip calculated CRC to 14 bits */
 				}
 				else

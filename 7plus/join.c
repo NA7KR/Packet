@@ -8,7 +8,7 @@
  */
 int join_control(char* file1, char* file2)
 {
-	char *q, errnam[MAXPATH ], dummi[20];
+	char* q, errnam[MAXPATH], dummi[20];
 	int errn, n;
 
 	n = 0;
@@ -45,12 +45,10 @@ int join_control(char* file1, char* file2)
 			break;
 
 		n = 0;
-	}
-	while (errn != 256);
+	} while (errn != 256);
 
 	return (0);
 }
-
 
 /*
 *** join error reports. This is useful when many different error reports
@@ -61,9 +59,9 @@ int join_control(char* file1, char* file2)
 
 int join_err(char* file1, char* file2)
 {
-	FILE *__file[2], *tmp;
-	char *p[2], *file[2], line[2][81];
-	char name[2][80], fullname [2][31];
+	FILE* __file[2], * tmp;
+	char* p[2], * file[2], line[2][81];
+	char name[2][80], fullname[2][31];
 	char ltab[512], dummi[20];
 	const char* err_rprt = "7PLUS error report:";
 	const char* scan = "%12s %s /%30[^/]/ %ld";
@@ -111,8 +109,8 @@ int join_err(char* file1, char* file2)
 		((fsize[0] && fsize[1]) && (fsize[0] != fsize[1])))
 	{
 		fprintf(ErrorFile, "\007The two error reports do not refer "
-		        "to the same original file!\n"
-		        "Break.\n");
+			"to the same original file!\n"
+			"Break.\n");
 		return (13);
 	}
 
@@ -137,7 +135,7 @@ int join_err(char* file1, char* file2)
 	fnsplit(name[0], NULL, NULL, line[0], NULL);
 	_strupr(line[0]);
 	fprintf(tmp, " go_text. %s.ERR%s7PLUS error report: %s %03X",
-	        line[0], delimit, name[0], blocksize[0]);
+		line[0], delimit, name[0], blocksize[0]);
 	if (*fullname[0])
 		fprintf(tmp, " /%s/", fullname[0]);
 	if (fsize[0])
@@ -226,7 +224,7 @@ int join_err(char* file1, char* file2)
 	{
 		_unlink("7plus.tmp");
 		fprintf(ErrorFile, "\007The two error reports do not refer to the same original "
-		        "file!\nThe timestamps contained are different!\nBreak.\n");
+			"file!\nThe timestamps contained are different!\nBreak.\n");
 		return (13);
 	}
 

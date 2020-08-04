@@ -1,24 +1,39 @@
 #region Using Directive
+
 using Microsoft.Win32;
 using System;
 using System.Windows.Forms;
-#endregion
+
+#endregion Using Directive
+
 namespace Packet
 {
     // An useful class to read/write/delete registry keys
+
     #region ModifyRegistry
+
     public class ModifyRegistry
     {
         #region Show Error
+
         public bool ShowError { get; set; }
-        #endregion
+
+        #endregion Show Error
+
         #region SubKey
+
         public string SubKey { get; set; } = "SOFTWARE\\" + Application.ProductName;
-        #endregion
+
+        #endregion SubKey
+
         #region BaseRegistryKey
+
         public RegistryKey BaseRegistryKey { get; set; } = Registry.CurrentUser;
-        #endregion
+
+        #endregion BaseRegistryKey
+
         #region Read
+
         public string Read(string keyName)
         {
             var rk = BaseRegistryKey;
@@ -37,8 +52,11 @@ namespace Packet
                 return null;
             }
         }
-        #endregion
+
+        #endregion Read
+
         #region ReadDW
+
         public int ReadDw(string keyName)
         {
             var rk = BaseRegistryKey;
@@ -57,8 +75,11 @@ namespace Packet
                 return 0;
             }
         }
-        #endregion
+
+        #endregion ReadDW
+
         #region BRead
+
         public string BRead(string keyName)
         {
             var rk = BaseRegistryKey;
@@ -82,8 +103,11 @@ namespace Packet
                 return null;
             }
         }
-        #endregion
+
+        #endregion BRead
+
         #region Write
+
         public bool Write(string keyName, object value)
         {
             try
@@ -100,8 +124,11 @@ namespace Packet
                 return false;
             }
         }
-        #endregion
+
+        #endregion Write
+
         #region DeleteKey
+
         //public bool DeleteKey(string keyName)
         //{
         //    try
@@ -118,14 +145,19 @@ namespace Packet
         //        return false;
         //    }
         //}
-        #endregion
+
+        #endregion DeleteKey
+
         #region ShowErrorMessage
+
         private void ShowErrorMessage(Exception e, string title)
         {
             if (ShowError)
                 MessageBox.Show(e.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-        #endregion
+
+        #endregion ShowErrorMessage
     }
-    #endregion
+
+    #endregion ModifyRegistry
 }
