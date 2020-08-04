@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using PacketComs;
-
 namespace Packet
 {
     public partial class Reply : Form
@@ -14,9 +12,7 @@ namespace Packet
         private readonly string _tsld;
         private int _count;
         private string _key;
-
         #region constructor
-
         public Reply(int msg, string tsld, string to, string from)
         {
             _tsld = tsld;
@@ -25,11 +21,8 @@ namespace Packet
             _msgnumber = msg;
             InitializeComponent();
         }
-
         #endregion
-
         #region  load
-
         private void Reply_Load(object sender, EventArgs e)
         {
             reply_richTextBox.Width = Width - 50;
@@ -37,22 +30,19 @@ namespace Packet
             reply_richTextBox.Width = Width - 55;
             reply_richTextBox.Top = 20;
             reply_richTextBox.Height = Height - 115;
-            send_button.Left = (Width - 150)/3;
-            cancel_button.Left = (((Width - 150)/3)*2) + 75;
+            send_button.Left = (Width - 150) / 3;
+            cancel_button.Left = (((Width - 150) / 3) * 2) + 75;
             send_button.Top = reply_richTextBox.Bottom + 20;
             cancel_button.Top = reply_richTextBox.Bottom + 20;
             Text = "Reply to MSG # " + _msgnumber;
             MyFiles.ReplyMakeTable("Packet");
-            var lastNumber = (Convert.ToInt32(_msgnumber)%10).ToString();
+            var lastNumber = (Convert.ToInt32(_msgnumber) % 10).ToString();
             var myString = Sql.Rxst(_msgnumber.ToString(), lastNumber)
                 .Replace(Environment.NewLine, Environment.NewLine + "> ");
             reply_richTextBox.Text = Environment.NewLine + Environment.NewLine + "> " + myString;
         }
-
         #endregion
-
         #region resize
-
         private void Reply_Resize(object sender, EventArgs e)
         {
             reply_richTextBox.Width = Width - 50;
@@ -60,16 +50,13 @@ namespace Packet
             reply_richTextBox.Width = Width - 55;
             reply_richTextBox.Top = 20;
             reply_richTextBox.Height = Height - 115;
-            send_button.Left = (Width - 150)/3;
-            cancel_button.Left = (((Width - 150)/3)*2) + 75;
+            send_button.Left = (Width - 150) / 3;
+            cancel_button.Left = (((Width - 150) / 3) * 2) + 75;
             send_button.Top = reply_richTextBox.Bottom + 20;
             cancel_button.Top = reply_richTextBox.Bottom + 20;
         }
-
         #endregion
-
         #region Button click
-
         private void send_button_Click(object sender, EventArgs e)
         {
             var status = "Y";
@@ -78,11 +65,8 @@ namespace Packet
             Sql.WriteSqlReplyUpdate(filename, status, _msgnumber, _tsld, _from, _to, false);
             Close();
         }
-
         #endregion
-
         #region keydown
-
         private void reply_richTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.OemQuestion)
@@ -110,22 +94,16 @@ namespace Packet
                 }
             }
         }
-
         #endregion
-
         #region Show form
-
         private void Reply_Shown(object sender, EventArgs e)
         {
             Focus();
             reply_richTextBox.SelectionStart = 0;
-
             reply_richTextBox.ScrollToCaret();
             reply_richTextBox.Focus();
         }
-
         #endregion
-
         private void label1_Click(object sender, EventArgs e)
         {
         }

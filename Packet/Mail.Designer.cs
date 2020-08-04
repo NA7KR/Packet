@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-
 namespace Packet
 {
     partial class Mail
@@ -9,7 +8,6 @@ namespace Packet
         /// Required designer variable.
         /// </summary>
         private IContainer components = null;
-
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -22,9 +20,7 @@ namespace Packet
             }
             base.Dispose(disposing);
         }
-
         #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -391,11 +387,8 @@ namespace Packet
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
-
         #endregion
-
         private Button button_Cancel;
         public DataGridView DataGridView1;
         protected Button button_OK;

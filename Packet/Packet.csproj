@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Packet</RootNamespace>
     <AssemblyName>Packet</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <TargetFrameworkProfile />
@@ -84,6 +84,12 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -96,8 +102,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TerminalControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DSN.cs" />
+    <Compile Include="DtoList_Custom.cs" />
+    <Compile Include="DtoPacket.cs" />
     <Compile Include="FileCheck.cs">
       <SubType>form</SubType>
+    </Compile>
+    <Compile Include="FileSQL.cs" />
+    <Compile Include="OnReceiveData.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="PlusFrm.cs">
       <SubType>Form</SubType>
@@ -147,6 +163,7 @@
     <Compile Include="Reply.Designer.cs">
       <DependentUpon>Reply.cs</DependentUpon>
     </Compile>
+    <Compile Include="RunCustom.cs" />
     <Compile Include="Sort.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,9 +191,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Com_Form.resx">
       <DependentUpon>Com_Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Custom.resx">
       <DependentUpon>Custom.cs</DependentUpon>
@@ -213,6 +232,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -229,12 +249,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="terminal3.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TerminalControl\PacketComs.csproj">
-      <Project>{3545E021-A75E-4558-8EA3-234DF99FB49A}</Project>
-      <Name>PacketComs</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -255,6 +269,17 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ADOX">
+      <Guid>{00000600-0000-0010-8000-00AA006D2EA4}</Guid>
+      <VersionMajor>6</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

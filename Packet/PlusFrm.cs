@@ -21,12 +21,12 @@ namespace Packet
         {
             var fbd = new OpenFileDialog();
             string newfile;
-            
-                if (fbd.ShowDialog() == DialogResult.OK)
-            { 
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
                 string file = Path.GetFileNameWithoutExtension(fbd.FileName);
                 string path = Path.GetDirectoryName(fbd.FileName) + Path.DirectorySeparatorChar;
-                newfile = path + file ;
+                newfile = path + file;
                 string logfile = newfile + ".LOG";
                 string inpath = path + "Out";
 

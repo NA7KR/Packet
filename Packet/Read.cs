@@ -1,13 +1,9 @@
 ﻿#region Using Directive
-
 using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using PacketComs;
-
 #endregion
-
 namespace Packet
 {
     public partial class Read : Form
@@ -18,18 +14,13 @@ namespace Packet
         private int _textId;
         private string _to;
         private string _tsld;
-
         #region Read
-
         public Read()
         {
             InitializeComponent();
         }
-
         #endregion
-
         #region Read_Load
-
         private void Read_Load(object sender, EventArgs e)
         {
             DataGridView1.Columns.Add("RXMSG", "MSG");
@@ -41,7 +32,6 @@ namespace Packet
             DataGridView1.Columns.Add("RXDATE", "DATE");
             DataGridView1.Columns.Add("RXSUBJECT", "SUBJECT");
             DataGridView1.Columns.Add("RXSTATE", "STATE");
-
             DataGridView1.Columns[0].Width = 80;
             DataGridView1.Columns[1].Width = 60;
             DataGridView1.Columns[2].Width = 70;
@@ -61,11 +51,8 @@ namespace Packet
             _selectedCkeck = false;
             Loader();
         }
-
         #endregion
-
         #region Loader
-
         private void Loader()
         {
             try
@@ -73,7 +60,7 @@ namespace Packet
                 DataGridView1.Visible = true;
                 DataGridView1.Rows.Clear();
                 var packets = Sql.SqlselectRd();
-                packets.ForEach(delegate(DtoPacket packet)
+                packets.ForEach(delegate (DtoPacket packet)
                 {
                     DataGridView1.Rows.Add(
                         packet.get_MSG(),
@@ -93,11 +80,8 @@ namespace Packet
                 MessageBox.Show("Error in file read" + " " + ex.Source);
             }
         }
-
         #endregion
-
         #region resize
-
         private void Read_Resize(object sender, EventArgs e)
         {
             {
@@ -109,29 +93,23 @@ namespace Packet
                 button_OK.Top = DataGridView1.Height + 50;
                 button_Relpy.Top = DataGridView1.Height + 50;
                 button_Delete.Top = DataGridView1.Height + 50;
-
-                button_OK.Left = ((Width - (button_OK.Width*4))/5);
-                button_Cancel.Left = (((Width - (button_OK.Width*4))/5) + button_OK.Right);
-                button_Relpy.Left = (((Width - (button_OK.Width*4))/5) + button_Cancel.Right);
-                button_Delete.Left = (((Width - (button_OK.Width*4))/5) + button_Relpy.Right);
-
+                button_OK.Left = ((Width - (button_OK.Width * 4)) / 5);
+                button_Cancel.Left = (((Width - (button_OK.Width * 4)) / 5) + button_OK.Right);
+                button_Relpy.Left = (((Width - (button_OK.Width * 4)) / 5) + button_Cancel.Right);
+                button_Delete.Left = (((Width - (button_OK.Width * 4)) / 5) + button_Relpy.Right);
                 richTextBox1.Left = 10;
                 richTextBox1.Width = Width - 40;
                 richTextBox1.Top = 30;
                 richTextBox1.Height = Height - 150;
             }
         }
-
         #endregion
-
         #region RowPost
-
         private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             foreach (DataGridViewRow row in DataGridView1.Rows)
             {
                 var rowType = row.Cells[8].Value.ToString();
-
                 if (rowType.Trim() == "P")
                 {
                     row.DefaultCellStyle.BackColor = Color.Red;
@@ -149,11 +127,8 @@ namespace Packet
                 }
             }
         }
-
         #endregion
-
         #region CellContentDoubleClick
-
         private void DataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
@@ -162,7 +137,7 @@ namespace Packet
                 var check = DataGridView1.Rows[e.RowIndex].Cells[8].Value.ToString();
                 if (check.Trim() == "R")
                 {
-                    var lastNumber = (Convert.ToInt32(number)%10).ToString();
+                    var lastNumber = (Convert.ToInt32(number) % 10).ToString();
                     richTextBox1.Text = Sql.Rxst(number, lastNumber);
                     DataGridView1.Visible = false;
                     richTextBox1.Visible = true;
@@ -175,39 +150,30 @@ namespace Packet
                 Loader();
             }
         }
-
         #endregion
-
         #region OK
-
         private void button_OK_Click(object sender, EventArgs e)
         {
             DataGridView1.Visible = true;
             richTextBox1.Visible = false;
             _selectedCkeck = false;
         }
-
         #endregion
-
         #region Delete
-
         private void button_Delete_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow drv in DataGridView1.SelectedRows)
             {
                 var number = drv.Cells[0].Value.ToString();
-                var lastNumber = (Convert.ToInt32(number)%10).ToString();
+                var lastNumber = (Convert.ToInt32(number) % 10).ToString();
                 Sql.DeleteSt(number, lastNumber);
                 Sql.DeleteRow("Packet", "MSG", number);
             }
             _selectedCkeck = false;
             Loader();
         }
-
         #endregion
-
         #region Reply
-
         private void button_Relpy_Click(object sender, EventArgs e)
         {
             if (_selectedCkeck)
@@ -220,9 +186,7 @@ namespace Packet
                 MessageBox.Show("Select a message first");
             }
         }
-
         #endregion
-
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             _textId = Convert.ToInt32(DataGridView1[0, e.RowIndex].Value);

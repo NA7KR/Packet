@@ -1,56 +1,40 @@
-﻿#region Using Directive
-
+﻿//region Using Directive
 using System;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using PacketComs;
-
-#endregion
-
+//endregion
 namespace Packet
 {
     //---------------------------------------------------------------------------------------------------------
     //  partial class Form1
     //---------------------------------------------------------------------------------------------------------
-
-    #region partial class Form1
-
+    //region partial class Form1
     public partial class Main : Form
     {
         private StringBuilder m_Sb;
-        private string  m_FullPath;
+        private string m_FullPath;
         private bool _mBDirty;
         private FileSystemWatcher _fmWatcher;
-        
-        
         private static readonly FileSql MyFiles = new FileSql();
         private static readonly Sql Sql = new Sql();
         private readonly ModifyRegistry _myRegistryKeep = new ModifyRegistry();
-
-        #region private void aboutToolStripMenuItem_Click
-
+        //region private void aboutToolStripMenuItem_Click
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var box = new AboutBox1();
             box.ShowDialog();
         }
-
-        #endregion
-
-        #region private void exitToolStripMenuItem1_Click
-
+        //endregion
+        //region private void exitToolStripMenuItem1_Click
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Close();
             Application.Exit();
         }
-
-        #endregion
-
-        #region toolStripComboBox1_SelectedIndexChanged
-
+        //endregion
+        //region toolStripComboBox1_SelectedIndexChanged
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBox1.SelectedIndex)
@@ -67,11 +51,8 @@ namespace Packet
                     break;
             }
         }
-
-        #endregion
-
-        #region private void toolStripComboBox2_SelectedIndexChanged
-
+        //endregion
+        //region private void toolStripComboBox2_SelectedIndexChanged
         private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBox2.SelectedIndex)
@@ -88,11 +69,8 @@ namespace Packet
                     break;
             }
         }
-
-        #endregion
-
-        #region private void toolStripComboBox3_SelectedIndexChanged
-
+        //endregion
+        //region private void toolStripComboBox3_SelectedIndexChanged
         private void toolStripComboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBox3.SelectedIndex)
@@ -102,7 +80,6 @@ namespace Packet
                     nodeIPConfigToolStripMenuItem.Text = "IP Node Configure";
                     toolStripButton_Node.Enabled = true;
                     break;
-
                 case 1:
                     _myRegistry.Write("Node-Mode", "Com");
                     nodeIPConfigToolStripMenuItem.Text = "Node Configure";
@@ -110,11 +87,8 @@ namespace Packet
                     break;
             }
         }
-
-        #endregion
-
-        #region private void toolStripComboBoxBeep_SelectedIndexChanged
-
+        //endregion
+        //region private void toolStripComboBoxBeep_SelectedIndexChanged
         private void toolStripComboBoxBeep_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxBeep.SelectedIndex)
@@ -129,11 +103,8 @@ namespace Packet
                     break;
             }
         }
-
-        #endregion
-
-        #region toolStripComboBoxTXTC_SelectedIndexChanged
-
+        //endregion
+        //region toolStripComboBoxTXTC_SelectedIndexChanged
         private void toolStripComboBoxTXTC_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxTXTC.SelectedIndex)
@@ -173,11 +144,8 @@ namespace Packet
             }
             terminalEmulator1.ForeColor = _textColor;
         }
-
-        #endregion
-
-        #region toolStripComboBoxBGC
-
+        //endregion
+        //region toolStripComboBoxBGC
         private void toolStripComboBoxBGC_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (toolStripComboBoxBGC.SelectedIndex)
@@ -217,33 +185,24 @@ namespace Packet
             }
             terminalEmulator1.BackColor = _backgroundColor;
         }
-
-        #endregion
-
-        #region private void iPConfigToolStripMenuItem_Click
-
+        //endregion
+        //region private void iPConfigToolStripMenuItem_Click
         private void iPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var box = new IpForm("BBS", (_myRegistry.Read("BBS-Mode")));
             box.ShowDialog();
         }
-
-        #endregion
-
-        #region private void Form1_Resize_1
-
+        //endregion
+        //region private void Form1_Resize_1
         private void Form1_Resize_1(object sender, EventArgs e)
         {
             terminalEmulator1.Left = 10;
             terminalEmulator1.Top = 60;
             terminalEmulator1.Height = (Height - 140);
-            terminalEmulator1.Width = (Width - 60);         
+            terminalEmulator1.Width = (Width - 60);
         }
-
-        #endregion
-
-        #region button check
-
+        //endregion
+        //region button check
         private void button_check()
         {
             if (_myRegistry.Read("BBS-Mode") == "Telnet")
@@ -263,7 +222,6 @@ namespace Packet
                 toolStripButton_bbs.Enabled = false;
                 iPConfigToolStripMenuItem.Text = "BBS Configure";
             }
-
             if (_myRegistry.Read("Cluster-Mode") == "Telnet")
             {
                 toolStripComboBox2.SelectedIndex = 0;
@@ -281,7 +239,6 @@ namespace Packet
                 toolStripButton_cls.Enabled = false;
                 clusterIPConfigToolStripMenuItem.Text = "Cluster Configure";
             }
-
             if (_myRegistry.Read("Node-Mode") == "Telnet")
             {
                 toolStripComboBox3.SelectedIndex = 0;
@@ -307,11 +264,8 @@ namespace Packet
                 toolStripButton_SSH.Enabled = true;
             }
         }
-
-        #endregion
-
-        #region load
-
+        //endregion
+        //region load
         private void Form1_Load(object sender, EventArgs e)
         {
             toolStripStatusLabel1.Text = "";
@@ -366,8 +320,6 @@ namespace Packet
                     break;
             }
             terminalEmulator1.ForeColor = _textColor;
-
-
             var myReg2 = _myRegistry.Read("Color Background");
             switch (myReg2)
             {
@@ -409,12 +361,10 @@ namespace Packet
             }
             terminalEmulator1.BackColor = _backgroundColor;
             toolStripButton_Disconnect.Enabled = false;
-
             if (MyFiles.SelectMakeCustomQuery("Packet") == false)
             {
                 Sql.WriteSqlCustomUpdate(1, "7+", "7+", "MSGSubject", "Y");
             }
-
             if (_myRegistrySsh.Read("Active") == "Yes")
             {
                 toolStripButton_SSH.Visible = true;
@@ -422,31 +372,22 @@ namespace Packet
             else
                 toolStripButton_SSH.Visible = false;
         }
-
-        #endregion
-
-        #region private void clusterIPConfigToolStripMenuItem_Click
-
+        //endregion
+        //region private void clusterIPConfigToolStripMenuItem_Click
         private void clusterIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var box = new IpForm("Cluster", (_myRegistry.Read("Cluster-Mode")));
             box.ShowDialog();
         }
-
-        #endregion
-
-        #region private void nodeIPConfigToolStripMenuItem_Click
-
+        //endregion
+        //region private void nodeIPConfigToolStripMenuItem_Click
         private void nodeIPConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var box = new IpForm("Node", (_myRegistry.Read("Node-Mode")));
             box.ShowDialog();
         }
-
-        #endregion
-
-        #region toolStripMenuItem1_Click SSH
-
+        //endregion
+        //region toolStripMenuItem1_Click SSH
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             var box = new IpForm("SSH", "SSH");
@@ -458,66 +399,48 @@ namespace Packet
             else
                 toolStripButton_SSH.Visible = true;
         }
-
-        #endregion
-
-        #region disconnect
-
+        //endregion
+        //region disconnect
         private void Disconnected(object sender, EventArgs e)
         {
             // maybe called from terminiat in other threrad
-            Invoke((Action) delegate { button_check(); });  
+            Invoke((Action)delegate { button_check(); });
         }
-
-        #endregion
-
-        #region toolStripMenu click show Com port configure
-
+        //endregion
+        //region toolStripMenu click show Com port configure
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
             var box = new ComForm();
             box.ShowDialog();
         }
-
-        #endregion
-
-        #region ParseEnum
-
+        //endregion
+        //region ParseEnum
         public static T ParseEnum<T>(string value)
         {
             try
             {
-                return (T) Enum.Parse(typeof (T), value, true);
+                return (T)Enum.Parse(typeof(T), value, true);
             }
             catch (Exception)
             {
-                return (T) Enum.Parse(typeof (T), null, false);
+                return (T)Enum.Parse(typeof(T), null, false);
             }
         }
-
-        #endregion
-
-        #region terminalEmulator1_ForwardDone
-
+        //endregion
+        //region terminalEmulator1_ForwardDone
         private void terminalEmulator1_ForwardDone(object sender, EventArgs e)
         {
-            Invoke((Action) delegate { toolStripButton_fwd.Enabled = true; });
+            Invoke((Action)delegate { toolStripButton_fwd.Enabled = true; });
         }
-
-        #endregion
-
-        #region terminalEmulator1_LastNumberevt
-
+        //endregion
+        //region terminalEmulator1_LastNumberevt
         private void terminalEmulator1_LastNumberevt(object sender, EventArgs e)
         {
             var number = (terminalEmulator1.LastNumber);
             _myRegistryBbs.Write("Start Number", number);
         }
-
-        #endregion
-
-        #region BBS Click
-
+        //endregion
+        //region BBS Click
         private void toolStripButton_BBS_Click(object sender, EventArgs e)
         {
             try
@@ -527,7 +450,6 @@ namespace Packet
                     MessageBox.Show("BBS may not correct as BBS Prompt cot configured", "Important Note",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
                 }
-
                 if (_myRegistry.Read("BBS-Mode") == "Telnet")
                 {
                     if (_myRegistryBbs.Read("Echo") == "Yes")
@@ -543,7 +465,7 @@ namespace Packet
                     terminalEmulator1.Username = _myRegistryBbs.Read("CallSign");
                     terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryBbs.Read("Password"));
                     terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-                    terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
+                    terminalEmulator1.BbsPrompt = _myRegistryBbs.BRead("Prompt");
                     terminalEmulator1.UernamePrompt = _myRegistryBbs.BRead("UserNamePrompt");
                     terminalEmulator1.PasswordPrompt = _myRegistryBbs.BRead("PasswordPrompt");
                 }
@@ -561,10 +483,9 @@ namespace Packet
                     terminalEmulator1.FlowType =
                         ParseEnum<TerminalEmulator.FlowTypes>(_myRegistryCom.Read("Flow"));
                     terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.COM;
-                    terminalEmulator1.BBSPrompt = _myRegistryBbs.BRead("Prompt");
+                    terminalEmulator1.BbsPrompt = _myRegistryBbs.BRead("Prompt");
                     terminalEmulator1.SerialPort = _myRegistryCom.Read("Port");
                 }
-
                 terminalEmulator1.Connect();
                 toolStripButton_Disconnect.Enabled = true;
                 toolStripButton_bbs.Enabled = false;
@@ -588,15 +509,11 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
-
-        #endregion
-
-        #region FWD
-
+        //endregion
+        //region FWD
         private void toolStripButton_FWD_Click(object sender, EventArgs e)
         {
             StartThread();
-            
             var idays = _myRegistryKeep.ReadDw("DaystoKeep");
             if (idays > 0)
             {
@@ -612,13 +529,9 @@ namespace Packet
             toolStripButton_fwd.Text = "Forward active";
             terminalEmulator1.LastNumber = Convert.ToInt32(_myRegistryBbs.ReadDw("Start Number"));
             terminalEmulator1.Startforward();
-            
         }
-
-        #endregion
-
-        #region Cluster Click
-
+        //endregion
+        //region Cluster Click
         private void toolStripButton_Cluster_Click(object sender, EventArgs e)
         {
             try
@@ -643,7 +556,7 @@ namespace Packet
                     terminalEmulator1.Username = _myRegistryCluster.Read("CallSign");
                     terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryCluster.Read("Password"));
                     terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-                    terminalEmulator1.BBSPrompt = _myRegistryCluster.BRead("Prompt");
+                    terminalEmulator1.BbsPrompt = _myRegistryCluster.BRead("Prompt");
                     terminalEmulator1.UernamePrompt = _myRegistryCluster.BRead("UserNamePrompt");
                     terminalEmulator1.PasswordPrompt = _myRegistryCluster.BRead("PasswordPrompt");
                     terminalEmulator1.Connect();
@@ -681,11 +594,8 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
-
-        #endregion
-
-        #region Node Click
-
+        //endregion
+        //region Node Click
         private void toolStripButton_Node_Click(object sender, EventArgs e)
         {
             try
@@ -709,7 +619,7 @@ namespace Packet
                     terminalEmulator1.Username = _myRegistryNode.Read("CallSign");
                     terminalEmulator1.Password = _myEncrypt.Decrypt(_myRegistryNode.Read("Password"));
                     terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Telnet;
-                    terminalEmulator1.BBSPrompt = _myRegistryNode.BRead("Prompt");
+                    terminalEmulator1.BbsPrompt = _myRegistryNode.BRead("Prompt");
                     terminalEmulator1.UernamePrompt = _myRegistryNode.BRead("UserNamePrompt");
                     terminalEmulator1.PasswordPrompt = _myRegistryNode.BRead("PasswordPrompt");
                     terminalEmulator1.Connect();
@@ -747,14 +657,11 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
-
-        #endregion
-
-        #region Disconnect Click
-
+        //endregion
+        //region Disconnect Click
         private void toolStripButton_Disconnect_Click(object sender, EventArgs e)
         {
-            // Cancel the asynchronous operation. 
+            // Cancel the asynchronous operation.
             FilewatchStop();
             button_check();
             toolStripButton_Disconnect.Enabled = false;
@@ -763,11 +670,8 @@ namespace Packet
             toolStripButton_fwd.Enabled = false;
             toolStripButton_fwd.Text = "Forward";
         }
-
-        #endregion
-
-        #region SSH Click
-
+        //endregion
+        //region SSH Click
         private void toolStripButton_SSH_Click(object sender, EventArgs e)
         {
             try
@@ -777,7 +681,7 @@ namespace Packet
                 toolStripButton_cls.Enabled = false;
                 toolStripButton_Node.Enabled = false;
                 toolStripButton_Disconnect.Enabled = true;
-                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.SSH2;
+                terminalEmulator1.ConnectionType = TerminalEmulator.ConnectionTypes.Ssh2;
                 terminalEmulator1.Port = Convert.ToInt32(_myRegistrySsh.Read("Port"));
                 terminalEmulator1.Hostname = _myRegistrySsh.Read("IP");
                 terminalEmulator1.Username = _myRegistrySsh.Read("UserName");
@@ -799,58 +703,41 @@ namespace Packet
                     toolStripButton_SSH.Enabled = true;
             }
         }
-
-        #endregion
-
-        #region MailConfig
-
+        //endregion
+        //region MailConfig
         private void toolStripButton_MailConfig_Click(object sender, EventArgs e)
         {
             var box = new Mail();
             box.ShowDialog();
         }
-
-        #endregion
-
-        #region  Read Mail
-
+        //endregion
+        //region  Read Mail
         private void toolStripButton_ReadMail_Click(object sender, EventArgs e)
         {
             var box = new Read();
             box.ShowDialog();
         }
-
-        #endregion
-
-        #region Personal Mail
-
+        //endregion
+        //region Personal Mail
         private void toolStripButton_PersonalMail_Click(object sender, EventArgs e)
         {
             MessageBox.Show("To come soon");
         }
-
-        #endregion
-
-        #region 7plus click
-
+        //endregion
+        //region 7plus click
         private void toolStripButton_7plus_Click(object sender, EventArgs e)
         {
             var box = new PlusFrm();
             box.ShowDialog();
         }
-
-        #endregion
-
-        #region Form1
-
+        //endregion
+        //region Form1
         public const string DsnName = "DSN=Packet";
-
         public Main()
         {
             InitializeComponent();
-            m_Sb = new StringBuilder();  
+            m_Sb = new StringBuilder();
             _mBDirty = false;
-            
             _myRegistry.SubKey = "SOFTWARE\\NA7KR\\Packet";
             _myRegistry.ShowError = true;
             _myRegistryCom.SubKey = "SOFTWARE\\NA7KR\\Packet\\Port";
@@ -887,7 +774,6 @@ namespace Packet
             toolStripComboBoxTXTC.Items.Add("Magenta");
             toolStripComboBoxTXTC.Items.Add("Cyan");
             toolStripComboBoxTXTC.Items.Add("White");
-
             toolStripComboBoxBGC.Items.Add("Black");
             toolStripComboBoxBGC.Items.Add("Red");
             toolStripComboBoxBGC.Items.Add("Green");
@@ -896,54 +782,42 @@ namespace Packet
             toolStripComboBoxBGC.Items.Add("Magenta");
             toolStripComboBoxBGC.Items.Add("Cyan");
             toolStripComboBoxBGC.Items.Add("White");
-
             OnResize(EventArgs.Empty);
-            terminalEmulator1.dnsName = DsnName;
+            terminalEmulator1.DnsName = DsnName;
         }
-
         protected override sealed void OnResize(EventArgs e)
         {
             base.OnResize(e);
         }
-
-        #endregion
-
-        #region private TelnetConnection
-
+        //endregion
+        //region private TelnetConnection
         //private static read only Sql Sql = new Sql();
-
         private bool _bBeep = true;
         private Color _backgroundColor = Color.Black;
         private Color _textColor = Color.Yellow;
-
-        #endregion      
-
-        #region start thread
+        //endregion
+        //region start thread
         private void StartThread()
         {
             // Initialize the object that the background worker calls.
-
             var path = Directory.GetCurrentDirectory() + @"\Data\7plus" + @"\";
             if (!Directory.Exists(path))
             {
                 // Try to create the directory.
                 Directory.CreateDirectory(path);
             }
-
             var outpath = Directory.GetCurrentDirectory() + @"\Data\Out" + @"\";
             if (!Directory.Exists(outpath))
             {
                 // Try to create the directory.
                 Directory.CreateDirectory(outpath);
             }
-
             var inpath = Directory.GetCurrentDirectory() + @"\Data\IN" + @"\";
             if (!Directory.Exists(inpath))
             {
                 // Try to create the directory.
                 Directory.CreateDirectory(inpath);
             }
-
             var logpath = Directory.GetCurrentDirectory() + @"\Data\Log" + @"\";
             if (!Directory.Exists(logpath))
             {
@@ -956,7 +830,6 @@ namespace Packet
                 // Try to create the directory.
                 Directory.CreateDirectory(donepath);
             }
-
             var lockpath = Directory.GetCurrentDirectory() + @"\Data\Lock" + @"\";
             if (!Directory.Exists(lockpath))
             {
@@ -965,23 +838,13 @@ namespace Packet
             }
             CreateFileWatcher(path);
         }
-        #endregion
-
-        #region tool Strip Button
+        //endregion
+        //region tool Strip Button
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             StartThread();
         }
-
-
-
-        #endregion
-
-      
+        //endregion
     }
-
-    //string ValidIpAddressRegex = @"^(0[0-7]{10,11}|0(x|X)[0-9a-fA-F]{8}|(\b4\d{8}[0-5]\b|\b[1-3]?\d{8}\d?\b)|((2[0-5][0-5]|1\d{2}|[1-9]\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))(\.((2[0-5][0-5]|1\d{2}|\d\d?)|(0(x|X)[0-9a-fA-F]{2})|(0[0-7]{3}))){3})$";
-    //string ValidHostnameRegex = @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$";
-
-    #endregion
+    //endregion
 }

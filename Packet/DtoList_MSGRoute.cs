@@ -41,10 +41,10 @@ namespace Packet
 
         #region get_dateCreate
 
-        public DateTime get_dateCreate()
-        {
-            return _dateCreate;
-        }
+        //public DateTime get_dateCreate()
+        //{
+        //    return _dateCreate;
+        //}
 
         #endregion
 
@@ -68,10 +68,10 @@ namespace Packet
 
         #region set_dateCreate
 
-        public void set_dateCreate(DateTime dateCreate)
-        {
-            _dateCreate = dateCreate;
-        }
+        //public void set_dateCreate(DateTime dateCreate)
+        //{
+        //    _dateCreate = dateCreate;
+        //}
 
         #endregion
 

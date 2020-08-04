@@ -47,55 +47,55 @@ namespace Packet
             switch (speed)
             {
                 case 110:
-                {
-                    radioButton110.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton110.Checked = true;
+                        break;
+                    }
                 case 300:
-                {
-                    radioButton300.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton300.Checked = true;
+                        break;
+                    }
                 case 600:
-                {
-                    radioButton600.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton600.Checked = true;
+                        break;
+                    }
                 case 1200:
-                {
-                    radioButton1200.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton1200.Checked = true;
+                        break;
+                    }
                 case 2400:
-                {
-                    radioButton2400.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton2400.Checked = true;
+                        break;
+                    }
                 case 4800:
-                {
-                    radioButton4800.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton4800.Checked = true;
+                        break;
+                    }
                 case 9600:
-                {
-                    radioButton9600.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton9600.Checked = true;
+                        break;
+                    }
                 case 19200:
-                {
-                    radioButton19200.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton19200.Checked = true;
+                        break;
+                    }
                 case 38400:
-                {
-                    radioButton38400.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton38400.Checked = true;
+                        break;
+                    }
                 case 57600:
-                {
-                    radioButton57600.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton57600.Checked = true;
+                        break;
+                    }
             }
 
             #endregion
@@ -106,25 +106,25 @@ namespace Packet
             switch (Data)
             {
                 case 5:
-                {
-                    radioButton_Data_5.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Data_5.Checked = true;
+                        break;
+                    }
                 case 6:
-                {
-                    radioButton_Data_6.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Data_6.Checked = true;
+                        break;
+                    }
                 case 7:
-                {
-                    radioButton_Data_7.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Data_7.Checked = true;
+                        break;
+                    }
                 case 8:
-                {
-                    radioButton_Data_8.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Data_8.Checked = true;
+                        break;
+                    }
             }
 
             #endregion
@@ -135,25 +135,25 @@ namespace Packet
             switch (stop)
             {
                 case "One":
-                {
-                    radioButton_Stop_1.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Stop_1.Checked = true;
+                        break;
+                    }
                 case "OnePointFive":
-                {
-                    radioButton_Stop_1_5.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Stop_1_5.Checked = true;
+                        break;
+                    }
                 case "Two":
-                {
-                    radioButton_Stop_2.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Stop_2.Checked = true;
+                        break;
+                    }
                 case "None":
-                {
-                    radioButton_Stop_None.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Stop_None.Checked = true;
+                        break;
+                    }
             }
 
             #endregion
@@ -164,30 +164,30 @@ namespace Packet
             switch (parity)
             {
                 case "None":
-                {
-                    radioButton_Parity_None.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Parity_None.Checked = true;
+                        break;
+                    }
                 case "Old":
-                {
-                    radioButton_Parity_Odd.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Parity_Odd.Checked = true;
+                        break;
+                    }
                 case "Even":
-                {
-                    radioButton_Parity_Even.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Parity_Even.Checked = true;
+                        break;
+                    }
                 case "Mark":
-                {
-                    radioButton_Parity_Mark.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Parity_Mark.Checked = true;
+                        break;
+                    }
                 case "Space":
-                {
-                    radioButton_Parity_Space.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Parity_Space.Checked = true;
+                        break;
+                    }
             }
 
             #endregion
@@ -198,20 +198,20 @@ namespace Packet
             switch (flow)
             {
                 case "XOnXOff":
-                {
-                    radioButton_Flow_Xon_Xoff.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Flow_Xon_Xoff.Checked = true;
+                        break;
+                    }
                 case "RequestToSendXOnXOff":
-                {
-                    radioButton_Flow_RequestToSendXOnXOff.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Flow_RequestToSendXOnXOff.Checked = true;
+                        break;
+                    }
                 case "None":
-                {
-                    radioButton_Flow_None.Checked = true;
-                    break;
-                }
+                    {
+                        radioButton_Flow_None.Checked = true;
+                        break;
+                    }
             }
 
             #endregion
@@ -249,13 +249,13 @@ namespace Packet
             radioButton600.Top = top;
             radioButton1200.Top = top;
             radioButton2400.Top = top;
-            radioButton4800.Top = top*2;
-            radioButton9600.Top = top*2;
-            radioButton19200.Top = top*2;
-            radioButton38400.Top = top*2;
-            radioButton57600.Top = top*2;
+            radioButton4800.Top = top * 2;
+            radioButton9600.Top = top * 2;
+            radioButton19200.Top = top * 2;
+            radioButton38400.Top = top * 2;
+            radioButton57600.Top = top * 2;
 
-            groupBoxBaudRate.Height = top*3;
+            groupBoxBaudRate.Height = top * 3;
             groupBoxBaudRate.Top = top;
             groupBoxBaudRate.Left = top;
             radioButton9600.Checked = true;
@@ -266,8 +266,8 @@ namespace Packet
             radioButton_Data_7.Top = top;
             radioButton_Data_8.Top = top;
 
-            groupBoxDataBits.Height = top*2;
-            groupBoxDataBits.Top = top*5;
+            groupBoxDataBits.Height = top * 2;
+            groupBoxDataBits.Top = top * 5;
             groupBoxDataBits.Left = top;
             radioButton_Data_8.Checked = true;
 
@@ -276,35 +276,35 @@ namespace Packet
             radioButton_Stop_2.Top = top;
             radioButton_Stop_None.Top = top;
 
-            groupBoxStopBits.Height = top*2;
-            groupBoxStopBits.Top = top*5;
+            groupBoxStopBits.Height = top * 2;
+            groupBoxStopBits.Top = top * 5;
             radioButton_Stop_1.Checked = true;
 
             radioButton_Parity_None.Top = top;
-            radioButton_Parity_Odd.Top = top*2;
-            radioButton_Parity_Even.Top = top*3;
-            radioButton_Parity_Mark.Top = top*4;
-            radioButton_Parity_Space.Top = top*5;
+            radioButton_Parity_Odd.Top = top * 2;
+            radioButton_Parity_Even.Top = top * 3;
+            radioButton_Parity_Mark.Top = top * 4;
+            radioButton_Parity_Space.Top = top * 5;
 
-            groupBoxParity.Height = top*6;
-            groupBoxParity.Top = top*8;
+            groupBoxParity.Height = top * 6;
+            groupBoxParity.Top = top * 8;
             groupBoxParity.Left = top;
             radioButton_Parity_None.Checked = true;
 
             radioButton_Flow_Xon_Xoff.Top = top;
-            radioButton_Flow_RequestToSendXOnXOff.Top = top*2;
-            radioButton_Flow_RequestToSend.Top = top*3;
-            radioButton_Flow_None.Top = top*4;
+            radioButton_Flow_RequestToSendXOnXOff.Top = top * 2;
+            radioButton_Flow_RequestToSend.Top = top * 3;
+            radioButton_Flow_None.Top = top * 4;
 
-            groupBoxFlow.Height = top*5;
-            groupBoxFlow.Top = top*8;
+            groupBoxFlow.Height = top * 5;
+            groupBoxFlow.Top = top * 8;
             radioButton_Flow_None.Checked = true;
 
             ok_button.Top = top + 10;
             cancel_button.Top = top + 10 + ok_button.Height + top;
 
-            Port_label.Top = top*8 + 10;
-            comboBoxPort.Top = top*8 + 30;
+            Port_label.Top = top * 8 + 10;
+            comboBoxPort.Top = top * 8 + 30;
         }
 
         public ComForm()

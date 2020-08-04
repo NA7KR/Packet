@@ -1,20 +1,14 @@
 ﻿#region Using Directive
-
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Windows.Forms;
-using PacketComs;
-
 #endregion
-
 namespace Packet
 {
-
     #region Class
-
     internal class Sql
     {
         private readonly DtoCustom _custom = new DtoCustom();
@@ -24,13 +18,10 @@ namespace Packet
         private readonly DtoListMsgto _msgtodto = new DtoListMsgto();
         private readonly DtoPacket _packet = new DtoPacket();
         private readonly DtoListReply _reply = new DtoListReply();
-
         #region SQLSELECTRD
-
         public List<DtoPacket> SqlselectRd()
         {
             var packets = new List<DtoPacket>();
-
             try
             {
                 using (var con = new OdbcConnection(Main.DsnName))
@@ -47,15 +38,15 @@ namespace Packet
                             {
                                 while (reader.Read())
                                 {
-                                    var packet = new DtoPacket((int) reader.GetValue(0),
-                                        (string) reader.GetValue(1),
-                                        (int) reader.GetValue(2),
-                                        (string) reader.GetValue(3),
-                                        (string) reader.GetValue(4),
-                                        (string) reader.GetValue(5),
-                                        (string) reader.GetValue(6),
-                                        (string) reader.GetValue(7),
-                                        (string) reader.GetValue(8));
+                                    var packet = new DtoPacket((int)reader.GetValue(0),
+                                        (string)reader.GetValue(1),
+                                        (int)reader.GetValue(2),
+                                        (string)reader.GetValue(3),
+                                        (string)reader.GetValue(4),
+                                        (string)reader.GetValue(5),
+                                        (string)reader.GetValue(6),
+                                        (string)reader.GetValue(7),
+                                        (string)reader.GetValue(8));
                                     packets.Add(packet);
                                 }
                             }
@@ -70,15 +61,11 @@ namespace Packet
             }
             return packets;
         }
-
         #endregion
-
         #region SQLSELECT
-
         public List<DtoPacket> Sqlselect()
         {
             var packets = new List<DtoPacket>();
-
             try
             {
                 using (var con = new OdbcConnection(Main.DsnName))
@@ -94,14 +81,14 @@ namespace Packet
                             {
                                 while (reader.Read())
                                 {
-                                    var packet = new DtoPacket((int) reader.GetValue(0),
-                                        (string) reader.GetValue(1),
-                                        (int) reader.GetValue(2),
-                                        (string) reader.GetValue(3),
-                                        (string) reader.GetValue(4),
-                                        (string) reader.GetValue(5),
-                                        (string) reader.GetValue(6),
-                                        (string) reader.GetValue(7),
+                                    var packet = new DtoPacket((int)reader.GetValue(0),
+                                        (string)reader.GetValue(1),
+                                        (int)reader.GetValue(2),
+                                        (string)reader.GetValue(3),
+                                        (string)reader.GetValue(4),
+                                        (string)reader.GetValue(5),
+                                        (string)reader.GetValue(6),
+                                        (string)reader.GetValue(7),
                                         null);
                                     packets.Add(packet);
                                 }
@@ -117,15 +104,11 @@ namespace Packet
             }
             return packets;
         }
-
         #endregion
-
         #region SQLReply
-
         public List<DtoListReply> SqlReply()
         {
             var packets = new List<DtoListReply>();
-
             try
             {
                 using (var con = new OdbcConnection(Main.DsnName))
@@ -141,14 +124,13 @@ namespace Packet
                             {
                                 while (reader.Read())
                                 {
-                                    var packet = new DtoListReply((int) reader.GetValue(0),
-                                        (string) reader.GetValue(1),
-                                        (string) reader.GetValue(2),
-                                        (int) reader.GetValue(3),
-                                        (string) reader.GetValue(4),
-                                        (string) reader.GetValue(5),
-                                        (string) reader.GetValue(6));
-
+                                    var packet = new DtoListReply((int)reader.GetValue(0),
+                                        (string)reader.GetValue(1),
+                                        (string)reader.GetValue(2),
+                                        (int)reader.GetValue(3),
+                                        (string)reader.GetValue(4),
+                                        (string)reader.GetValue(5),
+                                        (string)reader.GetValue(6));
                                     packets.Add(packet);
                                 }
                             }
@@ -163,11 +145,8 @@ namespace Packet
             }
             return packets;
         }
-
         #endregion
-
         #region SQLSELECT_ON_Lists_Msgto
-
         public List<DtoListMsgto> SQLSELECT_ON_Lists_Msgto()
         {
             var selectLists = new List<DtoListMsgto>();
@@ -186,8 +165,8 @@ namespace Packet
                             while (reader.Read())
                             {
                                 var selectList = new DtoListMsgto(
-                                    (string) convertDBNull(reader.GetValue(0)),
-                                    (string) convertDBNull(reader.GetValue(1)),
+                                    (string)convertDBNull(reader.GetValue(0)),
+                                    (string)convertDBNull(reader.GetValue(1)),
                                     DateTime.MinValue);
                                 selectLists.Add(selectList);
                             }
@@ -202,18 +181,14 @@ namespace Packet
             }
             return selectLists;
         }
-
         #endregion
-
         #region SQLSELECT_ON_Lists_MsgFrom
-
         public List<DtoListMsgFrom> SQLSELECT_ON_Lists_MsgFrom()
         {
             var selectLists = new List<DtoListMsgFrom>();
             try
             {
                 var sqlConn = new OdbcConnection(Main.DsnName);
-
                 using (var cmd = new OdbcCommand())
                 {
                     cmd.Connection = sqlConn;
@@ -225,8 +200,8 @@ namespace Packet
                         while (reader.Read())
                         {
                             var selectList = new DtoListMsgFrom(
-                                (string) convertDBNull(reader.GetValue(0)),
-                                (string) convertDBNull(reader.GetValue(1)),
+                                (string)convertDBNull(reader.GetValue(0)),
+                                (string)convertDBNull(reader.GetValue(1)),
                                 DateTime.MinValue);
                             selectLists.Add(selectList);
                         }
@@ -240,11 +215,8 @@ namespace Packet
             }
             return selectLists;
         }
-
         #endregion
-
         #region SQLSELECT_ON_Lists_Route
-
         public List<DtoListMsgRoute> SQLSELECT_ON_Lists_MsgRoute()
         {
             var selectLists = new List<DtoListMsgRoute>();
@@ -263,8 +235,8 @@ namespace Packet
                             while (reader.Read())
                             {
                                 var selectList = new DtoListMsgRoute(
-                                    (string) convertDBNull(reader.GetValue(0)),
-                                    (string) convertDBNull(reader.GetValue(1)),
+                                    (string)convertDBNull(reader.GetValue(0)),
+                                    (string)convertDBNull(reader.GetValue(1)),
                                     DateTime.MinValue);
                                 selectLists.Add(selectList);
                             }
@@ -279,11 +251,8 @@ namespace Packet
             }
             return selectLists;
         }
-
         #endregion
-
         #region SQLSELECT_ON_Lists_MsgSubject
-
         public List<DtoListMsgSubject> SQLSELECT_ON_Lists_MsgSubject()
         {
             var selectLists = new List<DtoListMsgSubject>();
@@ -302,8 +271,8 @@ namespace Packet
                             while (reader.Read())
                             {
                                 var selectList = new DtoListMsgSubject(
-                                    (string) convertDBNull(reader.GetValue(0)),
-                                    (string) convertDBNull(reader.GetValue(1)),
+                                    (string)convertDBNull(reader.GetValue(0)),
+                                    (string)convertDBNull(reader.GetValue(1)),
                                     DateTime.MinValue);
                                 selectLists.Add(selectList);
                             }
@@ -318,11 +287,8 @@ namespace Packet
             }
             return selectLists;
         }
-
         #endregion
-
         #region SQLSELECTOPTION
-
         public void SqlselectOptrion(string tableName)
         {
             try
@@ -346,11 +312,8 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region  convertDBNull
-
         private object convertDBNull(object o)
         {
             if (o is DBNull)
@@ -359,11 +322,8 @@ namespace Packet
             }
             return o;
         }
-
         #endregion
-
         #region WriteSQLPacketUpdate
-
         public void WriteSqlPacketUpdate(int value, string textValue)
         {
             try
@@ -377,11 +337,8 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region WriteSQLCustomUpdate
-
         public void WriteSqlCustomUpdate(int value, string customName, string customQuery, string tableName,
             string enable)
         {
@@ -399,11 +356,8 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region WriteSQLReplyUpdate
-
         public void WriteSqlReplyUpdate(string filename, string status, int msgnumber, string msgtype, string msgcall,
             string msggroup, bool update)
         {
@@ -423,11 +377,8 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region SqlReply
-
         public void SqlReplyInsert(DtoListReply reply, bool update)
         {
             try
@@ -438,7 +389,6 @@ namespace Packet
                     {
                         cmd.Connection = con;
                         con.Open();
-
                         cmd.CommandText =
                             ("INSERT into Send ( FileName,  Status,MSGNumber, MSGType, MSGCall, MSGGroup) VALUES (?, ?, ?, ?, ?, ?)");
                         cmd.Parameters.Clear();
@@ -448,7 +398,6 @@ namespace Packet
                         cmd.Parameters.AddWithValue("@p4", reply.get_Type());
                         cmd.Parameters.AddWithValue("@p5", reply.get_Call());
                         cmd.Parameters.AddWithValue("@p6", reply.get_Group());
-
                         cmd.ExecuteNonQuery();
                         con.Close();
                     }
@@ -459,11 +408,8 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region SqlupdateCustom
-
         public void SqlupdateCustom(DtoCustom custom)
         {
             try
@@ -477,8 +423,7 @@ namespace Packet
                         con.Open();
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@p1", custom.get_ID());
-                        var count = (int) cmd.ExecuteScalar();
-
+                        var count = (int)cmd.ExecuteScalar();
                         if (count > 0)
                         {
                             cmd.CommandText =
@@ -490,7 +435,6 @@ namespace Packet
                                 ("INSERT into CustomQuery (CustomName, CustomQuery, TableName, Enable) VALUES (?, ?, ?, ?)");
                         }
                         cmd.Parameters.Clear();
-
                         cmd.Parameters.AddWithValue("@p1", custom.get_CustomName());
                         cmd.Parameters.AddWithValue("@p2", custom.get_CustomQuery());
                         cmd.Parameters.AddWithValue("@p3", custom.get_TableName());
@@ -506,11 +450,8 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region SQLUPDATEPACKET
-
         public void Sqlupdatepacket(DtoPacket packetdto)
         {
             try
@@ -536,22 +477,16 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region WriteSQLMSGTOUpdate
-
         public void WriteSqlmsgtoUpdate(string value, string textValue)
         {
             _msgtodto.set_MSGTO(value);
             _msgtodto.set_Selected(textValue);
             SqlupdateMsgUpdate(_msgtodto);
         }
-
         #endregion
-
         #region SqlupdateMSGUpdate
-
         public void SqlupdateMsgUpdate(DtoListMsgto packetdto)
         {
             try
@@ -577,22 +512,16 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region WriteSQLMSGFromUpdate
-
         public void WriteSqlmsgFromUpdate(string value, string textValue)
         {
             _msgfrom.set_MSGFROM(value);
             _msgfrom.set_Selected(textValue);
             SqlupdateMsgfromUpdate(_msgfrom);
         }
-
         #endregion
-
         #region SqlupdateMSGFROMUpdate
-
         public void SqlupdateMsgfromUpdate(DtoListMsgFrom packetdto)
         {
             try
@@ -618,22 +547,16 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region WriteSQLMSGRouteUpdate
-
         public void WriteSqlmsgRouteUpdate(string value, string textValue)
         {
             _msgroute.set_MSGRoute(value);
             _msgroute.set_Selected(textValue);
             SqlupdateMsgrouteUpdate(_msgroute);
         }
-
         #endregion
-
         #region SqlupdateMSGROUTEUpdate
-
         public void SqlupdateMsgrouteUpdate(DtoListMsgRoute packetdto)
         {
             try
@@ -659,22 +582,16 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region WriteSQLMSGSubjectUpdate
-
         public void WriteSqlmsgSubjectUpdate(string value, string textValue)
         {
             _msgsubject.set_MSGSubject(value);
             _msgsubject.set_Selected(textValue);
             SqlupdateMsgsubjectUpdate(_msgsubject);
         }
-
         #endregion
-
         #region SqlupdateMSGFROMUpdate
-
         public void SqlupdateMsgsubjectUpdate(DtoListMsgSubject packetdto)
         {
             try
@@ -700,11 +617,8 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region DeleteST
-
         public bool? DeleteSt(string fileName, string pathNo)
         {
             try
@@ -731,11 +645,8 @@ namespace Packet
                 return false;
             }
         } //end write
-
         #endregion
-
         #region RXST
-
         public string Rxst(string fileName, string pathNo)
         {
             string myString = null;
@@ -755,11 +666,8 @@ namespace Packet
             }
             return myString;
         }
-
         #endregion
-
         #region SQL delete row
-
         public static void DeleteRow(string table, string columnName, string idNumber)
         {
             try
@@ -781,11 +689,8 @@ namespace Packet
                 MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
             }
         }
-
         #endregion
-
         #region delete days
-
         public static void Deletedays(int days)
         {
             using (var con = new OdbcConnection(Main.DsnName))
@@ -811,11 +716,9 @@ namespace Packet
                         var sDay = Convert.ToInt32(mdhm.Substring(2, 2));
                         var sHr = Convert.ToInt32(mdhm.Substring(5, 2));
                         var sMin = Convert.ToInt32(mdhm.Substring(7, 2));
-
                         if (sDay == 29 && sMonth == 2)
                         {
                         }
-
                         var rowDateTime = new DateTime(sYear, sMonth, sDay, sHr, sMin, 0);
                         // if in future then convert to previous year
                         if (rowDateTime > currDateTime)
@@ -832,11 +735,8 @@ namespace Packet
                 con.Close();
             }
         }
-
         #endregion
-
         #region clear 
-
         public void Sqlupdateclear(string sTable)
         {
             try
@@ -858,11 +758,8 @@ namespace Packet
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
-
         #region SQL delete count
-
         public static void DeleteCount(int number)
         {
             if (number > 0)
@@ -888,9 +785,7 @@ namespace Packet
                 }
             }
         }
-
         #endregion
     }
-
     #endregion CLASS
 }

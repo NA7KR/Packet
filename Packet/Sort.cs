@@ -1,16 +1,10 @@
 ﻿#region Using Directive
-
 using System;
 using System.Windows.Forms;
-using PacketComs;
-
 #endregion
-
 namespace Packet
 {
-
     #region class Sort
-
     public partial class Sort : Form
     {
         private static readonly FileSql MyFiles = new FileSql();
@@ -19,9 +13,7 @@ namespace Packet
         public int DSize;
         public bool Loaded;
         public string SListType;
-
         #region Sort
-
         public Sort(int dsize, string sListType, char cKey)
         {
             InitializeComponent();
@@ -29,30 +21,22 @@ namespace Packet
             DSize = dsize;
             DKey = cKey;
         }
-
         #endregion
-
         #region OK
-
         private void button_ok_Click(object sender, EventArgs e)
         {
             MyFiles.UpdateSqlto("MSGTO");
             MyFiles.UpdateSqlto("MSGFrom");
             MyFiles.UpdateSqlto("MSGRoute");
             MyFiles.UpdateSqlto("MSGSubject");
-
             MyFiles.SqlPacketDelete("MSGTO");
             MyFiles.SqlPacketDelete("MSGFrom");
             MyFiles.SqlPacketDelete("MSGRoute");
             MyFiles.SqlPacketDelete("MSGSubject");
-
             Close();
         }
-
         #endregion
-
         #region Load
-
         private void Sort_Load(object sender, EventArgs e)
         {
             MyFiles.SelectMakeTable(SListType, DSize, SListType, "Packet");
@@ -62,12 +46,11 @@ namespace Packet
             listView1.Height = (Height - 100);
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
-
             Sql.SqlselectOptrion(SListType);
             if (SListType == "MSGTO")
             {
                 var selectLists = Sql.SQLSELECT_ON_Lists_Msgto();
-                selectLists.ForEach(delegate(DtoListMsgto selectList)
+                selectLists.ForEach(delegate (DtoListMsgto selectList)
                 {
                     if (DKey == 'Y')
                     {
@@ -112,11 +95,10 @@ namespace Packet
                 }
                     ); //end of foreach
             }
-
             if (SListType == "MSGFrom")
             {
                 var selectLists = Sql.SQLSELECT_ON_Lists_MsgFrom();
-                selectLists.ForEach(delegate(DtoListMsgFrom selectList)
+                selectLists.ForEach(delegate (DtoListMsgFrom selectList)
                 {
                     if (DKey == 'Y')
                     {
@@ -129,7 +111,6 @@ namespace Packet
                                 itemYouAreLookingFor.Checked = true;
                             }
                         }
-
                         if (selectList.get_Selected() == "D")
                         {
                             var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGFROM());
@@ -162,11 +143,10 @@ namespace Packet
                 }
                     ); //end of foreach
             }
-
             if (SListType == "MSGRoute")
             {
                 var selectLists = Sql.SQLSELECT_ON_Lists_MsgRoute();
-                selectLists.ForEach(delegate(DtoListMsgRoute selectList)
+                selectLists.ForEach(delegate (DtoListMsgRoute selectList)
                 {
                     if (DKey == 'Y')
                     {
@@ -179,7 +159,6 @@ namespace Packet
                                 itemYouAreLookingFor.Checked = true;
                             }
                         }
-
                         if (selectList.get_Selected() == "D")
                         {
                             var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGROUTE());
@@ -212,11 +191,10 @@ namespace Packet
                 }
                     ); //end of foreach
             }
-
             if (SListType == "MSGSubject")
             {
                 var selectLists = Sql.SQLSELECT_ON_Lists_MsgSubject();
-                selectLists.ForEach(delegate(DtoListMsgSubject selectList)
+                selectLists.ForEach(delegate (DtoListMsgSubject selectList)
                 {
                     if (DKey == 'Y')
                     {
@@ -229,7 +207,6 @@ namespace Packet
                                 itemYouAreLookingFor.Checked = true;
                             }
                         }
-
                         if (selectList.get_Selected() == "D")
                         {
                             var itemYouAreLookingFor = listView1.FindItemWithText(selectList.get_MSGSubject());
@@ -256,11 +233,8 @@ namespace Packet
             }
             Loaded = true;
         }
-
         #endregion
-
         #region resize
-
         private void Sort_Resize(object sender, EventArgs e)
         {
             listView1.Left = 5;
@@ -270,11 +244,8 @@ namespace Packet
             button_ok.Top = (Height - 75);
             button_Cancel.Top = (Height - 75);
         }
-
         #endregion
-
         #region listView1_ItemChecked
-
         private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             var checkedItems = listView1.CheckedItems;
@@ -283,7 +254,6 @@ namespace Packet
                 foreach (ListViewItem item in checkedItems)
                 {
                     var items = item.Text;
-
                     if (e.Item.Checked)
                     {
                         if (DKey == 'Y')
@@ -323,9 +293,7 @@ namespace Packet
                 }
             }
         }
-
         #endregion
     }
-
     #endregion
 }

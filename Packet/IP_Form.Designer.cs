@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-
 namespace Packet
 {
     partial class IpForm
@@ -9,7 +8,6 @@ namespace Packet
         /// Required designer variable.
         /// </summary>
         private IContainer components = null;
-
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -22,9 +20,7 @@ namespace Packet
             }
             base.Dispose(disposing);
         }
-
         #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -282,11 +278,8 @@ namespace Packet
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
-
         #endregion
-
         private Label label_ip;
         private TextBox textBox_ip;
         private Button Done_button;

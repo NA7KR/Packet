@@ -1,14 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-
 namespace Packet
 {
     public partial class Main
     {
         [DllImport("7plus.dll")]
         public static extern int Do_7plus([MarshalAs(UnmanagedType.LPStr)] string args);
-
         #region CreateFile Watch
         public void CreateFileWatcher(string path)
         {
@@ -16,30 +14,34 @@ namespace Packet
             tmrEditNotify.Enabled = true;
             _fmWatcher = new FileSystemWatcher();
             _fmWatcher.Filter = "*.*";
-            _fmWatcher.Path = path ;
+            _fmWatcher.Path = path;
             _fmWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             _fmWatcher.Changed += OnChanged;
             _fmWatcher.Created += OnChanged;
             _fmWatcher.EnableRaisingEvents = true;
         }
         #endregion
-
         #region Stop watching files
         public void FilewatchStop()
         {
-            _fmWatcher.EnableRaisingEvents = false;
-            _fmWatcher.Dispose();
-            tmrEditNotify.Enabled = false;
+            try
+            {
+                //_fmWatcher.EnableRaisingEvents = false;
+                // _fmWatcher.Dispose();
+                //tmrEditNotify.Enabled = false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
         #endregion
-
         #region OnChange
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (!_mBDirty)
             {
                 m_FullPath = e.FullPath;
-
                 m_Sb.Remove(0, m_Sb.Length);
                 m_Sb.Append(e.FullPath);
                 m_Sb.Append(" ");
@@ -50,7 +52,6 @@ namespace Packet
             }
         }
         #endregion
-
         #region
         private void tmrEditNotify_Tick(object sender, EventArgs e)
         {
@@ -58,8 +59,6 @@ namespace Packet
             {
                 toolStripStatusLabel1.Text = (m_Sb.ToString());
                 _mBDirty = false;
-
-
                 // Specify what is done when a file is changed, created, or deleted.
                 string newfile;
                 string ext = Path.GetExtension(m_FullPath);
@@ -111,9 +110,8 @@ namespace Packet
             }
         }
         #endregion  
-
         #region    msg
-        public void Msg(string newfile, int rn) 
+        public void Msg(string newfile, int rn)
         {
             string txt;
             switch (rn)
@@ -121,7 +119,6 @@ namespace Packet
                 case 0:
                     {
                         txt = "No errors detected.";
-                        
                         break;
                     }
                 case 1:
@@ -214,7 +211,6 @@ namespace Packet
                         txt = "Time stamp in meta file differs from that in the correction file.";
                         break;
                     }
-
                 case 19:
                     {
                         txt = "Meta file already exists.";
@@ -230,19 +226,14 @@ namespace Packet
                         txt = " Not enough memory available.";
                         break;
                     }
-
-
                 default:
                     {
                         txt = "?";
                         break;
                     }
             }
-            
             toolStripStatusLabel1.Text = txt + " " + newfile;
-
         }
         #endregion
-       
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-using PacketComs;
-
+using Packet;
 namespace Packet
 {
     partial class Main
@@ -23,9 +22,7 @@ namespace Packet
             }
             base.Dispose(disposing);
         }
-
         #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -80,7 +77,7 @@ namespace Packet
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_7plus = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.terminalEmulator1 = new PacketComs.TerminalEmulator();
+            this.terminalEmulator1 = new Packet.TerminalEmulator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmrEditNotify = new System.Windows.Forms.Timer(this.components);
@@ -477,16 +474,16 @@ namespace Packet
             // terminalEmulator1
             // 
             this.terminalEmulator1.BackColor = System.Drawing.Color.Black;
-            this.terminalEmulator1.BaudRateType = PacketComs.TerminalEmulator.BaudRateTypes.Baud_4800;
-            this.terminalEmulator1.BBSPrompt = null;
+            this.terminalEmulator1.BaudRateType = Packet.TerminalEmulator.BaudRateTypes.Baud_4800;
+            this.terminalEmulator1.BbsPrompt = null;
             this.terminalEmulator1.Beep = true;
             this.terminalEmulator1.Close = false;
             this.terminalEmulator1.Columns = 175;
-            this.terminalEmulator1.ConnectionType = PacketComs.TerminalEmulator.ConnectionTypes.Telnet;
-            this.terminalEmulator1.DataBitsType = PacketComs.TerminalEmulator.DataBitsTypes.Data_Bits_8;
-            this.terminalEmulator1.dnsName = null;
+            this.terminalEmulator1.ConnectionType = Packet.TerminalEmulator.ConnectionTypes.Telnet;
+            this.terminalEmulator1.DataBitsType = Packet.TerminalEmulator.DataBitsTypes.Data_Bits_8;
+            this.terminalEmulator1.DnsName = null;
             this.terminalEmulator1.FileActive = false;
-            this.terminalEmulator1.FlowType = PacketComs.TerminalEmulator.FlowTypes.XOnXOff;
+            this.terminalEmulator1.FlowType = Packet.TerminalEmulator.FlowTypes.XOnXOff;
             this.terminalEmulator1.Font = new System.Drawing.Font("Courier New", 8F);
             this.terminalEmulator1.Header = null;
             this.terminalEmulator1.Hostname = null;
@@ -495,14 +492,14 @@ namespace Packet
             this.terminalEmulator1.LocalEcho = false;
             this.terminalEmulator1.Location = new System.Drawing.Point(12, 51);
             this.terminalEmulator1.Name = "terminalEmulator1";
-            this.terminalEmulator1.ParityType = PacketComs.TerminalEmulator.ParityTypes.None;
+            this.terminalEmulator1.ParityType = Packet.TerminalEmulator.ParityTypes.None;
             this.terminalEmulator1.Password = null;
             this.terminalEmulator1.PasswordPrompt = null;
             this.terminalEmulator1.Port = 9000;
             this.terminalEmulator1.Rows = 43;
             this.terminalEmulator1.SerialPort = "";
             this.terminalEmulator1.Size = new System.Drawing.Size(1235, 561);
-            this.terminalEmulator1.StopBitsType = PacketComs.TerminalEmulator.StopBitsTypes.One;
+            this.terminalEmulator1.StopBitsType = Packet.TerminalEmulator.StopBitsTypes.One;
             this.terminalEmulator1.TabIndex = 5;
             this.terminalEmulator1.UernamePrompt = null;
             this.terminalEmulator1.Username = null;
@@ -554,9 +551,7 @@ namespace Packet
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
-
         #endregion
         private MenuStrip menuStrip1;
         private ToolStripMenuItem helpToolStripMenuItem;
@@ -617,4 +612,3 @@ namespace Packet
         private Timer tmrEditNotify;
     }
 }
-
