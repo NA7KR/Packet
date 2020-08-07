@@ -411,9 +411,11 @@ namespace Packet
                 {
                     filePath = path + @"\" + fileName;
                 }
-                byte[] y = Encoding.UTF8.GetBytes(textVale);
+                byte[] y = Encoding.ASCII.GetBytes(textVale);
+                //byte[] y = Encoding.UTF8.GetBytes(textVale);
                 File.WriteAllBytes(filePath, y);
                 //File.WriteAllText(filePath, textVale, Encoding.GetEncoding(1252));
+                //File.WriteAllLines(filePath, textVale, Encoding.ASCII);
                 return true;
             } //end try
             catch (Exception e)

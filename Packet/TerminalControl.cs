@@ -464,13 +464,11 @@ namespace Packet
                 _inputData = _port.ReadExisting();
                 if (_inputData != string.Empty)
                 {
-                    //_parser.ParseString(_inputData);
-                    //this.BeginInvoke(new SetTextCallback(SetText), new object[] { InputData });
                     Invoke(RxdTextEvent, string.Copy(_inputData));
-                    if (_inputData == "/r")
-                    {
-                        _inputData = Environment.NewLine;
-                    }
+                    //if (_inputData == "/r")
+                    //{
+                    //    _inputData = Environment.NewLine;
+                    //}
                     Invoke(RefreshEvent);
                     if (FileActive)
                     {
@@ -480,16 +478,13 @@ namespace Packet
                             StringSplitOptions.RemoveEmptyEntries);
 
                         if (_dataFile.Contains(BbsPrompt))
-                        //if (Regex.Match(sReceived,BBSPrompt).Success )
                         {
                             if (ForwardDone != null) ForwardDone(this, new EventArgs());
                             FileActive = false;
 
                             for (var i = 1; i < lines.Length - 1; i++)
-                            //for (int i = lines.Length -2 ; i >= 1 ; i-- )
                             {
                                 FileSql.WriteSqlPacket(lines[i]);
-                                //LastNumber = lines[i].Substring(0, 5);
                             }
                             LastNumberevt(this, new EventArgs());
                             _dataFile = "";
@@ -549,19 +544,12 @@ namespace Packet
             {
                 for (var col = 0; col < _cols; col++)
                 {
-                    if (foundStart == false && _attribGrid[row][col].IsInverse)
-                    {
-                        start.X = col;
-                        start.Y = row;
-                        foundStart = true;
-                    }
-
                     // this next check will first find the first non-inverse cord with a
                     // character in it. If it happens to be at the beginning of a line,
                     // then we'll back up and stop at the last char in the prev line
                     if (foundStart &&
                         foundStop == false &&
-                        _attribGrid[row][col].IsInverse == false &&
+                        //_attribGrid[row][col].IsInverse == false &&
                         _charGrid[row][col] != '\0'
                         )
                     {
@@ -900,12 +888,12 @@ namespace Packet
 
         private void DispatchMessage(object sender, string strText)
         {
-            if (_xoff)
-            {
-                // store the characters in the output buffer
-                _outBuff += strText;
-                return;
-            }
+            //if (_xoff)
+            //{
+            //    // store the characters in the output buffer
+            //    _outBuff += strText;
+            //    return;
+            //}
             var i = 0;
             try
             {
@@ -1000,16 +988,6 @@ namespace Packet
 
         private void PrintChar(char curChar)
         {
-            if (_caret.EOL)
-            {
-                //if ((_modes.Flags & UcMode.AutoWrap) == UcMode.AutoWrap)
-                //{
-                //    LineFeed();
-                //    CarriageReturn();
-                //    _caret.EOL = false;
-                //}
-            }
-
             var x = _caret.Pos.X;
             var y = _caret.Pos.Y;
 
@@ -1018,13 +996,13 @@ namespace Packet
             if (_charAttribs.Gs != null)
             {
                 curChar = UcChars.Get(curChar, _attribGrid[y][x].Gs.Set, _attribGrid[y][x].GR.Set);
-                if (_charAttribs.Gs.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
-                _charAttribs.Gs = null;
+                //if (_charAttribs.Gs.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
+                //_charAttribs.Gs = null;
             }
             else
             {
                 curChar = UcChars.Get(curChar, _attribGrid[y][x].Gl.Set, _attribGrid[y][x].GR.Set);
-                if (_charAttribs.Gl.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
+                //if (_charAttribs.Gl.Set == UcChars.Sets.DECSG) _attribGrid[y][x].IsDECSG = true;
             }
             _charGrid[y][x] = curChar;
             CaretRight();
@@ -1106,40 +1084,9 @@ namespace Packet
             curFgColor = ForeColor;
             curBgColor = BackColor;
 
-            if (curAttribs.IsBlinking)
-            {
-                curFgColor = _blinkColor;
-            }
-
-            // bold takes precedence over the blink color
-            if (curAttribs.IsBold)
-            {
-                curFgColor = _boldColor;
-            }
-
-            if (curAttribs.UseAltColor)
-            {
-                curFgColor = curAttribs.AltColor;
-            }
-
-            // alternate color takes precedence over the bold color
-            if (curAttribs.UseAltBGColor)
-            {
-                curBgColor = curAttribs.AltBgColor;
-            }
-
-            if (curAttribs.IsInverse)
-            {
-                var tmpColor = curBgColor;
-
-                curBgColor = curFgColor;
-                curFgColor = tmpColor;
-            }
-
-            // If light background is on and we're not using alt colors
-            // reverse the colors
-            if ((_modes.Flags & UcMode.LightBackground) > 0 &&
-                curAttribs.UseAltColor == false && curAttribs.UseAltBGColor == false)
+          
+            if ((_modes.Flags & UcMode.LightBackground) > 0 ) //&&
+               // curAttribs.UseAltColor == false && curAttribs.UseAltBGColor == false)
             {
                 var tmpColor = curBgColor;
 
@@ -1155,10 +1102,10 @@ namespace Packet
         private void ShowChar(Graphics curGraphics, char curChar, int y, int x,
             CharAttribStruct curAttribs)
         {
-            if (curChar == '\0')
-            {
-                return;
-            }
+            //if (curChar == '\0')
+            //{
+            //    return;
+            //}
 
             var curFgColor = Color.White;
             var curBgColor = Color.Black;
@@ -1177,37 +1124,6 @@ namespace Packet
                     x,
                     y);
             }
-
-            //if (curAttribs.IsUnderscored)
-            //{
-            //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-            //        x, y + _underlinePos,
-            //        x + _charSize.Width, y + _underlinePos);
-            //}
-
-            //if (curAttribs.IsDECSG &&
-            //    (curChar == 'l' ||
-            //     curChar == 'q' ||
-            //     curChar == 'w' ||
-            //     curChar == 'k' ||
-            //     curChar == 'x' ||
-            //     curChar == 't' ||
-            //     curChar == 'n' ||
-            //     curChar == 'u' ||
-            //     curChar == 'm' ||
-            //     curChar == 'v' ||
-            //     curChar == 'j' ||
-            //     curChar == '`'))
-            //{
-            //    ShowSpecialChar(
-            //        curGraphics,
-            //        curChar,
-            //        y,
-            //        x,
-            //        curFgColor);
-
-            //    return;
-            //}
 
             curGraphics.DrawString(
                 curChar.ToString(CultureInfo.InvariantCulture),
@@ -1245,130 +1161,7 @@ namespace Packet
 
         #endregion SSH Connect
 
-        #region ShowSpecialChar
-
-        private void ShowSpecialChar(Graphics curGraphics, char curChar, int y,
-            int x, Color curFgColor)
-        {
-            if (!plus)
-            {
-                if (curChar == '\0')
-                {
-                    return;
-                }
-
-                var curPoints = new Point[4];
-                //switch (curChar)
-                //{
-                //case '`': // diamond
-
-                //    curPoints[0] = new Point(x + _charSize.Width / 2, y + _charSize.Height / 6);
-                //    curPoints[1] = new Point(x + 5 * _charSize.Width / 6, y + _charSize.Height / 2);
-                //    curPoints[2] = new Point(x + _charSize.Width / 2, y + 5 * _charSize.Height / 6);
-                //    curPoints[3] = new Point(x + _charSize.Width / 6, y + _charSize.Height / 2);
-
-                //    curGraphics.FillPolygon(
-                //        new SolidBrush(curFgColor),
-                //        curPoints);
-                //    break;
-
-                //case 'l': // top left bracket
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2 - 1, y + _charSize.Height / 2,
-                //        x + _charSize.Width, y + _charSize.Height / 2);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                //        x + _charSize.Width / 2, y + _charSize.Height);
-                //    break;
-
-                //case 'q': // horizontal line
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x, y + _charSize.Height / 2,
-                //        x + _charSize.Width, y + _charSize.Height / 2);
-                //    break;
-
-                //case 'w': // top tee-piece
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x, y + _charSize.Height / 2,
-                //        x + _charSize.Width, y + _charSize.Height / 2);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                //        x + _charSize.Width / 2, y + _charSize.Height);
-                //    break;
-
-                //case 'k': // top right bracket
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x, y + _charSize.Height / 2,
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                //        x + _charSize.Width / 2, y + _charSize.Height);
-                //    break;
-
-                //case 'x': // vertical line
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y,
-                //        x + _charSize.Width / 2, y + _charSize.Height);
-                //    break;
-
-                //case 't': // left hand tee-piece
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y,
-                //        x + _charSize.Width / 2, y + _charSize.Height);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                //        x + _charSize.Width, y + _charSize.Height / 2);
-                //    break;
-
-                //case 'n': // cross piece
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y,
-                //        x + _charSize.Width / 2, y + _charSize.Height);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x, y + _charSize.Height / 2,
-                //        x + _charSize.Width, y + _charSize.Height / 2);
-                //    break;
-
-                //case 'u': // right hand tee-piece
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x, y + _charSize.Height / 2,
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y,
-                //        x + _charSize.Width / 2, y + _charSize.Height);
-                //    break;
-
-                //case 'm': // bottom left bracket
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2,
-                //        x + _charSize.Width, y + _charSize.Height / 2);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y,
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2);
-                //    break;
-
-                //case 'v': // bottom tee-piece
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x, y + _charSize.Height / 2,
-                //        x + _charSize.Width, y + _charSize.Height / 2);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y,
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2);
-                //    break;
-
-                //case 'j': // bottom right bracket
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x, y + _charSize.Height / 2,
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2);
-                //    curGraphics.DrawLine(new Pen(curFgColor, 1),
-                //        x + _charSize.Width / 2, y,
-                //        x + _charSize.Width / 2, y + _charSize.Height / 2);
-                //    break;
-                //}
-            }
-        }
-
-        #endregion ShowSpecialChar
+      
 
         #region WipeScreen
 
@@ -1504,59 +1297,7 @@ namespace Packet
         }
 
         #endregion Redraw
-
-        #region NvtSendWill
-
-        private void NvtSendWill(char curChar)
-        {
-            DispatchMessage(this, string.Format("\xFF\xFB{0}", curChar));
-        }
-
-        #endregion NvtSendWill
-
-        #region NvtSendWont
-
-        private void NvtSendWont(char curChar)
-        {
-            DispatchMessage(this, string.Format("\xFF\xFC{0}", curChar));
-        }
-
-        #endregion NvtSendWont
-
-        #region NvtSendDont
-
-        private void NvtSendDont(char curChar)
-        {
-            DispatchMessage(this, string.Format("\xFF\xFE{0}", curChar));
-        }
-
-        #endregion NvtSendDont
-
-        #region NvtSendDo
-
-        private void NvtSendDo(char curChar)
-        {
-            DispatchMessage(this, string.Format("\xFF\xFD{0}", curChar));
-        }
-
-        #endregion NvtSendDo
-
-        #region NvtSendSubNeg
-
-        private void NvtSendSubNeg(char curChar, string curString)
-        {
-            DispatchMessage(this, string.Format("\xFF\xFA{0}\x00{1}\xFF\xF0", curChar, curString));
-        }
-
-        #endregion NvtSendSubNeg
-
-        #region NvtExecuteChar
-
-        private void NvtExecuteChar()
-        {
-        }
-
-        #endregion NvtExecuteChar
+   
 
         #region TelnetInterpreter
 
@@ -1566,77 +1307,8 @@ namespace Packet
             {
                 case NvtActions.SendUp:
                     _parser.ParseString(e.CurChar.ToString(CultureInfo.InvariantCulture));
-                    break;
-
-                case NvtActions.Execute:
-                    NvtExecuteChar();
-                    break;
+                    break;              
             }
-
-            // if the sequence is a DO message
-            //if (e.CurSequence.StartsWith("\xFD"))
-            //{
-            //    var curCmd = Convert.ToChar(e.CurSequence.Substring(1, 1));
-
-            //    switch (curCmd)
-            //    {
-            //        // 24 - terminal type
-            //        case '\x18':
-            //            NvtSendWill(curCmd);
-            //            break;
-
-            //        default:
-            //            NvtSendWont(curCmd);
-            //            //System.Console.Write ("unsupported telnet DO sequence {0} happened\n",
-            //            //System.Convert.ToInt32 (System.Convert.ToChar (e.CurSequence.Substring (1,1))));
-            //            break;
-            //    }
-            //}
-
-            // if the sequence is a WILL message
-            //if (e.CurSequence.StartsWith("\xFB"))
-            //{
-            //    var curCmd = Convert.ToChar(e.CurSequence.Substring(1, 1));
-
-            //    switch (curCmd)
-            //    {
-            //        case '\x01': // echo
-            //            NvtSendDo(curCmd);
-            //            break;
-
-            //        default:
-            //            NvtSendDont(curCmd);
-            //            //System.Console.Write ("unsupported telnet WILL sequence {0} happened\n",
-            //            //System.Convert.ToInt32 (System.Convert.ToChar (e.CurSequence.Substring (1,1))));
-            //            break;
-            //    }
-            //}
-
-            // if the sequence is a SUBNEGOTIATE message
-            //if (e.CurSequence.StartsWith("\xFA"))
-            //{
-            //    if (e.CurSequence[2] != '\x01')
-            //    {
-            //        // not interested in data from host just yet as we don't ask for it at the moment
-            //        return;
-            //    }
-
-            //    var curCmd = Convert.ToChar(e.CurSequence.Substring(1, 1));
-
-            //    switch (curCmd)
-            //    {
-            //        // 24 - terminal type
-            //        case '\x18':
-            //            NvtSendSubNeg(curCmd, "vt220");
-            //            break;
-
-            //        default:
-            //            NvtSendSubNeg(curCmd, "");
-            //            Console.Write("unsupported telnet SUBNEG sequence {0} happened\n",
-            //                Convert.ToInt32(Convert.ToChar(e.CurSequence.Substring(1, 1))));
-            //            break;
-            //    }
-            //}
         }
 
         #endregion TelnetInterpreter
@@ -1645,34 +1317,18 @@ namespace Packet
 
         private void CarriageReturn()
         {
-            CaretToAbs(_caret.Pos.Y, 0);
+           CaretToAbs(_caret.Pos.Y, 0);
         }
 
         #endregion CarriageReturn
 
-        #region Tab
-
-        private void Tab()
-        {
-            for (var i = 0; i < _tabStops.Columns.Length; i++)
-            {
-                if (i > _caret.Pos.X && _tabStops.Columns[i])
-                {
-                    CaretToAbs(_caret.Pos.Y, i);
-                    return;
-                }
-            }
-
-            CaretToAbs(_caret.Pos.Y, _cols - 1);
-        }
-
-        #endregion Tab
+    
 
         #region TabSet
 
         private void TabSet()
         {
-            _tabStops.Columns[_caret.Pos.X] = true;
+            //_tabStops.Columns[_caret.Pos.X] = true;
         }
 
         #endregion TabSet
@@ -1686,21 +1342,7 @@ namespace Packet
             if (curParams.Count() > 0)
             {
                 param = Convert.ToInt32(curParams.Elements[0]);
-            }
-
-            switch (param)
-            {
-                case 0: // Current Position
-                    _tabStops.Columns[_caret.Pos.X] = false;
-                    break;
-
-                case 3: // All Tabs
-                    for (var i = 0; i < _tabStops.Columns.Length; i++)
-                    {
-                        _tabStops.Columns[i] = false;
-                    }
-                    break;
-            }
+            }    
         }
 
         #endregion ClearTabs
@@ -1932,25 +1574,13 @@ namespace Packet
 
             var curAttribs = new CharAttribStruct();
 
-            curAttribs.UseAltColor = true;
+           
 
             curAttribs.Gl = _attribGrid[y][x].Gl;
             curAttribs.GR = _attribGrid[y][x].GR;
             curAttribs.Gs = _attribGrid[y][x].Gs;
 
-            if (_attribGrid[y][x].UseAltBGColor == false)
-            {
-                curAttribs.AltColor = BackColor;
-            }
-            else if (_attribGrid[y][x].UseAltBGColor)
-            {
-                curAttribs.AltColor = _attribGrid[y][x].AltBgColor;
-            }
-
-            curAttribs.IsUnderscored = _attribGrid[y][x].IsUnderscored;
-            curAttribs.IsDECSG = _attribGrid[y][x].IsDECSG;
-
-            // redisplay the current char in the background color
+            
             ShowChar(
                 curGraphics,
                 _charGrid[y][x],
@@ -2587,46 +2217,7 @@ namespace Packet
                     MessageBox.Show(curException.Message);
                 }
 
-                switch (optInt)
-                {
-                    //case 1: // set cursor keys to normal cursor mode
-                    //    _modes.Flags = _modes.Flags & ~UcMode.CursorAppln;
-                    //    break;
-
-                    //case 2: // unlock the keyboard
-                    //    _modes.Flags = _modes.Flags & ~UcMode.Locked;
-                    //    break;
-
-                    //case 3: // set terminal to 80 column mode
-                    //    SetSize(_rows, 80);
-                    //    break;
-
-                    //case 5: // Dark Background Mode
-                    //    _modes.Flags = _modes.Flags & ~UcMode.LightBackground;
-                    //    RefreshEvent();
-                    //    break;
-
-                    //case 6: // Origin Mode Absolute
-                    //    _modes.Flags = _modes.Flags & ~UcMode.OriginRelative;
-                    //    CaretToAbs(0, 0);
-                    //    break;
-
-                    //case 7: // Auto wrap Off
-                    //    _modes.Flags = _modes.Flags & ~UcMode.AutoWrap;
-                    //    break;
-
-                    //case 8: // AutoRepeat Off
-                    //    _modes.Flags = _modes.Flags & ~UcMode.Repeat;
-                    //    break;
-
-                    //case 42: // DECNRCM National Char set
-                    //    _modes.Flags = _modes.Flags & ~UcMode.National;
-                    //    break;
-
-                    //case 66: // Numeric Keypad Application Mode On
-                    //    _modes.Flags = _modes.Flags & ~UcMode.KeypadAppln;
-                    //    break;
-                }
+                
             }
         }
 
@@ -2744,127 +2335,7 @@ namespace Packet
                 return;
             }
 
-            for (var i = 0; i < curParams.Count(); i++)
-            {
-                switch (Convert.ToInt32(curParams.Elements[i]))
-                {
-                    //case 0:
-                    //    ClearCharAttribs();
-                    //    break;
-
-                    //case 1:
-                    //    _charAttribs.IsBold = true;
-                    //    break;
-
-                    //case 4:
-                    //    _charAttribs.IsUnderscored = true;
-                    //    break;
-
-                    //case 5:
-                    //    _charAttribs.IsBlinking = true;
-                    //    break;
-
-                    //case 7:
-                    //    _charAttribs.IsInverse = true;
-                    //    break;
-
-                    //case 22:
-                    //    _charAttribs.IsBold = false;
-                    //    break;
-
-                    //case 24:
-                    //    _charAttribs.IsUnderscored = false;
-                    //    break;
-
-                    //case 25:
-                    //    _charAttribs.IsBlinking = false;
-                    //    break;
-
-                    //case 27:
-                    //    _charAttribs.IsInverse = false;
-                    //    break;
-
-                    //case 30:
-                    //    _charAttribs.UseAltColor = true;
-                    //    _charAttribs.AltColor = Color.Black;
-                    //    break;
-
-                    //case 31:
-                    //    _charAttribs.UseAltColor = true;
-                    //    _charAttribs.AltColor = Color.Red;
-                    //    break;
-
-                    //case 32:
-                    //    _charAttribs.UseAltColor = true;
-                    //    _charAttribs.AltColor = Color.Green;
-                    //    break;
-
-                    //case 33:
-                    //    _charAttribs.UseAltColor = true;
-                    //    _charAttribs.AltColor = Color.Yellow;
-                    //    break;
-
-                    //case 34:
-                    //    _charAttribs.UseAltColor = true;
-                    //    _charAttribs.AltColor = Color.Blue;
-                    //    break;
-
-                    //case 35:
-                    //    _charAttribs.UseAltColor = true;
-                    //    _charAttribs.AltColor = Color.Magenta;
-                    //    break;
-
-                    //case 36:
-                    //    _charAttribs.UseAltColor = true;
-                    //    _charAttribs.AltColor = Color.Cyan;
-                    //    break;
-
-                    //case 37:
-                    //    _charAttribs.UseAltColor = true;
-                    //    _charAttribs.AltColor = Color.White;
-                    //    break;
-
-                    //case 40:
-                    //    _charAttribs.UseAltBGColor = true;
-                    //    _charAttribs.AltBgColor = Color.Black;
-                    //    break;
-
-                    //case 41:
-                    //    _charAttribs.UseAltBGColor = true;
-                    //    _charAttribs.AltBgColor = Color.Red;
-                    //    break;
-
-                    //case 42:
-                    //    _charAttribs.UseAltBGColor = true;
-                    //    _charAttribs.AltBgColor = Color.Green;
-                    //    break;
-
-                    //case 43:
-                    //    _charAttribs.UseAltBGColor = true;
-                    //    _charAttribs.AltBgColor = Color.Yellow;
-                    //    break;
-
-                    //case 44:
-                    //    _charAttribs.UseAltBGColor = true;
-                    //    _charAttribs.AltBgColor = Color.Blue;
-                    //    break;
-
-                    //case 45:
-                    //    _charAttribs.UseAltBGColor = true;
-                    //    _charAttribs.AltBgColor = Color.Magenta;
-                    //    break;
-
-                    //case 46:
-                    //    _charAttribs.UseAltBGColor = true;
-                    //    _charAttribs.AltBgColor = Color.Cyan;
-                    //    break;
-
-                    //case 47:
-                    //    _charAttribs.UseAltBGColor = true;
-                    //    _charAttribs.AltBgColor = Color.White;
-                    //    break;
-                }
-            }
+            
         }
 
         #endregion SetCharAttribs
@@ -2872,13 +2343,13 @@ namespace Packet
         #region ExecuteChar
 
         private void ExecuteChar(char curChar)
-        {
+        { 
+            if (!plus)
+            {
             switch (curChar)
             {
-                //case '\x05': // ENQ request for the answer back message
-                //    DispatchMessage(this, "vt220");
-                //    break;
-
+                
+                
                 case '\x07': // BEL ring my bell
                     // this.BELL;
                     if (Beep)
@@ -2896,63 +2367,28 @@ namespace Packet
                     }
                     break;
 
-                case '\x08': // BS back space
-                    CaretLeft();
+                    case '\x08': // BS back space
+                        CaretLeft();
                     break;
 
-                case '\x09': // HT Horizontal Tab
-                    Tab();
+
+                    case '\x0A': // LF  LineFeed
+                    case '\x0B': // VT  VerticalTab
+                    case '\x0C': // FF  FormFeed
+                    case '\x84': // IND Index
+                        LineFeed();
                     break;
 
-                case '\x0A': // LF  LineFeed
-                case '\x0B': // VT  VerticalTab
-                case '\x0C': // FF  FormFeed
-                case '\x84': // IND Index
-                    LineFeed();
+                    case '\x0D': // CR CarriageReturn
+                        CarriageReturn();
                     break;
 
-                case '\x0D': // CR CarriageReturn
-                    CarriageReturn();
-                    break;
-
-                //case '\x0E': // SO maps G1 into GL
-                //    _charAttribs.Gl = _g1;
-                //    break;
-
-                //case '\x0F': // SI maps G0 into GL
-                //    _charAttribs.Gl = _g0;
-                //    break;
-
-                //case '\x11': // DC1/XON continue sending characters
-                //    _xoff = false;
-                //    DispatchMessage(this, "");
-                //    break;
-
-                //case '\x13': // DC3/XOFF stop sending characters
-                //    _xoff = true;
-                //    break;
-
-                case '\x85': // NEL Next line (same as line feed and carriage return)
-                    LineFeed();
+                    case '\x85': // NEL Next line (same as line feed and carriage return)
+                        LineFeed();
                     CaretToAbs(_caret.Pos.Y, 0);
                     break;
-
-                    //case '\x88': // HTS Horizontal tab set
-                    //    TabSet();
-                    //    break;
-
-                    //case '\x8D': // RI Reverse Index
-                    //    ReverseLineFeed();
-                    //    break;
-
-                    //case '\x8E': // SS2 Single Shift (G2 -> GL)
-                    //    _charAttribs.Gs = _g2;
-                    //    break;
-
-                    //case '\x8F': // SS3 Single Shift (G3 -> GL)
-                    //    _charAttribs.Gs = _g3;
-                    //    break;
-            }
+                }
+                }
         }
 
         #endregion ExecuteChar
@@ -3069,32 +2505,32 @@ namespace Packet
 
         private class UcTabStops
         {
-            public readonly bool[] Columns;
+            //public readonly bool[] Columns;
 
-            #region UcTabStops
+            //#region UcTabStops
 
-            public UcTabStops()
-            {
-                Columns = new bool[256];
-                Columns[8] = true;
-                Columns[16] = true;
-                Columns[24] = true;
-                Columns[32] = true;
-                Columns[40] = true;
-                Columns[48] = true;
-                Columns[56] = true;
-                Columns[64] = true;
-                Columns[72] = true;
-                Columns[80] = true;
-                Columns[88] = true;
-                Columns[96] = true;
-                Columns[104] = true;
-                Columns[112] = true;
-                Columns[120] = true;
-                Columns[128] = true;
-            }
+            //public UcTabStops()
+            //{
+            //    Columns = new bool[256];
+            //    Columns[8] = true;
+            //    Columns[16] = true;
+            //    Columns[24] = true;
+            //    Columns[32] = true;
+            //    Columns[40] = true;
+            //    Columns[48] = true;
+            //    Columns[56] = true;
+            //    Columns[64] = true;
+            //    Columns[72] = true;
+            //    Columns[80] = true;
+            //    Columns[88] = true;
+            //    Columns[96] = true;
+            //    Columns[104] = true;
+            //    Columns[112] = true;
+            //    Columns[120] = true;
+            //    Columns[128] = true;
+            //}
 
-            #endregion UcTabStops
+            //#endregion UcTabStops
         }
 
         #endregion class uc_TabStops
@@ -4603,7 +4039,7 @@ namespace Packet
         private int _topMargin;
 
         //private int _underlinePos;
-        private bool _xoff;
+        //private bool _xoff;
 
         #endregion Fields
 
@@ -4804,7 +4240,7 @@ namespace Packet
             // reset highlights
             for (var iRow = 0; iRow < _rows; iRow++)
                 for (var iCol = 0; iCol < _cols; iCol++)
-                    _attribGrid[iRow][iCol].IsInverse = false;
+                    //_attribGrid[iRow][iCol].IsInverse = false;
 
             if (endRow < begRow) // we're parsing backwards
             {
@@ -4826,14 +4262,7 @@ namespace Packet
                         if (curRow == begRow && curCol < endCol)
                             continue;
 
-                        // on last row, don't pass the end col
-                        if (curRow == endRow && curCol == begCol)
-                        {
-                            _attribGrid[curRow][curCol].IsInverse = true;
-                            break;
-                        }
-
-                        _attribGrid[curRow][curCol].IsInverse = true;
+                    
                     }
                 }
                 Refresh();
@@ -4865,13 +4294,7 @@ namespace Packet
                     if (curRow == begRow && curCol < begCol)
                         continue;
 
-                    // on last row, don't pass the end col
-                    if (curRow == endRow && curCol == endCol)
-                    {
-                        _attribGrid[curRow][curCol].IsInverse = true;
-                        break;
-                    }
-                    _attribGrid[curRow][curCol].IsInverse = true;
+                    
                 }
             }
             Refresh();
@@ -4890,7 +4313,7 @@ namespace Packet
                     // reset highlights
                     for (var iRow = 0; iRow < _rows; iRow++)
                         for (var iCol = 0; iCol < _cols; iCol++)
-                            _attribGrid[iRow][iCol].IsInverse = false;
+                            //_attribGrid[iRow][iCol].IsInverse = false;
                     Refresh();
                 }
             }
@@ -4955,21 +4378,13 @@ namespace Packet
 
         private struct CharAttribStruct
         {
-            public Color AltBgColor;
-            public Color AltColor;
+           // public Color AltBgColor;
+           // public Color AltColor;
             public UcChars Gl;
             public UcChars GR;
             public UcChars Gs;
-            public bool IsAlternateFont;
-            public bool IsBlinking;
-            public bool IsBold;
-            public bool IsDECSG;
-            public bool IsDim;
-            public bool IsInverse;
-            public bool IsPrimaryFont;
-            public bool IsUnderscored;
-            public bool UseAltBGColor;
-            public bool UseAltColor;
+            //public bool IsAlternateFont;
+   
         }
 
         #endregion CharAttribStruct
